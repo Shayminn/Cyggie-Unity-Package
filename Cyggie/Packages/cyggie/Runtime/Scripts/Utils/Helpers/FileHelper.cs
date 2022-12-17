@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Cyggie.Utils.Helpers
+namespace Cyggie.Main.Utils.Helpers
 {
     public static class FileHelper
     {
