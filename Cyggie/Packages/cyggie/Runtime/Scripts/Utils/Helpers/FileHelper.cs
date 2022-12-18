@@ -1,11 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Cyggie.Main.Utils.Helpers
+namespace Cyggie.Main.Runtime.Utils.Helpers
 {
+    /// <summary>
+    /// Helper class for File management
+    /// </summary>
     public static class FileHelper
     {
         private static readonly string cAssetsPath = @"Assets\";
