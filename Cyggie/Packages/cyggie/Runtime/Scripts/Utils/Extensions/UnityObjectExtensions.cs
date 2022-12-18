@@ -15,7 +15,7 @@ namespace Cyggie.Main.Editor.Utils.Extensions
         /// <param name="obj">Object to check for null</param>
         /// <param name="func">Func to create an object from</param>
         /// <returns><paramref name="obj"/> or new value from <paramref name="func"/></returns>
-        public static T AssignIfNull<T>(T obj, Func<T> func) where T : UnityEngine.Object
+        public static T AssignIfNull<T>(this T obj, Func<T> func) where T : UnityEngine.Object
         {
             if (obj == null)
             {
@@ -33,7 +33,7 @@ namespace Cyggie.Main.Editor.Utils.Extensions
         /// <param name="obj">Object to check for null</param>
         /// <param name="newValue">New value to assign</param>
         /// <returns><paramref name="obj"/> or <paramref name="newValue"/></returns>
-        public static T AssignIfNull<T>(T obj, T newValue) where T : UnityEngine.Object
+        public static T AssignIfNull<T>(this T obj, T newValue) where T : UnityEngine.Object
         {
             if (obj == null)
             {
