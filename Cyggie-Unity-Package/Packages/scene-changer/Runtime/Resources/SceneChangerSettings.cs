@@ -1,7 +1,7 @@
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.SceneChanger.Runtime.Utils;
 using UnityEngine;
-using Cyggie.SceneChanger.Editor.Models;
+using System.ComponentModel;
 
 #if UNITY_EDITOR
 using UnityEditor;

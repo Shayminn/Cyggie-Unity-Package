@@ -39,6 +39,7 @@ namespace Cyggie.SceneChanger.Editor
             SceneChangerSettings settings = serializedSettings.targetObject as SceneChangerSettings;
             LoadingScreen loadingScreen = settings.LoadingScreen;
 
+            UnityEngine.Debug.Log("On settings gui: " + loadingScreen);
             serializedSettings.Update();
 
             // Loading Screen Settings
