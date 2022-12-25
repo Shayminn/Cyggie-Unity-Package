@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "cyggie.main": "https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/cyggie",
+    "cyggie.main": "https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/main",
     "cyggie.scene-changer": "https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/scene-changer",
     "com.unity.collab-proxy": "1.17.1",
     "com.unity.feature.development": "1.0.1",
