@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Cyggie.SceneChanger.Editor.Models
+namespace Cyggie.SceneChanger.Runtime
 {
 
     [Serializable]

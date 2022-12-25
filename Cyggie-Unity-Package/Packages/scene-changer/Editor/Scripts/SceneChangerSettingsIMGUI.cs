@@ -42,6 +42,8 @@ namespace Cyggie.SceneChanger.Editor
             serializedSettings.Update();
 
             // Loading Screen Settings
+            EditorGUILayout.LabelField("Loading Screen Settings", EditorStyles.boldLabel);
+
             EditorGUIHelper.DrawAsReadOnly(gui: () =>
             {
                 EditorGUILayout.PropertyField(serializedSettings.FindProperty("_loadingScreen"));
@@ -50,6 +52,8 @@ namespace Cyggie.SceneChanger.Editor
             EditorGUILayout.PropertyField(serializedSettings.FindProperty("_textures"));
 
             // Fade Settings
+            EditorGUILayout.LabelField("Fade Settings", EditorStyles.boldLabel);
+
             EditorGUILayout.PropertyField(serializedSettings.FindProperty("_fadeIn"));
             EditorGUILayout.PropertyField(serializedSettings.FindProperty("_fadeOut"));
 

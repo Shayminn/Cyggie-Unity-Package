@@ -226,7 +226,7 @@
       "url": "https://packages.unity.com"
     },
     "cyggie.main": {
-      "version": "file:cyggie",
+      "version": "file:main",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}

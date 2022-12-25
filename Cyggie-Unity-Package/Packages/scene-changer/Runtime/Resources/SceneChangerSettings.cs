@@ -1,14 +1,13 @@
 using Cyggie.Main.Runtime.Utils.Extensions;
-using Cyggie.Main.Runtime.Utils.Helpers;
-using Cyggie.SceneChanger.Editor.Models;
-using Cyggie.SceneChanger.Runtime;
 using Cyggie.SceneChanger.Runtime.Utils;
-using System;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using Cyggie.SceneChanger.Editor.Models;
 
-namespace Cyggie.SceneChanger.Editor
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+namespace Cyggie.SceneChanger.Runtime
 {
     // Create a new type of Settings Asset.
     public class SceneChangerSettings : ScriptableObject
@@ -16,17 +15,12 @@ namespace Cyggie.SceneChanger.Editor
         private const string cSettingsFileName = "SceneChangerSettings.asset";
         private const string cSettingsScriptFileName = "SceneChangerSettingsIMGUI.cs";
 
-        [Header("Loading Screen Settings")]
-
         [SerializeField, Tooltip("")]
         private LoadingScreen _loadingScreen = null;
 
         [SerializeField, Tooltip("")]
         private Texture[] _textures = null;
 
-        [Header("Loading Bar Settings")]
-
-        [Header("Fade Settings")]
         [SerializeField, Tooltip("")]
         private FadeSettings _fadeIn = new FadeSettings();
 
@@ -42,6 +36,7 @@ namespace Cyggie.SceneChanger.Editor
 
         public FadeSettings FadeOut => _fadeOut;
 
+#if UNITY_EDITOR
         private static SerializedObject _serializedSettings = null;
         public static SerializedObject SerializedSettings => _serializedSettings ??= new SerializedObject(GetOrCreateSettings());
 
@@ -97,5 +92,6 @@ namespace Cyggie.SceneChanger.Editor
             nameof(_fadeIn),
             nameof(_fadeOut)
         };
+#endif
     }
 }

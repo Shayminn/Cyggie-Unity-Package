@@ -6,16 +6,14 @@ namespace Cyggie.SceneChanger.Runtime
 {
     public class LoadingScreen : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        public void SetProgress(float progress)
         {
-            
+
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Awake()
         {
-        
+            DontDestroyOnLoad(gameObject);
         }
     }
 }
