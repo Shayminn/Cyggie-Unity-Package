@@ -12,13 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfea46ba728ba134fba754781453b408, type: 3}
   m_Name: SceneChangerSettings
   m_EditorClassIdentifier: 
-  _enableLoadingScreen: 1
-  _loadingScreen: {fileID: 4023837950398700858, guid: 09a417026055a4e42bdf664939c5f3ef, type: 3}
+  _loadingScreen: {fileID: 6819996221100671902, guid: 09a417026055a4e42bdf664939c5f3ef, type: 3}
+  _textures: []
   _fadeIn:
-    _enabled: 1
     _duration: 0.5
     _color: {r: 0, g: 0, b: 0, a: 1}
   _fadeOut:
-    _enabled: 1
     _duration: 0.5
     _color: {r: 0, g: 0, b: 0, a: 1}

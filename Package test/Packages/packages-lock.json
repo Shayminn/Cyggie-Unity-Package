@@ -155,6 +155,22 @@
       },
       "url": "https://packages.unity.com"
     },
+    "cyggie.main": {
+      "version": "https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/cyggie",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "1c668c5b9bdbaebd5155a3f2ee8dace8f46cf3e9"
+    },
+    "cyggie.scene-changer": {
+      "version": "https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/scene-changer",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "cyggie.main": "0.0.1"
+      },
+      "hash": "1c668c5b9bdbaebd5155a3f2ee8dace8f46cf3e9"
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

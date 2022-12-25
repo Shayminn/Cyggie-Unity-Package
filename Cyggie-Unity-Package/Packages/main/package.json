@@ -1,16 +1,17 @@
 {
   "name": "cyggie.main",
   "version": "0.0.1",
-  "displayName": "Cyggie",
+  "displayName": "Main",
   "description": "This package is the main package that all sub-packages derives from.",
   "unity": "2019.1",
   "dependencies": {
   },
   "keywords": [
-    "cyggie"
+    "cyggie",
+    "main"
   ],
   "author": {
-    "name": "Ryan Leung",
+    "name": "Cyggie",
     "email": "rleung1022@gmail.com",
     "url": "https://ryanleung.me"
   }
