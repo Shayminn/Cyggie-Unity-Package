@@ -1,0 +1,19 @@
+{
+  "name": "cyggie.scene-changer",
+  "version": "0.0.1",
+  "displayName": "Scene Changer",
+  "description": "This package derives from the Cyggie package. It contains relevant scripts and settings to control a scene changer.",
+  "unity": "2019.1",
+  "dependencies": {
+    "cyggie.main": "0.0.1"
+  },
+  "keywords": [
+    "cyggie",
+    "scenechanger"
+  ],
+  "author": {
+    "name": "Ryan Leung",
+    "email": "rleung1022@gmail.com",
+    "url": "https://ryanleung.me"
+  }
+}

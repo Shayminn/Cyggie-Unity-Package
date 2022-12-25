@@ -231,6 +231,14 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "cyggie.scene-changer": {
+      "version": "file:scene-changer",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cyggie.main": "0.0.1"
+      }
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
