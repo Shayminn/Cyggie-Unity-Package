@@ -93,7 +93,7 @@ namespace Cyggie.SceneChanger.Runtime
             {
                 if (_settings.ScreenSize != UnityHelper.GetVector2Resolution())
                 {
-                    _settings.UpdateLoadingScreenPrefab();
+                    _settings.UpdateLoadingScreenPrefab(false);
                     _canvasScaler.referenceResolution = _settings.ScreenSize;
                 }
 
