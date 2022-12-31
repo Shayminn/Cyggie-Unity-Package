@@ -12,11 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe5abfe685921743804ef5203e2eddb, type: 3}
   m_Name: SceneChangerSettings
   m_EditorClassIdentifier: 
-  _loadingScreen: {fileID: 0}
-  _textures: []
-  _fadeIn:
+  LoadingScreen: {fileID: 8898258735689808770, guid: 09a417026055a4e42bdf664939c5f3ef, type: 3}
+  Images: []
+  ScaleImageToResolution: 1
+  RandomizeImages: 1
+  RandomType: 0
+  Texts:
+  - Text: Loading...
+    Position: {x: 0, y: 0, z: 0}
+  MinimumLoadTime: 2
+  DynamicScreenSize: 1
+  ScreenSize: {x: 1366, y: 768}
+  FadeIn:
     _duration: 0.5
     _color: {r: 0, g: 0, b: 0, a: 1}
-  _fadeOut:
-    _duration: 0.5
+  FadeOut:
+    _duration: 1.34
     _color: {r: 0, g: 0, b: 0, a: 1}
+  AutoAdjustToResolution: 1
+  ResolutionChangeDelay: 0.5
