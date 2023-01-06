@@ -160,7 +160,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "a44185a0a4dea0b6b6a4233940656cd08b2815c9"
+      "hash": "84eccfc384dafb61140499f83768164cac80c515"
     },
     "cyggie.scene-changer": {
       "version": "https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/scene-changer",
@@ -169,7 +169,7 @@
       "dependencies": {
         "cyggie.main": "0.0.1"
       },
-      "hash": "a44185a0a4dea0b6b6a4233940656cd08b2815c9"
+      "hash": "84eccfc384dafb61140499f83768164cac80c515"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

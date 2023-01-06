@@ -1,18 +1,17 @@
 using Cyggie.Main.Editor.Utils.Helpers;
 using Cyggie.SceneChanger.Runtime;
+using Cyggie.SceneChanger.Runtime.Settings;
 using UnityEditor;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace Cyggie.SceneChanger.Editor
 {
     /// <summary>
-    /// 
+    /// IMGUI to <see cref="SceneChangerSettings"/>
     /// </summary>
     static class SceneChangerSettingsIMGUI
     {
         /// <summary>
-        /// 
+        /// Create a settings provider at Project Settings/Cyggie/SceneChanger
         /// </summary>
         /// <returns></returns>
         [SettingsProvider]
@@ -35,7 +34,10 @@ namespace Cyggie.SceneChanger.Editor
             return provider;
         }
 
-        private static void OnSettingsGUI(string searchContext)
+        /// <summary>
+        /// GUI Handler for creating the settings UI
+        /// </summary>
+        private static void OnSettingsGUI(string _)
         {
             SerializedObject serializedSettings = SceneChangerSettings.SerializedSettings;
             SceneChangerSettings settings = serializedSettings.targetObject as SceneChangerSettings;
@@ -46,67 +48,54 @@ namespace Cyggie.SceneChanger.Editor
 
             // Loading Screen Settings
             EditorGUILayout.LabelField("Loading Screen Settings", EditorStyles.boldLabel);
-            EditorGUIHelper.DrawAsReadOnly(gui: () =>
-            {
-                EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.LoadingScreen)));
-                EditorGUILayout.Space(10);
-            });
 
+            // Images
             EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.Images)));
 
             // Extra settings if with custom loading screen images
-            EditorGUIHelper.DrawAsReadOnly(settings.Images == null || settings.Images.Length == 0, gui: () => 
+            EditorGUIHelper.DrawAsReadOnly(settings.Images == null || settings.Images.Length == 0, gui: () =>
             {
                 EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.ScaleImageToResolution)));
                 EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.RandomizeImages)));
 
                 // Extra settings if randomized images
-                EditorGUIHelper.DrawAsReadOnly(!settings.RandomizeImages, gui: () => 
+                EditorGUIHelper.DrawAsReadOnly(!settings.RandomizeImages, gui: () =>
                 {
                     EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.RandomType)));
                 });
             });
-            EditorGUILayout.Space(10);
+            EditorGUILayout.Space(5);
 
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.Texts)));
             textsUpdated = EditorGUI.EndChangeCheck();
 
-            EditorGUILayout.Space(10);
+            EditorGUILayout.Space(5);
 
             EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.MinimumLoadTime)));
             EditorGUILayout.Space(10);
 
             // Aspect ratios
-            EditorGUILayout.LabelField("Screen Size Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.DynamicScreenSize)));
-            EditorGUIHelper.DrawAsReadOnly(settings.DynamicScreenSize, gui: () =>
+            EditorGUILayout.LabelField("Resolution Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.AutoAdjustToResolution)));
+
+            EditorGUIHelper.DrawAsReadOnly(settings.AutoAdjustToResolution, gui: () =>
             {
                 EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.ScreenSize)));
             });
+
+            EditorGUIHelper.DrawAsReadOnly(!settings.AutoAdjustToResolution, gui: () =>
+            {
+                EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.ResolutionCheckDelay)));
+            });
+
             EditorGUILayout.Space(10);
 
             // Fade Settings
             EditorGUILayout.LabelField("Fade Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.FadeIn)));
-            EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.FadeOut)));
-            EditorGUILayout.Space(10);
-
-            // Other Settings
-            EditorGUILayout.LabelField("Other Settings", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.AutoAdjustToResolution)));
-            EditorGUIHelper.DrawAsReadOnly(!settings.AutoAdjustToResolution, gui: () =>
-            {
-                EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.ResolutionChangeDelay)));
-            });
             EditorGUILayout.Space(10);
 
             serializedSettings.ApplyModifiedPropertiesWithoutUndo();
-
-            if (GUI.changed)
-            {
-                settings.UpdateLoadingScreenPrefab(textsUpdated);
-            }
         }
     }
 }

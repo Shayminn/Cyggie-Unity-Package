@@ -109,8 +109,8 @@ RectTransform:
   m_Father: {fileID: 5160932845299607989}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -160,7 +160,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6238562720815778596}
+  - component: {fileID: 7691575952799244277}
   m_Layer: 0
   m_Name: Texts
   m_TagString: Untagged
@@ -168,21 +168,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6238562720815778596
-Transform:
+--- !u!224 &7691575952799244277
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8535094707170937550}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 288.94373, y: 96.80087, z: 2.658764}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5160932845299607989}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8799445624379658092
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,12 +222,12 @@ RectTransform:
   m_Children:
   - {fileID: 1290988007307459028}
   - {fileID: 6854990137724184667}
-  - {fileID: 6238562720815778596}
+  - {fileID: 7691575952799244277}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
@@ -262,7 +267,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1366, y: 768}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
@@ -301,6 +306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvasScaler: {fileID: 770908754037782159}
   _fadeImage: {fileID: 3943102434407263967}
-  _defaultLoadingScreen: {fileID: 5843146519818814694}
   _loadingScreenImage: {fileID: 8637825814611545984}
-  _textsParent: {fileID: 6238562720815778596}
+  _loadingScreenImageTransform: {fileID: 6854990137724184667}
+  _textsParent: {fileID: 7691575952799244277}
+  _textPrefab: {fileID: 2526798904507899782, guid: 3c4334bbbbfe59c4782cb11bb90d3af6, type: 3}

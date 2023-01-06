@@ -1,0 +1,22 @@
+{
+    "name": "SceneChangerInputSystem",
+    "maps": [
+        {
+            "name": "SceneChanger",
+            "id": "8f2f1571-e5b8-4c89-9ac6-c784ca750462",
+            "actions": [
+                {
+                    "name": "Wait",
+                    "type": "Button",
+                    "id": "4e9aec44-c887-4565-b409-01160b2b294a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": []
+        }
+    ],
+    "controlSchemes": []
+}

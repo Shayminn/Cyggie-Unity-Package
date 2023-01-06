@@ -1,31 +1,43 @@
 using Cyggie.SceneChanger.Runtime;
+using Cyggie.SceneChanger.Runtime.Settings;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 public class SceneChangerTest : MonoBehaviour
 {
     [SerializeField, Tooltip("")]
-    private bool _onStart = true;
-
-    [SerializeField, Tooltip("")]
     private string _sceneToChangeTo = "";
 
+    private SceneChangerControls _controls;
+
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        if (_onStart)
-        {
-            SceneChanger.ChangeScene(_sceneToChangeTo, ChangeSceneSettings.EnableAll);
-            //SceneChanger.ChangeScene("Scene 2");
-        }
+        _controls = new SceneChangerControls();
+        _controls.SceneChangeControls.ChangeScene.performed += OnChangeScenePerformed;
+        _controls.SceneChangeControls.Fade.performed += OnFadePerformed;
+
+        SceneChanger.SetText(0, "Test");
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            SceneChanger.ChangeScene(_sceneToChangeTo, ChangeSceneSettings.EnableAll);
-        }
+        _controls?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _controls?.Disable();
+    }
+
+    private void OnChangeScenePerformed(CallbackContext ctx)
+    {
+        SceneChanger.ChangeScene(_sceneToChangeTo, ChangeSceneSettings.EnableAllWithKeyboardInput);
+    }
+
+    private void OnFadePerformed(CallbackContext ctx)
+    {
+        SceneChanger.Fade(1);
     }
 }

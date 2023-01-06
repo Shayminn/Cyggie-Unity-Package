@@ -1,25 +1,13 @@
-﻿using System;
+using Cyggie.SceneChanger.Runtime.Settings;
 using UnityEditor;
 using UnityEngine;
 
-namespace Cyggie.SceneChanger.Runtime
+namespace Cyggie.SceneChanger.Editor
 {
-
-    [Serializable]
-    public class FadeSettings
-    {
-        [SerializeField, Tooltip("")]
-        private float _duration = 0.5f;
-
-        [SerializeField, Tooltip("")]
-        private Color _color = Color.black;
-
-        public float Duration => _duration;
-
-        public Color Color => _color;
-    }
-
-    [CustomPropertyDrawer(typeof(FadeSettings))]
+    /// <summary>
+    /// Property drawer for <see cref="ChangeSceneFade"/>
+    /// </summary>
+    [CustomPropertyDrawer(typeof(ChangeSceneFade))]
     public class FadeSettingsEditor : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

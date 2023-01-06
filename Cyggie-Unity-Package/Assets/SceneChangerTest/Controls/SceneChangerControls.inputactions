@@ -1,0 +1,54 @@
+{
+    "name": "SceneChangerControls",
+    "maps": [
+        {
+            "name": "SceneChangeControls",
+            "id": "3ba6a1ec-6c63-49f2-9915-e2e0e336f150",
+            "actions": [
+                {
+                    "name": "ChangeScene",
+                    "type": "Button",
+                    "id": "71e6bc64-4e6c-4e8b-8078-5b2e20a4cb2c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Fade",
+                    "type": "Button",
+                    "id": "5f50e660-1064-4637-9fc1-56c7d4837028",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ef0421e2-37ed-4ddd-8acf-f6ad6bf7b845",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeScene",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bbdbe0c9-3401-473c-aa0f-649075c16407",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fade",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
