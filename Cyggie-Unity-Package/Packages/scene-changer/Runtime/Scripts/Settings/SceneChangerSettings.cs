@@ -1,6 +1,8 @@
 using UnityEngine;
 using Cyggie.SceneChanger.Runtime.Utils.Constants;
 using Cyggie.Main.Runtime.Utils.Extensions;
+using static UnityEngine.UI.Image;
+using Cyggie.Main.Runtime.Utils.Helpers;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -39,6 +41,43 @@ namespace Cyggie.SceneChanger.Runtime.Settings
 
         [SerializeField, Tooltip("Minimum amount of time to load before changing scene even if the scene is ready to be loaded.")]
         internal float MinimumLoadTime = 0f;
+
+        #endregion
+
+        #region Loading Bar fields
+
+        [SerializeField, Tooltip("")]
+        internal Texture2D LoadingBarImage = null;
+
+        [SerializeField, Tooltip("")]
+        internal Vector3 LoadingBarPosition = new Vector3(0, -400, 0);
+
+        [SerializeField, Tooltip("")]
+        internal Vector2 LoadingBarSize = new Vector2(1000, 50);
+
+        [SerializeField, Tooltip("")]
+        internal FillMethod LoadingBarFillMethod = FillMethod.Horizontal;
+
+        [SerializeField, Tooltip("")]
+        internal int LoadingBarFillOrigin = 0;
+
+        [SerializeField, Tooltip("")]
+        internal bool PreserveAspectRatio = false;
+
+        [SerializeField, Tooltip("")]
+        internal bool EnableTextProgress = false;
+
+        [SerializeField, Tooltip("")]
+        internal Vector3 TextProgressPosition = Vector3.zero;
+
+        [SerializeField, Tooltip("")]
+        internal Vector2 TextProgressObjectSize = Vector2.zero;
+
+        [SerializeField, Tooltip("")]
+        internal float TextProgressSize = 16f;
+
+        [SerializeField, Tooltip("")]
+        internal Color TextProgressColor = Color.black;
 
         #endregion
 
@@ -110,14 +149,6 @@ namespace Cyggie.SceneChanger.Runtime.Settings
             }
 
             return loadingScreen;
-        }
-
-        /// <summary>
-        /// Validate inputs
-        /// </summary>
-        internal void OnValidate()
-        {
-
         }
 
         /// <summary>

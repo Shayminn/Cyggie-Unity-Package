@@ -17,20 +17,29 @@ namespace Cyggie.SceneChanger.Runtime
     /// </summary>
     internal class LoadingScreen : MonoBehaviour
     {
+        [Header("Canvas")]
         [SerializeField, Tooltip("Canvas Scaler for resolution scaling.")]
         private CanvasScaler _canvasScaler = null;
 
-        [Space]
+        [Header("Fade Image")]
         [SerializeField, Tooltip("Image for displaying Fade In and Fade Out.")]
         private Image _fadeImage = null;
 
+        [Header("Loading Screen")]
         [SerializeField, Tooltip("Image for diplaying the Loading Screen.")]
         private Image _loadingScreenImage = null;
 
         [SerializeField, Tooltip("RectTransform of the loading screen image.")]
         private RectTransform _loadingScreenImageTransform = null;
 
-        [Space]
+        [Header("Loading Bar")]
+        [SerializeField, Tooltip("")]
+        private Image _loadingBarImage = null;
+
+        [SerializeField, Tooltip("")]
+        private TextMeshProUGUI _loadingBarText = null;
+
+        [Header("Texts")]
         [SerializeField, Tooltip("Parent GameObject for all loading screen texts.")]
         private Transform _textsParent = null;
 
@@ -55,7 +64,7 @@ namespace Cyggie.SceneChanger.Runtime
             _fadeImage.gameObject.SetActive(true);
 
             // Loading screen image
-            ToggleLoadingScreen(false);
+            ToggleLoadingScreen(false, false);
 
             DontDestroyOnLoad(gameObject);
         }
@@ -97,11 +106,16 @@ namespace Cyggie.SceneChanger.Runtime
                 onTransitionCompleted: onCompleted);
         }
 
+        internal void EnableLoadingBar()
+        {
+            _loadingBarImage.gameObject.SetActive(true);
+        }
+
         /// <summary>
         /// Toggle visibility of <see cref="_loadingScreenImage"/>
         /// </summary>
         /// <param name="toggle"></param>
-        internal void ToggleLoadingScreen(bool toggle)
+        internal void ToggleLoadingScreen(bool toggle, bool toggleLoadingBar)
         {
             if (toggle)
             {
@@ -120,20 +134,22 @@ namespace Cyggie.SceneChanger.Runtime
                 SetProgress(0);
             }
 
+            _loadingBarImage.gameObject.SetActive(toggleLoadingBar);
+
             _loadingScreenImage.gameObject.SetActive(toggle);
             _textsParent.gameObject.SetActive(toggle);
         }
 
         internal void SetProgress(float progress)
         {
-            // Set progres in base 100
-            progress *= 100;
+            // progress in base 100
+            float progressBase100 = progress * 100;
 
             // Enable all texts to load whose progress has been passed
             List<SceneChangeText> tempList = new List<SceneChangeText>(_inactiveTextToLoad);
             foreach (SceneChangeText sceneChangeText in tempList)
             {
-                if (sceneChangeText.DisplayAtProgress <= progress)
+                if (sceneChangeText.DisplayAtProgress <= progressBase100)
                 {
                     // Toggle text based on its index
                     int textIndex = Array.IndexOf(_settings.Texts, sceneChangeText);
@@ -143,9 +159,13 @@ namespace Cyggie.SceneChanger.Runtime
                     _inactiveTextToLoad.Remove(sceneChangeText);
                 }
             }
-            
-            // TODO
+
             // Update progress bar slider
+            if (_loadingBarImage.IsActive())
+            {
+                _loadingBarImage.fillAmount = progress;
+                _loadingBarText.text = progressBase100.ToString();
+            }
         }
 
         internal void SetTextAtIndex(int index, string text)
@@ -174,28 +194,6 @@ namespace Cyggie.SceneChanger.Runtime
                 _canvasScaler.referenceResolution = _settings.ScreenSize;
             }
 
-            // Instantiate all the texts
-            foreach (SceneChangeText text in _settings.Texts)
-            {
-                TextMeshProUGUI textObj = Instantiate(_textPrefab, _textsParent);
-                textObj.text = text.Text;
-
-                RectTransform rectTransform = textObj.GetComponent<RectTransform>();
-
-                // Set anchor
-                rectTransform.anchoredPosition = text.Position;
-                rectTransform.sizeDelta = text.ObjectSize;
-
-                textObj.color = text.TextColor;
-                textObj.fontSize = text.TextSize;
-                textObj.fontSizeMax = text.TextSize;
-
-                // All objects are set to false
-                textObj.gameObject.SetActive(false);
-
-                _texts.Add(textObj);
-            }
-
             // Set up image variables
             if (settings.HasImages)
             {
@@ -214,6 +212,54 @@ namespace Cyggie.SceneChanger.Runtime
                     _loadingScreenImageTransform.SetAnchorType(RectTransformAnchorType.MiddleCenter, settings.ScreenSize.x, settings.ScreenSize.y);
                 }
             }
+
+            // Instantiate all the texts
+            foreach (SceneChangeText text in _settings.Texts)
+            {
+                TextMeshProUGUI textObj = Instantiate(_textPrefab, _textsParent);
+                textObj.text = text.Text;
+
+                RectTransform rectTransform = textObj.GetComponent<RectTransform>();
+
+                // Set anchor
+                rectTransform.anchoredPosition = text.Position;
+                rectTransform.sizeDelta = text.ObjectSize;
+
+                textObj.color = text.TextColor;
+                textObj.fontSize = text.TextSize;
+                textObj.fontSizeMax = text.TextSize;
+
+                // All objects are set to false
+                textObj.gameObject.SetActive(text.AlwaysVisible);
+
+                _texts.Add(textObj);
+            }
+
+            // Set up loading bar
+            if (settings.LoadingBarImage != null)
+            {
+                _loadingBarImage.sprite = settings.LoadingBarImage.ToSprite();
+            }
+
+            RectTransform loadingBarRectTransform = _loadingBarImage.GetComponent<RectTransform>();
+            loadingBarRectTransform.anchoredPosition = settings.LoadingBarPosition;
+            loadingBarRectTransform.sizeDelta = settings.LoadingBarSize;
+
+            _loadingBarImage.fillMethod = settings.LoadingBarFillMethod;
+            _loadingBarImage.fillOrigin = settings.LoadingBarFillOrigin;
+            _loadingBarImage.preserveAspect = settings.PreserveAspectRatio;
+
+            if (settings.EnableTextProgress)
+            {
+                RectTransform rectTransform = _loadingBarText.GetComponent<RectTransform>();
+                rectTransform.anchoredPosition = settings.TextProgressPosition;
+                rectTransform.sizeDelta = settings.TextProgressObjectSize;
+
+                _loadingBarText.fontSize = settings.TextProgressSize;
+                _loadingBarText.fontSizeMax = settings.TextProgressSize;
+                _loadingBarText.color = settings.TextProgressColor;
+            }
+            _loadingBarImage.gameObject.SetActive(false);
 
             // Set up auto adjustments to resolution
             if (_settings.AutoAdjustToResolution)

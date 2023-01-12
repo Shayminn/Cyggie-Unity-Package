@@ -1,9 +1,13 @@
 using Cyggie.Main.Editor.Utils.Helpers;
+using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.SceneChanger.Runtime;
 using Cyggie.SceneChanger.Runtime.Settings;
+using System;
 using UnityEditor;
+using UnityEngine.UI;
+using static UnityEngine.UI.Image;
 
-namespace Cyggie.SceneChanger.Editor
+namespace Cyggie.SceneChanger.Editor.SettingsProviders
 {
     /// <summary>
     /// IMGUI to <see cref="SceneChangerSettings"/>
@@ -42,7 +46,6 @@ namespace Cyggie.SceneChanger.Editor
             SerializedObject serializedSettings = SceneChangerSettings.SerializedSettings;
             SceneChangerSettings settings = serializedSettings.targetObject as SceneChangerSettings;
             LoadingScreen loadingScreen = settings.LoadingScreen;
-            bool textsUpdated = false;
 
             serializedSettings.Update();
 
@@ -66,13 +69,51 @@ namespace Cyggie.SceneChanger.Editor
             });
             EditorGUILayout.Space(5);
 
-            EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.Texts)));
-            textsUpdated = EditorGUI.EndChangeCheck();
 
             EditorGUILayout.Space(5);
 
             EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.MinimumLoadTime)));
+            EditorGUILayout.Space(10);
+
+            EditorGUILayout.LabelField("Loading Bar Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.LoadingBarImage)));
+            EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.LoadingBarPosition)));
+            EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.LoadingBarSize)));
+            EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.LoadingBarFillMethod)));
+
+            string label = nameof(SceneChangerSettings.LoadingBarFillOrigin).SplitCamelCase();
+            switch (settings.LoadingBarFillMethod)
+            {
+                case FillMethod.Horizontal:
+                    settings.LoadingBarFillOrigin = (int) (OriginHorizontal) EditorGUILayout.EnumPopup(label, (OriginHorizontal) settings.LoadingBarFillOrigin);
+                    break;
+                case FillMethod.Vertical:
+                    settings.LoadingBarFillOrigin = (int) (OriginVertical) EditorGUILayout.EnumPopup(label, (OriginVertical) settings.LoadingBarFillOrigin);
+                    break;
+                case FillMethod.Radial90:
+                    settings.LoadingBarFillOrigin = (int) (Origin90) EditorGUILayout.EnumPopup(label, (Origin90) settings.LoadingBarFillOrigin);
+                    break;
+                case FillMethod.Radial180:
+                    settings.LoadingBarFillOrigin = (int) (Origin180) EditorGUILayout.EnumPopup(label, (Origin180) settings.LoadingBarFillOrigin);
+                    break;
+                case FillMethod.Radial360:
+                    settings.LoadingBarFillOrigin = (int) (Origin360) EditorGUILayout.EnumPopup(label, (Origin360) settings.LoadingBarFillOrigin);
+                    break;
+            }
+
+            EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.PreserveAspectRatio)));
+            EditorGUILayout.Space(5);
+
+            SerializedProperty textProgress = serializedSettings.FindProperty(nameof(SceneChangerSettings.EnableTextProgress));
+            EditorGUILayout.PropertyField(textProgress);
+            EditorGUIHelper.DrawAsReadOnly(!textProgress.boolValue, gui: () =>
+            {
+                EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.TextProgressPosition)));
+                EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.TextProgressObjectSize)));
+                EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.TextProgressSize)));
+                EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.TextProgressColor)));
+            });
             EditorGUILayout.Space(10);
 
             // Aspect ratios
@@ -89,10 +130,6 @@ namespace Cyggie.SceneChanger.Editor
                 EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.ResolutionCheckDelay)));
             });
 
-            EditorGUILayout.Space(10);
-
-            // Fade Settings
-            EditorGUILayout.LabelField("Fade Settings", EditorStyles.boldLabel);
             EditorGUILayout.Space(10);
 
             serializedSettings.ApplyModifiedPropertiesWithoutUndo();

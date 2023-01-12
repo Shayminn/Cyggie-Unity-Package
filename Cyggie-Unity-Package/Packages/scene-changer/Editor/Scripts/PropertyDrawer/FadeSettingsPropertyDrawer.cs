@@ -2,13 +2,13 @@ using Cyggie.SceneChanger.Runtime.Settings;
 using UnityEditor;
 using UnityEngine;
 
-namespace Cyggie.SceneChanger.Editor
+namespace Cyggie.SceneChanger.Editor.PropertyDrawers
 {
     /// <summary>
     /// Property drawer for <see cref="ChangeSceneFade"/>
     /// </summary>
     [CustomPropertyDrawer(typeof(ChangeSceneFade))]
-    public class FadeSettingsEditor : PropertyDrawer
+    internal class FadeSettingsEditor : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {

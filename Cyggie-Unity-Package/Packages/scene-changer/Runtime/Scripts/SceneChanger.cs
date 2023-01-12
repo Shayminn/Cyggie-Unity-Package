@@ -163,7 +163,7 @@ namespace Cyggie.SceneChanger.Runtime
             // Loading screen
             if (changeSceneSettings.EnableLoadingScreen)
             {
-                _loadingScreen.ToggleLoadingScreen(true);
+                _loadingScreen.ToggleLoadingScreen(true, changeSceneSettings.EnableLoadingBar);
 
                 // Loop till scene change is done
                 while (!asyncOperation.isDone)
@@ -192,7 +192,7 @@ namespace Cyggie.SceneChanger.Runtime
                     yield return null;
                 }
 
-                _loadingScreen.ToggleLoadingScreen(false);
+                _loadingScreen.ToggleLoadingScreen(false, false);
             }
 
             // Fade out

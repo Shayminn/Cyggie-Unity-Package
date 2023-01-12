@@ -17,8 +17,6 @@ public class SceneChangerTest : MonoBehaviour
         _controls = new SceneChangerControls();
         _controls.SceneChangeControls.ChangeScene.performed += OnChangeScenePerformed;
         _controls.SceneChangeControls.Fade.performed += OnFadePerformed;
-
-        SceneChanger.SetText(0, "Test");
     }
 
     private void OnEnable()

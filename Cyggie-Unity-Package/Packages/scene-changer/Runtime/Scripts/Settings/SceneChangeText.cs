@@ -13,24 +13,35 @@ namespace Cyggie.SceneChanger.Runtime.Settings
     [Serializable]
     internal class SceneChangeText
     {
+        [SerializeField, HideInInspector]
+        internal bool PropertyFoldout = true;
+
         [SerializeField, Tooltip("")]
         internal string Text = "";
-        
-        [Header("Transform Settings")]
+
+        [SerializeField, HideInInspector]
+        internal bool TransformSettingsFoldOut = true;
+
         [SerializeField, Tooltip("")]
         internal Vector3 Position = Vector3.zero;
 
         [SerializeField, Tooltip("")]
-        internal Vector2 ObjectSize = Vector2.zero;
+        internal Vector2 ObjectSize = new Vector2(500, 150);
 
-        [Header("Text Settings")]
+        [SerializeField, HideInInspector]
+
+        internal bool TextSettingsFoldOut = true;
+
         [SerializeField, Tooltip("")]
         internal Color TextColor = Color.white;
 
         [SerializeField, Tooltip("")]
         internal int TextSize = 36;
 
-        [Header("Visibility Settings")]
+        [SerializeField, HideInInspector]
+
+        internal bool VisibilitySettingsFoldOut = true;
+
         [SerializeField, Tooltip("")]
         internal bool AlwaysVisible = true;
 

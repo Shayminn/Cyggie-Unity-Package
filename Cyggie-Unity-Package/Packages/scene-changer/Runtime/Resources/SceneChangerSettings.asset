@@ -20,61 +20,91 @@ MonoBehaviour:
   RandomizeImages: 1
   RandomType: 1
   Texts:
-  - Text: Loading...
+  - PropertyFoldout: 0
+    Text: Loading...
+    TransformSettingsFoldOut: 1
     Position: {x: 400, y: -275, z: 0}
     ObjectSize: {x: 500, y: 100}
+    TextSettingsFoldOut: 1
     TextColor: {r: 1, g: 1, b: 1, a: 1}
     TextSize: 32
+    VisibilitySettingsFoldOut: 1
     AlwaysVisible: 1
     ImageSpecific: 0
     DisplayAtProgress: 0
-  - Text: Hello 1
+  - PropertyFoldout: 0
+    Text: Hello 1
+    TransformSettingsFoldOut: 1
     Position: {x: 0, y: 0, z: 0}
     ObjectSize: {x: 300, y: 100}
+    TextSettingsFoldOut: 1
     TextColor: {r: 1, g: 1, b: 1, a: 1}
     TextSize: 16
+    VisibilitySettingsFoldOut: 1
     AlwaysVisible: 0
     ImageSpecific: 0
     DisplayAtProgress: 0
-  - Text: Hello 2
+  - PropertyFoldout: 0
+    Text: Hello 2
+    TransformSettingsFoldOut: 1
     Position: {x: 0, y: 0, z: 0}
     ObjectSize: {x: 300, y: 100}
+    TextSettingsFoldOut: 1
     TextColor: {r: 1, g: 1, b: 1, a: 1}
     TextSize: 16
+    VisibilitySettingsFoldOut: 1
     AlwaysVisible: 0
     ImageSpecific: 1
     DisplayAtProgress: 0
-  - Text: Hello 3
+  - PropertyFoldout: 0
+    Text: Hello 3
+    TransformSettingsFoldOut: 1
     Position: {x: 0, y: 0, z: 0}
     ObjectSize: {x: 300, y: 100}
+    TextSettingsFoldOut: 1
     TextColor: {r: 1, g: 1, b: 1, a: 1}
     TextSize: 16
+    VisibilitySettingsFoldOut: 1
     AlwaysVisible: 0
     ImageSpecific: 2
     DisplayAtProgress: 0
-  - Text: Hello 4
+  - PropertyFoldout: 0
+    Text: Hello 4
+    TransformSettingsFoldOut: 1
     Position: {x: -200, y: 0, z: 0}
     ObjectSize: {x: 300, y: 100}
+    TextSettingsFoldOut: 1
     TextColor: {r: 1, g: 1, b: 1, a: 1}
     TextSize: 16
+    VisibilitySettingsFoldOut: 1
     AlwaysVisible: 0
     ImageSpecific: 0
     DisplayAtProgress: 0
-  - Text: Waiting for input...
+  - PropertyFoldout: 0
+    Text: Waiting for input...
+    TransformSettingsFoldOut: 1
     Position: {x: 400, y: 0, z: 0}
     ObjectSize: {x: 300, y: 100}
+    TextSettingsFoldOut: 1
     TextColor: {r: 1, g: 1, b: 1, a: 1}
     TextSize: 32
+    VisibilitySettingsFoldOut: 1
     AlwaysVisible: 1
     ImageSpecific: 0
     DisplayAtProgress: 0
   MinimumLoadTime: 0
+  LoadingBarImage: {fileID: 0}
+  LoadingBarPosition: {x: 0, y: -400, z: 0}
+  LoadingBarSize: {x: 1000, y: 50}
+  LoadingBarFillMethod: 2
+  LoadingBarFillOrigin: 1
+  PreserveAspectRatio: 0
+  EnableTextProgress: 0
+  TextProgressPosition: {x: 0, y: 0, z: 0}
+  TextProgressObjectSize: {x: 0, y: 0}
+  TextProgressSize: 16
+  TextProgressColor: {r: 0, g: 0, b: 0, a: 1}
   AutoAdjustToResolution: 1
   ScreenSize: {x: 1366, y: 768}
   ResolutionCheckDelay: 0.5
-  FadeIn:
-    _duration: 0.25
-    _color: {r: 0, g: 0, b: 0, a: 1}
-  FadeOut:
-    _duration: 0.25
-    _color: {r: 0, g: 0, b: 0, a: 1}
+  _loadingScreen: {fileID: 0}
