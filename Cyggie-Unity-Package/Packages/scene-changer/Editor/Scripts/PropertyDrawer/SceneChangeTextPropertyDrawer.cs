@@ -71,7 +71,6 @@ namespace Cyggie.SceneChanger.Editor.PropertyDrawers
             EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), property.FindPropertyRelative(nameof(SceneChangeText.Text)));
             position.y += 20;
 
-
             // Transform settings
             SerializedProperty transformSettingsFoldout = property.FindPropertyRelative(nameof(SceneChangeText.TransformSettingsFoldOut));
             transformSettingsFoldout.boolValue = EditorGUI.Foldout(new Rect(position.x, position.y, 200, 20), transformSettingsFoldout.boolValue, cTransformSettings, true);

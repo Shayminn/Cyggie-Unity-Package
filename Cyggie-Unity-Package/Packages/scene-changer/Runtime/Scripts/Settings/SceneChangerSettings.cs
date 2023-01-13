@@ -2,7 +2,6 @@ using UnityEngine;
 using Cyggie.SceneChanger.Runtime.Utils.Constants;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using static UnityEngine.UI.Image;
-using Cyggie.Main.Runtime.Utils.Helpers;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -46,37 +45,37 @@ namespace Cyggie.SceneChanger.Runtime.Settings
 
         #region Loading Bar fields
 
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Image for the loading bar.")]
         internal Texture2D LoadingBarImage = null;
 
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Position of the loading bar.")]
         internal Vector3 LoadingBarPosition = new Vector3(0, -400, 0);
 
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Width and Height of the loading bar.")]
         internal Vector2 LoadingBarSize = new Vector2(1000, 50);
 
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Fill method of the loading bar image.")]
         internal FillMethod LoadingBarFillMethod = FillMethod.Horizontal;
 
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Fill origin of the loading bar image.")]
         internal int LoadingBarFillOrigin = 0;
 
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Whether the loading bar image should preseve its aspect ratio.")]
         internal bool PreserveAspectRatio = false;
 
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Whether the text progress of the loading bar should be displayed.")]
         internal bool EnableTextProgress = false;
 
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Position of the text progress.")]
         internal Vector3 TextProgressPosition = Vector3.zero;
 
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Width and Height of the text progress.")]
         internal Vector2 TextProgressObjectSize = Vector2.zero;
 
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Font size of the text progress.")]
         internal float TextProgressSize = 16f;
 
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Color of the text progress.")]
         internal Color TextProgressColor = Color.black;
 
         #endregion

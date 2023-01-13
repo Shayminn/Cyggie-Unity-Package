@@ -20,14 +20,14 @@ MonoBehaviour:
   RandomizeImages: 1
   RandomType: 1
   Texts:
-  - PropertyFoldout: 0
+  - PropertyFoldout: 1
     Text: Loading...
     TransformSettingsFoldOut: 1
-    Position: {x: 400, y: -275, z: 0}
-    ObjectSize: {x: 500, y: 100}
+    Position: {x: 0, y: 0, z: 0}
+    ObjectSize: {x: 500, y: 150}
     TextSettingsFoldOut: 1
     TextColor: {r: 1, g: 1, b: 1, a: 1}
-    TextSize: 32
+    TextSize: 36
     VisibilitySettingsFoldOut: 1
     AlwaysVisible: 1
     ImageSpecific: 0
@@ -36,10 +36,10 @@ MonoBehaviour:
     Text: Hello 1
     TransformSettingsFoldOut: 1
     Position: {x: 0, y: 0, z: 0}
-    ObjectSize: {x: 300, y: 100}
+    ObjectSize: {x: 500, y: 150}
     TextSettingsFoldOut: 1
     TextColor: {r: 1, g: 1, b: 1, a: 1}
-    TextSize: 16
+    TextSize: 36
     VisibilitySettingsFoldOut: 1
     AlwaysVisible: 0
     ImageSpecific: 0
@@ -48,10 +48,10 @@ MonoBehaviour:
     Text: Hello 2
     TransformSettingsFoldOut: 1
     Position: {x: 0, y: 0, z: 0}
-    ObjectSize: {x: 300, y: 100}
+    ObjectSize: {x: 500, y: 150}
     TextSettingsFoldOut: 1
     TextColor: {r: 1, g: 1, b: 1, a: 1}
-    TextSize: 16
+    TextSize: 36
     VisibilitySettingsFoldOut: 1
     AlwaysVisible: 0
     ImageSpecific: 1
@@ -60,10 +60,10 @@ MonoBehaviour:
     Text: Hello 3
     TransformSettingsFoldOut: 1
     Position: {x: 0, y: 0, z: 0}
-    ObjectSize: {x: 300, y: 100}
+    ObjectSize: {x: 500, y: 150}
     TextSettingsFoldOut: 1
     TextColor: {r: 1, g: 1, b: 1, a: 1}
-    TextSize: 16
+    TextSize: 36
     VisibilitySettingsFoldOut: 1
     AlwaysVisible: 0
     ImageSpecific: 2
@@ -71,11 +71,11 @@ MonoBehaviour:
   - PropertyFoldout: 0
     Text: Hello 4
     TransformSettingsFoldOut: 1
-    Position: {x: -200, y: 0, z: 0}
-    ObjectSize: {x: 300, y: 100}
+    Position: {x: 0, y: 0, z: 0}
+    ObjectSize: {x: 500, y: 150}
     TextSettingsFoldOut: 1
     TextColor: {r: 1, g: 1, b: 1, a: 1}
-    TextSize: 16
+    TextSize: 36
     VisibilitySettingsFoldOut: 1
     AlwaysVisible: 0
     ImageSpecific: 0
@@ -83,11 +83,11 @@ MonoBehaviour:
   - PropertyFoldout: 0
     Text: Waiting for input...
     TransformSettingsFoldOut: 1
-    Position: {x: 400, y: 0, z: 0}
-    ObjectSize: {x: 300, y: 100}
+    Position: {x: 0, y: 0, z: 0}
+    ObjectSize: {x: 500, y: 150}
     TextSettingsFoldOut: 1
     TextColor: {r: 1, g: 1, b: 1, a: 1}
-    TextSize: 32
+    TextSize: 36
     VisibilitySettingsFoldOut: 1
     AlwaysVisible: 1
     ImageSpecific: 0
@@ -97,9 +97,9 @@ MonoBehaviour:
   LoadingBarPosition: {x: 0, y: -400, z: 0}
   LoadingBarSize: {x: 1000, y: 50}
   LoadingBarFillMethod: 2
-  LoadingBarFillOrigin: 1
-  PreserveAspectRatio: 0
-  EnableTextProgress: 0
+  LoadingBarFillOrigin: 2
+  PreserveAspectRatio: 1
+  EnableTextProgress: 1
   TextProgressPosition: {x: 0, y: 0, z: 0}
   TextProgressObjectSize: {x: 0, y: 0}
   TextProgressSize: 16

@@ -235,20 +235,23 @@ namespace Cyggie.SceneChanger.Runtime
                 _texts.Add(textObj);
             }
 
-            // Set up loading bar
+            // Set up loading bar image
             if (settings.LoadingBarImage != null)
             {
                 _loadingBarImage.sprite = settings.LoadingBarImage.ToSprite();
             }
 
+            // Set loading bar image transform values
             RectTransform loadingBarRectTransform = _loadingBarImage.GetComponent<RectTransform>();
             loadingBarRectTransform.anchoredPosition = settings.LoadingBarPosition;
             loadingBarRectTransform.sizeDelta = settings.LoadingBarSize;
 
+            // Set loading bar image values
             _loadingBarImage.fillMethod = settings.LoadingBarFillMethod;
             _loadingBarImage.fillOrigin = settings.LoadingBarFillOrigin;
             _loadingBarImage.preserveAspect = settings.PreserveAspectRatio;
 
+            // Set loading bar text progress if enabled
             if (settings.EnableTextProgress)
             {
                 RectTransform rectTransform = _loadingBarText.GetComponent<RectTransform>();
@@ -286,7 +289,7 @@ namespace Cyggie.SceneChanger.Runtime
         }
 
         /// <summary>
-        /// 
+        /// Get the loading screen image based on settings <see cref="_settings"/>>
         /// </summary>
         /// <returns></returns>
         private Texture2D GetImage()
@@ -294,8 +297,10 @@ namespace Cyggie.SceneChanger.Runtime
             // Checks if Settings has custom images
             if (_settings.HasImages)
             {
+                // Check if queue has something
                 if (_imageQueue == null || _imageQueue.Count == 0)
                 {
+                    // Check if images are randomized
                     if (_settings.RandomizeImages)
                     {
                         switch (_settings.RandomType)
