@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 namespace Cyggie.SceneChanger.Runtime
 {
     /// <summary>
-    /// Static class to call for Scene Changes from anywhere within the game
+    /// Static class to call for Scene Changes from any script during runtime
     /// </summary>
     public static class SceneChanger
     {
@@ -37,11 +37,13 @@ namespace Cyggie.SceneChanger.Runtime
         private static bool IsInitialized => _settings != null || _loadingScreen != null;
 
         /// <summary>
-        /// Static constructor to scene changer <br/>
-        /// Initialize loading screen
+        /// Initialize and create loading screen on load
         /// </summary>
-        static SceneChanger()
+        [RuntimeInitializeOnLoadMethod]
+        static void InitializeOnLoad()
         {
+            if (Application.isPlaying)
+
             // Get the settings at path
             _settings = Resources.Load<SceneChangerSettings>(SceneChangerConstants.cSettingsFile);
 
@@ -51,10 +53,21 @@ namespace Cyggie.SceneChanger.Runtime
                 return;
             }
 
+            // Create game object from prefab
             _loadingScreen = GameObject.Instantiate(_settings.LoadingScreen);
+
+            // Hide object
+            _loadingScreen.ToggleLoadingScreen(false, false);
+
+            // Initialize the settings in the loading screen
             _loadingScreen.SetSettings(_settings);
         }
 
+        /// <summary>
+        /// Change scene by its <paramref name="index"/> in the build settings
+        /// </summary>
+        /// <param name="index">Index of the scene</param>
+        /// <param name="changeSceneSettings">Change scene settings to apply</param>
         public static void ChangeScene(int index, ChangeSceneSettings changeSceneSettings = null)
         {
             if (!ProcessChecks()) return;
@@ -65,6 +78,11 @@ namespace Cyggie.SceneChanger.Runtime
             _loadingScreen.StartCoroutine(ChangeSceneAsync(asyncOperation, changeSceneSettings));
         }
 
+        /// <summary>
+        /// Change scene by its <paramref name="name"/>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="changeSceneSettings">Change scene settings to apply</param>
         public static void ChangeScene(string name, ChangeSceneSettings changeSceneSettings = null)
         {
             if (!ProcessChecks()) return;
@@ -75,6 +93,10 @@ namespace Cyggie.SceneChanger.Runtime
             _loadingScreen.StartCoroutine(ChangeSceneAsync(asyncOperation, changeSceneSettings));
         }
 
+        /// <summary>
+        /// Reload the current loaded scene
+        /// </summary>
+        /// <param name="changeSceneSettings">Change scene settings to apply</param>
         public static void ReloadScene(ChangeSceneSettings changeSceneSettings = null)
         {
             if (!ProcessChecks()) return;
@@ -85,23 +107,35 @@ namespace Cyggie.SceneChanger.Runtime
             _loadingScreen.StartCoroutine(ChangeSceneAsync(asyncOperation, changeSceneSettings));
         }
 
-        public static void Fade(float waitTime = 0f, ChangeSceneFade fadeIn = null, ChangeSceneFade fadeOut = null, Action onWait = null, Action onComplete = null)
+        /// <summary>
+        /// Apply a fade without changing scenes
+        /// </summary>
+        /// <param name="waitTime">Wait time between the fade in and the fade out</param>
+        /// <param name="fadeIn">Custom fade in settings (set to <see cref="ChangeSceneFade.Default"/> by default)</param>
+        /// <param name="fadeOut">Custom fade out settings (set to <see cref="ChangeSceneFade.Default"/> by default)</param>
+        /// <param name="onFadedIn">Action called when the Fade In is complete</param>
+        /// <param name="onFadedOut">Action called when the Fade Out is complete</param>
+        public static void Fade(float waitTime = 0f, ChangeSceneFade fadeIn = null, ChangeSceneFade fadeOut = null, Action onFadedIn = null, Action onFadedOut = null)
         {
-            if (fadeIn == null)
-            {
-                fadeIn = ChangeSceneFade.Default;
-            }    
+            if (!ProcessChecks()) return;
 
-            if (fadeOut == null)
-            {
-                fadeOut = ChangeSceneFade.Default;
-            }
+            fadeIn ??= ChangeSceneFade.Default;    
+            fadeOut ??= ChangeSceneFade.Default;
 
-            _loadingScreen.StartCoroutine(FadeInAndOut(waitTime, fadeIn, fadeOut, onWait, onComplete));
+            _loadingScreen.StartCoroutine(FadeInAndOut(waitTime, fadeIn, fadeOut, onFadedIn, onFadedOut));
         }
 
+        /// <summary>
+        /// Set the text by its <paramref name="index"/> during runtime
+        /// </summary>
+        /// <param name="index">Index of text</param>
+        /// <param name="text">Text to set</param>
         public static void SetText(int index, string text) => _loadingScreen.SetTextAtIndex(index, text);
 
+        /// <summary>
+        /// Process the necessary checks for changing scenes or applying a fade
+        /// </summary>
+        /// <returns></returns>
         private static bool ProcessChecks()
         {
             // Make sure Scene Changer is initialized
@@ -121,16 +155,20 @@ namespace Cyggie.SceneChanger.Runtime
             return true;
         }
 
+        /// <summary>
+        /// Coroutine to change scene asynchronously for <see cref="ChangeScene"/> and <see cref="ReloadScene"/>
+        /// </summary>
+        /// <param name="asyncOperation">Async operation to change scene</param>
+        /// <param name="changeSceneSettings">Change scene settings to apply</param>
         private static IEnumerator ChangeSceneAsync(AsyncOperation asyncOperation, ChangeSceneSettings changeSceneSettings = null)
         {
             _inProgress = true;
             OnSceneChangeStarted?.Invoke();
 
-            if (changeSceneSettings == null)
-            {
-                changeSceneSettings = ChangeSceneSettings.Default;
-            }
+            // Apply default settings if null
+            changeSceneSettings ??= ChangeSceneSettings.Default;
 
+            // Toggle text visibility by its index
             if (changeSceneSettings.HasTextIndexes)
             {
                 foreach (int i in changeSceneSettings.TextIndexes)
@@ -211,7 +249,15 @@ namespace Cyggie.SceneChanger.Runtime
             _inProgress = false;
         }
 
-        private static IEnumerator FadeInAndOut(float waitTime, ChangeSceneFade fadeIn, ChangeSceneFade fadeOut, Action onWait, Action onComplete)
+        /// <summary>
+        /// Coroutine to apply a fade for <see cref="Fade"/>
+        /// </summary>
+        /// <param name="waitTime">Wait time between the fade in and the fade out</param>
+        /// <param name="fadeIn">Custom fade in settings (set to <see cref="ChangeSceneFade.Default"/> by default)</param>
+        /// <param name="fadeOut">Custom fade out settings (set to <see cref="ChangeSceneFade.Default"/> by default)</param>
+        /// <param name="onFadedIn">Action called when the Fade In is complete</param>
+        /// <param name="onFadedOut">Action called when the Fade Out is complete</param>
+        private static IEnumerator FadeInAndOut(float waitTime, ChangeSceneFade fadeIn, ChangeSceneFade fadeOut, Action onFadedIn, Action onFadedOut)
         {
             // Wait for fade in
             bool fadeInCompleted = false;
@@ -220,7 +266,7 @@ namespace Cyggie.SceneChanger.Runtime
             while (!fadeInCompleted) yield return null;
 
             // Call wait action
-            onWait?.Invoke();
+            onFadedIn?.Invoke();
             yield return new WaitForSeconds(waitTime);
 
             // Wait for fade out
@@ -230,7 +276,7 @@ namespace Cyggie.SceneChanger.Runtime
             while (!fadeOutCompleted) yield return null;
 
             // Call complete action
-            onComplete?.Invoke();
+            onFadedOut?.Invoke();
         }
     }
 }

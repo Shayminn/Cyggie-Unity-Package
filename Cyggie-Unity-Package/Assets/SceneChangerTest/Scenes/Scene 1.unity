@@ -410,7 +410,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1199f98f7e292e14a87e7cfc749ac846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onStart: 0
   _sceneToChangeTo: Scene 2
 --- !u!4 &713799935
 Transform:

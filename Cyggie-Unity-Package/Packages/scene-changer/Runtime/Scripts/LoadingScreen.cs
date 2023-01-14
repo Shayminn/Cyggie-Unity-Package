@@ -33,10 +33,10 @@ namespace Cyggie.SceneChanger.Runtime
         private RectTransform _loadingScreenImageTransform = null;
 
         [Header("Loading Bar")]
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Image of the loading bar.")]
         private Image _loadingBarImage = null;
 
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("Text of the loading bar progress.")]
         private TextMeshProUGUI _loadingBarText = null;
 
         [Header("Texts")]
@@ -106,11 +106,6 @@ namespace Cyggie.SceneChanger.Runtime
                 onTransitionCompleted: onCompleted);
         }
 
-        internal void EnableLoadingBar()
-        {
-            _loadingBarImage.gameObject.SetActive(true);
-        }
-
         /// <summary>
         /// Toggle visibility of <see cref="_loadingScreenImage"/>
         /// </summary>
@@ -140,6 +135,11 @@ namespace Cyggie.SceneChanger.Runtime
             _textsParent.gameObject.SetActive(toggle);
         }
 
+        /// <summary>
+        /// Sets the progress of the loading bar <br/>
+        /// Display any text that has <see cref="SceneChangeText.DisplayAtProgress"/> if <paramref name="progress"/> has passed it
+        /// </summary>
+        /// <param name="progress">Current progress</param>
         internal void SetProgress(float progress)
         {
             // progress in base 100
@@ -168,15 +168,25 @@ namespace Cyggie.SceneChanger.Runtime
             }
         }
 
+        /// <summary>
+        /// Sets the text based on its index during runtime
+        /// </summary>
+        /// <param name="index">Index of text</param>
+        /// <param name="text">Text to set</param>
         internal void SetTextAtIndex(int index, string text)
         {
             _texts[index].text = text;
         }
 
+        /// <summary>
+        /// Toggle a text by its index during runtime
+        /// </summary>
+        /// <param name="index">Index of text</param>
         internal void ToggleTextIndex(int index)
         {
             _texts[index].gameObject.SetActive(true);
 
+            // Reset the text's visibility when the scene load has completed
             void ResetText()
             {
                 _texts[index].gameObject.SetActive(false);
@@ -185,6 +195,11 @@ namespace Cyggie.SceneChanger.Runtime
             SceneChanger.OnSceneChangeCompleted += ResetText;
         }
 
+        /// <summary>
+        /// Sets the settings saved from project settings loaded by <see cref="SceneChanger"/> <br/>
+        /// Initialize the values for the Loading screen
+        /// </summary>
+        /// <param name="settings"></param>
         internal void SetSettings(SceneChangerSettings settings)
         {
             _settings = settings;
@@ -240,6 +255,8 @@ namespace Cyggie.SceneChanger.Runtime
             {
                 _loadingBarImage.sprite = settings.LoadingBarImage.ToSprite();
             }
+
+            _loadingBarImage.color = settings.LoadingBarImageColor;
 
             // Set loading bar image transform values
             RectTransform loadingBarRectTransform = _loadingBarImage.GetComponent<RectTransform>();

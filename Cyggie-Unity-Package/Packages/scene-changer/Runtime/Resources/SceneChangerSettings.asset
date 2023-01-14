@@ -12,10 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe5abfe685921743804ef5203e2eddb, type: 3}
   m_Name: SceneChangerSettings
   m_EditorClassIdentifier: 
-  Images:
-  - {fileID: 2800000, guid: 0b2b9c23e8271f0439a582c136714135, type: 3}
-  - {fileID: 2800000, guid: edfcf8fa9d698ff4ea96d8454bedc3f2, type: 3}
-  - {fileID: 2800000, guid: 3238cbbbe97d0224d919d909e67f31ba, type: 3}
+  Images: []
   ScaleImageToResolution: 1
   RandomizeImages: 1
   RandomType: 1
@@ -32,76 +29,17 @@ MonoBehaviour:
     AlwaysVisible: 1
     ImageSpecific: 0
     DisplayAtProgress: 0
-  - PropertyFoldout: 0
-    Text: Hello 1
-    TransformSettingsFoldOut: 1
-    Position: {x: 0, y: 0, z: 0}
-    ObjectSize: {x: 500, y: 150}
-    TextSettingsFoldOut: 1
-    TextColor: {r: 1, g: 1, b: 1, a: 1}
-    TextSize: 36
-    VisibilitySettingsFoldOut: 1
-    AlwaysVisible: 0
-    ImageSpecific: 0
-    DisplayAtProgress: 0
-  - PropertyFoldout: 0
-    Text: Hello 2
-    TransformSettingsFoldOut: 1
-    Position: {x: 0, y: 0, z: 0}
-    ObjectSize: {x: 500, y: 150}
-    TextSettingsFoldOut: 1
-    TextColor: {r: 1, g: 1, b: 1, a: 1}
-    TextSize: 36
-    VisibilitySettingsFoldOut: 1
-    AlwaysVisible: 0
-    ImageSpecific: 1
-    DisplayAtProgress: 0
-  - PropertyFoldout: 0
-    Text: Hello 3
-    TransformSettingsFoldOut: 1
-    Position: {x: 0, y: 0, z: 0}
-    ObjectSize: {x: 500, y: 150}
-    TextSettingsFoldOut: 1
-    TextColor: {r: 1, g: 1, b: 1, a: 1}
-    TextSize: 36
-    VisibilitySettingsFoldOut: 1
-    AlwaysVisible: 0
-    ImageSpecific: 2
-    DisplayAtProgress: 0
-  - PropertyFoldout: 0
-    Text: Hello 4
-    TransformSettingsFoldOut: 1
-    Position: {x: 0, y: 0, z: 0}
-    ObjectSize: {x: 500, y: 150}
-    TextSettingsFoldOut: 1
-    TextColor: {r: 1, g: 1, b: 1, a: 1}
-    TextSize: 36
-    VisibilitySettingsFoldOut: 1
-    AlwaysVisible: 0
-    ImageSpecific: 0
-    DisplayAtProgress: 0
-  - PropertyFoldout: 0
-    Text: Waiting for input...
-    TransformSettingsFoldOut: 1
-    Position: {x: 0, y: 0, z: 0}
-    ObjectSize: {x: 500, y: 150}
-    TextSettingsFoldOut: 1
-    TextColor: {r: 1, g: 1, b: 1, a: 1}
-    TextSize: 36
-    VisibilitySettingsFoldOut: 1
-    AlwaysVisible: 1
-    ImageSpecific: 0
-    DisplayAtProgress: 0
   MinimumLoadTime: 0
   LoadingBarImage: {fileID: 0}
-  LoadingBarPosition: {x: 0, y: -400, z: 0}
+  LoadingBarImageColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  LoadingBarPosition: {x: 0, y: -300, z: 0}
   LoadingBarSize: {x: 1000, y: 50}
   LoadingBarFillMethod: 2
   LoadingBarFillOrigin: 2
-  PreserveAspectRatio: 1
+  PreserveAspectRatio: 0
   EnableTextProgress: 1
   TextProgressPosition: {x: 0, y: 0, z: 0}
-  TextProgressObjectSize: {x: 0, y: 0}
+  TextProgressObjectSize: {x: 200, y: 50}
   TextProgressSize: 16
   TextProgressColor: {r: 0, g: 0, b: 0, a: 1}
   AutoAdjustToResolution: 1

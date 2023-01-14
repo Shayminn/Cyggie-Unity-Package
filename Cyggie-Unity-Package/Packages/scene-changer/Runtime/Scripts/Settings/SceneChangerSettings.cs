@@ -48,6 +48,9 @@ namespace Cyggie.SceneChanger.Runtime.Settings
         [SerializeField, Tooltip("Image for the loading bar.")]
         internal Texture2D LoadingBarImage = null;
 
+        [SerializeField, Tooltip("Color of the image for the loading bar.")]
+        internal Color LoadingBarImageColor = Color.gray;
+
         [SerializeField, Tooltip("Position of the loading bar.")]
         internal Vector3 LoadingBarPosition = new Vector3(0, -400, 0);
 
@@ -70,7 +73,7 @@ namespace Cyggie.SceneChanger.Runtime.Settings
         internal Vector3 TextProgressPosition = Vector3.zero;
 
         [SerializeField, Tooltip("Width and Height of the text progress.")]
-        internal Vector2 TextProgressObjectSize = Vector2.zero;
+        internal Vector2 TextProgressObjectSize = new Vector2(200, 50);
 
         [SerializeField, Tooltip("Font size of the text progress.")]
         internal float TextProgressSize = 16f;

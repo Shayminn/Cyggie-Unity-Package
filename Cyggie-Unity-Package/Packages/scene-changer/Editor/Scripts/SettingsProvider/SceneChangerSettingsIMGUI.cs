@@ -85,6 +85,7 @@ namespace Cyggie.SceneChanger.Editor.SettingsProviders
 
             EditorGUILayout.LabelField(cLoadingBarLabel, EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.LoadingBarImage)));
+            EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.LoadingBarImageColor)));
             EditorGUILayout.Space(5);
 
             EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.LoadingBarPosition)));
