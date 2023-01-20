@@ -99,9 +99,8 @@ namespace Cyggie.SceneChanger.Runtime.Settings
         /// <summary>
         /// Loading Screen prefab object
         /// </summary>
-        [SerializeField, HideInInspector]
-        private LoadingScreen _loadingScreen = null;
-        internal LoadingScreen LoadingScreen => _loadingScreen.AssignIfNull(GetLoadingScreen());
+        [SerializeField, Tooltip("")]
+        internal LoadingScreen LoadingScreenPrefab = null;
 
         internal bool HasImages => Images != null && Images.Length > 0;
 
@@ -126,6 +125,8 @@ namespace Cyggie.SceneChanger.Runtime.Settings
                 Debug.Log($"Couldn't find default settings file, creating a new one...");
 
                 settings = CreateInstance<SceneChangerSettings>();
+                settings.LoadingScreenPrefab = AssetDatabase.LoadAssetAtPath<LoadingScreen>(SceneChangerPaths.cLoadingScreen);
+
                 AssetDatabase.CreateAsset(settings, SceneChangerPaths.cSettings);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
@@ -134,23 +135,6 @@ namespace Cyggie.SceneChanger.Runtime.Settings
             }
 
             return settings;
-        }
-
-        /// <summary>
-        /// Get the loading screen prefab from the absolute path <see cref="SceneChangerPaths.cLoadingScreen"/>
-        /// </summary>
-        /// <returns></returns>
-        public static LoadingScreen GetLoadingScreen()
-        {
-            LoadingScreen loadingScreen = AssetDatabase.LoadAssetAtPath<LoadingScreen>(SceneChangerPaths.cLoadingScreen);
-
-            if (loadingScreen == null)
-            {
-                // Loading screen prefab not found
-                Debug.Log($"Loading screen prefab was not found, try reimporting the package.");
-            }
-
-            return loadingScreen;
         }
 
         /// <summary>

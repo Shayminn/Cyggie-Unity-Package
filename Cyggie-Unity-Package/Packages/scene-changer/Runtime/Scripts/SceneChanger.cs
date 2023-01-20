@@ -54,7 +54,7 @@ namespace Cyggie.SceneChanger.Runtime
             }
 
             // Create game object from prefab
-            _loadingScreen = GameObject.Instantiate(_settings.LoadingScreen);
+            _loadingScreen = GameObject.Instantiate(_settings.LoadingScreenPrefab);
 
             // Hide object
             _loadingScreen.ToggleLoadingScreen(false, false);

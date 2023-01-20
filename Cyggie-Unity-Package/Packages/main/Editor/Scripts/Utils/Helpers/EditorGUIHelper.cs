@@ -36,5 +36,50 @@ namespace Cyggie.Main.Editor.Utils.Helpers
                 gui.Invoke();
             }
         }
+
+        /// <summary>
+        /// Draw Editor GUI with a different <paramref name="color"/> <br/>
+        /// The GUI's color will be back to default after drawing <paramref name="gui"/>
+        /// </summary>
+        /// <param name="color">Target color</param>
+        /// <param name="gui">GUI to draw</param>
+        public static void DrawWithColor(Color color, Action gui)
+        {
+            Color temp = GUI.color;
+
+            GUI.color = color;
+            gui.Invoke();
+            GUI.color = temp;
+        }
+
+        /// <summary>
+        /// Draw Editor GUI with a different background <paramref name="color"/> <br/>
+        /// The GUI's background color will be back to default after drawing <paramref name="gui"/>
+        /// </summary>
+        /// <param name="color">Target color</param>
+        /// <param name="gui">GUI to draw</param>
+        public static void DrawWithBackgroundColor(Color color, Action gui)
+        {
+            Color temp = GUI.color;
+
+            GUI.backgroundColor = color;
+            gui.Invoke();
+            GUI.backgroundColor = temp;
+        }
+
+        /// <summary>
+        /// Draw Editor GUI with a different content <paramref name="color"/> <br/>
+        /// The GUI's content color will be back to default after drawing <paramref name="gui"/>
+        /// </summary>
+        /// <param name="color">Target color</param>
+        /// <param name="gui">GUI to draw</param>
+        public static void DrawWithTintColor(Color color, Action gui)
+        {
+            Color temp = GUI.color;
+
+            GUI.contentColor = color;
+            gui.Invoke();
+            GUI.contentColor = temp;
+        }
     }
 }

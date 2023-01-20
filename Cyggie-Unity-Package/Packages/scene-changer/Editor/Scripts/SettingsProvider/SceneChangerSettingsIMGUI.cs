@@ -3,7 +3,6 @@ using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.SceneChanger.Runtime;
 using Cyggie.SceneChanger.Runtime.Settings;
 using UnityEditor;
-using UnityEngine;
 using static UnityEngine.UI.Image;
 
 namespace Cyggie.SceneChanger.Editor.SettingsProviders
@@ -52,9 +51,15 @@ namespace Cyggie.SceneChanger.Editor.SettingsProviders
         {
             SerializedObject serializedSettings = SceneChangerSettings.SerializedSettings;
             SceneChangerSettings settings = serializedSettings.targetObject as SceneChangerSettings;
-            LoadingScreen loadingScreen = settings.LoadingScreen;
+            LoadingScreen loadingScreen = settings.LoadingScreenPrefab;
 
             serializedSettings.Update();
+
+            EditorGUIHelper.DrawAsReadOnly(gui: () =>
+            {
+                EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.LoadingScreenPrefab)));
+                EditorGUILayout.Space(10);
+            });
 
             // Loading Screen Settings
             EditorGUILayout.LabelField(cLoadingScreenLabel, EditorStyles.boldLabel);

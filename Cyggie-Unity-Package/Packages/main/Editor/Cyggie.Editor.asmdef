@@ -1,7 +1,9 @@
 {
     "name": "Cyggie.Editor",
     "rootNamespace": "Cyggie.Main.Editor",
-    "references": [],
+    "references": [
+        "GUID:26cad73ee07989f449c8b98b2838b82f"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [
         "Android",
