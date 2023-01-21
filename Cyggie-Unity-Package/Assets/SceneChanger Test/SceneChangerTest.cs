@@ -1,12 +1,11 @@
 using Cyggie.SceneChanger.Runtime;
 using Cyggie.SceneChanger.Runtime.Settings;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 public class SceneChangerTest : MonoBehaviour
 {
-    [SerializeField, Tooltip("")]
+    [SerializeField, Tooltip("Target scene to change to.")]
     private string _sceneToChangeTo = "";
 
     private SceneChangerControls _controls;

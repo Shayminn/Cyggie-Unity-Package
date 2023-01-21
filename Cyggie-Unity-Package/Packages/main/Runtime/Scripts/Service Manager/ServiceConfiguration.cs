@@ -1,18 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cyggie.Main.Runtime.Services
 {
+    /// <summary>
+    /// Configuration class to apply to a <see cref="Service"/>
+    /// </summary>
     [Serializable]
     public abstract class ServiceConfiguration : ScriptableObject
     {
+        /// <summary>
+        /// Type that implements <see cref="Service"/>
+        /// </summary>
         public abstract Type ServiceType { get; }
 
 #if UNITY_EDITOR
+        
+        /// <summary>
+        /// Validate that ServiceType is part of <see cref="Service"/>
+        /// </summary>
         private void OnValidate()
         {
             if (ServiceType != null)
