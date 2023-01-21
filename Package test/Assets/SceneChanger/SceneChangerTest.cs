@@ -1,3 +1,4 @@
+using Cyggie.Main.Runtime.Services;
 using Cyggie.SceneChanger.Runtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ public class SceneChangerTest : MonoBehaviour
     {
         if (_onStart)
         {
-            SceneChanger.ChangeScene(1);
+            ServiceManager.Get<SceneChangerService>().ChangeScene(1);
         }
     }
 
@@ -22,7 +23,7 @@ public class SceneChangerTest : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
-            SceneChanger.ChangeScene(1);
+            ServiceManager.Get<SceneChangerService>().ChangeScene(1);
         }
     }
 }
