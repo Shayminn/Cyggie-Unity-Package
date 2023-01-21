@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Cyggie.SceneChanger.Runtime
+namespace Cyggie.SceneChanger.Runtime.Services
 {
     /// <summary>
     /// Static class to call for Scene Changes from any script during runtime

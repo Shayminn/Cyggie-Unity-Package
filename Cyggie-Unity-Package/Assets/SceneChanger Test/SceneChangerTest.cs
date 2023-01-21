@@ -1,8 +1,7 @@
 using Cyggie.Main.Runtime.Services;
-using Cyggie.SceneChanger.Runtime;
+using Cyggie.SceneChanger.Runtime.Services;
 using Cyggie.SceneChanger.Runtime.Settings;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using static UnityEngine.InputSystem.InputAction;
 
 public class SceneChangerTest : MonoBehaviour

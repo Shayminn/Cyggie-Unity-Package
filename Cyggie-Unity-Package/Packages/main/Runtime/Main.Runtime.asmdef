@@ -1,5 +1,5 @@
 {
-    "name": "Cyggie.Runtime",
+    "name": "Cyggie.Main.Runtime",
     "rootNamespace": "Cyggie.Main.Runtime",
     "references": [],
     "includePlatforms": [],
