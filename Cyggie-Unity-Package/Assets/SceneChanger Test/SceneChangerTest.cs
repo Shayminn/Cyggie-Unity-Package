@@ -1,6 +1,8 @@
+using Cyggie.Main.Runtime.Services;
 using Cyggie.SceneChanger.Runtime;
 using Cyggie.SceneChanger.Runtime.Settings;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UnityEngine.InputSystem.InputAction;
 
 public class SceneChangerTest : MonoBehaviour
@@ -9,6 +11,9 @@ public class SceneChangerTest : MonoBehaviour
     private string _sceneToChangeTo = "";
 
     private SceneChangerControls _controls;
+
+    private SceneChangerService _sceneChangerService = null;
+    private SceneChangerService SceneChangerService => _sceneChangerService ??= ServiceManager.Get<SceneChangerService>();
 
     // Start is called before the first frame update
     private void Awake()
@@ -30,11 +35,11 @@ public class SceneChangerTest : MonoBehaviour
 
     private void OnChangeScenePerformed(CallbackContext ctx)
     {
-        SceneChanger.ChangeScene(_sceneToChangeTo, ChangeSceneSettings.EnableAllWithKeyboardInput);
+        SceneChangerService.ChangeScene(_sceneToChangeTo, ChangeSceneSettings.EnableAllWithKeyboardInput);
     }
 
     private void OnFadePerformed(CallbackContext ctx)
     {
-        SceneChanger.Fade(1);
+        SceneChangerService.Fade(1);
     }
 }

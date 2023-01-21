@@ -8,7 +8,7 @@ using static UnityEngine.InputSystem.InputAction;
 namespace Cyggie.SceneChanger.Runtime.Settings
 {
     /// <summary>
-    /// Model class to handle input bindings for <see cref="SceneChanger.ChangeScene"/> blocking the scene change until the desired input is performed
+    /// Model class to handle input bindings for <see cref="SceneChangerService.ChangeScene"/> blocking the scene change until the desired input is performed
     /// </summary>
     public class ChangeSceneInputSettings
     {

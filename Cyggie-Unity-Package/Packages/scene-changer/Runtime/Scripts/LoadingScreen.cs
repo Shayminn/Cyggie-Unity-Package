@@ -1,3 +1,4 @@
+using Cyggie.Main.Runtime.Services;
 using Cyggie.Main.Runtime.Utils.Enums;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.Main.Runtime.Utils.Helpers;
@@ -53,6 +54,9 @@ namespace Cyggie.SceneChanger.Runtime
         private Texture2D[] _images = null;
         private Queue<Texture2D> _imageQueue = null; // Queue is only used if it's RandomType.RoundRobin or not randomized
         private int _previousRandomIndex = -1; // Used with RandomType.ResetAfterEachNoPreviousRepeat
+
+        private SceneChangerService _sceneChangerService = null;
+        private SceneChangerService SceneChangerService => _sceneChangerService ??= ServiceManager.Get<SceneChangerService>();
 
         /// <summary>
         /// MonoBehaviour awake called on start up
@@ -190,13 +194,13 @@ namespace Cyggie.SceneChanger.Runtime
             void ResetText()
             {
                 _texts[index].gameObject.SetActive(false);
-                SceneChanger.OnSceneChangeCompleted -= ResetText;
+                SceneChangerService.OnSceneChangeCompleted -= ResetText;
             }
-            SceneChanger.OnSceneChangeCompleted += ResetText;
+            SceneChangerService.OnSceneChangeCompleted += ResetText;
         }
 
         /// <summary>
-        /// Sets the settings saved from project settings loaded by <see cref="SceneChanger"/> <br/>
+        /// Sets the settings saved from project settings loaded by <see cref="SceneChangerService"/> <br/>
         /// Initialize the values for the Loading screen
         /// </summary>
         /// <param name="settings"></param>

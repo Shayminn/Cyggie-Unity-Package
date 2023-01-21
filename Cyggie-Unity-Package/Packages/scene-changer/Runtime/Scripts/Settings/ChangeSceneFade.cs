@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Cyggie.SceneChanger.Runtime.Settings
 {
     /// <summary>
-    /// Settings related to Fade on <see cref="SceneChanger.ChangeScene"/>
+    /// Settings related to Fade on <see cref="SceneChangerService.ChangeScene"/>
     /// </summary>
     [Serializable]
     public class ChangeSceneFade

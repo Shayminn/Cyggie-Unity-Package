@@ -49,6 +49,8 @@ namespace Cyggie.Main.Editor.Services
                 // Create the SettingsProvider and initialize its drawing (IMGUI) function in place:
                 guiHandler = OnSettingsGUI,
 
+                inspectorUpdateHandler = () => { },
+
                 // Populate the search keywords to enable smart search filtering and label highlighting:
                 keywords = ServiceManagerSettings.GetKeywords()
             };

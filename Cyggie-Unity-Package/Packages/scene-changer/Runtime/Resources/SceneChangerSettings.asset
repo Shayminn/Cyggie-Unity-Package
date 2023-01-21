@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe5abfe685921743804ef5203e2eddb, type: 3}
   m_Name: SceneChangerSettings
   m_EditorClassIdentifier: 
+  LoadingScreenPrefab: {fileID: 8898258735689808770, guid: 09a417026055a4e42bdf664939c5f3ef, type: 3}
   Images: []
   ScaleImageToResolution: 1
   RandomizeImages: 1
@@ -45,4 +46,3 @@ MonoBehaviour:
   AutoAdjustToResolution: 1
   ScreenSize: {x: 1366, y: 768}
   ResolutionCheckDelay: 0.5
-  _loadingScreen: {fileID: 0}

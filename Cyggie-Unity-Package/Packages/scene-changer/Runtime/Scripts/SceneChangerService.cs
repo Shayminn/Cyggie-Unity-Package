@@ -1,3 +1,4 @@
+using Cyggie.Main.Runtime.Services;
 using Cyggie.SceneChanger.Runtime.Settings;
 using Cyggie.SceneChanger.Runtime.Utils.Constants;
 using System;
@@ -10,40 +11,37 @@ namespace Cyggie.SceneChanger.Runtime
     /// <summary>
     /// Static class to call for Scene Changes from any script during runtime
     /// </summary>
-    public static class SceneChanger
+    public class SceneChangerService : Service
     {
         /// <summary>
         /// Called when a Scene Change has started
         /// </summary>
-        public static Action OnSceneChangeStarted = null;
+        public Action OnSceneChangeStarted = null;
 
         /// <summary>
         /// Called when a Scene Change has completed
         /// </summary>
-        public static Action OnSceneChangeCompleted = null;
+        public Action OnSceneChangeCompleted = null;
 
         /// <summary>
         /// Settings object
         /// </summary>
-        private static SceneChangerSettings _settings = null;
+        private SceneChangerSettings _settings = null;
 
         /// <summary>
         /// Loading screen hierarchy object created from _settings.LoadingScreen (prefab)
         /// </summary>
-        private static LoadingScreen _loadingScreen = null;
+        private LoadingScreen _loadingScreen = null;
 
-        private static bool _inProgress = false;
+        private bool _inProgress = false;
 
-        private static bool IsInitialized => _settings != null || _loadingScreen != null;
+        private bool IsInitialized => _settings != null || _loadingScreen != null;
 
         /// <summary>
         /// Initialize and create loading screen on load
         /// </summary>
-        [RuntimeInitializeOnLoadMethod]
-        static void InitializeOnLoad()
+        public override void Awake()
         {
-            if (Application.isPlaying)
-
             // Get the settings at path
             _settings = Resources.Load<SceneChangerSettings>(SceneChangerConstants.cSettingsFile);
 
@@ -68,7 +66,7 @@ namespace Cyggie.SceneChanger.Runtime
         /// </summary>
         /// <param name="index">Index of the scene</param>
         /// <param name="changeSceneSettings">Change scene settings to apply</param>
-        public static void ChangeScene(int index, ChangeSceneSettings changeSceneSettings = null)
+        public void ChangeScene(int index, ChangeSceneSettings changeSceneSettings = null)
         {
             if (!ProcessChecks()) return;
 
@@ -83,7 +81,7 @@ namespace Cyggie.SceneChanger.Runtime
         /// </summary>
         /// <param name="name"></param>
         /// <param name="changeSceneSettings">Change scene settings to apply</param>
-        public static void ChangeScene(string name, ChangeSceneSettings changeSceneSettings = null)
+        public void ChangeScene(string name, ChangeSceneSettings changeSceneSettings = null)
         {
             if (!ProcessChecks()) return;
 
@@ -97,7 +95,7 @@ namespace Cyggie.SceneChanger.Runtime
         /// Reload the current loaded scene
         /// </summary>
         /// <param name="changeSceneSettings">Change scene settings to apply</param>
-        public static void ReloadScene(ChangeSceneSettings changeSceneSettings = null)
+        public void ReloadScene(ChangeSceneSettings changeSceneSettings = null)
         {
             if (!ProcessChecks()) return;
 
@@ -115,7 +113,7 @@ namespace Cyggie.SceneChanger.Runtime
         /// <param name="fadeOut">Custom fade out settings (set to <see cref="ChangeSceneFade.Default"/> by default)</param>
         /// <param name="onFadedIn">Action called when the Fade In is complete</param>
         /// <param name="onFadedOut">Action called when the Fade Out is complete</param>
-        public static void Fade(float waitTime = 0f, ChangeSceneFade fadeIn = null, ChangeSceneFade fadeOut = null, Action onFadedIn = null, Action onFadedOut = null)
+        public void Fade(float waitTime = 0f, ChangeSceneFade fadeIn = null, ChangeSceneFade fadeOut = null, Action onFadedIn = null, Action onFadedOut = null)
         {
             if (!ProcessChecks()) return;
 
@@ -130,13 +128,13 @@ namespace Cyggie.SceneChanger.Runtime
         /// </summary>
         /// <param name="index">Index of text</param>
         /// <param name="text">Text to set</param>
-        public static void SetText(int index, string text) => _loadingScreen.SetTextAtIndex(index, text);
+        public void SetText(int index, string text) => _loadingScreen.SetTextAtIndex(index, text);
 
         /// <summary>
         /// Process the necessary checks for changing scenes or applying a fade
         /// </summary>
         /// <returns></returns>
-        private static bool ProcessChecks()
+        private bool ProcessChecks()
         {
             // Make sure Scene Changer is initialized
             if (!IsInitialized)
@@ -160,7 +158,7 @@ namespace Cyggie.SceneChanger.Runtime
         /// </summary>
         /// <param name="asyncOperation">Async operation to change scene</param>
         /// <param name="changeSceneSettings">Change scene settings to apply</param>
-        private static IEnumerator ChangeSceneAsync(AsyncOperation asyncOperation, ChangeSceneSettings changeSceneSettings = null)
+        private IEnumerator ChangeSceneAsync(AsyncOperation asyncOperation, ChangeSceneSettings changeSceneSettings = null)
         {
             _inProgress = true;
             OnSceneChangeStarted?.Invoke();
@@ -257,7 +255,7 @@ namespace Cyggie.SceneChanger.Runtime
         /// <param name="fadeOut">Custom fade out settings (set to <see cref="ChangeSceneFade.Default"/> by default)</param>
         /// <param name="onFadedIn">Action called when the Fade In is complete</param>
         /// <param name="onFadedOut">Action called when the Fade Out is complete</param>
-        private static IEnumerator FadeInAndOut(float waitTime, ChangeSceneFade fadeIn, ChangeSceneFade fadeOut, Action onFadedIn, Action onFadedOut)
+        private IEnumerator FadeInAndOut(float waitTime, ChangeSceneFade fadeIn, ChangeSceneFade fadeOut, Action onFadedIn, Action onFadedOut)
         {
             // Wait for fade in
             bool fadeInCompleted = false;

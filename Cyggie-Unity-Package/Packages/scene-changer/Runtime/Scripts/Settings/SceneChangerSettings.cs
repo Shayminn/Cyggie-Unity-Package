@@ -10,13 +10,19 @@ using UnityEditor;
 namespace Cyggie.SceneChanger.Runtime.Settings
 {
     /// <summary>
-    /// Scriptable object to hold settings for <see cref="SceneChanger"/> <br/>
+    /// Scriptable object to hold settings for <see cref="SceneChangerService"/> <br/>
     /// This is managed in Project Settings/Cyggie/SceneChanger
     /// </summary>
     internal class SceneChangerSettings : ScriptableObject
     {
         private const string cSettingsFileName = "SceneChangerSettings.asset";
         private const string cSettingsScriptFileName = "SceneChangerSettingsIMGUI.cs";
+
+        /// <summary>
+        /// Loading Screen prefab object
+        /// </summary>
+        [SerializeField, Tooltip("Prefab for the loading screen object.")]
+        internal LoadingScreen LoadingScreenPrefab = null;
 
         #region Loading Screen fields
 
@@ -95,12 +101,6 @@ namespace Cyggie.SceneChanger.Runtime.Settings
         internal float ResolutionCheckDelay = 0.5f;
 
         #endregion
-
-        /// <summary>
-        /// Loading Screen prefab object
-        /// </summary>
-        [SerializeField, Tooltip("")]
-        internal LoadingScreen LoadingScreenPrefab = null;
 
         internal bool HasImages => Images != null && Images.Length > 0;
 

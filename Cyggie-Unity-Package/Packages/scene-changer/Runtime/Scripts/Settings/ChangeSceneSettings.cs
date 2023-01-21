@@ -1,7 +1,7 @@
 namespace Cyggie.SceneChanger.Runtime.Settings
 {
     /// <summary>
-    /// Model class used for <see cref="SceneChanger.ChangeScene"/> to enable/disable related features
+    /// Model class used for <see cref="SceneChangerService.ChangeScene"/> to enable/disable related features
     /// </summary>
     public class ChangeSceneSettings
     {
