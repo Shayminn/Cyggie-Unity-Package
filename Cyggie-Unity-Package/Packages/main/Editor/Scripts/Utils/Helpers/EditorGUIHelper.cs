@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Cyggie.Main.Editor.Utils.Helpers
@@ -35,6 +36,60 @@ namespace Cyggie.Main.Editor.Utils.Helpers
             {
                 gui.Invoke();
             }
+        }
+
+        /// <summary>
+        /// Draw EditorGUI as read only if <paramref name="condition"/> resolves to true, else it will draw it as modifiable.
+        /// </summary>
+        /// <param name="condition">Condition in order to draw GUI as read only</param>
+        /// <param name="gui">GUI to draw</param>
+        public static void DrawAsReadOnly(bool condition, Action<bool> gui)
+        {
+            if (condition)
+            {
+                GUI.enabled = false;
+                gui.Invoke(true);
+                GUI.enabled = true;
+            }
+            else
+            {
+                gui.Invoke(false);
+            }
+        }
+
+        /// <summary>
+        /// Draw EditorGUI as horizontal
+        /// </summary>
+        /// <param name="gui">GUI to draw</param>
+        public static void DrawHorizontal(Action gui)
+        {
+            EditorGUILayout.BeginHorizontal();
+            gui?.Invoke();
+            EditorGUILayout.EndHorizontal();
+        }
+
+        /// <summary>
+        /// Draw EditorGUI as vertical
+        /// </summary>
+        /// <param name="gui">GUI to draw</param>
+        public static void DrawVertical(Action gui)
+        {
+            EditorGUILayout.BeginVertical();
+            gui?.Invoke();
+            EditorGUILayout.EndVertical();
+        }
+
+        /// <summary>
+        /// Check for change in GUI
+        /// </summary>
+        /// <param name="gui">GUI to draw</param>
+        /// <returns>Any changes?</returns>
+        public static bool CheckChange(Action gui)
+        {
+            EditorGUI.BeginChangeCheck();
+            gui?.Invoke();
+
+            return EditorGUI.EndChangeCheck();
         }
 
         /// <summary>
@@ -80,6 +135,20 @@ namespace Cyggie.Main.Editor.Utils.Helpers
             GUI.contentColor = color;
             gui.Invoke();
             GUI.contentColor = temp;
+        }
+
+        /// <summary>
+        /// Draw Editor GUI within a scroll view
+        /// </summary>
+        /// <param name="scrollPosition">Current scroll position</param>
+        /// <param name="gui">GUI to drawa</param>
+        /// <param name="alwaysShowHorizontal">Whether the scroll view's horizontal bar is always visible</param>
+        /// <param name="alwaysShowVertical">Whether the scroll view's vertical bar is always visible</param>
+        public static void DrawWithScrollview(ref Vector2 scrollPosition, Action gui, bool alwaysShowHorizontal = false, bool alwaysShowVertical = false)
+        {
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, alwaysShowHorizontal, alwaysShowVertical);
+            gui.Invoke();
+            EditorGUILayout.EndScrollView();
         }
     }
 }

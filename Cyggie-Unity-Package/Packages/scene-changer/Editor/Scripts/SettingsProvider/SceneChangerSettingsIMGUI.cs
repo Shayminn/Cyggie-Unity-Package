@@ -53,10 +53,9 @@ namespace Cyggie.SceneChanger.Editor.SettingsProviders
             SceneChangerSettings settings = serializedSettings.targetObject as SceneChangerSettings;
             LoadingScreen loadingScreen = settings.LoadingScreenPrefab;
 
-            serializedSettings.Update();
-
             EditorGUIHelper.DrawAsReadOnly(gui: () =>
             {
+                EditorGUILayout.Space(5);
                 EditorGUILayout.PropertyField(serializedSettings.FindProperty(nameof(SceneChangerSettings.LoadingScreenPrefab)));
                 EditorGUILayout.Space(10);
             });

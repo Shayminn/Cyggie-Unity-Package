@@ -15,6 +15,7 @@ namespace Cyggie.Main.Runtime.Services
     internal class ServiceManagerSettings : ScriptableObject
     {
         private static readonly string cSettingsAssetPath = "Packages/cyggie.main/Runtime/Resources/ServiceManagerSettings.asset";
+        private static readonly string cPrefabPath = "Packages/cyggie.main/Runtime/Prefabs/Service Manager.prefab";
 
         // Error strings
         private static readonly string cDuplicateConfiguration = $"Multiple of the same configuration has been assigned to {nameof(ServiceConfigurations)}";
@@ -54,8 +55,8 @@ namespace Cyggie.Main.Runtime.Services
                 Debug.Log($"Couldn't find default settings file, creating a new one...");
 
                 settings = CreateInstance<ServiceManagerSettings>();
-                settings.Prefab = AssetDatabase.LoadAssetAtPath<ServiceManager>("Packages/cyggie.main/Runtime/Prefabs/Service Manager.prefab");
-                AssetDatabase.CreateAsset(settings, "Packages/cyggie.main/Runtime/Resources/ServiceManagerSettings.asset");
+                settings.Prefab = AssetDatabase.LoadAssetAtPath<ServiceManager>(cPrefabPath);
+                AssetDatabase.CreateAsset(settings, cSettingsAssetPath);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
 

@@ -1,7 +1,10 @@
 {
     "name": "Cyggie.LanguageManager.Editor",
     "rootNamespace": "Cyggie.LanguageManager.Editor",
-    "references": [],
+    "references": [
+        "GUID:e589b28c6ea56f44fb968baf23a7d969",
+        "GUID:7c58664968369614a95d68118c10379c"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [
         "Android",

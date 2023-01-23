@@ -9,9 +9,9 @@ using UnityEngine.SceneManagement;
 namespace Cyggie.SceneChanger.Runtime.Services
 {
     /// <summary>
-    /// Static class to call for Scene Changes from any script during runtime
+    /// Service class for managing Scene Changes
     /// </summary>
-    public class SceneChangerService : Service
+    public sealed class SceneChangerService : Service
     {
         /// <summary>
         /// Called when a Scene Change has started
@@ -42,6 +42,8 @@ namespace Cyggie.SceneChanger.Runtime.Services
         /// </summary>
         public override void Awake()
         {
+            base.Awake();
+
             // Get the settings at path
             _settings = Resources.Load<SceneChangerSettings>(SceneChangerConstants.cSettingsFile);
 

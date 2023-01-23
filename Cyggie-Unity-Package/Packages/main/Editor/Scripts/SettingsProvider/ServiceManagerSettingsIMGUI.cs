@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Cyggie.Main.Editor.Services
+namespace Cyggie.Main.Editor.SettingsProviders
 {
     /// <summary>
     /// IMGUI to <see cref="SceneChangerSettings"/>
@@ -30,7 +30,7 @@ namespace Cyggie.Main.Editor.Services
         private static List<Type> _configTypes = null;
 
         /// <summary>
-        /// Create a settings provider at Project Settings/Cyggie/SceneChanger
+        /// Create a settings provider at Project Settings/Cyggie/ServiceManager
         /// </summary>
         /// <returns></returns>
         [SettingsProvider]
@@ -48,8 +48,6 @@ namespace Cyggie.Main.Editor.Services
 
                 // Create the SettingsProvider and initialize its drawing (IMGUI) function in place:
                 guiHandler = OnSettingsGUI,
-
-                inspectorUpdateHandler = () => { },
 
                 // Populate the search keywords to enable smart search filtering and label highlighting:
                 keywords = ServiceManagerSettings.GetKeywords()
@@ -154,10 +152,5 @@ namespace Cyggie.Main.Editor.Services
 
             serializedSettings.ApplyModifiedProperties();
         }
-
-        //private static void OnInspectorGUI()
-        //{
-
-        //}
     }
 }
