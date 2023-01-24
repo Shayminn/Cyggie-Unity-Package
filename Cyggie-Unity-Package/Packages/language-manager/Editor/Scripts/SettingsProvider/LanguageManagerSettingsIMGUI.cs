@@ -1,4 +1,4 @@
-using Cyggie.LanguageManager.Runtime.Services;
+using Cyggie.LanguageManager.Runtime.Serializations;
 using Cyggie.LanguageManager.Runtime.Settings;
 using Cyggie.Main.Editor.Utils.Helpers;
 using System;
@@ -15,18 +15,49 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
     /// </summary>
     static class LanguageManagerSettingsIMGUI
     {
+        #region Constants
+
         // Settings strings
         private static readonly string cSettingsPath = "Cyggie/LanguageManager";
         private static readonly string cSettingsLabel = "Language Manager";
 
+        // Header labels
+        private static readonly string cEditorLabel = "Editor";
+        private static readonly string cLanguagePackLabel = "Language Pack";
+
+        // Button labels
+        private static readonly string cCreateButtonLabel = "Create";
+        private static readonly string cUpdateButtonLabel = "Update";
+        private static readonly string cDefaultButtonLabel = "Default";
+        private static readonly string cDeleteButtonLabel = "Delete";
+        private static readonly string cDeselectButtonLabel = "Deselect";
+
+        // Text fields labels
+        private static readonly string cDebugLogsLabel = "Debug Logs";
+        private static readonly string cDataPathLabel = "Data Path:";
+        private static readonly string cSelectedPackLabel = "Selected Pack:";
+        private static readonly string cDefaultPackLabel = "Default Pack:";
+        private static readonly string cLanguageCodeLabel = "Language Code:";
+        private static readonly string cKeyLabel = "Key:";
+        private static readonly string cValueLabel = "Value:";
+        private static readonly string cSearchLabel = "Search:";
+
+        private static readonly string cDefaultLanguagePack = "No existing language pack. Create a new one.";
+        private static readonly string cEmptyTranslations = "No translations has been created yet.";
+
+        #endregion
+
         private static LanguageManagerSettings _settings = null;
 
+        // Language pack fields
         private static int _selectedLanguageIndex = 0;
         private static string _selectedLanguageString = "";
 
+        // Translation fields
         private static Vector2 _scrollviewPos = Vector2.zero;
         private static int _selectedTranslationIndex = -1;
-        private static LanguageEntry _editTranslationEntry = new LanguageEntry();
+        private static string _editTranslationKey = "";
+        private static string _editTranslationValue = "";
         private static string _searchTranslation = "";
 
         private static bool _databaseRefresh = false;
@@ -65,11 +96,6 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
             _settings = LanguageManagerSettings.Settings;
             _settings.LoadFiles();
 
-            if (string.IsNullOrEmpty(_settings.DefaultLanguagePack.LanguageCode))
-            {
-                _settings.DefaultLanguagePack = null;
-            }
-
             if (_settings.LanguagePacks.Count > 0)
             {
                 if (_databaseRefresh)
@@ -91,18 +117,18 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
             EditorGUILayout.Space(5);
 
             // Editor fields
-            EditorGUILayout.LabelField("Editor", EditorStyles.boldLabel);
-            _settings.DebugLogs = EditorGUILayout.Toggle("Debug Logs", _settings.DebugLogs);
+            EditorGUILayout.LabelField(cEditorLabel, EditorStyles.boldLabel);
+            _settings.DebugLogs = EditorGUILayout.Toggle(cDebugLogsLabel, _settings.DebugLogs);
 
             string oldDataPath = _settings.DataPath;
-            if (EditorGUIHelper.CheckChange(() => _settings.DataPath = EditorGUILayout.DelayedTextField("Data Path:", _settings.DataPath)))
+            if (EditorGUIHelper.CheckChange(() => _settings.DataPath = EditorGUILayout.DelayedTextField(cDataPathLabel, _settings.DataPath)))
             {
                 _settings.MoveDataPath(oldDataPath);
             }
             EditorGUILayout.Space(10);
 
             // Language pack fields
-            EditorGUILayout.LabelField("Language Pack", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField(cLanguagePackLabel, EditorStyles.boldLabel);
             EditorGUILayout.Space(5);
 
             LanguagePack selectedPack = null;
@@ -111,7 +137,7 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
             EditorGUIHelper.DrawAsReadOnly(_settings.LanguagePacks.Count == 0, gui: (bool isEmpty) =>
             {
                 string[] options = isEmpty ?
-                                   new string[1] { "No existing language pack. Create a new one." } :
+                                   new string[1] { cDefaultLanguagePack } :
                                    _settings.LanguagePacks.Select(x => x.LanguageCode).ToArray();
 
                 if (!isEmpty)
@@ -120,29 +146,28 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
                 }
 
                 // Draw and check for change in Selected Language pack popup
-                if (EditorGUIHelper.CheckChange(gui: () => _selectedLanguageIndex = EditorGUILayout.Popup("Selected Pack:", _selectedLanguageIndex, options)))
+                if (EditorGUIHelper.CheckChange(gui: () => _selectedLanguageIndex = EditorGUILayout.Popup(cSelectedPackLabel, _selectedLanguageIndex, options)))
                 {
                     // Update text field
                     selectedPack = _settings.LanguagePacks[_selectedLanguageIndex];
                     _selectedLanguageString = selectedPack.LanguageCode;
 
                     _selectedTranslationIndex = -1;
-                    _editTranslationEntry = new LanguageEntry();
+                    _editTranslationKey = "";
+                    _editTranslationValue = "";
                 }
             });
 
             EditorGUIHelper.DrawAsReadOnly(gui: () =>
             {
-                Debug.Log("Help: " + _settings.DefaultLanguagePack);
-                EditorGUILayout.TextField("Default Pack:", _settings.DefaultLanguagePack.LanguageCode);
+                EditorGUILayout.TextField(cDefaultPackLabel, _settings.DefaultLanguagePack != null ? _settings.DefaultLanguagePack.LanguageCode : "");
                 EditorGUILayout.Space(5);
             });
 
             // Draw input fields for language code
             EditorGUIHelper.DrawHorizontal(gui: () =>
             {
-                //EditorGUILayout.LabelField("Language Code:", GUILayout.Width(120));
-                _selectedLanguageString = EditorGUILayout.TextField("Language Code:", _selectedLanguageString);
+                _selectedLanguageString = EditorGUILayout.TextField(cLanguageCodeLabel, _selectedLanguageString);
             });
             EditorGUILayout.Space(5);
 
@@ -154,22 +179,23 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
                     // Draw readonly if language code already exists
                     EditorGUIHelper.DrawAsReadOnly(_settings.LanguagePacks.Any(x => x.LanguageCode == _selectedLanguageString), gui: () =>
                     {
-                        if (GUILayout.Button("Create", GUILayout.Width(100)))
+                        if (GUILayout.Button(cCreateButtonLabel, GUILayout.Width(100)))
                         {
                             _databaseRefresh = true;
 
-                            LanguagePack newPack = new LanguagePack(_selectedLanguageString);
+                            LanguagePack newPack = new LanguagePack()
+                            {
+                                LanguageCode = _selectedLanguageString
+                            };
                             _settings.LanguagePacks.Add(newPack);
 
-                            _selectedLanguageIndex = _settings.LanguagePacks.IndexOf(newPack);
-                            _settings.SaveFile(_selectedLanguageIndex);
+                            _settings.SaveFile(_settings.LanguagePacks.Count - 1);
 
-                            Debug.Log("Hello 2: " + _settings.DefaultLanguagePack);
-                            if (_settings.DefaultLanguagePack == null)
-                            {
-                                _settings.DefaultLanguagePack = newPack;
-                                Debug.Log("Hello: " + _settings.DefaultLanguagePack.LanguageCode);
-                            }
+                            // Get the new pack reference due to it being shuffled from order by
+                            newPack = _settings.LanguagePacks.FirstOrDefault(x => x.LanguageCode == _selectedLanguageString);
+                            _selectedLanguageIndex = _settings.LanguagePacks.IndexOf(newPack);
+
+                            _settings.DefaultLanguagePack ??= newPack;
                         }
                     });
 
@@ -178,7 +204,7 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
                         // Draw readonly if language code already exists
                         EditorGUIHelper.DrawAsReadOnly(_settings.LanguagePacks.Any(x => x.LanguageCode == _selectedLanguageString), gui: () =>
                         {
-                            if (GUILayout.Button("Update", GUILayout.Width(100)))
+                            if (GUILayout.Button(cUpdateButtonLabel, GUILayout.Width(100)))
                             {
                                 _databaseRefresh = true;
 
@@ -190,12 +216,21 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
                                 _selectedLanguageIndex = _settings.LanguagePacks.IndexOf(selectedPack);
                             }
                         });
+
+                        EditorGUIHelper.DrawAsReadOnly(selectedPack.LanguageCode == _settings.DefaultLanguagePack.LanguageCode, gui: () =>
+                        {
+                            if (GUILayout.Button(cDefaultButtonLabel, GUILayout.Width(100)))
+                            {
+                                // Update the file
+                                _settings.DefaultLanguagePack = selectedPack;
+                            }
+                        });
                     }
                 });
 
                 if (selectedPack != null)
                 {
-                    if (GUILayout.Button("Delete", GUILayout.Width(120)))
+                    if (GUILayout.Button(cDeleteButtonLabel, GUILayout.Width(120)))
                     {
                         _databaseRefresh = true;
                         if (_settings.DeleteFile(_selectedLanguageIndex))
@@ -223,67 +258,83 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
             EditorGUILayout.LabelField("Translations" + (selectedPack == null ? "" : $" ({selectedPack.Count})"), EditorStyles.boldLabel);
             EditorGUILayout.Space(5);
 
-            EditorGUIHelper.DrawAsReadOnly(false, gui: () =>
+            // Draw input values
+            EditorGUIHelper.DrawAsReadOnly(_selectedTranslationIndex != -1, gui: () =>
             {
-                EditorGUIHelper.DrawAsReadOnly(_selectedTranslationIndex != -1, gui: () =>
-                {
-                    _editTranslationEntry.Key = EditorGUILayout.TextField("Key:", _editTranslationEntry.Key);
-                });
-                _editTranslationEntry.Value = EditorGUILayout.TextField("Value:", _editTranslationEntry.Value);
-                EditorGUILayout.Space(5);
-
-                EditorGUIHelper.DrawHorizontal(gui: () =>
-                {
-                    EditorGUIHelper.DrawAsReadOnly(string.IsNullOrEmpty(_editTranslationEntry.Key) || selectedPack.ContainsKey(_editTranslationEntry.Key), gui: () =>
-                    {
-                        if (GUILayout.Button("Create", GUILayout.Width(100)))
-                        {
-                            selectedPack.Add(_editTranslationEntry);
-                            _editTranslationEntry = new LanguageEntry();
-                            GUI.FocusControl(null);
-
-                            _settings.SaveFile(_selectedLanguageIndex);
-                        }
-                    });
-
-                    EditorGUIHelper.DrawAsReadOnly(_selectedTranslationIndex == -1, gui: () =>
-                    {
-                        if (GUILayout.Button("Delete", GUILayout.Width(100)))
-                        {
-                            selectedPack.Delete(_editTranslationEntry);
-
-                            if (selectedPack.Any)
-                            {
-                                _selectedTranslationIndex = Math.Max(--_selectedTranslationIndex, 0);
-                                _editTranslationEntry = selectedPack.Translations[_selectedTranslationIndex];
-                            }
-                            else
-                            {
-                                _selectedTranslationIndex = -1;
-                                _editTranslationEntry = new LanguageEntry();
-                                GUI.FocusControl(null);
-                            }
-
-                            _settings.SaveFile(_selectedLanguageIndex);
-                        }
-
-                        if (GUILayout.Button("Deselect", GUILayout.Width(100)))
-                        {
-                            _selectedTranslationIndex = -1;
-                            _editTranslationEntry = new LanguageEntry();
-                        }
-                    });
-                });
-                EditorGUILayout.Space(10);
+                _editTranslationKey = EditorGUILayout.TextField(cKeyLabel, _editTranslationKey);
             });
+
+            // Draw text field for creating new key-value pair
+            if (_selectedTranslationIndex == -1)
+            {
+                _editTranslationValue = EditorGUILayout.TextField(cValueLabel, _editTranslationValue);
+            }
+            // Draw delayed text field for updating existing key-value pair
+            else
+            {
+                if (EditorGUIHelper.CheckChange(() => _editTranslationValue = EditorGUILayout.DelayedTextField(cValueLabel, _editTranslationValue)))
+                {
+                    selectedPack.Translations[_editTranslationKey] = _editTranslationValue;
+
+                    _settings.SaveFile(_selectedLanguageIndex);
+                }
+            }
+            EditorGUILayout.Space(5);
+
+            // Draw translation control buttons
+            EditorGUIHelper.DrawHorizontal(gui: () =>
+            {
+                EditorGUIHelper.DrawAsReadOnly(string.IsNullOrEmpty(_editTranslationKey) || selectedPack.ContainsKey(_editTranslationKey), gui: () =>
+                {
+                    if (GUILayout.Button(cCreateButtonLabel, GUILayout.Width(100)))
+                    {
+                        // Unfocus input control
+                        GUI.FocusControl(null);
+
+                        selectedPack.Add(_editTranslationKey, _editTranslationValue);
+
+                        // Reset input values
+                        _editTranslationKey = "";
+                        _editTranslationValue = "";
+
+                        _settings.SaveFile(_selectedLanguageIndex);
+                    }
+                });
+
+                EditorGUIHelper.DrawAsReadOnly(_selectedTranslationIndex == -1, gui: () =>
+                {
+                    if (GUILayout.Button(cDeselectButtonLabel, GUILayout.Width(100)))
+                    {
+                        // Reset input values
+                        _selectedTranslationIndex = -1;
+                        _editTranslationKey = "";
+                        _editTranslationValue = "";
+                        GUI.FocusControl(null);
+                    }
+
+                    if (GUILayout.Button(cDeleteButtonLabel, GUILayout.Width(100)))
+                    {
+                        selectedPack.Delete(_editTranslationKey);
+
+                        // Reset input values
+                        _selectedTranslationIndex = -1;
+                        _editTranslationKey = "";
+                        _editTranslationValue = "";
+                        GUI.FocusControl(null);
+
+                        _settings.SaveFile(_selectedLanguageIndex);
+                    }
+                });
+            });
+            EditorGUILayout.Space(10);
 
             if (_selectedTranslationIndex == -1)
             {
-                if (!string.IsNullOrEmpty(_editTranslationEntry.Key))
+                if (!string.IsNullOrEmpty(_editTranslationKey))
                 {
-                    if (selectedPack.ContainsKey(_editTranslationEntry.Key))
+                    if (selectedPack.ContainsKey(_editTranslationKey))
                     {
-                        EditorGUILayout.HelpBox($"Language Pack already contains key: {_editTranslationEntry.Key}, value: {_editTranslationEntry.Value}", MessageType.Error);
+                        EditorGUILayout.HelpBox($"Language Pack already contains key: {_editTranslationKey}, value: {_editTranslationValue}", MessageType.Error);
                         EditorGUILayout.Space(10);
                     }
                 }
@@ -291,17 +342,19 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
 
             if (selectedPack == null || !selectedPack.Any)
             {
-                EditorGUILayout.LabelField("No translations has been created yet.");
+                EditorGUILayout.LabelField(cEmptyTranslations);
             }
             else
             {
-                _searchTranslation = EditorGUILayout.TextField("Search:", _searchTranslation);
+                _searchTranslation = EditorGUILayout.TextField(cSearchLabel, _searchTranslation);
                 EditorGUIHelper.DrawWithScrollview(ref _scrollviewPos, gui: () =>
                 {
-                    List<LanguageEntry> entries = selectedPack.GetTranslations(_searchTranslation);
+                    Dictionary<string, string> entries = selectedPack.GetTranslations(_searchTranslation);
                     if (EditorGUIHelper.CheckChange(gui: () => _selectedTranslationIndex = GUILayout.SelectionGrid(_selectedTranslationIndex, entries.Select(x => $"{x.Key}: {x.Value}").ToArray(), 1)))
                     {
-                        _editTranslationEntry = entries[_selectedTranslationIndex];
+                        string key = entries.Keys.ToList()[_selectedTranslationIndex];
+                        _editTranslationKey = key;
+                        _editTranslationValue = entries[key];
                         GUI.FocusControl(null);
                     }
                 });

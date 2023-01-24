@@ -1,10 +1,9 @@
 using Cyggie.LanguageManager.Runtime.Settings;
+using Cyggie.LanguageManager.Runtime.Utils;
 using Cyggie.Main.Runtime.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using UnityEngine;
 
 namespace Cyggie.LanguageManager.Runtime.Services
@@ -21,7 +20,7 @@ namespace Cyggie.LanguageManager.Runtime.Services
             base.Awake();
 
             // Get the settings at path
-            //_settings = Resources.Load<LanguageManagerSettings>();
+            _settings = Resources.Load<LanguageManagerSettings>(LanguageManagerConstants.cSettingsFile);
 
             if (_settings == null)
             {
@@ -51,66 +50,25 @@ namespace Cyggie.LanguageManager.Runtime.Services
         //    return _languagePacks.FirstOrDefault(x => x.LanguageCode == langCode).GetTranslation(key);
         //}
 
+        public IEnumerable<string> GetLanguageCodes()
+        {
+            // Return collection of all existing language codes
+            return null;
+        }
+
         #endregion
-    }
-
-    [Serializable]
-    internal class LanguagePack
-    {
-        [JsonProperty]
-        internal string LanguageCode = "";
-
-        [JsonProperty]
-        internal List<LanguageEntry> Translations = new List<LanguageEntry>();
-
-        internal bool Any => Count > 0;
-
-        internal int Count => Translations.Count;
-
-        [JsonConstructor]
-        internal LanguagePack(string languageCode, List<LanguageEntry> translations = null)
-        {
-            LanguageCode = languageCode;
-
-            if (translations != null)
-            {
-                Translations = translations;
-            }
-        }
-
-        internal void Add(LanguageEntry entry)
-        {
-            Translations.Add(entry);
-            Translations = Translations.OrderBy(x => x.Key).ToList();
-        }
-
-        internal bool ContainsKey(string key)
-        {
-            return Translations.Any(x => x.Key == key);
-        }
-
-        internal void Delete(LanguageEntry entry)
-        {
-            Translations.RemoveAll(x => x.Key == entry.Key);
-        }
-
-        internal List<LanguageEntry> GetTranslations(string containsStr)
-        {
-            return Translations.Where(x => x.Key.Contains(containsStr) || x.Value.Contains(containsStr)).ToList();
-        }
-
-        internal string GetTranslation(string key)
-        {
-            return Translations.FirstOrDefault(x => x.Key == key).Value;
-        }
     }
 
     [Serializable]
     internal class LanguageEntry
     {
+        [JsonProperty]
         internal string Key { get; set; } = "";
+
+        [JsonProperty]
         internal string Value { get; set; } = "";
 
+        [JsonConstructor]
         internal LanguageEntry(string key = "", string value = "")
         {
             Key = key;

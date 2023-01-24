@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cyggie.SceneChanger.Runtime.Utils.Constants
-{ 
+﻿namespace Cyggie.SceneChanger.Runtime.Utils
+{
     internal struct SceneChangerConstants
     {
         public const string cSettingsFile = "SceneChangerSettings";

@@ -1,6 +1,6 @@
 using Cyggie.Main.Runtime.Services;
 using Cyggie.SceneChanger.Runtime.Settings;
-using Cyggie.SceneChanger.Runtime.Utils.Constants;
+using Cyggie.SceneChanger.Runtime.Utils;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -119,7 +119,7 @@ namespace Cyggie.SceneChanger.Runtime.Services
         {
             if (!ProcessChecks()) return;
 
-            fadeIn ??= ChangeSceneFade.Default;    
+            fadeIn ??= ChangeSceneFade.Default;
             fadeOut ??= ChangeSceneFade.Default;
 
             _loadingScreen.StartCoroutine(FadeInAndOut(waitTime, fadeIn, fadeOut, onFadedIn, onFadedOut));

@@ -1,4 +1,6 @@
+using Cyggie.LanguageManager.Runtime.Serializations;
 using Cyggie.LanguageManager.Runtime.Services;
+using Cyggie.LanguageManager.Runtime.Utils;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Newtonsoft.Json;
 using System;
@@ -15,8 +17,6 @@ namespace Cyggie.LanguageManager.Runtime.Settings
     /// </summary>
     public class LanguageManagerSettings : ScriptableObject
     {
-        private static readonly string cSettingsAssetPath = "Packages/cyggie.language-manager/Runtime/Resources/LanguageManagerSettings.asset";
-
         [SerializeField, Tooltip("List of language packs, each having a language code and its associated translations.")]
         internal List<LanguagePack> LanguagePacks = new List<LanguagePack>();
 
@@ -24,6 +24,8 @@ namespace Cyggie.LanguageManager.Runtime.Settings
         internal LanguagePack DefaultLanguagePack = null;
 
 #if UNITY_EDITOR
+
+        private static readonly string cSettingsAssetPath = "Packages/cyggie.language-manager/Runtime/Resources/" + LanguageManagerConstants.cSettingsFileWithExtension;
 
         [SerializeField, Tooltip("Whether some debug logs should be displayed (Editor only).")]
         internal bool DebugLogs = true;
@@ -51,7 +53,10 @@ namespace Cyggie.LanguageManager.Runtime.Settings
                 Debug.Log($"Couldn't find default settings file, creating a new one...");
 
                 settings = CreateInstance<LanguageManagerSettings>();
+
                 AssetDatabase.CreateAsset(settings, cSettingsAssetPath);
+                settings.DefaultLanguagePack = null; // for some reason, CreateAsset is assigning DefaultLanguagePack to default values
+
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
 
@@ -136,12 +141,35 @@ namespace Cyggie.LanguageManager.Runtime.Settings
                 LanguagePacks.Clear();
 
                 IEnumerable<string> files = Directory.EnumerateFiles(DataPath, "*.json");
-                foreach (string file in files)
+                foreach (string filePath in files)
                 {
-                    string content = File.ReadAllText(file);
-                    LanguagePack languagePack = JsonConvert.DeserializeObject<LanguagePack>(content);
+                    string fileName = Path.GetFileNameWithoutExtension(filePath);
+                    string content = File.ReadAllText(filePath);
+                    Dictionary<string, string> translations = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
+
+                    LanguagePack languagePack = new LanguagePack()
+                    {
+                        LanguageCode = fileName,
+                        Translations = translations
+                    };
 
                     LanguagePacks.Add(languagePack);
+                }
+
+                // Check if default language pack is missing
+                if (DefaultLanguagePack == null)
+                {
+                    // Assign first found
+                    DefaultLanguagePack = LanguagePacks.FirstOrDefault();
+                }
+                else
+                {
+                    // Check if language pack still exists
+                    if (!LanguagePacks.Any(x => x.LanguageCode == DefaultLanguagePack.LanguageCode))
+                    {
+                        // Assign first found
+                        DefaultLanguagePack = LanguagePacks.FirstOrDefault();
+                    }
                 }
             }
             catch (Exception ex)
@@ -167,7 +195,7 @@ namespace Cyggie.LanguageManager.Runtime.Settings
                 // Create directory to path if it doesn't exist
                 FileInfo file = new FileInfo(path);
                 file.Directory.Create();
-                File.WriteAllText(file.FullName, JsonConvert.SerializeObject(languagePack));
+                File.WriteAllText(file.FullName, JsonConvert.SerializeObject(languagePack.Translations, Formatting.Indented));
 
                 if (DebugLogs)
                 {
@@ -206,6 +234,12 @@ namespace Cyggie.LanguageManager.Runtime.Settings
 
             try
             {
+                // Update the default language pack if it's the same
+                if (languagePack.LanguageCode == DefaultLanguagePack.LanguageCode)
+                {
+                    DefaultLanguagePack = languagePack;
+                }
+
                 languagePack.LanguageCode = newLanguageCode; // Update language code
 
                 // Delete old path
@@ -214,7 +248,7 @@ namespace Cyggie.LanguageManager.Runtime.Settings
                 // Write to new path
                 FileInfo file = new FileInfo(path);
                 file.Directory.Create();
-                File.WriteAllText(file.FullName, JsonConvert.SerializeObject(languagePack));
+                File.WriteAllText(file.FullName, JsonConvert.SerializeObject(languagePack.Translations, Formatting.Indented));
 
                 if (DebugLogs)
                 {
@@ -257,6 +291,12 @@ namespace Cyggie.LanguageManager.Runtime.Settings
                 if (DebugLogs)
                 {
                     Debug.Log($"Deleting file at: \"{path}\". Lang code: {languagePack.LanguageCode}, Count: {languagePack.Count}");
+                }
+
+                // Reassign the default language pack
+                if (languagePack.LanguageCode == DefaultLanguagePack.LanguageCode)
+                {
+                    DefaultLanguagePack = LanguagePacks.FirstOrDefault();
                 }
 
                 // Order language packs by language code
