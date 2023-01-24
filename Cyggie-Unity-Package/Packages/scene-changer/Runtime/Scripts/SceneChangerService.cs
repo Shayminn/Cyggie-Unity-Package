@@ -49,7 +49,7 @@ namespace Cyggie.SceneChanger.Runtime.Services
 
             if (_settings == null)
             {
-                Debug.LogError($"Failed to load settings in Resources folder.");
+                Debug.LogError($"Failed to load Scene Changer Settings in Resources folder.");
                 return;
             }
 

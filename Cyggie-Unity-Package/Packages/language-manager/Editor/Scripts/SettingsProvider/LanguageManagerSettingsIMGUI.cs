@@ -65,6 +65,11 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
             _settings = LanguageManagerSettings.Settings;
             _settings.LoadFiles();
 
+            if (string.IsNullOrEmpty(_settings.DefaultLanguagePack.LanguageCode))
+            {
+                _settings.DefaultLanguagePack = null;
+            }
+
             if (_settings.LanguagePacks.Count > 0)
             {
                 if (_databaseRefresh)
@@ -124,7 +129,12 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
                     _selectedTranslationIndex = -1;
                     _editTranslationEntry = new LanguageEntry();
                 }
+            });
 
+            EditorGUIHelper.DrawAsReadOnly(gui: () =>
+            {
+                Debug.Log("Help: " + _settings.DefaultLanguagePack);
+                EditorGUILayout.TextField("Default Pack:", _settings.DefaultLanguagePack.LanguageCode);
                 EditorGUILayout.Space(5);
             });
 
@@ -153,6 +163,13 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
 
                             _selectedLanguageIndex = _settings.LanguagePacks.IndexOf(newPack);
                             _settings.SaveFile(_selectedLanguageIndex);
+
+                            Debug.Log("Hello 2: " + _settings.DefaultLanguagePack);
+                            if (_settings.DefaultLanguagePack == null)
+                            {
+                                _settings.DefaultLanguagePack = newPack;
+                                Debug.Log("Hello: " + _settings.DefaultLanguagePack.LanguageCode);
+                            }
                         }
                     });
 

@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LanguagePacks: []
   DebugLogs: 1
-  DataPath: Assets/Resources/\\?LanguageManager/
+  DataPath: Assets/Resources/LanguageManager/

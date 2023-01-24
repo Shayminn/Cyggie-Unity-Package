@@ -1,3 +1,4 @@
+using Cyggie.LanguageManager.Runtime.Settings;
 using Cyggie.Main.Runtime.Services;
 using Newtonsoft.Json;
 using System;
@@ -13,14 +14,29 @@ namespace Cyggie.LanguageManager.Runtime.Services
     /// </summary>
     public sealed class LanguageService : Service
     {
-        private LanguagePack _selectedPack = null;
+        private LanguageManagerSettings _settings = null;
 
         public override void Awake()
         {
             base.Awake();
 
-            // TODO
-            // Retrieve selectedPack
+            // Get the settings at path
+            //_settings = Resources.Load<LanguageManagerSettings>();
+
+            if (_settings == null)
+            {
+                Debug.LogError($"Failed to load Language Manager Settings in Resources folder.");
+                return;
+            }
+
+            //// Create game object from prefab
+            //_loadingScreen = GameObject.Instantiate(_settings.LoadingScreenPrefab);
+
+            //// Hide object
+            //_loadingScreen.ToggleLoadingScreen(false, false);
+
+            //// Initialize the settings in the loading screen
+            //_loadingScreen.SetSettings(_settings);
         }
 
         #region Public methods

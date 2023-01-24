@@ -20,7 +20,7 @@ namespace Cyggie.LanguageManager.Runtime.Settings
         [SerializeField, Tooltip("List of language packs, each having a language code and its associated translations.")]
         internal List<LanguagePack> LanguagePacks = new List<LanguagePack>();
 
-        [SerializeField, Tooltip("The default language pack that should be used by default.")]
+        [SerializeField, Tooltip("The language pack that should be used by default.")]
         internal LanguagePack DefaultLanguagePack = null;
 
 #if UNITY_EDITOR
@@ -29,7 +29,7 @@ namespace Cyggie.LanguageManager.Runtime.Settings
         internal bool DebugLogs = true;
 
         [SerializeField, Tooltip("The folder path for language pack json files (Editor only).")]
-        internal string DataPath = "Assets/Resources/\\?LanguageManager/";
+        internal string DataPath = "Assets/Resources/LanguageManager/";
 
         internal static SerializedObject SerializedSettings => new SerializedObject(Settings);
 
@@ -67,9 +67,9 @@ namespace Cyggie.LanguageManager.Runtime.Settings
         /// <returns></returns>
         internal static string[] GetKeywords() => new string[]
         {
-        nameof(DebugLogs),
-        nameof(DataPath),
-        nameof(LanguagePacks)
+            nameof(DebugLogs),
+            nameof(DataPath),
+            nameof(LanguagePacks)
         };
 
         /// <summary>
