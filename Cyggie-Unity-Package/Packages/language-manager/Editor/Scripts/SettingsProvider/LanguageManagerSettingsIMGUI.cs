@@ -18,35 +18,36 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
         #region Constants
 
         // Settings strings
-        private static readonly string cSettingsPath = "Cyggie/LanguageManager";
-        private static readonly string cSettingsLabel = "Language Manager";
+        private const string cSettingsPath = "Cyggie/LanguageManager";
+        private const string cSettingsLabel = "Language Manager";
 
         // Header labels
-        private static readonly string cEditorLabel = "Editor";
-        private static readonly string cLanguagePackLabel = "Language Pack";
+        private const string cEditorLabel = "Editor";
+        private const string cLanguagePackLabel = "Language Pack";
 
         // Button labels
-        private static readonly string cCreateButtonLabel = "Create";
-        private static readonly string cUpdateButtonLabel = "Update";
-        private static readonly string cDefaultButtonLabel = "Default";
-        private static readonly string cDeleteButtonLabel = "Delete";
-        private static readonly string cDeselectButtonLabel = "Deselect";
+        private const string cCreateButtonLabel = "Create";
+        private const string cUpdateButtonLabel = "Update";
+        private const string cDefaultButtonLabel = "Default";
+        private const string cDeleteButtonLabel = "Delete";
+        private const string cDeselectButtonLabel = "Deselect";
 
         // Text fields labels
-        private static readonly string cDebugLogsLabel = "Debug Logs";
-        private static readonly string cDataPathLabel = "Data Path:";
-        private static readonly string cSelectedPackLabel = "Selected Pack:";
-        private static readonly string cDefaultPackLabel = "Default Pack:";
-        private static readonly string cLanguageCodeLabel = "Language Code:";
-        private static readonly string cKeyLabel = "Key:";
-        private static readonly string cValueLabel = "Value:";
-        private static readonly string cSearchLabel = "Search:";
+        private const string cDebugLogsLabel = "Debug Logs";
+        private const string cDataPathLabel = "Data Path:";
+        private const string cSelectedPackLabel = "Selected Pack:";
+        private const string cDefaultPackLabel = "Default Pack:";
+        private const string cLanguageCodeLabel = "Language Code:";
+        private const string cKeyLabel = "Key:";
+        private const string cValueLabel = "Value:";
+        private const string cSearchLabel = "Search:";
 
-        private static readonly string cDefaultLanguagePack = "No existing language pack. Create a new one.";
-        private static readonly string cEmptyTranslations = "No translations has been created yet.";
+        private const string cDefaultLanguagePack = "No existing language pack. Create a new one.";
+        private const string cEmptyTranslations = "No translations has been created yet.";
 
         #endregion
 
+        private static SerializedObject _serializedObject = null;
         private static LanguageManagerSettings _settings = null;
 
         // Language pack fields
@@ -93,6 +94,7 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
         /// </summary>
         private static void OnActiveHandler(string _, VisualElement __)
         {
+            _serializedObject = LanguageManagerSettings.SerializedSettings;
             _settings = LanguageManagerSettings.Settings;
             _settings.LoadFiles();
 
@@ -359,6 +361,8 @@ namespace Cyggie.LanguageManager.Editor.SettingsProviders
                     }
                 });
             }
+
+            _serializedObject.ApplyModifiedProperties();
         }
     }
 }

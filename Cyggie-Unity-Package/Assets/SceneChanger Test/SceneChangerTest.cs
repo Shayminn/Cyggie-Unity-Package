@@ -1,3 +1,4 @@
+using Cyggie.LanguageManager.Runtime.Services;
 using Cyggie.Main.Runtime.Services;
 using Cyggie.SceneChanger.Runtime.Services;
 using Cyggie.SceneChanger.Runtime.Settings;
@@ -30,6 +31,11 @@ public class SceneChangerTest : MonoBehaviour
     private void OnDisable()
     {
         _controls?.Disable();
+    }
+
+    private void Start()
+    {
+        Debug.Log(ServiceManager.Get<LanguageService>().Translate("key"));
     }
 
     private void OnChangeScenePerformed(CallbackContext ctx)

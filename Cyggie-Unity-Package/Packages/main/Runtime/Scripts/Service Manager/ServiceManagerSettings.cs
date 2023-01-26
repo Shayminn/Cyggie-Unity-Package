@@ -14,12 +14,12 @@ namespace Cyggie.Main.Runtime.Services
     /// </summary>
     internal class ServiceManagerSettings : ScriptableObject
     {
-        private static readonly string cSettingsAssetPath = "Packages/cyggie.main/Runtime/Resources/ServiceManagerSettings.asset";
-        private static readonly string cPrefabPath = "Packages/cyggie.main/Runtime/Prefabs/Service Manager.prefab";
+        private const string cSettingsAssetPath = "Packages/cyggie.main/Runtime/Resources/ServiceManagerSettings.asset";
+        private const string cPrefabPath = "Packages/cyggie.main/Runtime/Prefabs/Service Manager.prefab";
 
         // Error strings
-        private static readonly string cDuplicateConfiguration = $"Multiple of the same configuration has been assigned to {nameof(ServiceConfigurations)}";
-        private static readonly string cHasNullConfiguration = $"A null configuration was found in {nameof(ServiceConfigurations)}";
+        private const string cDuplicateConfiguration = "Multiple of the same configuration has been assigned to " + nameof(ServiceConfigurations);
+        private const string cHasNullConfiguration = "A null configuration was found in " + nameof(ServiceConfigurations);
 
         [SerializeField, Tooltip("Prefab object to instantiate on start.")]
         internal ServiceManager Prefab = null;

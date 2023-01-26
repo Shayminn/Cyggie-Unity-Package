@@ -1,9 +1,11 @@
+using Cyggie.LanguageManager.Runtime.Serializations;
 using Cyggie.LanguageManager.Runtime.Settings;
 using Cyggie.LanguageManager.Runtime.Utils;
 using Cyggie.Main.Runtime.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Cyggie.LanguageManager.Runtime.Services
@@ -14,6 +16,7 @@ namespace Cyggie.LanguageManager.Runtime.Services
     public sealed class LanguageService : Service
     {
         private LanguageManagerSettings _settings = null;
+        private LanguagePack _currentPack = null;
 
         public override void Awake()
         {
@@ -28,32 +31,96 @@ namespace Cyggie.LanguageManager.Runtime.Services
                 return;
             }
 
-            //// Create game object from prefab
-            //_loadingScreen = GameObject.Instantiate(_settings.LoadingScreenPrefab);
+            if (_settings.LanguagePacks.Count == 0) return;
 
-            //// Hide object
-            //_loadingScreen.ToggleLoadingScreen(false, false);
+            string languageCode = PlayerPrefs.GetString(LanguageManagerSettings.cLanguageCodePrefKey, _settings.DefaultLanguagePack.LanguageCode);
+            _currentPack = _settings.LanguagePacks.FirstOrDefault(x => x.LanguageCode == languageCode);
 
-            //// Initialize the settings in the loading screen
-            //_loadingScreen.SetSettings(_settings);
+            Debug.Log("Hello: " + _currentPack);
+
+            if (_currentPack == null)
+            {
+                ChangeLanguagePack(_settings.LanguagePacks.First());
+                Debug.LogError($"Couldn't find Language Pack with code: {languageCode}, assigned new language pack: {_currentPack.LanguageCode}");
+            }
         }
 
         #region Public methods
 
-        //public string Translate(string key)
-        //{
-        //    return Translate(_selectedPack.LanguageCode, key);
-        //}
+        public string Translate(string key)
+        {
+            if (!VerifyInitialization()) return string.Empty;
 
-        //public string Translate(string langCode, string key)
-        //{
-        //    return _languagePacks.FirstOrDefault(x => x.LanguageCode == langCode).GetTranslation(key);
-        //}
+            return Translate(_currentPack, key);
+        }
+
+        public string Translate(string languageCode, string key)
+        {
+            if (!VerifyInitialization()) return string.Empty;
+
+            if (TryGetLanguagePack(languageCode, out LanguagePack languagePack))
+            {
+                return Translate(languagePack, key);
+            }
+
+            return string.Empty;
+        }
+
+        public void ChangeLanguagePack(string languageCode)
+        {
+            if (TryGetLanguagePack(languageCode, out LanguagePack languagePack))
+            {
+                ChangeLanguagePack(languagePack);
+            }
+        }
 
         public IEnumerable<string> GetLanguageCodes()
         {
-            // Return collection of all existing language codes
-            return null;
+            return _settings.LanguagePacks.Select(x => x.LanguageCode);
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void ChangeLanguagePack(LanguagePack languagePack)
+        {
+            _currentPack = languagePack;
+            PlayerPrefs.SetString(LanguageManagerSettings.cLanguageCodePrefKey, _currentPack.LanguageCode);
+        }
+
+        private bool TryGetLanguagePack(string languageCode, out LanguagePack languagePack)
+        {
+            languagePack = _settings.LanguagePacks.FirstOrDefault(x => x.LanguageCode == languageCode);
+
+            if (languagePack == null)
+            {
+                Debug.LogError($"Trying to get language pack but language code ({languageCode}) was not found.");
+            }
+
+            return languagePack != null;
+        }
+
+        private string Translate(LanguagePack languagePack, string key)
+        {
+            if (!languagePack.ContainsKey(key))
+            {
+                Debug.LogError($"Language pack ({languagePack.LanguageCode}) does not contains any translation for key: {key}.");
+                return string.Empty;
+            }
+
+            return languagePack.Translations[key];
+        }
+
+        private bool VerifyInitialization()
+        {
+            if (_currentPack == null)
+            {
+                Debug.LogError($"The {nameof(LanguageService)}'s Language Pack is null.");
+                return false;
+            }
+
+            return true;
         }
 
         #endregion

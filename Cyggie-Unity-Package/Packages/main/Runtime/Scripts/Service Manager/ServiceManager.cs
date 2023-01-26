@@ -144,6 +144,13 @@ namespace Cyggie.Main.Runtime.Services
         /// <returns>Stored service</returns>
         public static T Get<T>() where T : Service
         {
+            // Check if Service Manager has been initialized
+            if (_instance == null)
+            {
+                Debug.LogError($"Failed to get a service, Service Manager has not yet been initialized. Use {nameof(OnServicesInitialized)} or call Get in {nameof(Start)}.");
+                return default;
+            }
+
             Service service = _instance._services.FirstOrDefault(x => x.GetType() == typeof(T));
 
             if (service == null)

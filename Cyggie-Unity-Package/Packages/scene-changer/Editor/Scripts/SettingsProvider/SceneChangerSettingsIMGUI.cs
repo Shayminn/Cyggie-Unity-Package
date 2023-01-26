@@ -12,13 +12,13 @@ namespace Cyggie.SceneChanger.Editor.SettingsProviders
     /// </summary>
     static class SceneChangerSettingsIMGUI
     {
-        private static readonly string cSettingsPath = "Cyggie/SceneChanger";
-        private static readonly string cSettingsLabel = "Scene Changer";
+        private const string cSettingsPath = "Cyggie/SceneChanger";
+        private const string cSettingsLabel = "Scene Changer";
 
         // GUI Labels
-        private static readonly string cLoadingScreenLabel = "Loading Screen Settings";
-        private static readonly string cLoadingBarLabel = "Loading Bar Settings";
-        private static readonly string cResolutionLabel = "Resolution Settings";
+        private const string cLoadingScreenLabel = "Loading Screen Settings";
+        private const string cLoadingBarLabel = "Loading Bar Settings";
+        private const string cResolutionLabel = "Resolution Settings";
 
         /// <summary>
         /// Create a settings provider at Project Settings/Cyggie/SceneChanger

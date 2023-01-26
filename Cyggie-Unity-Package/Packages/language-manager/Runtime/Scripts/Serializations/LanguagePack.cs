@@ -1,8 +1,10 @@
-﻿using Cyggie.LanguageManager.Runtime.Services;
+﻿using Cyggie.Main.Runtime.Serializations;
+using Cyggie.Main.Runtime.Utils.Extensions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Cyggie.LanguageManager.Runtime.Serializations
 {
@@ -12,20 +14,25 @@ namespace Cyggie.LanguageManager.Runtime.Serializations
     [Serializable]
     internal class LanguagePack
     {
-        [JsonProperty]
+        [SerializeField, Tooltip("Language code to identify this language pack."), JsonProperty]
         internal string LanguageCode = "";
 
-        [JsonProperty]
-        internal Dictionary<string, string> Translations = new Dictionary<string, string>();
+        [SerializeField, Tooltip("Translations related to this language code."), JsonProperty]
+        internal SerializedDictionary<string, string> Translations = new SerializedDictionary<string, string>();
 
         internal bool Any => Count > 0;
 
         internal int Count => Translations.Count;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         internal void Add(string key, string value)
         {
             Translations.Add(key, value);
-            Translations = Translations.OrderBy(x => x.Key).ToDictionary(x => x.Key, y => y.Value);
+            Translations = Translations.OrderBy(x => x.Key).ToSerializedDictionary(x => x.Key, y => y.Value);
         }
 
         internal bool ContainsKey(string key)

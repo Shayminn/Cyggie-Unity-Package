@@ -1,6 +1,7 @@
 using Cyggie.LanguageManager.Runtime.Serializations;
 using Cyggie.LanguageManager.Runtime.Services;
 using Cyggie.LanguageManager.Runtime.Utils;
+using Cyggie.Main.Runtime.Serializations;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Newtonsoft.Json;
 using System;
@@ -17,6 +18,8 @@ namespace Cyggie.LanguageManager.Runtime.Settings
     /// </summary>
     public class LanguageManagerSettings : ScriptableObject
     {
+        internal const string cLanguageCodePrefKey = "LanguageManager/LanguageCode";
+
         [SerializeField, Tooltip("List of language packs, each having a language code and its associated translations.")]
         internal List<LanguagePack> LanguagePacks = new List<LanguagePack>();
 
@@ -24,8 +27,7 @@ namespace Cyggie.LanguageManager.Runtime.Settings
         internal LanguagePack DefaultLanguagePack = null;
 
 #if UNITY_EDITOR
-
-        private static readonly string cSettingsAssetPath = "Packages/cyggie.language-manager/Runtime/Resources/" + LanguageManagerConstants.cSettingsFileWithExtension;
+        private const string cSettingsAssetPath = "Packages/cyggie.language-manager/Runtime/Resources/" + LanguageManagerConstants.cSettingsFileWithExtension;
 
         [SerializeField, Tooltip("Whether some debug logs should be displayed (Editor only).")]
         internal bool DebugLogs = true;
@@ -145,7 +147,7 @@ namespace Cyggie.LanguageManager.Runtime.Settings
                 {
                     string fileName = Path.GetFileNameWithoutExtension(filePath);
                     string content = File.ReadAllText(filePath);
-                    Dictionary<string, string> translations = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
+                    SerializedDictionary<string, string> translations = JsonConvert.DeserializeObject<SerializedDictionary<string, string>>(content);
 
                     LanguagePack languagePack = new LanguagePack()
                     {
@@ -165,11 +167,7 @@ namespace Cyggie.LanguageManager.Runtime.Settings
                 else
                 {
                     // Check if language pack still exists
-                    if (!LanguagePacks.Any(x => x.LanguageCode == DefaultLanguagePack.LanguageCode))
-                    {
-                        // Assign first found
-                        DefaultLanguagePack = LanguagePacks.FirstOrDefault();
-                    }
+                    DefaultLanguagePack = LanguagePacks.FirstOrDefault(x => x.LanguageCode == DefaultLanguagePack.LanguageCode);
                 }
             }
             catch (Exception ex)
