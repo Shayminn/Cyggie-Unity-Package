@@ -61,9 +61,9 @@ namespace Cyggie.Main.Editor.Utils.Helpers
         /// Draw EditorGUI as horizontal
         /// </summary>
         /// <param name="gui">GUI to draw</param>
-        public static void DrawHorizontal(Action gui)
+        public static void DrawHorizontal(Action gui, params GUILayoutOption[] guiLayoutOptions)
         {
-            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginHorizontal(guiLayoutOptions);
             gui?.Invoke();
             EditorGUILayout.EndHorizontal();
         }
@@ -72,9 +72,9 @@ namespace Cyggie.Main.Editor.Utils.Helpers
         /// Draw EditorGUI as vertical
         /// </summary>
         /// <param name="gui">GUI to draw</param>
-        public static void DrawVertical(Action gui)
+        public static void DrawVertical(Action gui, params GUILayoutOption[] guiLayoutOptions)
         {
-            EditorGUILayout.BeginVertical();
+            EditorGUILayout.BeginVertical(guiLayoutOptions);
             gui?.Invoke();
             EditorGUILayout.EndVertical();
         }
@@ -144,9 +144,13 @@ namespace Cyggie.Main.Editor.Utils.Helpers
         /// <param name="gui">GUI to drawa</param>
         /// <param name="alwaysShowHorizontal">Whether the scroll view's horizontal bar is always visible</param>
         /// <param name="alwaysShowVertical">Whether the scroll view's vertical bar is always visible</param>
-        public static void DrawWithScrollview(ref Vector2 scrollPosition, Action gui, bool alwaysShowHorizontal = false, bool alwaysShowVertical = false)
+        public static void DrawWithScrollview(ref Vector2 scrollPosition, Action gui, bool alwaysShowHorizontal = false, bool alwaysShowVertical = false, GUIStyle horizontalStyle = null, GUIStyle verticalStyle = null, GUIStyle backgroundStyle = null, params GUILayoutOption[] guiLayoutOptions)
         {
-            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, alwaysShowHorizontal, alwaysShowVertical);
+            horizontalStyle ??= GUI.skin.horizontalScrollbar;
+            verticalStyle ??= GUI.skin.verticalScrollbar;
+            backgroundStyle ??= GUI.skin.scrollView;
+
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, alwaysShowHorizontal, alwaysShowVertical, horizontalStyle, verticalStyle, backgroundStyle, guiLayoutOptions);
             gui.Invoke();
             EditorGUILayout.EndScrollView();
         }
