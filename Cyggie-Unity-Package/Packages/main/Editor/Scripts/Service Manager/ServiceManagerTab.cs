@@ -1,4 +1,5 @@
 using Cyggie.Main.Editor.Utils.Helpers;
+using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.Services;
 using System;
 using System.Collections.Generic;
@@ -28,10 +29,13 @@ namespace Cyggie.Main.Editor.Configurations
 
         private List<Type> _configTypes = null;
 
+        /// <inheritdoc/>
         private ServiceManagerSettings Settings => (ServiceManagerSettings) _settings;
 
         /// <inheritdoc/>
         internal override Type SettingsType => typeof(ServiceManagerSettings);
+
+        internal override string[] SettingsOtherPaths => new string[] { "Test" };
 
         /// <inheritdoc/>
         internal override void OnSettingsCreated()
@@ -134,6 +138,7 @@ namespace Cyggie.Main.Editor.Configurations
                 EditorGUILayout.HelpBox(_logMessage, isError ? MessageType.Error : MessageType.Info);
             }
 
+            EditorGUILayout.Space(10);
             _serializedObject.ApplyModifiedProperties();
         }
     }

@@ -1,4 +1,5 @@
-﻿using Cyggie.SceneChanger.Runtime.Settings;
+﻿using Cyggie.Main.Editor.Utils.Helpers;
+using Cyggie.SceneChanger.Runtime.Settings;
 using UnityEditor;
 using UnityEngine;
 
@@ -46,7 +47,7 @@ namespace Cyggie.SceneChanger.Editor.PropertyDrawers
                         height += 20;
                     }
 
-                    height += 40;
+                    height += 45;
                 }
             }
 
@@ -58,31 +59,56 @@ namespace Cyggie.SceneChanger.Editor.PropertyDrawers
             position.x = 25;
 
             EditorGUI.BeginProperty(position, label, property);
-
+            
             SerializedProperty propertyFoldout = property.FindPropertyRelative(nameof(SceneChangeText.PropertyFoldout));
             propertyFoldout.boolValue = EditorGUI.Foldout(new Rect(position.x, position.y, 500, 20), propertyFoldout.boolValue, property.FindPropertyRelative(nameof(SceneChangeText.Text)).stringValue);
 
             if (!propertyFoldout.boolValue) return;
 
+            EditorGUIUtility.labelWidth = 165;
             position.x += 15;
             position.y += 20;
 
             // Draw text field
-            EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), property.FindPropertyRelative(nameof(SceneChangeText.Text)));
+            EditorGUI.PropertyField(new Rect(position.x, position.y, 650, 20), property.FindPropertyRelative(nameof(SceneChangeText.Text)));
             position.y += 20;
 
             // Transform settings
             SerializedProperty transformSettingsFoldout = property.FindPropertyRelative(nameof(SceneChangeText.TransformSettingsFoldOut));
-            transformSettingsFoldout.boolValue = EditorGUI.Foldout(new Rect(position.x, position.y, 200, 20), transformSettingsFoldout.boolValue, cTransformSettings, true);
+            transformSettingsFoldout.boolValue = EditorGUI.Foldout(new Rect(position.x, position.y, 300, 20), transformSettingsFoldout.boolValue, cTransformSettings, true);
             position.y += 20;
 
             if (transformSettingsFoldout.boolValue)
             {
+                EditorGUIUtility.labelWidth = 150;
                 position.x += 15;
-                EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), property.FindPropertyRelative(nameof(SceneChangeText.Position)));
+
+                // Manually draw label & field instead, for some reason this is printing in two lines
+                //EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), property.FindPropertyRelative(nameof(SceneChangeText.Position)));
+                EditorGUIHelper.DrawHorizontal(gui: () =>
+                {
+                    SerializedProperty serializedPosition = property.FindPropertyRelative(nameof(SceneChangeText.Position));
+
+                    EditorGUI.LabelField(new Rect(position.x, position.y, 150, 20), "Position");
+                    position.x += 150;
+                    serializedPosition.vector3Value = EditorGUI.Vector3Field(new Rect(position.x, position.y, 485, 20), "", serializedPosition.vector3Value);
+                    position.x -= 150;
+                });
 
                 position.y += 20;
-                EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), property.FindPropertyRelative(nameof(SceneChangeText.ObjectSize)));
+
+                // Manually draw label & field instead, for some reason this is printing in two lines
+                //EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarSize)));
+                //EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), property.FindPropertyRelative(nameof(SceneChangeText.ObjectSize)));
+                EditorGUIHelper.DrawHorizontal(gui: () =>
+                {
+                    SerializedProperty serializedSize = property.FindPropertyRelative(nameof(SceneChangeText.ObjectSize));
+
+                    EditorGUI.LabelField(new Rect(position.x, position.y, 120, 20), "Size");
+                    position.x += 150;
+                    serializedSize.vector2Value = EditorGUI.Vector2Field(new Rect(position.x, position.y, 485, 20), "", serializedSize.vector2Value);
+                    position.x -= 150;
+                });
 
                 position.x -= 15;
                 position.y += 25;
@@ -90,16 +116,16 @@ namespace Cyggie.SceneChanger.Editor.PropertyDrawers
 
             // Text settings
             SerializedProperty textSettingsFoldout = property.FindPropertyRelative(nameof(SceneChangeText.TextSettingsFoldOut));
-            textSettingsFoldout.boolValue = EditorGUI.Foldout(new Rect(position.x, position.y, 200, 20), textSettingsFoldout.boolValue, cTextSettings, true);
+            textSettingsFoldout.boolValue = EditorGUI.Foldout(new Rect(position.x, position.y, 300, 20), textSettingsFoldout.boolValue, cTextSettings, true);
             position.y += 20;
 
             if (textSettingsFoldout.boolValue)
             {
                 position.x += 15;
-                EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), property.FindPropertyRelative(nameof(SceneChangeText.TextColor)));
+                EditorGUI.PropertyField(new Rect(position.x, position.y, 635, 20), property.FindPropertyRelative(nameof(SceneChangeText.TextColor)));
 
                 position.y += 22.5f;
-                EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), property.FindPropertyRelative(nameof(SceneChangeText.TextSize)));
+                EditorGUI.PropertyField(new Rect(position.x, position.y, 635, 20), property.FindPropertyRelative(nameof(SceneChangeText.TextSize)));
 
                 position.x -= 15;
                 position.y += 25;
@@ -107,7 +133,7 @@ namespace Cyggie.SceneChanger.Editor.PropertyDrawers
 
             // Visibility settings
             SerializedProperty visibilitySettingsFoldout = property.FindPropertyRelative(nameof(SceneChangeText.VisibilitySettingsFoldOut));
-            visibilitySettingsFoldout.boolValue = EditorGUI.Foldout(new Rect(position.x, position.y, 200, 20), visibilitySettingsFoldout.boolValue, cVisibilitySettings, true);
+            visibilitySettingsFoldout.boolValue = EditorGUI.Foldout(new Rect(position.x, position.y, 300, 20), visibilitySettingsFoldout.boolValue, cVisibilitySettings, true);
             position.y += 20;
 
             if (visibilitySettingsFoldout.boolValue)
@@ -115,16 +141,16 @@ namespace Cyggie.SceneChanger.Editor.PropertyDrawers
                 position.x += 15;
 
                 SerializedProperty alwaysVisibleProperty = property.FindPropertyRelative(nameof(SceneChangeText.AlwaysVisible));
-                EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), alwaysVisibleProperty);
+                EditorGUI.PropertyField(new Rect(position.x, position.y, 635, 20), alwaysVisibleProperty);
 
                 if (!alwaysVisibleProperty.boolValue)
                 {
                     position.y += 20;
-                    EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), property.FindPropertyRelative(nameof(SceneChangeText.ImageSpecific)));
+                    EditorGUI.PropertyField(new Rect(position.x, position.y, 635, 20), property.FindPropertyRelative(nameof(SceneChangeText.ImageSpecific)));
                 }
 
-                position.y += 20;
-                EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), property.FindPropertyRelative(nameof(SceneChangeText.DisplayAtProgress)));
+                position.y += 25;
+                EditorGUI.PropertyField(new Rect(position.x, position.y, 635, 20), property.FindPropertyRelative(nameof(SceneChangeText.DisplayAtProgress)));
 
                 position.x -= 15;
             }

@@ -1,22 +1,19 @@
-﻿using UnityEngine;
-using Cyggie.Main.Runtime.Utils.Extensions;
-using System.Linq;
+﻿using Cyggie.Main.Runtime.Services;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace Cyggie.Main.Runtime.Services
+namespace Cyggie.Main.Runtime.Configurations
 {
     /// <summary>
-    /// Service manager settings
+    /// Settings for <see cref="ServiceManager"/>
     /// </summary>
-    internal class ServiceManagerSettings : ScriptableObject
+    internal class ServiceManagerSettings : PackageConfigurationSettings
     {
-        private const string cSettingsAssetPath = "Packages/cyggie.main/Runtime/Resources/ServiceManagerSettings.asset";
-        private const string cPrefabPath = "Packages/cyggie.main/Runtime/Prefabs/Service Manager.prefab";
-
         // Error strings
         private const string cDuplicateConfiguration = "Multiple of the same configuration has been assigned to " + nameof(ServiceConfigurations);
         private const string cHasNullConfiguration = "A null configuration was found in " + nameof(ServiceConfigurations);
@@ -34,47 +31,6 @@ namespace Cyggie.Main.Runtime.Services
         internal bool IsValid = true;
 
 #if UNITY_EDITOR
-        private static SerializedObject _serializedSettings = null;
-        internal static SerializedObject SerializedSettings => _serializedSettings ??= new SerializedObject(Settings);
-
-        private static ServiceManagerSettings _settings = null;
-        internal static ServiceManagerSettings Settings => _settings.AssignIfNull(GetOrCreateSettings());
-
-        /// <summary>
-        /// Get or create if not found new default settings
-        /// </summary>
-        /// <returns>SceneChangerSettings object</returns>
-        public static ServiceManagerSettings GetOrCreateSettings()
-        {
-            // Try get the relative path to file
-            ServiceManagerSettings settings = AssetDatabase.LoadAssetAtPath<ServiceManagerSettings>(cSettingsAssetPath);
-
-            if (settings == null)
-            {
-                // Settings not found, create a new one
-                Debug.Log($"Couldn't find default settings file, creating a new one...");
-
-                settings = CreateInstance<ServiceManagerSettings>();
-                settings.Prefab = AssetDatabase.LoadAssetAtPath<ServiceManager>(cPrefabPath);
-                AssetDatabase.CreateAsset(settings, cSettingsAssetPath);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-
-                Debug.Log($"New settings ({nameof(ServiceManagerSettings)}) created at path: \"{cSettingsAssetPath}\".");
-            }
-
-            return settings;
-        }
-
-        /// <summary>
-        /// Keywords for search in Project Settings
-        /// </summary>
-        /// <returns></returns>
-        internal static string[] GetKeywords() => new string[]
-        {
-            nameof(ServiceConfigurations)
-        };
-
         /// <summary>
         /// Validates the Service Manager
         /// </summary>
@@ -88,12 +44,14 @@ namespace Cyggie.Main.Runtime.Services
             int oldCount = ServiceConfigurations.Length;
             IEnumerable<ServiceConfiguration> uniqueConfigs = ServiceConfigurations.Distinct();
 
+            // Verify that there are no dupes
             if (oldCount != uniqueConfigs.Count())
             {
                 error = cDuplicateConfiguration;
                 IsValid = false;
             }
 
+            // Verify that there are no null configurations
             if (uniqueConfigs.Any(x => x == null))
             {
                 error = cHasNullConfiguration;
@@ -102,6 +60,6 @@ namespace Cyggie.Main.Runtime.Services
 
             return IsValid;
         }
-#endif
     }
+#endif
 }

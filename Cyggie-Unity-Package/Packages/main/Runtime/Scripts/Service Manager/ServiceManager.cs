@@ -1,7 +1,7 @@
+using Cyggie.Main.Runtime.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 
 namespace Cyggie.Main.Runtime.Services
@@ -43,7 +43,13 @@ namespace Cyggie.Main.Runtime.Services
         public static void Initialize()
         {
             // Get settings saved in Resources folder
-            _settings = Resources.Load<ServiceManagerSettings>(nameof(ServiceManagerSettings));
+            _settings = Resources.Load<ServiceManagerSettings>("Cyggie/Package Configurations/ServiceManagerSettings");
+
+            if (_settings == null)
+            {
+                Debug.LogError($"Unable to find Service Manager Settings in Resources.");
+                return;
+            }
 
             if (!_settings.IsValid)
             {

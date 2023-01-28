@@ -1,4 +1,5 @@
-﻿using Cyggie.Main.Runtime.Utils.Extensions;
+﻿using Cyggie.Main.Runtime.Configurations;
+using Cyggie.Main.Runtime.Utils.Extensions;
 using System;
 using System.IO;
 using UnityEditor;
@@ -11,14 +12,24 @@ namespace Cyggie.Main.Editor.Configurations
     /// </summary>
     internal abstract class PackageConfigurationTab
     {
-        // TODO
-        // Put this as a setting for users (this will have its own scriptable object settings but as an editor file cause it's not needed)
-        // Folder path of all configurations
-        private const string cConfigurationsFolderPath = "Assets/Resources/Cyggie/Package Configurations/";
-
+        /// <summary>
+        /// Settings object
+        /// </summary>
         protected PackageConfigurationSettings _settings = null;
+
+        /// <summary>
+        /// Serialized object of settings
+        /// </summary>
         protected SerializedObject _serializedObject = null;
 
+        /// <summary>
+        /// File name to the settings (includes extensions .asset)
+        /// </summary>
+        internal string FileName => $"{SettingsType.Name}.asset";
+
+        /// <summary>
+        /// Class name to the tab (used to display in Window selection popup)
+        /// </summary>
         internal string ClassName => GetType().Name.Replace("Tab", "").SplitCamelCase();
 
         /// <summary>
@@ -27,12 +38,19 @@ namespace Cyggie.Main.Editor.Configurations
         internal abstract Type SettingsType { get; }
 
         /// <summary>
-        /// Constructor for retrieving/creating this tab's settings based on <see cref="SettingType"/>
+        /// Any other file paths that the settings require <br/>
+        /// The file paths referenced here will be moved altogether with <see cref="ConfigurationSettings.ConfigurationsPath"/>
         /// </summary>
-        protected PackageConfigurationTab()
+        internal virtual string[] SettingsOtherPaths { get; } = { };
+
+        /// <summary>
+        /// Initialize the Tab by retrieve it's associated settings
+        /// </summary>
+        /// <param name="configSettings">Configuration Settings applied for all Package Configuration Settings</param>
+        internal void Initialize(ConfigurationSettings configSettings)
         {
             // Get settings
-            string assetPath = $"{cConfigurationsFolderPath}{SettingsType.Name}.asset";
+            string assetPath = $"{configSettings.ConfigurationsPath}{FileName}";
             _settings = (PackageConfigurationSettings) AssetDatabase.LoadAssetAtPath(assetPath, SettingsType);
 
             if (_settings == null)
@@ -45,7 +63,11 @@ namespace Cyggie.Main.Editor.Configurations
                 OnSettingsCreated();
 
                 // Create asset
-                Directory.CreateDirectory(assetPath);
+                if (!Directory.Exists(assetPath))
+                {
+                    Directory.CreateDirectory(assetPath);
+                }
+
                 AssetDatabase.CreateAsset(_settings, assetPath);
 
                 // Save asset

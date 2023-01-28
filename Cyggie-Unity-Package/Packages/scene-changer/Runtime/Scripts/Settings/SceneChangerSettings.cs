@@ -1,23 +1,17 @@
+﻿using Cyggie.SceneChanger.Runtime.Settings;
+using Cyggie.Main.Runtime.Configurations;
 using UnityEngine;
-using Cyggie.SceneChanger.Runtime.Utils.Constants;
-using Cyggie.Main.Runtime.Utils.Extensions;
 using static UnityEngine.UI.Image;
+using Cyggie.SceneChanger.Runtime.Enums;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace Cyggie.SceneChanger.Runtime.Settings
+namespace Cyggie.SceneChanger.Runtime.Configurations
 {
-    /// <summary>
-    /// Scriptable object to hold settings for <see cref="SceneChangerService"/> <br/>
-    /// This is managed in Project Settings/Cyggie/SceneChanger
-    /// </summary>
-    internal class SceneChangerSettings : ScriptableObject
+    internal class SceneChangerSettings : PackageConfigurationSettings
     {
-        private const string cSettingsFileName = "SceneChangerSettings.asset";
-        private const string cSettingsScriptFileName = "SceneChangerSettingsIMGUI.cs";
-
         /// <summary>
         /// Loading Screen prefab object
         /// </summary>
@@ -105,66 +99,5 @@ namespace Cyggie.SceneChanger.Runtime.Settings
         internal bool HasImages => Images != null && Images.Length > 0;
 
         internal bool HasTexts => Texts != null && Texts.Length > 0;
-
-#if UNITY_EDITOR
-        private static SerializedObject _serializedSettings = null;
-        internal static SerializedObject SerializedSettings => _serializedSettings ??= new SerializedObject(GetOrCreateSettings());
-
-        /// <summary>
-        /// Get or create if not found new default settings
-        /// </summary>
-        /// <returns>SceneChangerSettings object</returns>
-        public static SceneChangerSettings GetOrCreateSettings()
-        {
-            // Try get the relative path to file
-            SceneChangerSettings settings = AssetDatabase.LoadAssetAtPath<SceneChangerSettings>(SceneChangerPaths.cSettings);
-
-            if (settings == null)
-            {
-                // Settings not found, create a new one
-                Debug.Log($"Couldn't find default settings file, creating a new one...");
-
-                settings = CreateInstance<SceneChangerSettings>();
-                settings.LoadingScreenPrefab = AssetDatabase.LoadAssetAtPath<LoadingScreen>(SceneChangerPaths.cLoadingScreen);
-
-                AssetDatabase.CreateAsset(settings, SceneChangerPaths.cSettings);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-
-                Debug.Log($"New settings ({nameof(SceneChangerSettings)}) created at path: {SceneChangerPaths.cSettings}.");
-            }
-
-            return settings;
-        }
-
-        /// <summary>
-        /// Keywords for search in Project Settings
-        /// </summary>
-        /// <returns></returns>
-        internal static string[] GetKeywords() => new string[]
-        {
-            nameof(LoadingScreen),
-            nameof(Images),
-            nameof(ScaleImageToResolution),
-            nameof(RandomizeImages),
-            nameof(RandomType),
-            nameof(Texts),
-            nameof(MinimumLoadTime),
-
-            nameof(AutoAdjustToResolution),
-            nameof(ScreenSize),
-            nameof(ResolutionCheckDelay),
-        };
-#endif
-    }
-
-    /// <summary>
-    /// Enum of RandomType when scene changing randomly
-    /// </summary>
-    internal enum SceneChangeRandomType
-    {
-        ResetAfterEach,
-        ResetAfterEachNoPreviousRepeat,
-        RoundRobin
     }
 }

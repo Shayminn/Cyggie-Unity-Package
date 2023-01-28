@@ -31,7 +31,7 @@ namespace Cyggie.Main.Editor
             // Create window
             PackageConfigurationEditorWindow window = EditorWindow.GetWindow<PackageConfigurationEditorWindow>();
             window.titleContent = new GUIContent("Cyggie's Configurations");
-            window.minSize = new Vector2(510, 600); // set window size
+            window.minSize = new Vector2(715, 600); // set window size
             window.Initialize(tabs); // initialize window
 
             window.Show();

@@ -15,12 +15,12 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
         /// </summary>
         /// <param name="fileName">File name to look up</param>
         /// <returns>Relative path</returns>
-        public static bool TryGetRelativePath(string fileName, out string path)
+        public static bool TryGetRelativePath(string fileName, out string path, bool suppressError = false)
         {
             path = string.Empty;
 
             // Get the absolute path
-            if (!TryGetAbsolutePath(fileName, out string absolutePath)) return false;
+            if (!TryGetAbsolutePath(fileName, out string absolutePath, suppressError)) return false;
 
             // Find the start index of the relative path
             int index = absolutePath.IndexOf(cAssetsPath);
@@ -36,14 +36,18 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
         /// </summary>
         /// <param name="fileName">File name to look up</param>
         /// <returns>Absolute path</returns>
-        public static bool TryGetAbsolutePath(string fileName, out string path)
+        public static bool TryGetAbsolutePath(string fileName, out string path, bool suppressError = false)
         {
             // Get all existing paths to file name
             string[] paths = System.IO.Directory.GetFiles(Application.dataPath, fileName, SearchOption.AllDirectories);
             path = string.Empty;
             if (paths.Length == 0)
             {
-                Debug.LogError($"Failed in {nameof(FileHelper)}. File {fileName} not found in the project.");
+                if (!suppressError)
+                {
+                    Debug.LogError($"Failed in {nameof(FileHelper)}. File {fileName} not found in the project.");
+                }
+
                 return false;
             }
 
