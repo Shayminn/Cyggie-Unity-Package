@@ -5,7 +5,10 @@
     /// </summary>
     public abstract class Service
     {
-        private ServiceConfiguration _configuration = null;
+        /// <summary>
+        /// Configuration object
+        /// </summary>
+        protected ServiceConfiguration _configuration = null;
 
         #region MonoBehaviour virtuals
 
@@ -25,12 +28,20 @@
 
         #endregion
 
-        protected T GetConfiguration<T>() where T : ServiceConfiguration
-            => (T) _configuration;
-
-        internal void SetConfiguration(ServiceConfiguration configuration)
+        /// <summary>
+        /// Object has been initialized
+        /// </summary>
+        /// <param name="configuration"></param>
+        internal virtual void Initialize(ServiceConfiguration configuration)
         {
             _configuration = configuration;
+            OnInitialized(configuration);
         }
+
+        /// <summary>
+        /// Called when the object is initialized
+        /// </summary>
+        /// <param name="configuration">Configuration for the service, null if not set</param>
+        protected virtual void OnInitialized(ServiceConfiguration configuration) { }
     }
 }

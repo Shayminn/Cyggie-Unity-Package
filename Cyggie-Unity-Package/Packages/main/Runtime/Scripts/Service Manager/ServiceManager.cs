@@ -79,10 +79,7 @@ namespace Cyggie.Main.Runtime.Services
 
                 // Add configuration to service if it exists
                 ServiceConfiguration configuration = _settings.ServiceConfigurations.FirstOrDefault(c => c.ServiceType == t);
-                if (configuration != null)
-                {
-                    service.SetConfiguration(configuration);
-                }
+                service.Initialize(configuration);
 
                 _services.Add(service);
             }
