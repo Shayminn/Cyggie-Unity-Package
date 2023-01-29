@@ -15,6 +15,7 @@ MonoBehaviour:
   Prefab: {fileID: 5703444348504700640, guid: 9a5fad89ca320d34fb9a7b3c02b9d9d9, type: 3}
   ServiceConfigurations:
   - {fileID: 11400000, guid: 1b18622a0dac62d47a5e91d05f743b56, type: 2}
+  - {fileID: 0}
   - {fileID: 11400000, guid: 0f33c6c4eef9e3b409eb76a2069d7c78, type: 2}
   ConfigurationSettings: {fileID: 11400000, guid: 2628ab25f025b794882558f467d8ff28, type: 2}
   IsValid: 1

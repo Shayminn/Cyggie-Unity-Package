@@ -13,7 +13,7 @@ namespace Cyggie.SceneChanger.Runtime.Settings
         internal bool PropertyFoldout = true;
 
         [SerializeField, Tooltip("Text to write.")]
-        internal string Text = "";
+        internal string Text = "Text";
 
         [SerializeField, HideInInspector]
         internal bool TransformSettingsFoldOut = true;
@@ -34,7 +34,6 @@ namespace Cyggie.SceneChanger.Runtime.Settings
         internal int TextSize = 36;
 
         [SerializeField, HideInInspector]
-
         internal bool VisibilitySettingsFoldOut = true;
 
         [SerializeField, Tooltip("Whether this Text should always be visible.")]

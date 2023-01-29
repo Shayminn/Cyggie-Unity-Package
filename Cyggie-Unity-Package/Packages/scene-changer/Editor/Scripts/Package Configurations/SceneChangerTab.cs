@@ -63,7 +63,6 @@ namespace Cyggie.SceneChanger.Editor.Configurations
                 EditorGUILayout.Space(5);
 
                 EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.Texts)));
-
                 EditorGUILayout.Space(5);
 
                 EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.MinimumLoadTime)));

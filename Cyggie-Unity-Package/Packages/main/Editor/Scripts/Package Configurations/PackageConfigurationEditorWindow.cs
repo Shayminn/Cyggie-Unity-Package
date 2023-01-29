@@ -68,7 +68,6 @@ namespace Cyggie.Main.Editor.Configurations
             // Initialize all tabs with config settings
             _tabs.ForEach(x =>
             {
-                Debug.Log(x);
                 // Initialize the tab with configuration settings
                 x.Initialize(_configSettings);
             });
