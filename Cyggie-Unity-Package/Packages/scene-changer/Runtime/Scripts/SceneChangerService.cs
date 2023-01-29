@@ -38,21 +38,18 @@ namespace Cyggie.SceneChanger.Runtime.Services
 
         private bool IsInitialized => _settings != null || _loadingScreen != null;
 
-        /// <summary>
-        /// Initialize and create loading screen on load
-        /// </summary>
-        public override void Awake()
+        /// <inheritdoc/>
+        protected override void OnInitialized(ServiceConfiguration configuration)
         {
-            base.Awake();
+            base.OnInitialized(configuration);
 
-            // Get the settings at path
-            _settings = Resources.Load<SceneChangerSettings>(SceneChangerConstants.cSettingsFile);
-
-            if (_settings == null)
+            if (configuration == null || configuration is not SceneChangerSettings settings)
             {
-                Debug.LogError($"Failed to load Scene Changer Settings in Resources folder.");
+                Debug.Log($"Scene Changer's configuration was not found in the Service Manager Configurations.");
                 return;
             }
+
+            _settings = settings;
 
             // Create game object from prefab
             _loadingScreen = GameObject.Instantiate(_settings.LoadingScreenPrefab);
@@ -142,7 +139,7 @@ namespace Cyggie.SceneChanger.Runtime.Services
             // Make sure Scene Changer is initialized
             if (!IsInitialized)
             {
-                Debug.LogError($"Scene Changer was not initialized properly, unable to change scene at {nameof(ChangeScene)}. (Settings: {_settings}, Loading Screen: {_loadingScreen})");
+                Debug.LogError($"Scene Changer was not initialized properly, unable to change scene at {nameof(ChangeScene)}.");
                 return false;
             }
 

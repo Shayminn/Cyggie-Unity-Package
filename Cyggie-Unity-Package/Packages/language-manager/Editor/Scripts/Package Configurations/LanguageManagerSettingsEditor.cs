@@ -1,14 +1,13 @@
-﻿using Cyggie.Main.Editor.Utils.Helpers;
-using Cyggie.SceneChanger.Runtime.Configurations;
+﻿using Cyggie.LanguageManager.Runtime.Configurations;
+using Cyggie.Main.Editor.Utils.Helpers;
 using UnityEditor;
-using UnityEngine;
 
-namespace Cyggie.SceneChanger.Editor.Configurations
+namespace Cyggie.LanguageManager.Editor.Configurations
 {
     /// <summary>
-    /// Scene Changer Settings inspector editor
+    /// Language Manager Settings inspector editor
     /// </summary>
-    [CustomEditor(typeof(SceneChangerSettings))]
+    [CustomEditor(typeof(LanguageManagerSettings))]
     internal class SceneChangerSettingsEditor : UnityEditor.Editor
     {
         /// <summary>

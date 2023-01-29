@@ -15,6 +15,8 @@ namespace Cyggie.Main.Editor.Configurations
     /// </summary>
     internal class PackageConfigurationEditorWindow : EditorWindow
     {
+        internal static PackageConfigurationEditorWindow Window = null;
+
         // Const error messages for Configuration Setting path
         private const string cNotADirectory = "Configuration Path must be a valid Directory/Folder path.";
         private const string cNotInResources = "Configuration Path must be contained within a Resources folder.";
@@ -35,6 +37,7 @@ namespace Cyggie.Main.Editor.Configurations
         /// <param name="tabs">List of tabs in projects</param>
         internal void Initialize(List<PackageConfigurationTab> tabs)
         {
+            Window = this;
             _tabs = tabs;
             _selectedTab = _tabs.FirstOrDefault();
 
@@ -63,7 +66,12 @@ namespace Cyggie.Main.Editor.Configurations
             _serializedObject = new SerializedObject(_configSettings);
 
             // Initialize all tabs with config settings
-            _tabs.ForEach(x => x.Initialize(_configSettings));
+            _tabs.ForEach(x =>
+            {
+                Debug.Log(x);
+                // Initialize the tab with configuration settings
+                x.Initialize(_configSettings);
+            });
         }
 
         /// <summary>
@@ -71,7 +79,7 @@ namespace Cyggie.Main.Editor.Configurations
         /// </summary>
         internal void OnGUI()
         {
-            if (_tabStrings == null || _tabs == null || _selectedTabIndex >= _tabs.Count)
+            if (_tabStrings == null || _tabs == null || _selectedTabIndex >= _tabs.Count || _configSettings == null)
             {
                 Close();
                 return;
@@ -129,7 +137,11 @@ namespace Cyggie.Main.Editor.Configurations
 
                             foreach (string otherPath in tab.SettingsOtherPaths)
                             {
-                                AssetDatabase.MoveAsset($"{oldPath}{otherPath}", $"{newPath}{otherPath}");
+                                string path = otherPath.EndsWith("/") ?
+                                              otherPath.Remove(otherPath.Length - 1) :
+                                              otherPath;
+
+                                AssetDatabase.MoveAsset($"{oldPath}{path}", $"{newPath}{path}");
                             }
                         }
 
@@ -163,6 +175,24 @@ namespace Cyggie.Main.Editor.Configurations
 
                 EditorGUILayout.Space(5);
             }, horizontalStyle: GUIStyle.none);
+        }
+
+        /// <summary>
+        /// Try get a tab by its type <typeparamref name="T"/> in the list of tabs
+        /// </summary>
+        /// <typeparam name="T">Type of tab</typeparam>
+        /// <param name="tab">Outputted tab</param>
+        /// <returns>Found?</returns>
+        internal bool TryGetTab<T>(out T tab) where T : PackageConfigurationTab
+        {
+            tab = (T) _tabs.FirstOrDefault(x => x.GetType() == typeof(T));
+
+            if (tab == null)
+            {
+                Debug.LogError($"Unable to find tab of type: {typeof(T)}.");
+            }
+
+            return tab != null;
         }
     }
 }

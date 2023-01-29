@@ -8,7 +8,7 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
     /// </summary>
     public static class FileHelper
     {
-        private static readonly string cAssetsPath = @"Assets\";
+        private static readonly string cAssetsPath = "Assets/";
 
         /// <summary>
         /// Get the relative file path to <paramref name="fileName"/>.
@@ -52,7 +52,7 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
             }
 
             // Return the absolute path
-            path = paths[0].Replace("/", "\\");
+            path = paths[0].Replace("\\", "/");
 
             return true;
         }

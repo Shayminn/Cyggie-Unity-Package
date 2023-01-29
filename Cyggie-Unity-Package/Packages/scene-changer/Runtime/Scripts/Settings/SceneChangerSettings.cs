@@ -3,13 +3,14 @@ using Cyggie.Main.Runtime.Configurations;
 using UnityEngine;
 using static UnityEngine.UI.Image;
 using Cyggie.SceneChanger.Runtime.Enums;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+using Cyggie.SceneChanger.Runtime.Services;
+using System;
 
 namespace Cyggie.SceneChanger.Runtime.Configurations
 {
+    /// <summary>
+    /// Settings for <see cref="SceneChangerService"/>
+    /// </summary>
     internal class SceneChangerSettings : PackageConfigurationSettings
     {
         /// <summary>
@@ -95,9 +96,11 @@ namespace Cyggie.SceneChanger.Runtime.Configurations
         internal float ResolutionCheckDelay = 0.5f;
 
         #endregion
-
+        
         internal bool HasImages => Images != null && Images.Length > 0;
 
         internal bool HasTexts => Texts != null && Texts.Length > 0;
+
+        public override System.Type ServiceType => typeof(SceneChangerService);
     }
 }

@@ -23,7 +23,7 @@ namespace Cyggie.Main.Editor.Configurations
         protected SerializedObject _serializedObject = null;
 
         /// <summary>
-        /// File name to the settings (includes extensions .asset)
+        /// File name to the settings (includes extension .asset)
         /// </summary>
         internal string FileName => $"{SettingsType.Name}.asset";
 
@@ -39,7 +39,7 @@ namespace Cyggie.Main.Editor.Configurations
 
         /// <summary>
         /// Any other file paths that the settings require <br/>
-        /// The file paths referenced here will be moved altogether with <see cref="ConfigurationSettings.ConfigurationsPath"/>
+        /// The file paths referenced here will be moved altogether with <see cref="ConfigurationSettings.ConfigurationsPath"/> <br/>
         /// </summary>
         internal virtual string[] SettingsOtherPaths { get; } = { };
 
@@ -60,6 +60,18 @@ namespace Cyggie.Main.Editor.Configurations
 
                 // Create object instance
                 _settings = (PackageConfigurationSettings) ScriptableObject.CreateInstance(SettingsType);
+                _settings.Initialize(configSettings);
+
+                // Add Package Configuration Settings as a ServiceConfiguration
+                // Only for non-service manager settings, no point for it to be referencing itself
+                if (_settings.GetType() != typeof(ServiceManagerSettings))
+                {
+                    if (PackageConfigurationEditorWindow.Window.TryGetTab(out ServiceManagerTab tab))
+                    {
+                        tab.AddConfiguration(_settings);
+                    }
+                }
+
                 OnSettingsCreated();
 
                 // Create asset
@@ -74,7 +86,7 @@ namespace Cyggie.Main.Editor.Configurations
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
 
-                Debug.Log($"New settings ({nameof(_settings.name)}) created at path: \"{assetPath}\".");
+                Debug.Log($"New settings ({_settings.GetType().Name}) created at path: \"{assetPath}\".");
             }
 
             _serializedObject = new SerializedObject(_settings);

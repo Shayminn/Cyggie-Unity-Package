@@ -9,9 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df08adf0c830c2448aeb77f83b758826, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a43057c643ecb343a0f439fb09a8642, type: 3}
   m_Name: LanguageManagerSettings
   m_EditorClassIdentifier: 
   LanguagePacks: []
+  DefaultLanguagePack:
+    LanguageCode: 
+    Translations:
+      _keys: []
+      _values: []
   DebugLogs: 1
-  DataPath: Assets/Resources/LanguageManager/
+  DataPath: Assets/Resources/Cyggie/Package Configurations/Language Manager/

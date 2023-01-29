@@ -14,8 +14,6 @@ namespace Cyggie.Main.Editor.Configurations
     /// </summary>
     internal class ServiceManagerTab : PackageConfigurationTab
     {
-        private const string cPrefabPath = "Packages/cyggie.main/Runtime/Prefabs/Service Manager.prefab";
-
         // Const labels
         private const string cServiceConfigurationManagerLabel = "Service Configuration Manager";
         private const string cSearchLabel = "Search: ";
@@ -35,19 +33,16 @@ namespace Cyggie.Main.Editor.Configurations
         /// <inheritdoc/>
         internal override Type SettingsType => typeof(ServiceManagerSettings);
 
-        internal override string[] SettingsOtherPaths => new string[] { "Test" };
-
-        /// <inheritdoc/>
-        internal override void OnSettingsCreated()
-        {
-            Settings.Prefab = AssetDatabase.LoadAssetAtPath<ServiceManager>(cPrefabPath);
-        }
-
         /// <inheritdoc/>
         internal override void OnInitialized()
         {
             // Retrieve all classes that implements ServiceConfiguration
-            _configTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).Where(t => t.IsSubclassOf(typeof(ServiceConfiguration)) && !t.IsAbstract).ToList();
+            _configTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes())
+
+                // don't add package configuration settings as something instantiable, they are built-in packages and shouldn't be created outside
+                .Where(t => !typeof(PackageConfigurationSettings).IsAssignableFrom(t) && typeof(ServiceConfiguration).IsAssignableFrom(t) && !t.IsAbstract) 
+                .ToList();
         }
 
         /// <inheritdoc/>
@@ -139,6 +134,19 @@ namespace Cyggie.Main.Editor.Configurations
             }
 
             EditorGUILayout.Space(10);
+            _serializedObject.ApplyModifiedProperties();
+        }
+
+        internal void AddConfiguration(ServiceConfiguration config)
+        {
+            Settings.ServiceConfigurations.Add(config);
+            
+            // This will update the current window view
+            _serializedObject = new SerializedObject(Settings);
+
+            // This will make sure the changes are saved in the scriptable object
+            EditorUtility.SetDirty(Settings);
+
             _serializedObject.ApplyModifiedProperties();
         }
     }

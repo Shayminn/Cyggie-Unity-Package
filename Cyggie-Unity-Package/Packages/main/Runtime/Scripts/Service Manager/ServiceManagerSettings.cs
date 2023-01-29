@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -22,7 +23,10 @@ namespace Cyggie.Main.Runtime.Configurations
         internal ServiceManager Prefab = null;
 
         [SerializeField, Tooltip("List of service configurations to apply.")]
-        internal ServiceConfiguration[] ServiceConfigurations = { };
+        internal List<ServiceConfiguration> ServiceConfigurations = new List<ServiceConfiguration>();
+
+        [SerializeField, HideInInspector]
+        internal ConfigurationSettings ConfigurationSettings = null;
 
         /// <summary>
         /// Whether the settings are valid
@@ -30,7 +34,21 @@ namespace Cyggie.Main.Runtime.Configurations
         [SerializeField, HideInInspector]
         internal bool IsValid = true;
 
+        /// <summary>
+        /// The Service Manager settings don't have a ServiceType to reference to
+        /// </summary>
+        public override Type ServiceType => null;
+
 #if UNITY_EDITOR
+
+        private const string cPrefabPath = "Packages/cyggie.main/Runtime/Prefabs/Service Manager.prefab";
+
+        internal override void Initialize(ConfigurationSettings configSettings)
+        {
+            ConfigurationSettings = configSettings;
+            Prefab = AssetDatabase.LoadAssetAtPath<ServiceManager>(cPrefabPath);
+        }
+
         /// <summary>
         /// Validates the Service Manager
         /// </summary>
@@ -41,7 +59,7 @@ namespace Cyggie.Main.Runtime.Configurations
             IsValid = true;
             error = "";
 
-            int oldCount = ServiceConfigurations.Length;
+            int oldCount = ServiceConfigurations.Count;
             IEnumerable<ServiceConfiguration> uniqueConfigs = ServiceConfigurations.Distinct();
 
             // Verify that there are no dupes

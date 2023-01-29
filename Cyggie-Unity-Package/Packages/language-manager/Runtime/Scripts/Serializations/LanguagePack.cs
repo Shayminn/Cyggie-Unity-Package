@@ -20,6 +20,8 @@ namespace Cyggie.LanguageManager.Runtime.Serializations
         [SerializeField, Tooltip("Translations related to this language code."), JsonProperty]
         internal SerializedDictionary<string, string> Translations = new SerializedDictionary<string, string>();
 
+        internal bool IsAssigned => !string.IsNullOrEmpty(LanguageCode);
+
         internal bool Any => Count > 0;
 
         internal int Count => Translations.Count;

@@ -32,5 +32,18 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
                 "$1 $2"
             );
         }
+
+        /// <summary>
+        /// Converts the <paramref name="path"/> to a relative path from the resources folder <br/>
+        /// i.e. Assets/Resources/Cyggie will return Cyggie
+        /// </summary>
+        /// <param name="path">Path to convert</param>
+        /// <returns><paramref name="path"/> if it doesn't contain <see cref="StringConstants.cResources"/></returns>
+        public static string ToResourcesRelativePath(this string path)
+        {
+            if (!path.Contains(StringConstants.cResources)) return path;
+
+            return path[(path.IndexOf(StringConstants.cResources) + StringConstants.cResources.Length + 1)..];
+        }
     }
 }

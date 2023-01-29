@@ -1,6 +1,5 @@
+using Cyggie.LanguageManager.Runtime.Configurations;
 using Cyggie.LanguageManager.Runtime.Serializations;
-using Cyggie.LanguageManager.Runtime.Settings;
-using Cyggie.LanguageManager.Runtime.Utils;
 using Cyggie.Main.Runtime.Services;
 using Newtonsoft.Json;
 using System;
@@ -18,25 +17,24 @@ namespace Cyggie.LanguageManager.Runtime.Services
         private LanguageManagerSettings _settings = null;
         private LanguagePack _currentPack = null;
 
-        public override void Awake()
+        /// <inheritdoc/>
+        protected override void OnInitialized(ServiceConfiguration configuration)
         {
-            base.Awake();
+            base.OnInitialized(configuration);
 
-            // Get the settings at path
-            _settings = Resources.Load<LanguageManagerSettings>(LanguageManagerConstants.cSettingsFile);
-
-            if (_settings == null)
+            if (configuration == null || configuration is not LanguageManagerSettings settings)
             {
-                Debug.LogError($"Failed to load Language Manager Settings in Resources folder.");
+                Debug.Log($"Language Manager's configuration was not found in the Service Manager Configurations.");
                 return;
             }
+
+            // Get the settings at path
+            _settings = settings;
 
             if (_settings.LanguagePacks.Count == 0) return;
 
             string languageCode = PlayerPrefs.GetString(LanguageManagerSettings.cLanguageCodePrefKey, _settings.DefaultLanguagePack.LanguageCode);
             _currentPack = _settings.LanguagePacks.FirstOrDefault(x => x.LanguageCode == languageCode);
-
-            Debug.Log("Hello: " + _currentPack);
 
             if (_currentPack == null)
             {
@@ -88,7 +86,7 @@ namespace Cyggie.LanguageManager.Runtime.Services
             _currentPack = languagePack;
             PlayerPrefs.SetString(LanguageManagerSettings.cLanguageCodePrefKey, _currentPack.LanguageCode);
         }
-
+        
         private bool TryGetLanguagePack(string languageCode, out LanguagePack languagePack)
         {
             languagePack = _settings.LanguagePacks.FirstOrDefault(x => x.LanguageCode == languageCode);

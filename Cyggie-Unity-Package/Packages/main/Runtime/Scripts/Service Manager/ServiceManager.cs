@@ -1,6 +1,9 @@
 using Cyggie.Main.Runtime.Configurations;
+using Cyggie.Main.Runtime.Utils.Extensions;
+using Cyggie.Main.Runtime.Utils.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -17,6 +20,11 @@ namespace Cyggie.Main.Runtime.Services
         /// This is called before <see cref="Service.Awake"/>
         /// </summary>
         public static Action OnServicesInitialized = null;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal static string ConfigurationFolderPath = "";
 
         /// <summary>
         /// Instance object of this class
@@ -42,8 +50,14 @@ namespace Cyggie.Main.Runtime.Services
         [RuntimeInitializeOnLoadMethod]
         public static void Initialize()
         {
+            // Get relative path from assets
+            if (!FileHelper.TryGetRelativePath(ConfigurationSettings.cFileName, out string path)) return;
+
+            path = Path.ChangeExtension(path.ToResourcesRelativePath(), null);
+            ConfigurationSettings configSettings = Resources.Load<ConfigurationSettings>(path);
+
             // Get settings saved in Resources folder
-            _settings = Resources.Load<ServiceManagerSettings>("Cyggie/Package Configurations/ServiceManagerSettings");
+            _settings = Resources.Load<ServiceManagerSettings>($"{configSettings.ConfigurationsPath.ToResourcesRelativePath()}{nameof(ServiceManagerSettings)}");
 
             if (_settings == null)
             {
@@ -105,6 +119,7 @@ namespace Cyggie.Main.Runtime.Services
             }
 
             InitializeServices();
+
             _services.ForEach(x => x.Awake());
         }
 
