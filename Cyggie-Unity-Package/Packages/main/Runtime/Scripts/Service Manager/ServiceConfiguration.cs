@@ -26,6 +26,6 @@ namespace Cyggie.Main.Runtime.Services
                 Debug.LogError($"Service Configuration of type {GetType()} has a {nameof(ServiceType)} that does not derive from {nameof(Service)}");
             }
         }
-    }
 #endif
+    }
 }

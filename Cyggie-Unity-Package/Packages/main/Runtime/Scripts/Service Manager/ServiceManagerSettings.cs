@@ -78,6 +78,6 @@ namespace Cyggie.Main.Runtime.Configurations
 
             return IsValid;
         }
-    }
 #endif
+    }
 }

@@ -1,7 +1,6 @@
 using Cyggie.LanguageManager.Runtime.Configurations;
 using Cyggie.LanguageManager.Runtime.Serializations;
 using Cyggie.Main.Runtime.Services;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +13,8 @@ namespace Cyggie.LanguageManager.Runtime.Services
     /// </summary>
     public sealed class LanguageService : Service
     {
+        public Action<string> OnLanguageChanged;
+
         private LanguageManagerSettings _settings = null;
         private LanguagePack _currentPack = null;
 
@@ -45,6 +46,12 @@ namespace Cyggie.LanguageManager.Runtime.Services
 
         #region Public methods
 
+        /// <summary>
+        /// Translate value with a given <paramref name="key"/> <br/>
+        /// This will use the currently selected language pack automatically
+        /// </summary>
+        /// <param name="key">Translation key</param>
+        /// <returns>Translation value based on key (Empty if not found)</returns>
         public string Translate(string key)
         {
             if (!VerifyInitialization()) return string.Empty;
@@ -52,6 +59,12 @@ namespace Cyggie.LanguageManager.Runtime.Services
             return Translate(_currentPack, key);
         }
 
+        /// <summary>
+        /// Translate value with a given <paramref name="key"/> on a specific <paramref name="languageCode"/>
+        /// </summary>
+        /// <param name="languageCode">Target language code</param>
+        /// <param name="key">Translation key</param>
+        /// <returns>Translation value based on key (Empty if not found)</returns>
         public string Translate(string languageCode, string key)
         {
             if (!VerifyInitialization()) return string.Empty;
@@ -64,7 +77,11 @@ namespace Cyggie.LanguageManager.Runtime.Services
             return string.Empty;
         }
 
-        public void ChangeLanguagePack(string languageCode)
+        /// <summary>
+        /// Change the selected language to <paramref name="languageCode"/>
+        /// </summary>
+        /// <param name="languageCode">Language code of language pack</param>
+        public void ChangeLanguage(string languageCode)
         {
             if (TryGetLanguagePack(languageCode, out LanguagePack languagePack))
             {
@@ -72,6 +89,10 @@ namespace Cyggie.LanguageManager.Runtime.Services
             }
         }
 
+        /// <summary>
+        /// Get a list of all language codes available in the game
+        /// </summary>
+        /// <returns>IEnumerable of language codes</returns>
         public IEnumerable<string> GetLanguageCodes()
         {
             return _settings.LanguagePacks.Select(x => x.LanguageCode);
@@ -81,12 +102,25 @@ namespace Cyggie.LanguageManager.Runtime.Services
 
         #region Private methods
 
+        /// <summary>
+        /// Change the language pack to the selected one <br/>
+        /// Updating the PlayerPrefs for the next time the game is boot up
+        /// </summary>
+        /// <param name="languagePack"></param>
         private void ChangeLanguagePack(LanguagePack languagePack)
         {
             _currentPack = languagePack;
             PlayerPrefs.SetString(LanguageManagerSettings.cLanguageCodePrefKey, _currentPack.LanguageCode);
+
+            OnLanguageChanged(_currentPack.LanguageCode);
         }
-        
+
+        /// <summary>
+        /// Try get a language pack by its code
+        /// </summary>
+        /// <param name="languageCode">Language code to search</param>
+        /// <param name="languagePack">Outputted language pack</param>
+        /// <returns>Whether it was found or not</returns>
         private bool TryGetLanguagePack(string languageCode, out LanguagePack languagePack)
         {
             languagePack = _settings.LanguagePacks.FirstOrDefault(x => x.LanguageCode == languageCode);
@@ -99,6 +133,12 @@ namespace Cyggie.LanguageManager.Runtime.Services
             return languagePack != null;
         }
 
+        /// <summary>
+        /// Translate within a language pack by a key
+        /// </summary>
+        /// <param name="languagePack">Target language pack</param>
+        /// <param name="key">Translation key</param>
+        /// <returns>Translation value based on key (Empty if not found)</returns>
         private string Translate(LanguagePack languagePack, string key)
         {
             if (!languagePack.ContainsKey(key))
@@ -110,6 +150,10 @@ namespace Cyggie.LanguageManager.Runtime.Services
             return languagePack.Translations[key];
         }
 
+        /// <summary>
+        /// Verify that the Language Service has been initialized correctly
+        /// </summary>
+        /// <returns></returns>
         private bool VerifyInitialization()
         {
             if (_currentPack == null)
@@ -122,22 +166,5 @@ namespace Cyggie.LanguageManager.Runtime.Services
         }
 
         #endregion
-    }
-
-    [Serializable]
-    internal class LanguageEntry
-    {
-        [JsonProperty]
-        internal string Key { get; set; } = "";
-
-        [JsonProperty]
-        internal string Value { get; set; } = "";
-
-        [JsonConstructor]
-        internal LanguageEntry(string key = "", string value = "")
-        {
-            Key = key;
-            Value = value;
-        }
     }
 }

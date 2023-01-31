@@ -32,6 +32,7 @@ namespace Cyggie.LanguageManager.Runtime.Configurations
         [SerializeField, HideInInspector]
         internal string DataPath = "";
 
+        /// <inheritdoc/>
         internal override void Initialize(ConfigurationSettings configSettings)
         {
             DataPath = configSettings.ConfigurationsPath + cLanguageFolderPath;

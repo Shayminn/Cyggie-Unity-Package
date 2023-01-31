@@ -51,7 +51,11 @@ namespace Cyggie.Main.Runtime.Services
         public static void Initialize()
         {
             // Get relative path from assets
-            if (!FileHelper.TryGetRelativePath(ConfigurationSettings.cFileName, out string path)) return;
+            if (!FileHelper.TryGetRelativePath(ConfigurationSettings.cFileName, out string path))
+            {
+                Debug.LogError($"Initialize your Cyggie Configurations with the Unity Toolbar (Cyggie/Package Configurations)");
+                return;
+            }
 
             path = Path.ChangeExtension(path.ToResourcesRelativePath(), null);
             ConfigurationSettings configSettings = Resources.Load<ConfigurationSettings>(path);
