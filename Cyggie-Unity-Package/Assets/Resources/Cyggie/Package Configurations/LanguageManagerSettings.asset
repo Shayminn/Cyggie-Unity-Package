@@ -12,19 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a43057c643ecb343a0f439fb09a8642, type: 3}
   m_Name: LanguageManagerSettings
   m_EditorClassIdentifier: 
-  LanguagePacks:
-  - LanguageCode: test
-    Translations:
-      _keys:
-      - key
-      _values:
-      - value
+  LanguagePacks: []
   DefaultLanguagePack:
-    LanguageCode: test
+    LanguageCode: 
     Translations:
-      _keys:
-      - key
-      _values:
-      - value
+      _keys: []
+      _values: []
   DebugLogs: 1
   DataPath: Assets/Resources/Cyggie/Package Configurations/Language Manager/

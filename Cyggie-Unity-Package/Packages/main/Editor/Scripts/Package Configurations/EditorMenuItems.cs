@@ -4,6 +4,8 @@ using UnityEditor;
 using UnityEngine;
 using System.Linq;
 using Cyggie.Main.Editor.Configurations;
+using UnityEngine.Tilemaps;
+using Cyggie.Main.Runtime.Utils.Extensions;
 
 namespace Cyggie.Main.Editor
 {
@@ -20,13 +22,16 @@ namespace Cyggie.Main.Editor
         {
             // Get all PackageConfigurationTab in project
             List<Type> tabTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).Where(t => t.IsSubclassOf(typeof(PackageConfigurationTab)) && !t.IsAbstract).ToList();
-            List<PackageConfigurationTab> tabs = tabTypes.Select(type => (PackageConfigurationTab) Activator.CreateInstance(type)).ToList();
+            List<PackageConfigurationTab> tabs = tabTypes.Select(type => (PackageConfigurationTab) Activator.CreateInstance(type)).OrderBy(tab => tab.GetType().Name).ToList();
 
             if (tabs == null || tabs.Count == 0)
             {
                 Debug.Log($"Failed to open Package Configuration window: No tab of type {typeof(PackageConfigurationTab)} was found.");
                 return;
             }
+
+            PackageConfigurationTab serviceManagerTab = tabs.FirstOrDefault(x => x.GetType() == typeof(ServiceManagerTab));
+            tabs = tabs.MoveFirst(serviceManagerTab).ToList();
 
             // Create window
             PackageConfigurationEditorWindow window = EditorWindow.GetWindow<PackageConfigurationEditorWindow>();

@@ -360,7 +360,6 @@ namespace Cyggie.LanguageManager.Editor.Configurations
                 IEnumerable<string> files = Directory.EnumerateFiles(Settings.DataPath, "*.json");
                 foreach (string filePath in files)
                 {
-                    Debug.Log(filePath);
                     string fileName = Path.GetFileNameWithoutExtension(filePath);
                     string content = File.ReadAllText(filePath);
                     SerializedDictionary<string, string> translations = JsonConvert.DeserializeObject<SerializedDictionary<string, string>>(content);

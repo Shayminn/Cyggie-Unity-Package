@@ -55,12 +55,15 @@ namespace Cyggie.Main.Editor.Configurations
                 _configSettings = CreateInstance<ConfigurationSettings>();
 
                 // Create asset
+                string configPath = $"{ConfigurationSettings.cDefaultFolderPath}{ConfigurationSettings.cFileName}";
                 Directory.CreateDirectory(ConfigurationSettings.cDefaultFolderPath);
-                AssetDatabase.CreateAsset(_configSettings, $"{ConfigurationSettings.cDefaultFolderPath}{ConfigurationSettings.cFileName}");
+                AssetDatabase.CreateAsset(_configSettings, configPath);
 
                 // Save asset
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
+
+                Debug.Log($"Created configuration settings file at {configPath}.");
             }
 
             _serializedObject = new SerializedObject(_configSettings);
