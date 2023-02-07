@@ -1,7 +1,5 @@
 {
   "dependencies": {
-    "cyggie.main": "https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/main",
-    "cyggie.scene-changer": "https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/scene-changer",
     "com.unity.collab-proxy": "1.17.1",
     "com.unity.feature.development": "1.0.1",
     "com.unity.ide.rider": "3.0.15",
@@ -12,6 +10,8 @@
     "com.unity.timeline": "1.6.4",
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.7.8",
+    "cyggie.main": "https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/main",
+    "cyggie.scene-changer": "https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/scene-changer",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
