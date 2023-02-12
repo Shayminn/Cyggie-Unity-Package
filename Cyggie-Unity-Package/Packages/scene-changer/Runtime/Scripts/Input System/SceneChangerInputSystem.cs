@@ -15,14 +15,12 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace Cyggie.SceneChanger.Runtime.InputSystem
+internal partial class @SceneChangerInputSystem : IInputActionCollection2, IDisposable
 {
-    internal partial class @SceneChangerInputSystem : IInputActionCollection2, IDisposable
+    public InputActionAsset asset { get; }
+    public @SceneChangerInputSystem()
     {
-        public InputActionAsset asset { get; }
-        public @SceneChangerInputSystem()
-        {
-            asset = InputActionAsset.FromJson(@"{
+        asset = InputActionAsset.FromJson(@"{
     ""name"": ""SceneChangerInputSystem"",
     ""maps"": [
         {
@@ -44,100 +42,99 @@ namespace Cyggie.SceneChanger.Runtime.InputSystem
     ],
     ""controlSchemes"": []
 }");
-            // SceneChanger
-            m_SceneChanger = asset.FindActionMap("SceneChanger", throwIfNotFound: true);
-            m_SceneChanger_Wait = m_SceneChanger.FindAction("Wait", throwIfNotFound: true);
-        }
-
-        public void Dispose()
-        {
-            UnityEngine.Object.Destroy(asset);
-        }
-
-        public InputBinding? bindingMask
-        {
-            get => asset.bindingMask;
-            set => asset.bindingMask = value;
-        }
-
-        public ReadOnlyArray<InputDevice>? devices
-        {
-            get => asset.devices;
-            set => asset.devices = value;
-        }
-
-        public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
-
-        public bool Contains(InputAction action)
-        {
-            return asset.Contains(action);
-        }
-
-        public IEnumerator<InputAction> GetEnumerator()
-        {
-            return asset.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public void Enable()
-        {
-            asset.Enable();
-        }
-
-        public void Disable()
-        {
-            asset.Disable();
-        }
-        public IEnumerable<InputBinding> bindings => asset.bindings;
-
-        public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
-        {
-            return asset.FindAction(actionNameOrId, throwIfNotFound);
-        }
-        public int FindBinding(InputBinding bindingMask, out InputAction action)
-        {
-            return asset.FindBinding(bindingMask, out action);
-        }
-
         // SceneChanger
-        private readonly InputActionMap m_SceneChanger;
-        private ISceneChangerActions m_SceneChangerActionsCallbackInterface;
-        private readonly InputAction m_SceneChanger_Wait;
-        public struct SceneChangerActions
+        m_SceneChanger = asset.FindActionMap("SceneChanger", throwIfNotFound: true);
+        m_SceneChanger_Wait = m_SceneChanger.FindAction("Wait", throwIfNotFound: true);
+    }
+
+    public void Dispose()
+    {
+        UnityEngine.Object.Destroy(asset);
+    }
+
+    public InputBinding? bindingMask
+    {
+        get => asset.bindingMask;
+        set => asset.bindingMask = value;
+    }
+
+    public ReadOnlyArray<InputDevice>? devices
+    {
+        get => asset.devices;
+        set => asset.devices = value;
+    }
+
+    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+
+    public bool Contains(InputAction action)
+    {
+        return asset.Contains(action);
+    }
+
+    public IEnumerator<InputAction> GetEnumerator()
+    {
+        return asset.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    public void Enable()
+    {
+        asset.Enable();
+    }
+
+    public void Disable()
+    {
+        asset.Disable();
+    }
+    public IEnumerable<InputBinding> bindings => asset.bindings;
+
+    public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
+    {
+        return asset.FindAction(actionNameOrId, throwIfNotFound);
+    }
+    public int FindBinding(InputBinding bindingMask, out InputAction action)
+    {
+        return asset.FindBinding(bindingMask, out action);
+    }
+
+    // SceneChanger
+    private readonly InputActionMap m_SceneChanger;
+    private ISceneChangerActions m_SceneChangerActionsCallbackInterface;
+    private readonly InputAction m_SceneChanger_Wait;
+    public struct SceneChangerActions
+    {
+        private @SceneChangerInputSystem m_Wrapper;
+        public SceneChangerActions(@SceneChangerInputSystem wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Wait => m_Wrapper.m_SceneChanger_Wait;
+        public InputActionMap Get() { return m_Wrapper.m_SceneChanger; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SceneChangerActions set) { return set.Get(); }
+        public void SetCallbacks(ISceneChangerActions instance)
         {
-            private @SceneChangerInputSystem m_Wrapper;
-            public SceneChangerActions(@SceneChangerInputSystem wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Wait => m_Wrapper.m_SceneChanger_Wait;
-            public InputActionMap Get() { return m_Wrapper.m_SceneChanger; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(SceneChangerActions set) { return set.Get(); }
-            public void SetCallbacks(ISceneChangerActions instance)
+            if (m_Wrapper.m_SceneChangerActionsCallbackInterface != null)
             {
-                if (m_Wrapper.m_SceneChangerActionsCallbackInterface != null)
-                {
-                    @Wait.started -= m_Wrapper.m_SceneChangerActionsCallbackInterface.OnWait;
-                    @Wait.performed -= m_Wrapper.m_SceneChangerActionsCallbackInterface.OnWait;
-                    @Wait.canceled -= m_Wrapper.m_SceneChangerActionsCallbackInterface.OnWait;
-                }
-                m_Wrapper.m_SceneChangerActionsCallbackInterface = instance;
-                if (instance != null)
-                {
-                    @Wait.started += instance.OnWait;
-                    @Wait.performed += instance.OnWait;
-                    @Wait.canceled += instance.OnWait;
-                }
+                @Wait.started -= m_Wrapper.m_SceneChangerActionsCallbackInterface.OnWait;
+                @Wait.performed -= m_Wrapper.m_SceneChangerActionsCallbackInterface.OnWait;
+                @Wait.canceled -= m_Wrapper.m_SceneChangerActionsCallbackInterface.OnWait;
+            }
+            m_Wrapper.m_SceneChangerActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Wait.started += instance.OnWait;
+                @Wait.performed += instance.OnWait;
+                @Wait.canceled += instance.OnWait;
             }
         }
-        public SceneChangerActions @SceneChanger => new SceneChangerActions(this);
-        public interface ISceneChangerActions
-        {
-            void OnWait(InputAction.CallbackContext context);
-        }
+    }
+    public SceneChangerActions @SceneChanger => new SceneChangerActions(this);
+    public interface ISceneChangerActions
+    {
+        void OnWait(InputAction.CallbackContext context);
     }
 }

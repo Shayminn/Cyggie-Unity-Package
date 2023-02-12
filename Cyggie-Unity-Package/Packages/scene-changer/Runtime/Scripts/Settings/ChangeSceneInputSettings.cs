@@ -1,4 +1,3 @@
-using Cyggie.SceneChanger.Runtime.InputSystem;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
