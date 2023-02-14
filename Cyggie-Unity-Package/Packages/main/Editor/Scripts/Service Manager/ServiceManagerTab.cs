@@ -41,7 +41,7 @@ namespace Cyggie.Main.Editor.Configurations
                 .SelectMany(a => a.GetTypes())
 
                 // don't add package configuration settings as something instantiable, they are built-in packages and shouldn't be created outside
-                .Where(t => !typeof(PackageConfigurationSettings).IsAssignableFrom(t) && typeof(ServiceConfiguration).IsAssignableFrom(t) && !t.IsAbstract) 
+                .Where(t => !typeof(PackageConfigurationSettings).IsAssignableFrom(t) && typeof(Service).IsAssignableFrom(t) && !t.IsAbstract)
                 .ToList();
         }
 
@@ -95,11 +95,11 @@ namespace Cyggie.Main.Editor.Configurations
             // Filter by added configurations
             if (_filterAdded)
             {
-                filteredTypes.RemoveAll(type => Settings.ServiceConfigurations.Any(x => x != null && x.GetType() == type));
+                filteredTypes.RemoveAll(type => Settings.ServiceConfigurations.Any(x => x != null && x.ServiceType == type));
             }
 
             // Draw selection grid
-            _selectedConfigIndex = GUILayout.SelectionGrid(_selectedConfigIndex, filteredTypes.Select(x => x.FullName).ToArray(), 1, GUILayout.Width(495));
+            _selectedConfigIndex = GUILayout.SelectionGrid(_selectedConfigIndex, filteredTypes.Select(x => x.FullName).ToArray(), 1);
             EditorGUILayout.Space(10);
 
             // Draw create configuration button
@@ -140,7 +140,7 @@ namespace Cyggie.Main.Editor.Configurations
         internal void AddConfiguration(ServiceConfiguration config)
         {
             Settings.ServiceConfigurations.Add(config);
-            
+
             // This will update the current window view
             _serializedObject = new SerializedObject(Settings);
 
