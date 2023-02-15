@@ -137,6 +137,9 @@ namespace Cyggie.Main.Editor.Configurations
                             string uniquePath = AssetDatabase.GenerateUniqueAssetPath($"Assets/{scriptableObj.name}.asset");
                             AssetDatabase.CreateAsset(scriptableObj, uniquePath);
 
+                            AddConfiguration(configuration);
+                            _selectedConfigIndex = -1;
+
                             _logMessage = $"Created new service configuration of type {type} at \"{uniquePath}\".";
                         }
                     }
@@ -165,6 +168,10 @@ namespace Cyggie.Main.Editor.Configurations
             _serializedObject.ApplyModifiedProperties();
         }
 
+        /// <summary>
+        /// Add configuration through script from settings
+        /// </summary>
+        /// <param name="config">Configuration to add</param>
         internal void AddConfiguration(ServiceConfiguration config)
         {
             Settings.ServiceConfigurations.Add(config);
