@@ -28,7 +28,7 @@ namespace Cyggie.Main.Editor.Configurations
         private List<Type> _configTypes = null;
 
         /// <inheritdoc/>
-        private ServiceManagerSettings Settings => (ServiceManagerSettings) _settings;
+        private ServiceManagerSettings Settings => (ServiceManagerSettings)_settings;
 
         /// <inheritdoc/>
         internal override Type SettingsType => typeof(ServiceManagerSettings);
@@ -41,7 +41,7 @@ namespace Cyggie.Main.Editor.Configurations
                 .SelectMany(a => a.GetTypes())
 
                 // don't add package configuration settings as something instantiable, they are built-in packages and shouldn't be created outside
-                .Where(t => !typeof(PackageConfigurationSettings).IsAssignableFrom(t) && typeof(Service).IsAssignableFrom(t) && !t.IsAbstract)
+                .Where(t => !typeof(PackageConfigurationSettings).IsAssignableFrom(t) && typeof(ServiceConfiguration).IsAssignableFrom(t) && !t.IsAbstract)
                 .ToList();
         }
 
@@ -95,36 +95,64 @@ namespace Cyggie.Main.Editor.Configurations
             // Filter by added configurations
             if (_filterAdded)
             {
-                filteredTypes.RemoveAll(type => Settings.ServiceConfigurations.Any(x => x != null && x.ServiceType == type));
+                filteredTypes.RemoveAll(type => Settings.ServiceConfigurations.Any(x => x != null && x.GetType() == type));
             }
 
             // Draw selection grid
             _selectedConfigIndex = GUILayout.SelectionGrid(_selectedConfigIndex, filteredTypes.Select(x => x.FullName).ToArray(), 1);
             EditorGUILayout.Space(10);
 
+            bool isError = false;
+
             // Draw create configuration button
-            EditorGUIHelper.DrawAsReadOnly(_selectedConfigIndex == -1, gui: () =>
+            Type type = _selectedConfigIndex != -1 ?
+                        filteredTypes.ElementAt(_selectedConfigIndex) :
+                        null;
+
+            ScriptableObject scriptableObj = null;
+            if (type != null)
+            {
+                scriptableObj = ScriptableObject.CreateInstance(type);
+
+                if (scriptableObj is ServiceConfiguration configuration)
+                {
+                    if (!configuration.Validate())
+                    {
+                        isError = true;
+                        _logMessage = $"Selected configuration ({type}) is invalid. Make sure the {nameof(ServiceConfiguration.ServiceType)} derives from {typeof(Service)}";
+                    }
+                }
+            }
+
+            EditorGUIHelper.DrawAsReadOnly(_selectedConfigIndex == -1 || isError, gui: () =>
             {
                 if (GUILayout.Button(cCreateButtonLabel, GUILayout.Width(160)))
                 {
-                    Type type = filteredTypes.ElementAt(_selectedConfigIndex);
-                    ScriptableObject scriptableObj = ScriptableObject.CreateInstance(type);
                     scriptableObj.name = type.Name;
 
-                    string uniquePath = AssetDatabase.GenerateUniqueAssetPath($"Assets/{scriptableObj.name}.asset");
-                    AssetDatabase.CreateAsset(scriptableObj, uniquePath);
+                    if (scriptableObj is ServiceConfiguration configuration)
+                    {
+                        if (configuration.Validate())
+                        {
+                            string uniquePath = AssetDatabase.GenerateUniqueAssetPath($"Assets/{scriptableObj.name}.asset");
+                            AssetDatabase.CreateAsset(scriptableObj, uniquePath);
 
-                    _logMessage = $"Created new service configuration of type {type} at \"{uniquePath}\".";
+                            _logMessage = $"Created new service configuration of type {type} at \"{uniquePath}\".";
+                        }
+                    }
                 }
-                EditorGUILayout.Space(10);
             });
 
+            EditorGUILayout.Space(10);
+
             // Validate settings
-            bool isError = false;
-            if (!Settings.Validate(out string error))
+            if (!isError)
             {
-                isError = true;
-                _logMessage = error;
+                if (!Settings.Validate(out string error))
+                {
+                    isError = true;
+                    _logMessage = error;
+                }
             }
 
             // Draw log message

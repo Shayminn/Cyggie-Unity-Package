@@ -15,13 +15,24 @@ namespace Cyggie.Main.Runtime.Services
         public abstract Type ServiceType { get; }
 
 #if UNITY_EDITOR
+
+        /// <summary>
+        /// Validate the service configuration <br/>
+        /// Making sure that <see cref="ServiceType"/> is assigned, and derives from <see cref="ServiceType"/> (and is not abstract)
+        /// </summary>
+        /// <returns>Valid?</returns>
+        internal bool Validate()
+        {
+            // Validate if ServiceType is assigned
+            return ServiceType != null && (typeof(Service).IsAssignableFrom(ServiceType) && !ServiceType.IsAbstract);
+        }
+
         /// <summary>
         /// Validate that ServiceType is part of <see cref="Service"/>
         /// </summary>
         protected virtual void OnValidate()
         {
-            // Validate if ServiceType is assigned
-            if (ServiceType != null && (!typeof(Service).IsAssignableFrom(ServiceType) || ServiceType.IsAbstract))
+            if (!Validate())
             {
                 Debug.LogError($"Service Configuration of type {GetType()} has a {nameof(ServiceType)} that does not derive from {nameof(Service)}");
             }
