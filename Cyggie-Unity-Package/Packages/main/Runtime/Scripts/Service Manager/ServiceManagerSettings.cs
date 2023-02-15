@@ -67,6 +67,7 @@ namespace Cyggie.Main.Runtime.Configurations
             {
                 error = cDuplicateConfiguration;
                 IsValid = false;
+                return false;
             }
 
             // Verify that there are no null configurations
