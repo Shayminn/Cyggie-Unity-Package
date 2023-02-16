@@ -7,11 +7,18 @@ namespace Cyggie.Main.Runtime.Services
     /// </summary>
     public abstract class Service
     {
+        private ServiceManager _manager = null;
+
         /// <summary>
         /// The monobehaviour that holds this Service <br/>
         /// This can be used for MonoBehaviour actions (i.e. StartCoroutine)
         /// </summary>
-        protected MonoBehaviour _mono = null;
+        protected MonoBehaviour Monobehaviour => _manager;
+
+        /// <summary>
+        /// The game object that holds this Service
+        /// </summary>
+        protected GameObject GameObject => _manager.gameObject;
 
         /// <summary>
         /// Configuration object
@@ -40,9 +47,9 @@ namespace Cyggie.Main.Runtime.Services
         /// Object has been initialized
         /// </summary>
         /// <param name="configuration"></param>
-        internal virtual void Initialize(MonoBehaviour mono, ServiceConfiguration configuration)
+        internal virtual void Initialize(ServiceManager manager, ServiceConfiguration configuration)
         {
-            _mono = mono;
+            _manager = manager;
 
             _configuration = configuration;
             OnInitialized(configuration);
