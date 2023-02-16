@@ -1,10 +1,18 @@
-﻿namespace Cyggie.Main.Runtime.Services
+﻿using UnityEngine;
+
+namespace Cyggie.Main.Runtime.Services
 {
     /// <summary>
     /// Model abstract class of Service to be used by <see cref="ServiceManager"/>
     /// </summary>
     public abstract class Service
     {
+        /// <summary>
+        /// The monobehaviour that holds this Service <br/>
+        /// This can be used for MonoBehaviour actions (i.e. StartCoroutine)
+        /// </summary>
+        protected MonoBehaviour _mono = null;
+
         /// <summary>
         /// Configuration object
         /// </summary>
@@ -32,8 +40,10 @@
         /// Object has been initialized
         /// </summary>
         /// <param name="configuration"></param>
-        internal virtual void Initialize(ServiceConfiguration configuration)
+        internal virtual void Initialize(MonoBehaviour mono, ServiceConfiguration configuration)
         {
+            _mono = mono;
+
             _configuration = configuration;
             OnInitialized(configuration);
         }
