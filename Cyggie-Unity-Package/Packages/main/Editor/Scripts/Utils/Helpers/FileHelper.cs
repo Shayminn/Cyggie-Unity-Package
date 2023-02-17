@@ -1,7 +1,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace Cyggie.Main.Runtime.Utils.Helpers
+namespace Cyggie.Main.Editor.Utils.Helpers
 {
     /// <summary>
     /// Helper class for File management
