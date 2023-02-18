@@ -1,4 +1,5 @@
-﻿using Cyggie.Main.Runtime.Configurations;
+﻿using Cyggie.Main.Editor.Utils.Helpers;
+using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using System;
 using System.IO;
@@ -33,13 +34,18 @@ namespace Cyggie.Main.Editor.Configurations
         internal string ClassName => GetType().Name.Replace("Tab", "").SplitCamelCase();
 
         /// <summary>
+        /// Path to the asset from the resources folder
+        /// </summary>
+        internal abstract string ResourcesPath { get; }
+
+        /// <summary>
         /// Type of settings that inherits <see cref="PackageConfigurationSettings"/>
         /// </summary>
         internal abstract Type SettingsType { get; }
 
         /// <summary>
         /// Any other file paths that the settings require <br/>
-        /// The file paths referenced here will be moved altogether with <see cref="ConfigurationSettings.ConfigurationsPath"/> <br/>
+        /// The file paths referenced here will be moved altogether with <see cref="ConfigurationSettings.ResourcesPath"/> <br/>
         /// </summary>
         internal virtual string[] SettingsOtherPaths { get; } = { };
 
@@ -50,7 +56,7 @@ namespace Cyggie.Main.Editor.Configurations
         internal void Initialize(ConfigurationSettings configSettings)
         {
             // Get settings
-            string assetPath = $"{configSettings.ConfigurationsPath}{FileName}";
+            string assetPath = $"{configSettings.ResourcesPath}{ResourcesPath}.asset";
             _settings = (PackageConfigurationSettings) AssetDatabase.LoadAssetAtPath(assetPath, SettingsType);
 
             if (_settings == null)
@@ -75,12 +81,7 @@ namespace Cyggie.Main.Editor.Configurations
                 OnSettingsCreated();
 
                 // Create asset
-                if (!Directory.Exists(assetPath))
-                {
-                    Directory.CreateDirectory(assetPath);
-                }
-
-                AssetDatabase.CreateAsset(_settings, assetPath);
+                AssetDatabaseHelper.CreateAsset(_settings, assetPath);
 
                 // Save asset
                 AssetDatabase.SaveAssets();

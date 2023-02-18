@@ -24,6 +24,9 @@ namespace Cyggie.SceneChanger.Editor.Configurations
         /// <inheritdoc/>
         internal override System.Type SettingsType => typeof(SceneChangerSettings);
 
+        /// <inheritdoc/>
+        internal override string ResourcesPath => SceneChangerSettings.cResourcesPath;
+
         private SceneChangerSettings Settings => (SceneChangerSettings) _settings;
 
         internal override void OnSettingsCreated()

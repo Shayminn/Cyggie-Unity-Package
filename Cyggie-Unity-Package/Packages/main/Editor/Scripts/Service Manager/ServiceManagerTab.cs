@@ -34,6 +34,9 @@ namespace Cyggie.Main.Editor.Configurations
         internal override Type SettingsType => typeof(ServiceManagerSettings);
 
         /// <inheritdoc/>
+        internal override string ResourcesPath => ServiceManagerSettings.cResourcesPath;
+
+        /// <inheritdoc/>
         internal override void OnInitialized()
         {
             // Retrieve all classes that implements ServiceConfiguration
@@ -135,7 +138,7 @@ namespace Cyggie.Main.Editor.Configurations
                         if (configuration.Validate())
                         {
                             string uniquePath = AssetDatabase.GenerateUniqueAssetPath($"Assets/{scriptableObj.name}.asset");
-                            AssetDatabase.CreateAsset(scriptableObj, uniquePath);
+                            AssetDatabaseHelper.CreateAsset(scriptableObj, uniquePath);
 
                             AddConfiguration(configuration);
                             _selectedConfigIndex = -1;

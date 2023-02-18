@@ -13,6 +13,8 @@ namespace Cyggie.SceneChanger.Runtime.Configurations
     /// </summary>
     internal class SceneChangerSettings : PackageConfigurationSettings
     {
+        internal const string cResourcesPath = ConfigurationSettings.cResourcesFolderPath + nameof(SceneChangerSettings);
+
         /// <summary>
         /// Loading Screen prefab object
         /// </summary>

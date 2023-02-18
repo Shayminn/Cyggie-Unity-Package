@@ -12,6 +12,7 @@ namespace Cyggie.LanguageManager.Runtime.Configurations
     /// </summary>
     internal class LanguageManagerSettings : PackageConfigurationSettings
     {
+        internal const string cResourcesPath = ConfigurationSettings.cResourcesFolderPath + nameof(LanguageManagerSettings);
         internal const string cLanguageCodePrefKey = "LanguageManager/LanguageCode";
 
         [SerializeField, Tooltip("List of language packs, each having a language code and its associated translations.")]
@@ -35,7 +36,7 @@ namespace Cyggie.LanguageManager.Runtime.Configurations
         /// <inheritdoc/>
         internal override void Initialize(ConfigurationSettings configSettings)
         {
-            DataPath = configSettings.ConfigurationsPath + cLanguageFolderPath;
+            DataPath = configSettings.ResourcesPath + ConfigurationSettings.cResourcesFolderPath + cLanguageFolderPath;
         }
 #endif
     }

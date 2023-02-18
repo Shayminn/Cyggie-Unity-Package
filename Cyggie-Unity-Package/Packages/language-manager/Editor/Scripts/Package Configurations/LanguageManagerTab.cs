@@ -62,6 +62,9 @@ namespace Cyggie.LanguageManager.Editor.Configurations
         private LanguageManagerSettings Settings => (LanguageManagerSettings) _settings;
 
         /// <inheritdoc/>
+        internal override string ResourcesPath => LanguageManagerSettings.cResourcesPath;
+
+        /// <inheritdoc/>
         internal override Type SettingsType => typeof(LanguageManagerSettings);
 
         /// <inheritdoc/>

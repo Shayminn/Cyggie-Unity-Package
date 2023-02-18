@@ -16,6 +16,8 @@ namespace Cyggie.Main.Runtime.Configurations
     /// </summary>
     internal class ServiceManagerSettings : PackageConfigurationSettings
     {
+        internal const string cResourcesPath = ConfigurationSettings.cResourcesFolderPath + nameof(ServiceManagerSettings);
+
         // Error strings
         private const string cDuplicateConfiguration = "Multiple of the same configuration has been assigned to " + nameof(ServiceConfigurations);
 
@@ -24,9 +26,6 @@ namespace Cyggie.Main.Runtime.Configurations
 
         [SerializeField, Tooltip("List of service configurations to apply.")]
         internal List<ServiceConfiguration> ServiceConfigurations = new List<ServiceConfiguration>();
-
-        [SerializeField, HideInInspector]
-        internal ConfigurationSettings ConfigurationSettings = null;
 
         /// <summary>
         /// Whether the settings are valid
@@ -45,7 +44,6 @@ namespace Cyggie.Main.Runtime.Configurations
 
         internal override void Initialize(ConfigurationSettings configSettings)
         {
-            ConfigurationSettings = configSettings;
             Prefab = AssetDatabase.LoadAssetAtPath<ServiceManager>(cPrefabPath);
         }
 

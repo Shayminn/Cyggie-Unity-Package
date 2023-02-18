@@ -50,18 +50,8 @@ namespace Cyggie.Main.Runtime.Services
         [RuntimeInitializeOnLoadMethod]
         public static void Initialize()
         {
-            // Get relative path from assets
-            if (!FileHelper.TryGetRelativePath(ConfigurationSettings.cFileName, out string path))
-            {
-                Debug.LogError($"Initialize your Cyggie Configurations with the Unity Toolbar (Cyggie/Package Configurations)");
-                return;
-            }
-
-            path = Path.ChangeExtension(path.ToResourcesRelativePath(), null);
-            ConfigurationSettings configSettings = Resources.Load<ConfigurationSettings>(path);
-
             // Get settings saved in Resources folder
-            _settings = Resources.Load<ServiceManagerSettings>($"{configSettings.ConfigurationsPath.ToResourcesRelativePath()}{nameof(ServiceManagerSettings)}");
+            _settings = Resources.Load<ServiceManagerSettings>(ServiceManagerSettings.cResourcesPath);
 
             if (_settings == null)
             {
