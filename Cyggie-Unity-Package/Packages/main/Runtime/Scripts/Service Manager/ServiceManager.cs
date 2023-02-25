@@ -85,9 +85,13 @@ namespace Cyggie.Main.Runtime.Services
             {
                 Service service = (Service) Activator.CreateInstance(t);
                 _services.Add(service);
+            }
 
+            // Initialize all services by order of priority
+            foreach (Service service in _services.OrderByDescending(x => x.InternalPriority))
+            {
                 // Add configuration to service if it exists
-                ServiceConfiguration configuration = _settings.ServiceConfigurations.FirstOrDefault(c => c.ServiceType == t);
+                ServiceConfiguration configuration = _settings.ServiceConfigurations.FirstOrDefault(c => c.ServiceType == service.GetType());
                 service.Initialize(this, configuration);
             }
 

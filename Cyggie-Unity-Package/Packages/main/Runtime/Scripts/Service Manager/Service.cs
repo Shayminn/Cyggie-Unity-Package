@@ -10,6 +10,11 @@ namespace Cyggie.Main.Runtime.Services
         private ServiceManager _manager = null;
 
         /// <summary>
+        /// Configuration object
+        /// </summary>
+        protected ServiceConfiguration _configuration = null;
+
+        /// <summary>
         /// The monobehaviour that holds this Service <br/>
         /// This can be used for MonoBehaviour actions (i.e. StartCoroutine)
         /// </summary>
@@ -21,9 +26,12 @@ namespace Cyggie.Main.Runtime.Services
         protected GameObject GameObject => _manager.gameObject;
 
         /// <summary>
-        /// Configuration object
+        /// The order of priority in which the service is initialized (by default 0) <br/>
+        /// Higher value means this service will be initialized before other services.
         /// </summary>
-        protected ServiceConfiguration _configuration = null;
+        protected virtual int Priority { get; } = 0;
+
+        internal int InternalPriority => Priority;
 
         #region MonoBehaviour virtuals
 
