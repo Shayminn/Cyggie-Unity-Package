@@ -84,12 +84,11 @@ namespace Cyggie.Main.Runtime.Services
             foreach (Type t in servicesTypes)
             {
                 Service service = (Service) Activator.CreateInstance(t);
+                _services.Add(service);
 
                 // Add configuration to service if it exists
                 ServiceConfiguration configuration = _settings.ServiceConfigurations.FirstOrDefault(c => c.ServiceType == t);
                 service.Initialize(this, configuration);
-
-                _services.Add(service);
             }
 
             OnServicesInitialized?.Invoke();

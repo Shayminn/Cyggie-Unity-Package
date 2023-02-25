@@ -50,9 +50,19 @@ namespace Cyggie.Main.Runtime.Services
         internal virtual void Initialize(ServiceManager manager, ServiceConfiguration configuration)
         {
             _manager = manager;
+            ServiceManager.OnServicesInitialized += OnServicesInitialize;
 
             _configuration = configuration;
             OnInitialized(configuration);
+        }
+
+        /// <summary>
+        /// Internal Event handler for <see cref="ServiceManager.OnServicesInitialized"/>
+        /// </summary>
+        internal virtual void OnServicesInitialize()
+        {
+            ServiceManager.OnServicesInitialized -= OnServicesInitialize;
+            OnServicesInitialized();
         }
 
         /// <summary>
@@ -60,5 +70,10 @@ namespace Cyggie.Main.Runtime.Services
         /// </summary>
         /// <param name="configuration">Configuration for the service, null if not set</param>
         protected virtual void OnInitialized(ServiceConfiguration configuration) { }
+
+        /// <summary>
+        /// Called when all services have been initialized (equivalent to subscribing to <see cref="ServiceManager.OnServicesInitialized"/>)
+        /// </summary>
+        protected virtual void OnServicesInitialized() { }
     }
 }
