@@ -20,6 +20,7 @@ namespace Cyggie.SceneChanger.Editor.Configurations
         /// <inheritdoc/>
         internal override string ResourcesPath => FileManagerSettings.cResourcesPath;
 
+        /// <inheritdoc/>
         internal override void DrawGUI()
         {
             EditorGUIUtility.labelWidth = 150;

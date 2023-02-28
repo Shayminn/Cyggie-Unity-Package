@@ -1,10 +1,12 @@
-﻿using Cyggie.FileManager.Runtime.Data;
+﻿using Cyggie.Encryption;
+using Cyggie.FileManager.Runtime.Data;
 using Cyggie.Main.Runtime.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 
@@ -213,7 +215,7 @@ namespace Cyggie.FileManager.Runtime.Services
 
                 if (_encrypt)
                 {
-                    data = EncryptDecrypt(data);
+                    data = AESEncryptor.Encrypt(data);
                 }
 
                 return true;
@@ -247,7 +249,7 @@ namespace Cyggie.FileManager.Runtime.Services
 
             if (_encrypt)
             {
-                data = EncryptDecrypt(data);
+                data = AESEncryptor.Decrypt(data);
             }
 
             try
@@ -265,19 +267,6 @@ namespace Cyggie.FileManager.Runtime.Services
                 Debug.LogError($"Failed in {nameof(TryDeserializeObject)}, exception: {ex}.");
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Encrypt/Decrypt a json string 
-        /// </summary>
-        /// <param name="data">Json data</param>
-        /// <returns></returns>
-        private string EncryptDecrypt(string data)
-        {
-            // TODO
-            // Apply encryption/decryption
-
-            return data;
         }
 
         /// <summary>

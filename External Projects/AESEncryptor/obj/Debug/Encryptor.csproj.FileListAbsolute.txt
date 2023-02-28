@@ -1,0 +1,11 @@
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\AESEncryptor\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\AESEncryptor\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\AESEncryptor\obj\Debug\Encryptor.csproj.AssemblyReference.cache
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\AESEncryptor\obj\Debug\Encryptor.csproj.CoreCompileInputs.cache
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\AESEncryptor\obj\Debug\Encryptor.csproj.CopyComplete
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\AESEncryptor\bin\Debug\Encryptor.dll.config
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\AESEncryptor\bin\Debug\Encryptor.dll
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\AESEncryptor\bin\Debug\Encryptor.pdb
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\AESEncryptor\obj\Debug\Encryptor.dll
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\AESEncryptor\obj\Debug\Encryptor.pdb
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\AESEncryptor\bin\Debug\Encryptor.xml
