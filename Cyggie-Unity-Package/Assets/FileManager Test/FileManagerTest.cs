@@ -17,6 +17,7 @@ public class FileManagerTest : MonoBehaviour
         FileManagerTestObject testObject = testObjects.FirstOrDefault() ?? new FileManagerTestObject();
 
         ++testObject.Test;
+        Debug.Log("Test object: " + testObject.Test);
         testObject.Save();
 
         Debug.Log("Go to the save folder path and notice the test object save file.");
