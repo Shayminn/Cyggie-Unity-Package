@@ -2,7 +2,6 @@
 using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using System;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -57,7 +56,7 @@ namespace Cyggie.Main.Editor.Configurations
         {
             // Get settings
             string assetPath = $"{configSettings.ResourcesPath}{ResourcesPath}.asset";
-            _settings = (PackageConfigurationSettings) AssetDatabase.LoadAssetAtPath(assetPath, SettingsType);
+            _settings = (PackageConfigurationSettings)AssetDatabase.LoadAssetAtPath(assetPath, SettingsType);
 
             if (_settings == null)
             {
@@ -65,7 +64,7 @@ namespace Cyggie.Main.Editor.Configurations
                 Debug.Log($"Couldn't find settings file for tab: {GetType().Name}, creating a new one...");
 
                 // Create object instance
-                _settings = (PackageConfigurationSettings) ScriptableObject.CreateInstance(SettingsType);
+                _settings = (PackageConfigurationSettings)ScriptableObject.CreateInstance(SettingsType);
                 _settings.Initialize(configSettings);
 
                 // Add Package Configuration Settings as a ServiceConfiguration

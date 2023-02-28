@@ -234,6 +234,14 @@
       },
       "url": "https://packages.unity.com"
     },
+    "cyggie.file-manager": {
+      "version": "file:file-manager",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cyggie.main": "1.0.5"
+      }
+    },
     "cyggie.language-manager": {
       "version": "file:language-manager",
       "depth": 0,
@@ -253,7 +261,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "cyggie.main": "1.0.0",
+        "cyggie.main": "1.0.5",
         "com.unity.inputsystem": "1.3.0",
         "com.unity.textmeshpro": "3.0.6"
       }

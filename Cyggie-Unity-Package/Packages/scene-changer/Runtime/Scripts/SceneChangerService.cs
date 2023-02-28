@@ -1,7 +1,6 @@
 using Cyggie.Main.Runtime.Services;
 using Cyggie.SceneChanger.Runtime.Configurations;
 using Cyggie.SceneChanger.Runtime.Settings;
-using Cyggie.SceneChanger.Runtime.Utils;
 using System;
 using System.Collections;
 using UnityEngine;

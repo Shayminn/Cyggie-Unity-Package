@@ -1,10 +1,9 @@
-﻿using Cyggie.SceneChanger.Runtime.Settings;
-using Cyggie.Main.Runtime.Configurations;
-using UnityEngine;
-using static UnityEngine.UI.Image;
+﻿using Cyggie.Main.Runtime.Configurations;
 using Cyggie.SceneChanger.Runtime.Enums;
 using Cyggie.SceneChanger.Runtime.Services;
-using System;
+using Cyggie.SceneChanger.Runtime.Settings;
+using UnityEngine;
+using static UnityEngine.UI.Image;
 
 namespace Cyggie.SceneChanger.Runtime.Configurations
 {
@@ -98,7 +97,7 @@ namespace Cyggie.SceneChanger.Runtime.Configurations
         internal float ResolutionCheckDelay = 0.5f;
 
         #endregion
-        
+
         internal bool HasImages => Images != null && Images.Length > 0;
 
         internal bool HasTexts => Texts != null && Texts.Length > 0;

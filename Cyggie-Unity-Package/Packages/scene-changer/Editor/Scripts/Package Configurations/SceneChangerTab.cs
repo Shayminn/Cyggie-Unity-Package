@@ -10,6 +10,10 @@ using static UnityEngine.UI.Image;
 
 namespace Cyggie.SceneChanger.Editor.Configurations
 {
+    /// <summary>
+    /// Package tab for <see cref="SceneChangerSettings"/> <br/>
+    /// Accessible through Cyggie/Package Configurations
+    /// </summary>
     internal class SceneChangerTab : PackageConfigurationTab
     {
         // GUI Labels

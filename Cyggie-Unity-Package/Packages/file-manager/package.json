@@ -1,0 +1,19 @@
+{
+  "name": "cyggie.file-manager",
+  "version": "1.0.1",
+  "displayName": "File Manager",
+  "description": "This package derives from the Cyggie package. It contains relevant scripts and settings to save local files.",
+  "unity": "2019.1",
+  "dependencies": {
+    "cyggie.main": "1.0.5"
+  },
+  "keywords": [
+    "cyggie",
+    "filemanager"
+  ],
+  "author": {
+    "name": "Cyggie",
+    "email": "rleung1022@gmail.com",
+    "url": "https://ryanleung.me"
+  }
+}
