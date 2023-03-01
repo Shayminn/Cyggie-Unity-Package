@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UsePersistentDataPath: 1
   LocalSavePath: 
-  DefaultFileExtension: .testsave
+  DefaultFileExtension: .save
   Encrypted: 1
   FilesToIgnore:
   - Player.log

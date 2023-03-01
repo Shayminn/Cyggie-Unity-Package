@@ -14,7 +14,7 @@ namespace Cyggie.Main.Editor.Configurations
     /// </summary>
     internal class PackageConfigurationEditorWindow : EditorWindow
     {
-        internal static PackageConfigurationEditorWindow Window = null;
+        private const string cEditorPrefSelectedTabKey = "CyggiePackageConfigurationSelectedTabIndex";
 
         private List<PackageConfigurationTab> _tabs = null;
         private PackageConfigurationTab _selectedTab = null;
@@ -25,6 +25,8 @@ namespace Cyggie.Main.Editor.Configurations
 
         private ConfigurationSettings _configSettings = null;
         private SerializedObject _serializedObject = null;
+
+        internal static PackageConfigurationEditorWindow Window = null;
 
         /// <summary>
         /// Initialize the window with tabs
@@ -59,14 +61,22 @@ namespace Cyggie.Main.Editor.Configurations
                 Debug.Log($"Created configuration settings file at {configPath}.");
             }
 
-            _serializedObject = new SerializedObject(_configSettings);
-
             // Initialize all tabs with config settings
             _tabs.ForEach(x =>
             {
                 // Initialize the tab with configuration settings
                 x.Initialize(_configSettings);
             });
+
+            _serializedObject = new SerializedObject(_configSettings);
+            _selectedTabIndex = EditorPrefs.GetInt(cEditorPrefSelectedTabKey, 0);
+
+            if (_selectedTabIndex > _tabs.Count)
+            {
+                _selectedTabIndex = 0;
+            }
+
+            _selectedTab = _tabs[_selectedTabIndex];
         }
 
         /// <summary>
@@ -160,6 +170,7 @@ namespace Cyggie.Main.Editor.Configurations
 
                     if (EditorGUIHelper.CheckChange(gui: () => _selectedTabIndex = EditorGUILayout.Popup(_selectedTabIndex, _tabStrings)))
                     {
+                        EditorPrefs.SetInt(cEditorPrefSelectedTabKey, _selectedTabIndex);
                         _selectedTab = _tabs[_selectedTabIndex];
                     }
                 });
