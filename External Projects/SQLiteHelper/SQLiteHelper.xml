@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SQLiteHelper</name>
+    </assembly>
+    <members>
+        <member name="T:Cyggie.SQLite.SQLiteParams">
+            <summary>
+            SQL Params used for SQLManager methods to replace Parameters
+            </summary>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteParams.#ctor(System.String,System.Object)">
+            <summary>
+            Constructor with key and value
+            </summary>
+            <param name="key">Parameter key</param>
+            <param name="value">Parameter value</param>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteParams.ToString">
+            <summary>
+            Override default ToString
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Cyggie.SQLite.SQLitePropertyAttribute">
+            <summary>
+            Assign attribute to properties in order to use them when reading from the Database
+            </summary>
+        </member>
+        <member name="T:Cyggie.SQLite.MessageCode">
+            <summary>
+            Enum for Console write line
+            </summary>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteExtensions.AddParameters(System.Data.SQLite.SQLiteCommand,System.Boolean,Cyggie.SQLite.SQLiteParams[])">
+            <summary>
+            Extension for SQLiteCommand to add paramaters with SQLParams
+            </summary>
+            <param name="command">SQLiteCommand obj</param>
+            <param name="whereStatement">Add where statement to command text?</param>
+            <param name="sqlParams">SQLParams</param>
+        </member>
+        <member name="T:Cyggie.SQLite.SQLiteHelper">
+            <summary>
+            Helper class for managing/handling SQLite
+            </summary>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteHelper.Execute(System.String,Cyggie.SQLite.SQLiteParams[])">
+            <summary>
+            Execute non query command
+            </summary>
+            <param name="query">Command string</param>
+            <param name="sqlParams">Parameters to the command (The key must be found within the query string)</param>
+            <returns>Number of rows affected</returns>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteHelper.Read``1(``0@,System.String,Cyggie.SQLite.SQLiteParams[])">
+            <summary>
+            Execute a read command (for a single object)
+            Assign the SQLiteProperty to each Property of the object that needs to be read from the Database
+            Make sure there is a constructor that matches the number of Properties and their associated types
+            Name of table is defined as typeof(T)s
+            </summary>
+            <typeparam name="T">Object class</typeparam>
+            <param name="obj">Outputs the object</param>
+            <param name="suffix">Suffix to add to command after the WHERE statement (i.e. GROUP BY)</param>
+            <param name="sqlParams">Parameters to the command</param>
+            <returns>Success? (returns false if no row was found)</returns>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteHelper.Read``1(System.String,``0@,System.String,Cyggie.SQLite.SQLiteParams[])">
+            <summary>
+            Execute a read command (for a single object)
+            Assign the SQLiteProperty to each Property of the object that needs to be read from the Database
+            Make sure there is a constructor that matches the number of Properties and their associated types
+            </summary>
+            <typeparam name="T">Object class</typeparam>
+            <param name="tableName">Table name to read from</param>
+            <param name="obj">Outputs the object</param>
+            <param name="suffix">Suffix to add to command after the WHERE statement (i.e. GROUP BY)</param>
+            <param name="sqlParams">Parameters to the command</param>
+            <returns>Success? (returns false if no row was found)</returns>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteHelper.ReadAll``1(System.Collections.Generic.IEnumerable{``0}@,System.String,Cyggie.SQLite.SQLiteParams[])">
+            <summary>
+            Execute a read command (for a list of objects)
+            Assign the SQLiteProperty to each Property of the object that needs to be read from the Database
+            Make sure there is a constructor that matches the number of Properties and their associated types
+            </summary>
+            <typeparam name="T">Object class</typeparam>
+            <param name="list">Outputs a list of object</param>
+            <param name="suffix">Suffix to add to command after the WHERE statement (i.e. GROUP BY)</param>
+            <param name="sqlParams">Parameters to the command</param>
+            <returns>Success?</returns>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteHelper.ReadAll``1(System.String,System.Collections.Generic.IEnumerable{``0}@,System.String,Cyggie.SQLite.SQLiteParams[])">
+            <summary>
+            Execute a read command (for a list of objects)
+            Assign the SQLiteProperty to each Property of the object that needs to be read from the Database
+            Make sure there is a constructor that matches the number of Properties and their associated types
+            </summary>
+            <typeparam name="T">Object class</typeparam>
+            <param name="tableName">Table name to read from</param>
+            <param name="list">Outputs a list of object</param>
+            <param name="suffix">Suffix to add to command after the WHERE statement (i.e. GROUP BY)</param>
+            <param name="sqlParams">Parameters to the command</param>
+            <returns>Success?</returns>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteHelper.Count(System.String,System.Int32@,Cyggie.SQLite.SQLiteParams[])">
+            <summary>
+            Execute a count of the table
+            </summary>
+            <param name="tableName">Table name</param>
+            <param name="count"></param>
+            <param name="sqlParams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteHelper.ExecuteFromPath(System.String,System.Boolean)">
+            <summary>
+            Execute an sql script from path (If the path is a directory, it will execute all the subdirectories and files within it)
+            </summary>
+            <param name="path">Path to file</param>
+            <param name="logs">Show logs?</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteHelper.SetDatabasePath(System.String)">
+            <summary>
+            Sets the database path for the SQLite database (must be called before any commands gets executed)
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteHelper.CreateBlueprint(System.String)">
+            <summary>
+            Create a new blueprint to rebuild the whole SQL database. <br/>
+            Specify <paramref name="path"/> to create a file.
+            </summary>
+            <param name="path">Path to create .sql file (specify its name as well)</param>
+            <returns>Blueprint in string</returns>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteHelper.WriteLine(Cyggie.SQLite.MessageCode,System.String)">
+            <summary>
+            Util method to send Debug messages through Unity
+            </summary>
+            <param name="code">Message code (Error/Message/Warning)</param>
+            <param name="message">Message content</param>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteHelper.HasSubclass(System.Type,System.Boolean)">
+            <summary>
+            Checks if Type is Subclass of SQLObject
+            </summary>
+            <param name="t">Type</param>
+            <param name="scalar">ReadScalar?</param>
+            <returns>Correct</returns>
+        </member>
+        <member name="T:Cyggie.SQLite.SQLiteObject">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cyggie.SQLite.SQLiteObject.SQLParams">
+            <summary>
+            Returns array of SQLParams for SQLManager methods
+            Parameter keys in Query must match the property name (case-insensitive)
+            Any parameters that are not found within the Query string will be ignored
+            </summary>
+        </member>
+        <member name="T:Cyggie.SQLite.SQLiteUtils">
+            <summary>
+            Utils for Custom SQL
+            </summary>
+        </member>
+        <member name="M:Cyggie.SQLite.SQLiteUtils.ConvertValue(System.Object,System.Type)">
+            <summary>
+            Util method for converting values
+            </summary>
+            <param name="value"></param>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

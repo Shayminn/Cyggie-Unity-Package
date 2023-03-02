@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "n+6HlRbTXmI9ZV6wN81rM5rKPILQVN8jOEMHdV26VJOP3ozvRhuDAL2cZQ83nocKWC62Fwjm/D6I7R52AGx2BA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Ryan\\Documents\\Git\\Cyggie-Unity-Package\\External Projects\\SQLiteHelper\\SQLiteHelper.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Ryan\\.nuget\\packages\\stub.system.data.sqlite.core.netstandard\\1.0.115.5\\stub.system.data.sqlite.core.netstandard.1.0.115.5.nupkg.sha512",
+    "C:\\Users\\Ryan\\.nuget\\packages\\system.data.sqlite.core\\1.0.115.5\\system.data.sqlite.core.1.0.115.5.nupkg.sha512"
+  ],
+  "logs": []
+}
