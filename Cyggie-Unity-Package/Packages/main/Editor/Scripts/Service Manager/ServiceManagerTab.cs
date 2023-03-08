@@ -37,7 +37,7 @@ namespace Cyggie.Main.Editor.Configurations
         internal override string ResourcesPath => ServiceManagerSettings.cResourcesPath;
 
         /// <inheritdoc/>
-        internal override void OnInitialized()
+        protected override void OnInitialized()
         {
             // Retrieve all classes that implements ServiceConfiguration
             _configTypes = AppDomain.CurrentDomain.GetAssemblies()
@@ -49,7 +49,7 @@ namespace Cyggie.Main.Editor.Configurations
         }
 
         /// <inheritdoc/>
-        internal override void DrawGUI()
+        protected override void DrawGUI()
         {
             // Draw settings properties
             EditorGUIHelper.DrawAsReadOnly(gui: () =>

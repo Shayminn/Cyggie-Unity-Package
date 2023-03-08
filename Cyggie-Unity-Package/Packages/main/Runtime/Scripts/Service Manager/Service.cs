@@ -54,7 +54,7 @@ namespace Cyggie.Main.Runtime.Services
         /// <summary>
         /// Object has been initialized
         /// </summary>
-        /// <param name="configuration"></param>
+        /// <param name="configuration">Configuration for the service, null if not set</param>
         internal virtual void Initialize(ServiceManager manager, ServiceConfiguration configuration)
         {
             _manager = manager;
@@ -74,7 +74,10 @@ namespace Cyggie.Main.Runtime.Services
         }
 
         /// <summary>
-        /// Called when the object is initialized
+        /// Called when the object is initialized <br/>
+        /// At this point, not all services have been initialized yet <br/>
+        /// If your service depends on another service, make sure that service is already instantiated using <see cref="Service.Priority"/> or use <br/>
+        /// <see cref="OnServicesInitialized"/> instead
         /// </summary>
         /// <param name="configuration">Configuration for the service, null if not set</param>
         protected virtual void OnInitialized(ServiceConfiguration configuration) { }

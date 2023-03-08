@@ -11,6 +11,7 @@ namespace Cyggie.Main.Runtime.Configurations
         internal const string cDefaultResourcesFolderPath = "Assets/Resources/";
 
         internal const string cResourcesFolderPath = "Cyggie/Package Configurations/";
+        internal const string cStreamingAssetsFolderPath = "Cyggie/";
 
         /// <summary>
         /// Resources path of the Configuration Settings Scriptable object

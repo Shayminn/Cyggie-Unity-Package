@@ -1,4 +1,5 @@
-﻿using Cyggie.Main.Editor.Utils.Helpers;
+﻿using Cyggie.Main.Editor.Utils.Constants;
+using Cyggie.Main.Editor.Utils.Helpers;
 using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using System;
@@ -28,11 +29,6 @@ namespace Cyggie.Main.Editor.Configurations
         internal string FileName => $"{SettingsType.Name}.asset";
 
         /// <summary>
-        /// Class name to the tab (used to display in Window selection popup)
-        /// </summary>
-        internal string ClassName => GetType().Name.Replace("Tab", "").SplitCamelCase();
-
-        /// <summary>
         /// Path to the asset from the resources folder
         /// </summary>
         internal abstract string ResourcesPath { get; }
@@ -41,6 +37,16 @@ namespace Cyggie.Main.Editor.Configurations
         /// Type of settings that inherits <see cref="PackageConfigurationSettings"/>
         /// </summary>
         internal abstract Type SettingsType { get; }
+
+        /// <summary>
+        /// Dropdown name for the tab (used to display in Window selection popup)
+        /// </summary>
+        internal virtual string DropdownName { get => GetType().Name.Replace("Tab", "").SplitCamelCase(); }
+
+        /// <summary>
+        /// Title for the Settings Tab that appears in the Package Configuration Window
+        /// </summary>
+        internal virtual string Title { get => SettingsType.Name.SplitCamelCase(); }
 
         /// <summary>
         /// Any other file paths that the settings require <br/>
@@ -55,17 +61,15 @@ namespace Cyggie.Main.Editor.Configurations
         internal void Initialize(ConfigurationSettings configSettings)
         {
             // Get settings
-            string assetPath = $"{configSettings.ResourcesPath}{ResourcesPath}.asset";
-            _settings = (PackageConfigurationSettings)AssetDatabase.LoadAssetAtPath(assetPath, SettingsType);
+            string assetPath = $"{configSettings.ResourcesPath}{ResourcesPath}".InsertEndsWith(FileExtensionConstants.cAsset);
+            _settings = (PackageConfigurationSettings) AssetDatabase.LoadAssetAtPath(assetPath, SettingsType);
 
             if (_settings == null)
             {
                 // Settings not found, create a new one
                 Debug.Log($"Couldn't find settings file for tab: {GetType().Name}, creating a new one...");
 
-                // Create object instance
-                _settings = (PackageConfigurationSettings)ScriptableObject.CreateInstance(SettingsType);
-                _settings.Initialize(configSettings);
+                _settings = GetOrCreateSettings(SettingsType, ResourcesPath, OnSettingsCreated);
 
                 // Add Package Configuration Settings as a ServiceConfiguration
                 // Only for non-service manager settings, no point for it to be referencing itself
@@ -77,15 +81,6 @@ namespace Cyggie.Main.Editor.Configurations
                     }
                 }
 
-                OnSettingsCreated();
-
-                // Create asset
-                AssetDatabaseHelper.CreateAsset(_settings, assetPath);
-
-                // Save asset
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-
                 Debug.Log($"New settings ({_settings.GetType().Name}) created at path: \"{assetPath}\".");
             }
 
@@ -94,18 +89,86 @@ namespace Cyggie.Main.Editor.Configurations
         }
 
         /// <summary>
+        /// Draw the package configuration settings tab
+        /// </summary>
+        internal void DrawTab()
+        {
+            if (_serializedObject == null) return;
+
+            DrawGUI();
+            _serializedObject.ApplyModifiedProperties();
+        }
+
+        #region Overloadable methods
+
+        /// <summary>
         /// Called when the settings object is created right before it is saved in the AssetDatabase
         /// </summary>
-        internal virtual void OnSettingsCreated() { }
+        protected virtual void OnSettingsCreated() { }
 
         /// <summary>
         /// Called after the settings object has been retrieved sucessfully
         /// </summary>
-        internal virtual void OnInitialized() { }
+        protected virtual void OnInitialized() { }
 
         /// <summary>
         /// Called when drawing the GUI in the <see cref="PackageConfigurationEditorWindow"/>
         /// </summary>
-        internal abstract void DrawGUI();
+        protected abstract void DrawGUI();
+
+        #endregion
+
+        #region Static methods
+
+        /// <summary>
+        /// Create the object settings of type <typeparamref name="T"/> <br/>
+        /// This is necessary when used in windows independent from the <see cref="PackageConfigurationEditorWindow"/>
+        /// </summary>
+        /// <typeparam name="T">Configuration Settings type to create</typeparam>
+        /// <param name="resourcesPath">Relative path to resources folder</param>
+        /// <param name="onSettingsCreated">Callback when new settings are created</param>
+        /// <returns>Settings object</returns>
+        internal static T GetOrCreateSettings<T>(string resourcesPath, Action onSettingsCreated = null) where T : PackageConfigurationSettings
+        {
+            return (T) GetOrCreateSettings(typeof(T), resourcesPath, onSettingsCreated);
+        }
+
+        /// <summary>
+        /// Create the object settings of type <typeparamref name="T"/> <br/>
+        /// This is necessary when used in windows independent from the <see cref="PackageConfigurationEditorWindow"/>
+        /// </summary>
+        /// <param name="type">Configuration Settings type to create</param>
+        /// <param name="resourcesPath">Relative path to resources folder</param>
+        /// <param name="onSettingsCreated">Callback when settings are created</param>
+        /// <returns>Settings object</returns>
+        internal static PackageConfigurationSettings GetOrCreateSettings(Type type, string resourcesPath, Action onSettingsCreated = null)
+        {
+            // Get the configuration settings
+            ConfigurationSettings configSettings = Resources.Load<ConfigurationSettings>(ConfigurationSettings.cResourcesPath);
+
+            // Load existing settings
+            string assetPath = $"{configSettings.ResourcesPath}{resourcesPath}".InsertEndsWith(FileExtensionConstants.cAsset);
+            PackageConfigurationSettings settings = (PackageConfigurationSettings) AssetDatabase.LoadAssetAtPath(assetPath, type);
+
+            // Create settings object if not found
+            if (settings == null)
+            {
+                settings = (PackageConfigurationSettings) ScriptableObject.CreateInstance(type);
+                settings.Initialize(configSettings);
+
+                onSettingsCreated?.Invoke();
+
+                // Create asset
+                AssetDatabaseHelper.CreateAsset(settings, assetPath);
+
+                // Save asset
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+
+            return settings;
+        }
+
+        #endregion
     }
 }

@@ -4,18 +4,11 @@ using UnityEditor;
 
 namespace Cyggie.Main.Editor.Configurations
 {
+    /// <summary>
+    /// Inspector editor for <see cref="ConfigurationSettings"/>
+    /// </summary>
     [CustomEditor(typeof(ConfigurationSettings))]
-    internal class ConfigurationSettingsEditor : UnityEditor.Editor
+    internal class ConfigurationSettingsEditor : PackageConfigurationSettingsEditor
     {
-        /// <summary>
-        /// Override the default inspector GUI to make it readonly
-        /// </summary>
-        public override void OnInspectorGUI()
-        {
-            EditorGUIHelper.DrawAsReadOnly(gui: () =>
-            {
-                base.OnInspectorGUI();
-            });
-        }
     }
 }

@@ -38,7 +38,7 @@ namespace Cyggie.Main.Editor.Configurations
             _tabs = tabs;
             _selectedTab = _tabs.FirstOrDefault();
 
-            _tabStrings = _tabs.Select(x => x.ClassName).ToArray();
+            _tabStrings = _tabs.Select(x => x.DropdownName).ToArray();
 
             _configSettings = Resources.Load<ConfigurationSettings>(ConfigurationSettings.cResourcesPath);
             if (_configSettings == null)
@@ -176,8 +176,8 @@ namespace Cyggie.Main.Editor.Configurations
                 });
                 EditorGUILayout.Space(10);
 
-                EditorGUILayout.LabelField(_selectedTab.SettingsType.Name.SplitCamelCase(), EditorStyles.boldLabel);
-                _selectedTab.DrawGUI();
+                EditorGUILayout.LabelField(_selectedTab.Title, EditorStyles.boldLabel);
+                _selectedTab.DrawTab();
 
                 EditorGUILayout.Space(5);
             }, horizontalStyle: GUIStyle.none);

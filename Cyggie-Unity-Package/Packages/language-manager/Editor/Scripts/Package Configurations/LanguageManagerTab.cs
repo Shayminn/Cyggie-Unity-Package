@@ -74,7 +74,7 @@ namespace Cyggie.LanguageManager.Editor.Configurations
         };
 
         /// <inheritdoc/>
-        internal override void OnInitialized()
+        protected override void OnInitialized()
         {
             LoadFiles();
 
@@ -92,7 +92,7 @@ namespace Cyggie.LanguageManager.Editor.Configurations
         }
 
         /// <inheritdoc/>
-        internal override void DrawGUI()
+        protected override void DrawGUI()
         {
             EditorGUILayout.Space(5);
 

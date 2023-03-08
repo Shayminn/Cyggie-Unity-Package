@@ -8,6 +8,53 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
     /// </summary>
     public static class StringExtensions
     {
+
+        /// <summary>
+        /// Insert <paramref name="startString"/> if <paramref name="str"/> doesn't start with it
+        /// </summary>
+        /// <param name="str">Target string</param>
+        /// <param name="startString">Start string to check</param>
+        /// <returns>String that starts with <paramref name="startString"/></returns>
+        public static string InsertStartsWith(this string str, string startString)
+            => InsertStartsWith(str, startString, startString);
+
+        /// <summary>
+        /// Insert <paramref name="startString"/> if <paramref name="str"/> doesn't start with <paramref name="stringToCheck"/>
+        /// </summary>
+        /// <param name="str">Target string</param>
+        /// <param name="stringToCheck">String to check</param>
+        /// <param name="startString">Start string to input</param>
+        /// <returns>String that starts with <paramref name="startString"/></returns>
+        public static string InsertStartsWith(this string str, string stringToCheck, string startString)
+        {
+            return str.StartsWith(stringToCheck) ?
+                   str :
+                   startString + str;
+        }
+
+        /// <summary>
+        /// Insert <paramref name="endString"/> if <paramref name="str"/> doesn't end with <paramref name="endString"/>
+        /// </summary>
+        /// <param name="str">Target string</param>
+        /// <param name="endString">End string to check</param>
+        /// <returns>String that ends with <paramref name="endString"/></returns>
+        public static string InsertEndsWith(this string str, string endString) 
+            => InsertEndsWith(str, endString, endString);
+
+        /// <summary>
+        /// Insert <paramref name="endString"/> if <paramref name="str"/> doesn't end with <paramref name="stringToCheck"/>
+        /// </summary>
+        /// <param name="str">Target string</param>
+        /// <param name="stringToCheck">End string to check</param>
+        /// <param name="endString">End string to input</param>
+        /// <returns>String that ends with <paramref name="endString"/></returns>
+        public static string InsertEndsWith(this string str, string stringToCheck, string endString)
+        {
+            return str.EndsWith(stringToCheck) ?
+                   str :
+                   str + endString;
+        }
+
         /// <summary>
         /// Add spaces to a Camelcase string. <br/>
         /// ABCTestTest => ABC Test Test

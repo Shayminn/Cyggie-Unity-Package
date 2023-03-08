@@ -1,4 +1,5 @@
-﻿using Cyggie.Main.Editor.Utils.Helpers;
+﻿using Cyggie.Main.Editor;
+using Cyggie.Main.Editor.Utils.Helpers;
 using Cyggie.SceneChanger.Runtime.Configurations;
 using UnityEditor;
 using UnityEngine;
@@ -6,20 +7,10 @@ using UnityEngine;
 namespace Cyggie.SceneChanger.Editor.Configurations
 {
     /// <summary>
-    /// Scene Changer Settings inspector editor
+    /// Inspector editor for <see cref="SceneChangerSettings"/>
     /// </summary>
     [CustomEditor(typeof(SceneChangerSettings))]
-    internal class SceneChangerSettingsEditor : UnityEditor.Editor
+    internal class SceneChangerSettingsEditor : PackageConfigurationSettingsEditor
     {
-        /// <summary>
-        /// Override the default inspector GUI to make it readonly
-        /// </summary>
-        public override void OnInspectorGUI()
-        {
-            EditorGUIHelper.DrawAsReadOnly(gui: () =>
-            {
-                base.OnInspectorGUI();
-            });
-        }
     }
 }

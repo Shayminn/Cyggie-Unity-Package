@@ -33,13 +33,14 @@ namespace Cyggie.SceneChanger.Editor.Configurations
 
         private SceneChangerSettings Settings => (SceneChangerSettings) _settings;
 
-        internal override void OnSettingsCreated()
+        /// <inheritdoc/>
+        protected override void OnSettingsCreated()
         {
             Settings.LoadingScreenPrefab = AssetDatabase.LoadAssetAtPath<LoadingScreen>(SceneChangerPaths.cLoadingScreen);
         }
 
         /// <inheritdoc/>
-        internal override void DrawGUI()
+        protected override void DrawGUI()
         {
             EditorGUIHelper.DrawAsReadOnly(gui: () =>
             {

@@ -6,20 +6,10 @@ namespace Cyggie.Main.Editor.Configurations
 {
 
     /// <summary>
-    /// Service Manager Settings inspector editor
+    /// Inspector editor for <see cref="ServiceManagerSettings"/>
     /// </summary>
     [CustomEditor(typeof(ServiceManagerSettings))]
-    internal class ServiceManagerSettingsEditor : UnityEditor.Editor
+    internal class ServiceManagerSettingsEditor : PackageConfigurationSettingsEditor
     {
-        /// <summary>
-        /// Override the default inspector GUI to make it readonly
-        /// </summary>
-        public override void OnInspectorGUI()
-        {
-            EditorGUIHelper.DrawAsReadOnly(gui: () =>
-            {
-                base.OnInspectorGUI();
-            });
-        }
     }
 }

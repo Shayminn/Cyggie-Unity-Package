@@ -10,6 +10,7 @@ namespace Cyggie.Main.Editor.PropertyDrawers
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
     internal class ReadOnlyAttributeDrawer : PropertyDrawer
     {
+        /// <inheritdoc/>
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             GUI.enabled = false;

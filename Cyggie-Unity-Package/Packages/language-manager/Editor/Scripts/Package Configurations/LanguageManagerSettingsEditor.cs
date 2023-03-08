@@ -1,24 +1,15 @@
 ﻿using Cyggie.LanguageManager.Runtime.Configurations;
+using Cyggie.Main.Editor;
 using Cyggie.Main.Editor.Utils.Helpers;
 using UnityEditor;
 
 namespace Cyggie.LanguageManager.Editor.Configurations
 {
     /// <summary>
-    /// Language Manager Settings inspector editor
+    /// Inspector editor for <see cref="LanguageManagerSettings"/>
     /// </summary>
     [CustomEditor(typeof(LanguageManagerSettings))]
-    internal class SceneChangerSettingsEditor : UnityEditor.Editor
+    internal class SceneChangerSettingsEditor : PackageConfigurationSettingsEditor
     {
-        /// <summary>
-        /// Override the default inspector GUI to make it readonly
-        /// </summary>
-        public override void OnInspectorGUI()
-        {
-            EditorGUIHelper.DrawAsReadOnly(gui: () =>
-            {
-                base.OnInspectorGUI();
-            });
-        }
     }
 }

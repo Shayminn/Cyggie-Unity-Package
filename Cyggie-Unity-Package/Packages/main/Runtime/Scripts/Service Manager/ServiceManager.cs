@@ -1,9 +1,7 @@
 using Cyggie.Main.Runtime.Configurations;
-using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.Main.Runtime.Utils.Helpers;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -20,11 +18,6 @@ namespace Cyggie.Main.Runtime.Services
         /// This is called before <see cref="Service.Awake"/>
         /// </summary>
         public static Action OnServicesInitialized = null;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        internal static string ConfigurationFolderPath = "";
 
         /// <summary>
         /// Instance object of this class
@@ -74,11 +67,7 @@ namespace Cyggie.Main.Runtime.Services
         /// </summary>
         private void InitializeServices()
         {
-            IEnumerable<Type> assembliesTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes());
-
-            // Get all services in project
-            Type serviceType = typeof(Service);
-            IEnumerable<Type> servicesTypes = assembliesTypes.Where(t => t.IsSubclassOf(serviceType) && !t.IsAbstract);
+            IEnumerable<Type> servicesTypes = TypeHelper.GetAllSubclassTypes<Service>(true);
 
             // Create all the services
             foreach (Type t in servicesTypes)

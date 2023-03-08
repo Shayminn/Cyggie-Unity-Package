@@ -21,7 +21,7 @@ namespace Cyggie.SceneChanger.Editor.Configurations
         internal override string ResourcesPath => FileManagerSettings.cResourcesPath;
 
         /// <inheritdoc/>
-        internal override void DrawGUI()
+        protected override void DrawGUI()
         {
             EditorGUIUtility.labelWidth = 150;
             EditorGUILayout.Space(5);
@@ -42,8 +42,6 @@ namespace Cyggie.SceneChanger.Editor.Configurations
             EditorGUILayout.Space(5);
 
             EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(FileManagerSettings.FilesToIgnore)));
-
-            _serializedObject.ApplyModifiedPropertiesWithoutUndo();
         }
     }
 }

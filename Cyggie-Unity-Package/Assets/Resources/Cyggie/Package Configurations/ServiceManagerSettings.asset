@@ -16,4 +16,5 @@ MonoBehaviour:
   ServiceConfigurations:
   - {fileID: 11400000, guid: f4bb0b0d5dbc39e49a020c428b842736, type: 2}
   - {fileID: 11400000, guid: 156be8e7a560f5440bc9d19f31544662, type: 2}
+  - {fileID: 11400000, guid: 13abfdee81bc638429576e9089c78c7e, type: 2}
   IsValid: 1

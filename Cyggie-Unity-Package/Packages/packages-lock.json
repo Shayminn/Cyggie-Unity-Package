@@ -266,6 +266,14 @@
         "com.unity.textmeshpro": "3.0.6"
       }
     },
+    "cyggie.sqlite": {
+      "version": "file:sqlite",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cyggie.main": "1.0.6"
+      }
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
