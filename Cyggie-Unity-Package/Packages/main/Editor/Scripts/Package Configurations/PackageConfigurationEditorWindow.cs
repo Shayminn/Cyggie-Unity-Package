@@ -25,6 +25,7 @@ namespace Cyggie.Main.Editor.Configurations
 
         private ConfigurationSettings _configSettings = null;
         private SerializedObject _serializedObject = null;
+        private SerializedProperty _resourcesPath = null;
 
         internal static PackageConfigurationEditorWindow Window = null;
 
@@ -69,6 +70,8 @@ namespace Cyggie.Main.Editor.Configurations
             });
 
             _serializedObject = new SerializedObject(_configSettings);
+            _resourcesPath = _serializedObject.FindProperty(nameof(ConfigurationSettings.ResourcesPath));
+
             _selectedTabIndex = EditorPrefs.GetInt(cEditorPrefSelectedTabKey, 0);
 
             if (_selectedTabIndex > _tabs.Count)
@@ -98,11 +101,10 @@ namespace Cyggie.Main.Editor.Configurations
                 EditorGUIUtility.labelWidth = 140;
 
                 // Draw configuration path text field
-                SerializedProperty pathProperty = _serializedObject.FindProperty(nameof(ConfigurationSettings.ResourcesPath));
-                string oldResourcesPath = pathProperty.stringValue;
-                if (EditorGUIHelper.CheckChange(gui: () => pathProperty.stringValue = EditorGUILayout.DelayedTextField("Resources Path", pathProperty.stringValue)))
+                string oldResourcesPath = _resourcesPath.stringValue;
+                if (EditorGUIHelper.CheckChange(gui: () => _resourcesPath.stringValue = EditorGUILayout.DelayedTextField("Resources Path", _resourcesPath.stringValue)))
                 {
-                    string newResourcesPath = pathProperty.stringValue;
+                    string newResourcesPath = _resourcesPath.stringValue;
                     string error = "";
 
                     if (newResourcesPath.EndsWith("/Resources"))
@@ -150,7 +152,7 @@ namespace Cyggie.Main.Editor.Configurations
                         }
 
                         AssetDatabase.Refresh();
-                        pathProperty.stringValue = newResourcesPath;
+                        _resourcesPath.stringValue = newResourcesPath;
                         _serializedObject.ApplyModifiedProperties();
                     }
                     // Has error
@@ -159,7 +161,7 @@ namespace Cyggie.Main.Editor.Configurations
                     {
                         Debug.LogError($"Failed to change Configuration path to: {newResourcesPath}");
                         Debug.LogError(error);
-                        pathProperty.stringValue = oldResourcesPath;
+                        _resourcesPath.stringValue = oldResourcesPath;
                     }
                 }
                 EditorGUILayout.Space(5);

@@ -21,16 +21,16 @@ namespace Cyggie.Main.Runtime.Configurations
         // Error strings
         private const string cDuplicateConfiguration = "Multiple of the same configuration has been assigned to " + nameof(ServiceConfigurations);
 
-        [SerializeField, Tooltip("Prefab object to instantiate on start.")]
+        [SerializeField]
         internal ServiceManager Prefab = null;
 
-        [SerializeField, Tooltip("List of service configurations to apply.")]
+        [SerializeField]
         internal List<ServiceConfiguration> ServiceConfigurations = new List<ServiceConfiguration>();
 
         /// <summary>
         /// Whether the settings are valid
         /// </summary>
-        [SerializeField, HideInInspector]
+        [SerializeField]
         internal bool IsValid = true;
 
         /// <summary>
@@ -42,6 +42,7 @@ namespace Cyggie.Main.Runtime.Configurations
 
         private const string cPrefabPath = "Packages/cyggie.main/Runtime/Prefabs/Service Manager.prefab";
 
+        /// <inheritdoc/>
         internal override void Initialize(ConfigurationSettings configSettings)
         {
             Prefab = AssetDatabase.LoadAssetAtPath<ServiceManager>(cPrefabPath);

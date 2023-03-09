@@ -17,83 +17,80 @@ namespace Cyggie.SceneChanger.Runtime.Configurations
         /// <summary>
         /// Loading Screen prefab object
         /// </summary>
-        [SerializeField, Tooltip("Prefab for the loading screen object.")]
+        [SerializeField]
         internal LoadingScreen LoadingScreenPrefab = null;
 
         #region Loading Screen fields
 
-        [SerializeField, Tooltip("Images to use as loading screen.")]
+        [SerializeField]
         internal Texture2D[] Images = null;
 
-        [SerializeField, Tooltip("Auto scale image to resolution or the image will simply be cut off.")]
+        [SerializeField]
         internal bool ScaleImageToResolution = true;
 
-        [SerializeField, Tooltip("Randomize the order of the image.")]
+        [SerializeField]
         internal bool RandomizeImages = true;
 
-        [SerializeField, Tooltip("Type of randomization\n " +
-                                 "ResetAfterEach: Resets the list after every load allowing the same images to be used sequentially.\n" +
-                                 "ResetAfterEachNoPreviousRepeat: Resets the list but will also make sure the loading image won't ever repeat.\n" +
-                                 "RoundRobin: Does not reset the list until every image has been loaded at least once.")]
+        [SerializeField]
         internal SceneChangeRandomType RandomType = SceneChangeRandomType.ResetAfterEach;
 
-        [SerializeField, Tooltip("Text objects to create for the loading screens.")]
+        [SerializeField]
         internal SceneChangeText[] Texts = null;
 
-        [SerializeField, Tooltip("Minimum amount of time to load before changing scene even if the scene is ready to be loaded.")]
+        [SerializeField]
         internal float MinimumLoadTime = 0f;
 
         #endregion
 
         #region Loading Bar fields
 
-        [SerializeField, Tooltip("Image for the loading bar.")]
+        [SerializeField]
         internal Texture2D LoadingBarImage = null;
 
-        [SerializeField, Tooltip("Color of the image for the loading bar.")]
+        [SerializeField]
         internal Color LoadingBarImageColor = Color.gray;
 
-        [SerializeField, Tooltip("Position of the loading bar.")]
+        [SerializeField]
         internal Vector3 LoadingBarPosition = new Vector3(0, -400, 0);
 
-        [SerializeField, Tooltip("Width and Height of the loading bar.")]
+        [SerializeField]
         internal Vector2 LoadingBarSize = new Vector2(1000, 50);
 
-        [SerializeField, Tooltip("Fill method of the loading bar image.")]
+        [SerializeField]
         internal FillMethod LoadingBarFillMethod = FillMethod.Horizontal;
 
-        [SerializeField, Tooltip("Fill origin of the loading bar image.")]
+        [SerializeField]
         internal int LoadingBarFillOrigin = 0;
 
-        [SerializeField, Tooltip("Whether the loading bar image should preseve its aspect ratio.")]
+        [SerializeField]
         internal bool PreserveAspectRatio = false;
 
-        [SerializeField, Tooltip("Whether the text progress of the loading bar should be displayed.")]
+        [SerializeField]
         internal bool EnableTextProgress = false;
 
-        [SerializeField, Tooltip("Position of the text progress.")]
+        [SerializeField]
         internal Vector3 TextProgressPosition = Vector3.zero;
 
-        [SerializeField, Tooltip("Width and Height of the text progress.")]
+        [SerializeField]
         internal Vector2 TextProgressObjectSize = new Vector2(200, 50);
 
-        [SerializeField, Tooltip("Font size of the text progress.")]
+        [SerializeField]
         internal float TextProgressSize = 16f;
 
-        [SerializeField, Tooltip("Color of the text progress.")]
+        [SerializeField]
         internal Color TextProgressColor = Color.black;
 
         #endregion
 
         #region Resolution fields
 
-        [SerializeField, Tooltip("Auto adjust the loading screen to the resolution.")]
+        [SerializeField]
         internal bool AutoAdjustToResolution = true;
 
-        [SerializeField, Tooltip("Fixed resolution screen size to use.")]
+        [SerializeField]
         internal Vector2 ScreenSize = new Vector2(1920, 1080);
 
-        [SerializeField, Tooltip("Delay between each check for a change in resolution.")]
+        [SerializeField]
         internal float ResolutionCheckDelay = 0.5f;
 
         #endregion

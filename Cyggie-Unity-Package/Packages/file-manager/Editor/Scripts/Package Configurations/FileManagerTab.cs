@@ -1,5 +1,7 @@
-﻿using Cyggie.FileManager.Runtime.Services;
+﻿using Cyggie.FileManager.Editor.Utils.Styles;
+using Cyggie.FileManager.Runtime.Services;
 using Cyggie.Main.Editor.Configurations;
+using Cyggie.Main.Editor.Utils.Helpers;
 using UnityEditor;
 
 namespace Cyggie.SceneChanger.Editor.Configurations
@@ -14,11 +16,28 @@ namespace Cyggie.SceneChanger.Editor.Configurations
         private const string cSaveLocationLabel = "Save Location Settings";
         private const string cOtherLabel = "Other Settings";
 
+        // Serialized Properties
+        private SerializedProperty _usePersistentDataPath = null;
+        private SerializedProperty _localSavePath = null;
+        private SerializedProperty _defaultFileExtension = null;
+        private SerializedProperty _encrypted = null;
+        private SerializedProperty _filesToIgnore = null;
+
         /// <inheritdoc/>
         internal override System.Type SettingsType => typeof(FileManagerSettings);
 
         /// <inheritdoc/>
         internal override string ResourcesPath => FileManagerSettings.cResourcesPath;
+
+        /// <inheritdoc/>
+        protected override void OnInitialized()
+        {
+            _usePersistentDataPath = _serializedObject.FindProperty(nameof(FileManagerSettings.UsePersistentDataPath));
+            _localSavePath = _serializedObject.FindProperty(nameof(FileManagerSettings.LocalSavePath));
+            _defaultFileExtension = _serializedObject.FindProperty(nameof(FileManagerSettings.DefaultFileExtension));
+            _encrypted = _serializedObject.FindProperty(nameof(FileManagerSettings.Encrypted));
+            _filesToIgnore = _serializedObject.FindProperty(nameof(FileManagerSettings.FilesToIgnore));
+        }
 
         /// <inheritdoc/>
         protected override void DrawGUI()
@@ -27,21 +46,22 @@ namespace Cyggie.SceneChanger.Editor.Configurations
             EditorGUILayout.Space(5);
 
             EditorGUILayout.LabelField(cSaveLocationLabel, EditorStyles.boldLabel);
-            SerializedProperty usePersistent = _serializedObject.FindProperty(nameof(FileManagerSettings.UsePersistentDataPath));
-            EditorGUILayout.PropertyField(usePersistent);
+            EditorGUILayout.PropertyField(_usePersistentDataPath, GUIContents.cUsePersistentDataPath);
 
-            if (!usePersistent.boolValue)
+            EditorGUIHelper.DrawAsReadOnly(_usePersistentDataPath.boolValue, gui: () =>
             {
-                EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(FileManagerSettings.LocalSavePath)));
-            }
-            EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(FileManagerSettings.DefaultFileExtension)));
+                EditorGUILayout.PropertyField(_localSavePath, GUIContents.cLocalSavePath);
+            });
+            EditorGUILayout.Space(5);
+
+            EditorGUILayout.PropertyField(_defaultFileExtension, GUIContents.cDefaultFileExtension);
             EditorGUILayout.Space(10);
 
             EditorGUILayout.LabelField(cOtherLabel, EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(FileManagerSettings.Encrypted)));
+            EditorGUILayout.PropertyField(_encrypted, GUIContents.cEncrypted);
             EditorGUILayout.Space(5);
 
-            EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(FileManagerSettings.FilesToIgnore)));
+            EditorGUILayout.PropertyField(_filesToIgnore, GUIContents.cFilesToIgnore);
         }
     }
 }

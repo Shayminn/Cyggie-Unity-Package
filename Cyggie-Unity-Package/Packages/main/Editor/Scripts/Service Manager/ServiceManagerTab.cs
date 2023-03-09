@@ -20,6 +20,10 @@ namespace Cyggie.Main.Editor.Configurations
         private const string cFilterLabel = "Filter added configs";
         private const string cCreateButtonLabel = "Create new configuration";
 
+        // Serialized Properties
+        private SerializedProperty _prefab = null;
+        private SerializedProperty _serviceConfigurations = null;
+
         private int _selectedConfigIndex = -1;
         private bool _filterAdded = true;
         private string _logMessage = "";
@@ -46,6 +50,9 @@ namespace Cyggie.Main.Editor.Configurations
                 // don't add package configuration settings as something instantiable, they are built-in packages and shouldn't be created outside
                 .Where(t => !typeof(PackageConfigurationSettings).IsAssignableFrom(t) && typeof(ServiceConfiguration).IsAssignableFrom(t) && !t.IsAbstract)
                 .ToList();
+
+            _prefab = _serializedObject.FindProperty(nameof(ServiceManagerSettings.Prefab));
+            _serviceConfigurations = _serializedObject.FindProperty(nameof(ServiceManagerSettings.ServiceConfigurations));
         }
 
         /// <inheritdoc/>
@@ -55,12 +62,12 @@ namespace Cyggie.Main.Editor.Configurations
             EditorGUIHelper.DrawAsReadOnly(gui: () =>
             {
                 EditorGUILayout.Space(5);
-                EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(ServiceManagerSettings.Prefab)));
+                EditorGUILayout.PropertyField(_prefab);
             });
             EditorGUILayout.Space(10);
 
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(ServiceManagerSettings.ServiceConfigurations)));
+            EditorGUILayout.PropertyField(_serviceConfigurations);
             if (EditorGUI.EndChangeCheck())
             {
                 // Reset the log message if the list of configurations has changed

@@ -20,7 +20,7 @@ namespace Cyggie.Main.Runtime.Configurations
 
         internal const string cFileName = "ConfigurationSettings.asset";
 
-        [SerializeField, Tooltip("Folder Path for all files related to Cyggie's Package Configurations")]
+        [SerializeField]
         internal string ResourcesPath = cDefaultResourcesFolderPath;
     }
 }

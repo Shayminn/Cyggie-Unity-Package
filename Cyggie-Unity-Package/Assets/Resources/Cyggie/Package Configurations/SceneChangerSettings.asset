@@ -31,6 +31,6 @@ MonoBehaviour:
   TextProgressObjectSize: {x: 200, y: 50}
   TextProgressSize: 16
   TextProgressColor: {r: 0, g: 0, b: 0, a: 1}
-  AutoAdjustToResolution: 1
+  AutoAdjustToResolution: 0
   ScreenSize: {x: 1920, y: 1080}
   ResolutionCheckDelay: 0.5

@@ -1,6 +1,8 @@
 ﻿using Cyggie.Main.Editor.Configurations;
 using Cyggie.Main.Editor.Utils.Helpers;
 using Cyggie.Main.Runtime.Utils.Extensions;
+using Cyggie.SceneChanger.Editor.Utils;
+using Cyggie.SceneChanger.Editor.Utils.Styles;
 using Cyggie.SceneChanger.Runtime;
 using Cyggie.SceneChanger.Runtime.Configurations;
 using Cyggie.SceneChanger.Runtime.Utils.Constants;
@@ -25,6 +27,36 @@ namespace Cyggie.SceneChanger.Editor.Configurations
         private bool _loadingBarFoldout = false;
         private bool _resolutionFoldout = false;
 
+        #region Serialized Properties
+
+        private SerializedProperty _loadingScreenPrefab = null;
+
+        private SerializedProperty _images = null;
+        private SerializedProperty _scaleImageToResolution = null;
+        private SerializedProperty _randomizeImages = null;
+        private SerializedProperty _randomType = null;
+        private SerializedProperty _texts = null;
+        private SerializedProperty _minimumLoadTime = null;
+
+        private SerializedProperty _loadingBarImage = null;
+        private SerializedProperty _loadingBarImageColor = null;
+        private SerializedProperty _loadingBarPosition = null;
+        private SerializedProperty _loadingBarSize = null;
+        private SerializedProperty _loadingBarFillMethod = null;
+        private SerializedProperty _loadingBarFillOrigin = null;
+        private SerializedProperty _preserveAspectRatio = null;
+        private SerializedProperty _enableTextProgress = null;
+        private SerializedProperty _textProgressPosition = null;
+        private SerializedProperty _textProgressObjectSize = null;
+        private SerializedProperty _textProgressSize = null;
+        private SerializedProperty _textProgressColor = null;
+
+        private SerializedProperty _autoAdjustToResolution = null;
+        private SerializedProperty _screenSize = null;
+        private SerializedProperty _resolutionCheckDelay = null;
+
+        #endregion
+
         /// <inheritdoc/>
         internal override System.Type SettingsType => typeof(SceneChangerSettings);
 
@@ -40,11 +72,41 @@ namespace Cyggie.SceneChanger.Editor.Configurations
         }
 
         /// <inheritdoc/>
+        protected override void OnInitialized()
+        {
+            _loadingScreenPrefab = _serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingScreenPrefab));
+
+            _images = _serializedObject.FindProperty(nameof(SceneChangerSettings.Images));
+            _scaleImageToResolution = _serializedObject.FindProperty(nameof(SceneChangerSettings.ScaleImageToResolution));
+            _randomizeImages = _serializedObject.FindProperty(nameof(SceneChangerSettings.RandomizeImages));
+            _randomType = _serializedObject.FindProperty(nameof(SceneChangerSettings.RandomType));
+            _texts = _serializedObject.FindProperty(nameof(SceneChangerSettings.Texts));
+            _minimumLoadTime = _serializedObject.FindProperty(nameof(SceneChangerSettings.MinimumLoadTime));
+
+            _loadingBarImage = _serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarImage));
+            _loadingBarImageColor = _serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarImageColor));
+            _loadingBarPosition = _serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarPosition));
+            _loadingBarSize = _serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarSize));
+            _loadingBarFillMethod = _serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarFillMethod));
+            _loadingBarFillOrigin = _serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarFillOrigin));
+            _preserveAspectRatio = _serializedObject.FindProperty(nameof(SceneChangerSettings.PreserveAspectRatio));
+            _enableTextProgress = _serializedObject.FindProperty(nameof(SceneChangerSettings.EnableTextProgress));
+            _textProgressPosition = _serializedObject.FindProperty(nameof(SceneChangerSettings.TextProgressPosition));
+            _textProgressObjectSize = _serializedObject.FindProperty(nameof(SceneChangerSettings.TextProgressObjectSize));
+            _textProgressSize = _serializedObject.FindProperty(nameof(SceneChangerSettings.TextProgressSize));
+            _textProgressColor = _serializedObject.FindProperty(nameof(SceneChangerSettings.TextProgressColor));
+
+            _autoAdjustToResolution = _serializedObject.FindProperty(nameof(SceneChangerSettings.AutoAdjustToResolution));
+            _screenSize = _serializedObject.FindProperty(nameof(SceneChangerSettings.ScreenSize));
+            _resolutionCheckDelay = _serializedObject.FindProperty(nameof(SceneChangerSettings.ResolutionCheckDelay));
+        }
+
+        /// <inheritdoc/>
         protected override void DrawGUI()
         {
             EditorGUIHelper.DrawAsReadOnly(gui: () =>
             {
-                EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingScreenPrefab)));
+                EditorGUILayout.PropertyField(_loadingScreenPrefab, GUIContents.cLoadingScreenPrefab);
                 EditorGUILayout.Space(10);
             });
 
@@ -54,26 +116,26 @@ namespace Cyggie.SceneChanger.Editor.Configurations
             if (_loadingScreenFoldout)
             {
                 // Images
-                EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.Images)));
+                EditorGUILayout.PropertyField(_images, GUIContents.cImages);
 
                 // Extra settings if with custom loading screen images
                 EditorGUIHelper.DrawAsReadOnly(Settings.Images == null || Settings.Images.Length == 0, gui: () =>
                 {
-                    EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.ScaleImageToResolution)));
-                    EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.RandomizeImages)));
+                    EditorGUILayout.PropertyField(_scaleImageToResolution, GUIContents.cScaleImageToResolution);
+                    EditorGUILayout.PropertyField(_randomizeImages, GUIContents.cRandomizeImages);
 
                     // Extra settings if randomized images
                     EditorGUIHelper.DrawAsReadOnly(!Settings.RandomizeImages, gui: () =>
                     {
-                        EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.RandomType)));
+                        EditorGUILayout.PropertyField(_randomType, GUIContents.cRandomType);
                     });
                 });
                 EditorGUILayout.Space(5);
 
-                EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.Texts)));
+                EditorGUILayout.PropertyField(_texts, GUIContents.cTexts);
                 EditorGUILayout.Space(5);
 
-                EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.MinimumLoadTime)));
+                EditorGUILayout.PropertyField(_minimumLoadTime, GUIContents.cMinimumLoadTime);
                 EditorGUILayout.Space(10);
             }
 
@@ -82,36 +144,36 @@ namespace Cyggie.SceneChanger.Editor.Configurations
 
             if (_loadingBarFoldout)
             {
-                EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarImage)));
-                EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarImageColor)));
+                EditorGUILayout.PropertyField(_loadingBarImage, GUIContents.cLoadingBarImage);
+                EditorGUILayout.PropertyField(_loadingBarImageColor, GUIContents.cLoadingBarImageColor);
                 EditorGUILayout.Space(5);
 
                 // Manually draw label & field instead, for some reason this is printing in two lines
                 //EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarPosition)), GUILayout.MaxWidth(500));
                 EditorGUIHelper.DrawHorizontal(gui: () =>
                 {
-                    EditorGUILayout.LabelField("Loading Bar Position", GUILayout.Width(150));
-                    Settings.LoadingBarPosition = EditorGUILayout.Vector3Field("", Settings.LoadingBarPosition);
+                    EditorGUILayout.LabelField(GUIContents.cLoadingBarPosition, GUILayout.Width(150));
+                    _loadingBarPosition.vector3Value = EditorGUILayout.Vector3Field("", _loadingBarPosition.vector3Value);
                 });
 
                 // Manually draw label & field instead, for some reason this is printing in two lines
                 //EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarSize)));
                 EditorGUIHelper.DrawHorizontal(gui: () =>
                 {
-                    EditorGUILayout.LabelField("Loading Bar Size", GUILayout.Width(150));
-                    Settings.LoadingBarSize = EditorGUILayout.Vector2Field("", Settings.LoadingBarSize);
+                    EditorGUILayout.LabelField(GUIContents.cLoadingBarSize, GUILayout.Width(150));
+                    _loadingBarSize.vector2Value = EditorGUILayout.Vector2Field("", _loadingBarSize.vector2Value);
                 });
                 EditorGUILayout.Space(5);
 
                 EditorGUI.BeginChangeCheck();
-                EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarFillMethod)));
+                EditorGUILayout.PropertyField(_loadingBarFillMethod, GUIContents.cLoadingBarFillMethod);
                 if (EditorGUI.EndChangeCheck())
                 {
-                    _serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarFillOrigin)).intValue = 0;
+                    _loadingBarFillOrigin.intValue = 0;
                 }
 
                 string label = nameof(SceneChangerSettings.LoadingBarFillOrigin).SplitCamelCase();
-                switch (Settings.LoadingBarFillMethod)
+                switch ((FillMethod) _loadingBarFillMethod.enumValueFlag)
                 {
                     case FillMethod.Horizontal:
                         Settings.LoadingBarFillOrigin = (int) (OriginHorizontal) EditorGUILayout.EnumPopup(label, (OriginHorizontal) Settings.LoadingBarFillOrigin);
@@ -131,20 +193,19 @@ namespace Cyggie.SceneChanger.Editor.Configurations
                 }
                 EditorGUILayout.Space(5);
 
-                EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.PreserveAspectRatio)));
+                EditorGUILayout.PropertyField(_preserveAspectRatio, GUIContents.cPreserveAspectRatio);
                 EditorGUILayout.Space(5);
 
-                SerializedProperty textProgress = _serializedObject.FindProperty(nameof(SceneChangerSettings.EnableTextProgress));
-                EditorGUILayout.PropertyField(textProgress);
-                EditorGUIHelper.DrawAsReadOnly(!textProgress.boolValue, gui: () =>
+                EditorGUILayout.PropertyField(_enableTextProgress, GUIContents.cEnableTextProgress);
+                EditorGUIHelper.DrawAsReadOnly(!_enableTextProgress.boolValue, gui: () =>
                 {
                     EditorGUILayout.Space(5);
-                    EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.TextProgressPosition)));
-                    EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.TextProgressObjectSize)));
+                    EditorGUILayout.PropertyField(_textProgressPosition, GUIContents.cTextProgressPosition);
+                    EditorGUILayout.PropertyField(_textProgressObjectSize, GUIContents.cTextProgressObjectSize);
 
                     EditorGUILayout.Space(5);
-                    EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.TextProgressSize)));
-                    EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.TextProgressColor)));
+                    EditorGUILayout.PropertyField(_textProgressSize, GUIContents.cTextProgressSize);
+                    EditorGUILayout.PropertyField(_textProgressColor, GUIContents.cTextProgressColor);
                 });
                 EditorGUILayout.Space(10);
             }
@@ -154,22 +215,22 @@ namespace Cyggie.SceneChanger.Editor.Configurations
 
             if (_resolutionFoldout)
             {
-                EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.AutoAdjustToResolution)));
+                EditorGUILayout.PropertyField(_autoAdjustToResolution, GUIContents.cAutoAdjustToResolution);
 
                 EditorGUIHelper.DrawAsReadOnly(Settings.AutoAdjustToResolution, gui: () =>
                 {
-                    EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.ScreenSize)));
+                    EditorGUILayout.PropertyField(_screenSize, GUIContents.cScreenSize);
                 });
 
                 EditorGUIHelper.DrawAsReadOnly(!Settings.AutoAdjustToResolution, gui: () =>
                 {
-                    EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.ResolutionCheckDelay)));
+                    EditorGUILayout.PropertyField(_resolutionCheckDelay, GUIContents.cResolutionCheckDelay);
                 });
             }
 
             EditorGUILayout.Space(10);
 
-            _serializedObject.ApplyModifiedPropertiesWithoutUndo();
+            _serializedObject.ApplyModifiedProperties();
         }
     }
 }

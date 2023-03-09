@@ -1,5 +1,5 @@
 using Cyggie.Main.Editor.Configurations;
-using Cyggie.SQLite.Editor.Utils;
+using Cyggie.SQLite.Editor.Utils.Styles;
 using Cyggie.SQLite.Runtime.Services;
 using System;
 using UnityEditor;
@@ -16,7 +16,7 @@ namespace Cyggie.SQLite.Editor.Configurations
         private SerializedProperty _readOnly = null;
         private SerializedProperty _readAllOnStart = null;
         private SerializedProperty _addSToTableName = null;
-            
+
         /// <inheritdoc/>
         internal override string ResourcesPath => SQLiteSettings.cResourcesPath;
 

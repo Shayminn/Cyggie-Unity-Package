@@ -9,40 +9,40 @@ namespace Cyggie.SceneChanger.Runtime.Settings
     [Serializable]
     internal class SceneChangeText
     {
-        [SerializeField, HideInInspector]
+        [SerializeField]
         internal bool PropertyFoldout = true;
 
-        [SerializeField, Tooltip("Text to write.")]
+        [SerializeField]
         internal string Text = "Text";
 
-        [SerializeField, HideInInspector]
-        internal bool TransformSettingsFoldOut = true;
+        [SerializeField]
+        internal bool TransformSettingsFoldout = true;
 
-        [SerializeField, Tooltip("RectTransform's position.")]
+        [SerializeField]
         internal Vector3 Position = Vector3.zero;
 
-        [SerializeField, Tooltip("RectTransform's width and height.")]
+        [SerializeField]
         internal Vector2 ObjectSize = new Vector2(500, 150);
 
-        [SerializeField, HideInInspector]
-        internal bool TextSettingsFoldOut = true;
+        [SerializeField]
+        internal bool TextSettingsFoldout = true;
 
-        [SerializeField, Tooltip("The color of the Text.")]
+        [SerializeField]
         internal Color TextColor = Color.white;
 
-        [SerializeField, Tooltip("The font size of the Text.")]
+        [SerializeField]
         internal int TextSize = 36;
 
         [SerializeField, HideInInspector]
-        internal bool VisibilitySettingsFoldOut = true;
+        internal bool VisibilitySettingsFoldout = true;
 
-        [SerializeField, Tooltip("Whether this Text should always be visible.")]
+        [SerializeField]
         internal bool AlwaysVisible = true;
 
-        [SerializeField, Tooltip("Whether this Text should only be visible to ")]
+        [SerializeField]
         internal int ImageSpecific = -1;
 
-        [SerializeField, Tooltip("Whether this Text should only be displayed when the loading has reached a specific progress.")]
+        [SerializeField]
         [Range(0, 100)]
         internal float DisplayAtProgress = 0;
     }
