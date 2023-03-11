@@ -143,6 +143,15 @@ namespace Cyggie.SceneChanger.Runtime
         }
 
         /// <summary>
+        /// Toggle the canvas to enable mouse clicks through it when the Loading Screen is not active
+        /// </summary>
+        /// <param name="toggle">Whether the canvas is active in the scene</param>
+        internal void ToggleCanvas(bool toggle)
+        {
+            _canvasScaler.gameObject.SetActive(toggle);
+        }
+
+        /// <summary>
         /// Sets the progress of the loading bar <br/>
         /// Display any text that has <see cref="SceneChangeText.DisplayAtProgress"/> if <paramref name="progress"/> has passed it
         /// </summary>

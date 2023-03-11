@@ -54,6 +54,7 @@ namespace Cyggie.SceneChanger.Runtime.Services
             _loadingScreen = GameObject.Instantiate(_settings.LoadingScreenPrefab);
 
             // Hide object
+            _loadingScreen.ToggleCanvas(false);
             _loadingScreen.ToggleLoadingScreen(false, false);
 
             // Initialize the settings in the loading screen
@@ -161,6 +162,7 @@ namespace Cyggie.SceneChanger.Runtime.Services
         {
             _inProgress = true;
             OnSceneChangeStarted?.Invoke();
+            _loadingScreen.ToggleCanvas(true);
 
             // Apply default settings if null
             changeSceneSettings ??= ChangeSceneSettings.Default;
@@ -242,6 +244,7 @@ namespace Cyggie.SceneChanger.Runtime.Services
                 while (!fadeOutCompleted) yield return null;
             }
 
+            _loadingScreen.ToggleCanvas(false);
             OnSceneChangeCompleted?.Invoke();
             _inProgress = false;
         }
