@@ -69,6 +69,7 @@ namespace Cyggie.SceneChanger.Editor.Configurations
         protected override void OnSettingsCreated()
         {
             Settings.LoadingScreenPrefab = AssetDatabase.LoadAssetAtPath<LoadingScreen>(SceneChangerPaths.cLoadingScreen);
+            EditorUtility.SetDirty(Settings);
         }
 
         /// <inheritdoc/>
