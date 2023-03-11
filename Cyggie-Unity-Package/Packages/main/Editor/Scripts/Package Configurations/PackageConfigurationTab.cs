@@ -69,7 +69,17 @@ namespace Cyggie.Main.Editor.Configurations
                 // Settings not found, create a new one
                 Debug.Log($"Couldn't find settings file for tab: {GetType().Name}, creating a new one...");
 
-                _settings = GetOrCreateSettings(SettingsType, ResourcesPath, OnSettingsCreated);
+                bool newSettings = false;
+                _settings = GetOrCreateSettings(SettingsType, ResourcesPath, () =>
+                {
+                    newSettings = true;
+                });
+
+                // This is necessary for assigning _settings before calling OnSettingsCreated
+                if (newSettings)
+                {
+                    OnSettingsCreated();
+                }
 
                 // Add Package Configuration Settings as a ServiceConfiguration
                 // Only for non-service manager settings, no point for it to be referencing itself
