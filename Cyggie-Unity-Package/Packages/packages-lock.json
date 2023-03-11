@@ -242,14 +242,6 @@
         "cyggie.main": "1.0.6"
       }
     },
-    "cyggie.language-manager": {
-      "version": "file:language-manager",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "cyggie.main": "1.0.6"
-      }
-    },
     "cyggie.main": {
       "version": "file:main",
       "depth": 0,
