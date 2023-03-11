@@ -47,6 +47,7 @@ namespace Cyggie.SQLite.Editor.Configurations
             string databaseAbsPath = $"{Application.streamingAssetsPath}/{SQLiteSettings.cStreamingAssetsFolderPath}{Settings.DatabaseName}".InsertEndsWith(FileExtensionConstants.cSQLite);
             if (!File.Exists(databaseAbsPath))
             {
+                Debug.Log($"Database file not found, creating a new one at: {databaseAbsPath}.");
                 Directory.CreateDirectory(Path.GetDirectoryName(databaseAbsPath));
 
                 // This will create a new .sqlite database at path
