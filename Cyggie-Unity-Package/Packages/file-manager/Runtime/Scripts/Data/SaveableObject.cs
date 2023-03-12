@@ -29,7 +29,7 @@ namespace Cyggie.FileManager.Runtime.Data
         internal SaveFileModel FileModel = null;
 
         /// <summary>
-        /// The subfolder path that this object's ave field should be saved to
+        /// The subfolder path that this object's save file should be saved to (automatically adds a trailing "/" if it doesn't end with it)
         /// </summary>
         protected virtual string SubfolderPath { get; private set; } = string.Empty;
 
