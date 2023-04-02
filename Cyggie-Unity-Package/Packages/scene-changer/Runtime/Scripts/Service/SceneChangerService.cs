@@ -183,7 +183,6 @@ namespace Cyggie.SceneChanger.Runtime.Services
             }
 
             asyncOperation.allowSceneActivation = false;
-            float minimumLoadTime = _settings.MinimumLoadTime;
 
             // Fade In
             bool fadeInCompleted = false;
@@ -202,34 +201,13 @@ namespace Cyggie.SceneChanger.Runtime.Services
             {
                 _loadingScreen.ToggleLoadingScreen(true, changeSceneSettings.EnableLoadingBar);
 
-                // Loop till scene change is done
-                while (!asyncOperation.isDone)
-                {
-                    minimumLoadTime -= Time.deltaTime;
-
-                    // Progress stays at 0.9f (90%) as long as allowSceneActivation is false
-                    // So at 90%, enable scene activation to complete scene change
-                    if (asyncOperation.progress >= 0.9f)
-                    {
-                        _loadingScreen.SetProgress(1);
-
-                        // Wait till remaining minimum loading time is reached
-                        if (minimumLoadTime > 0) yield return new WaitForSeconds(minimumLoadTime);
-
-                        // Wait till 
-                        if (changeSceneSettings.HasInputSettings) yield return _loadingScreen.StartCoroutine(changeSceneSettings.InputSettings.WaitForInput());
-
-                        asyncOperation.allowSceneActivation = true;
-                    }
-                    else
-                    {
-                        _loadingScreen.SetProgress(asyncOperation.progress);
-                    }
-
-                    yield return null;
-                }
+                yield return _loadingScreen.StartCoroutine(WaitLoadingScreen(asyncOperation, changeSceneSettings));
 
                 _loadingScreen.ToggleLoadingScreen(false, false);
+            }
+            else
+            {
+                yield return _loadingScreen.StartCoroutine(WaitLoadingScreen(asyncOperation, changeSceneSettings));
             }
 
             // Fade out
@@ -247,6 +225,43 @@ namespace Cyggie.SceneChanger.Runtime.Services
             _loadingScreen.ToggleCanvas(false);
             OnSceneChangeCompleted?.Invoke();
             _inProgress = false;
+        }
+
+        /// <summary>
+        /// Coroutine to process the loading/waiting of the async operation to change scene
+        /// </summary>
+        /// <param name="asyncOperation">The loading screen async operation</param>
+        /// <param name="changeSceneSettings">The settings applied</param>
+        private IEnumerator WaitLoadingScreen(AsyncOperation asyncOperation, ChangeSceneSettings changeSceneSettings)
+        {
+            float minimumLoadTime = _settings.MinimumLoadTime;
+
+            // Loop till scene change is done
+            while (!asyncOperation.isDone)
+            {
+                minimumLoadTime -= Time.deltaTime;
+
+                // Progress stays at 0.9f (90%) as long as allowSceneActivation is false
+                // So at 90%, enable scene activation to complete scene change
+                if (asyncOperation.progress >= 0.9f)
+                {
+                    _loadingScreen.SetProgress(1);
+
+                    // Wait till remaining minimum loading time is reached
+                    if (minimumLoadTime > 0) yield return new WaitForSeconds(minimumLoadTime);
+
+                    // Wait till 
+                    if (changeSceneSettings.HasInputSettings) yield return _loadingScreen.StartCoroutine(changeSceneSettings.InputSettings.WaitForInput());
+
+                    asyncOperation.allowSceneActivation = true;
+                }
+                else
+                {
+                    _loadingScreen.SetProgress(asyncOperation.progress);
+                }
+
+                yield return null;
+            }
         }
 
         /// <summary>
