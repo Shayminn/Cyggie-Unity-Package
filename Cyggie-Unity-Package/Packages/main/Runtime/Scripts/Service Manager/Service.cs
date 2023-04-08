@@ -113,6 +113,11 @@ namespace Cyggie.Main.Runtime.Services
         #region Internals
 
         /// <summary>
+        /// Whether this object should be added to ServiceManager in runtime
+        /// </summary>
+        internal bool AddServiceToServiceManager() => AddService();
+
+        /// <summary>
         /// Object has been initialized
         /// </summary>
         /// <param name="configuration">Configuration for the service, null if not set</param>
