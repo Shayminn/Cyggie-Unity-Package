@@ -73,7 +73,11 @@ namespace Cyggie.Main.Runtime.Services
             foreach (Type t in servicesTypes)
             {
                 Service service = (Service) Activator.CreateInstance(t);
-                _services.Add(service);
+
+                if (service.AddServiceToServiceManager())
+                {
+                    _services.Add(service);
+                }
             }
 
             // Initialize all services by order of priority
@@ -89,7 +93,36 @@ namespace Cyggie.Main.Runtime.Services
 
         #endregion
 
+        /// <summary>
+        /// Get a service of a specific type
+        /// </summary>
+        /// <typeparam name="T">Type of service</typeparam>
+        /// <returns>Stored service</returns>
+        public static T Get<T>() where T : Service
+        {
+            // Check if Service Manager has been initialized
+            if (_instance == null)
+            {
+                Debug.LogError($"Failed to get a service, Service Manager has not yet been initialized. Use {nameof(OnServicesInitialized)} or call Get in {nameof(Start)}.");
+                return default;
+            }
+
+            Service service = _instance._services.FirstOrDefault(x => x.GetType() == typeof(T));
+
+            if (service == null)
+            {
+                Debug.LogError($"Unable to find service of type: {typeof(T)}.");
+            }
+
+            return (T) service;
+        }
+
         #region MonoBehaviour implementations
+
+        private void OnGUI()
+        {
+            _services.ForEach(x => x.OnGUI());
+        }
 
         private void Awake()
         {
@@ -136,33 +169,9 @@ namespace Cyggie.Main.Runtime.Services
 
         private void OnDestroy()
         {
-            _services.ForEach(x => x.Destroy());
+            _services.ForEach(x => x.OnDestroy());
         }
 
         #endregion
-
-        /// <summary>
-        /// Get a service of a specific type
-        /// </summary>
-        /// <typeparam name="T">Type of service</typeparam>
-        /// <returns>Stored service</returns>
-        public static T Get<T>() where T : Service
-        {
-            // Check if Service Manager has been initialized
-            if (_instance == null)
-            {
-                Debug.LogError($"Failed to get a service, Service Manager has not yet been initialized. Use {nameof(OnServicesInitialized)} or call Get in {nameof(Start)}.");
-                return default;
-            }
-
-            Service service = _instance._services.FirstOrDefault(x => x.GetType() == typeof(T));
-
-            if (service == null)
-            {
-                Debug.LogError($"Unable to find service of type: {typeof(T)}.");
-            }
-
-            return (T) service;
-        }
     }
 }
