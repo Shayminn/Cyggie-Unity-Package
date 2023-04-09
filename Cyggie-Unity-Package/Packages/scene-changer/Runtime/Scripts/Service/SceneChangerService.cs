@@ -51,7 +51,7 @@ namespace Cyggie.SceneChanger.Runtime.Services
             _settings = settings;
 
             // Create game object from prefab
-            _loadingScreen = GameObject.Instantiate(_settings.LoadingScreenPrefab);
+            _loadingScreen = UnityEngine.Object.Instantiate(_settings.LoadingScreenPrefab, parent: Monobehaviour.transform);
 
             // Hide object
             _loadingScreen.ToggleCanvas(false);
