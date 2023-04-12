@@ -72,8 +72,6 @@ namespace Cyggie.SceneChanger.Runtime
 
             // Loading screen image
             ToggleLoadingScreen(false, false);
-
-            DontDestroyOnLoad(gameObject);
         }
 
         /// <summary>
@@ -105,8 +103,8 @@ namespace Cyggie.SceneChanger.Runtime
         private void Fade(float targetAlpha, ChangeSceneFade fadeSettings, Action onCompleted = null)
         {
             ColorHelper.TransitionColorAlpha(
-                mono: this, 
-                color: _fadeImage.color, 
+                mono: this,
+                color: _fadeImage.color,
                 targetAlpha: targetAlpha,
                 transitionDuration: fadeSettings.Duration,
                 onColorUpdated: color => _fadeImage.color = color,
