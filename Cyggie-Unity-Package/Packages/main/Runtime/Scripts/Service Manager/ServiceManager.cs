@@ -9,7 +9,8 @@ namespace Cyggie.Main.Runtime.Services
 {
     /// <summary>
     /// Manager class for all services of type <see cref="Service"/> <br/>
-    /// Any subclass of type <see cref="Service"/> will automatically be created and initialized
+    /// Any subclass of type <see cref="Service"/> will automatically be created and initialized <br/>
+    /// The Service Manager is initialized in Runtime with load type: <see cref="RuntimeInitializeLoadType.BeforeSceneLoad"/>
     /// </summary>
     public class ServiceManager : MonoBehaviour
     {
@@ -40,7 +41,7 @@ namespace Cyggie.Main.Runtime.Services
         /// Called at the start of runtime <br/>
         /// Create the <see cref="ServiceManager"/> object prefab in the scene
         /// </summary>
-        [RuntimeInitializeOnLoadMethod]
+        [RuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Initialize()
         {
             // Get settings saved in Resources folder

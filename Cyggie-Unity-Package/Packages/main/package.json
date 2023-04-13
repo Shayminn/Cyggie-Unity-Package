@@ -1,6 +1,6 @@
 {
   "name": "cyggie.main",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "displayName": "Main",
   "description": "This package is the main package that most, if not all, other package requires.",
   "unity": "2019.1",
