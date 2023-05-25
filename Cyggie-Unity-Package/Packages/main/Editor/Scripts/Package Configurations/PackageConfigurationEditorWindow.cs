@@ -74,7 +74,7 @@ namespace Cyggie.Main.Editor.Configurations
 
             _selectedTabIndex = EditorPrefs.GetInt(cEditorPrefSelectedTabKey, 0);
 
-            if (_selectedTabIndex > _tabs.Count)
+            if (_selectedTabIndex >= _tabs.Count)
             {
                 _selectedTabIndex = 0;
             }
