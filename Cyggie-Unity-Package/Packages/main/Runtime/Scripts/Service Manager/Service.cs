@@ -7,8 +7,6 @@ namespace Cyggie.Main.Runtime.ServicesNS
     /// </summary>
     public abstract class Service
     {
-        private ServiceManager _manager = null;
-
         /// <summary>
         /// Configuration object
         /// </summary>
@@ -21,9 +19,14 @@ namespace Cyggie.Main.Runtime.ServicesNS
         protected MonoBehaviour Monobehaviour => _manager;
 
         /// <summary>
-        /// The game object that holds this Service
+        /// The Service Manager game object that holds this Service
         /// </summary>
         protected GameObject GameObject => _manager.gameObject;
+
+        /// <summary>
+        /// The Service Manager game object's transform
+        /// </summary>
+        protected Transform Transform => GameObject.transform;
 
         /// <summary>
         /// The order of priority in which the service is initialized (by default 0) <br/>
@@ -32,6 +35,26 @@ namespace Cyggie.Main.Runtime.ServicesNS
         protected virtual int Priority { get; } = 0;
 
         internal int InternalPriority => Priority;
+
+        private ServiceManager _manager = null;
+
+        private Transform _instantiateParent = null;
+        private Transform InstantiateParent
+        {
+            get
+            {
+                if (_instantiateParent == null)
+                {
+                    GameObject obj = new GameObject();
+                    obj.name = GetType().Name;
+
+                    _instantiateParent = obj.transform;
+                    _instantiateParent.SetParent(Transform);
+                }
+
+                return _instantiateParent;
+            }
+        }
 
         #region MonoBehaviour virtuals
 
@@ -82,6 +105,26 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// This function is called when the MonoBehaviour will be destroyed
         /// </summary>
         public virtual void OnDestroy() { }
+
+        #endregion
+
+        #region Protected methods
+
+        /// <summary>
+        /// Instantiate an object parented to the default parent <br/>
+        /// The default parent is a children of <see cref="Transform"/> (the Service Manager's transform) and is named after the Service name
+        /// </summary>
+        /// <param name="obj">Object to instantiate</param>
+        protected T Instantiate<T>(T obj) where T : Object => Instantiate(obj, InstantiateParent);
+
+        /// <summary>
+        /// Instantiate an object parented to <paramref name="parent"/> <br/>
+        /// Shortcut for instantiating an object
+        /// </summary>
+        /// <param name="obj">Object to instantiate</param>
+        /// <param name="parent">Parent to assign to the object</param>
+        /// <returns></returns>
+        protected T Instantiate<T>(T obj, Transform parent) where T : Object => GameObject.Instantiate(obj, parent: parent);
 
         #endregion
 
