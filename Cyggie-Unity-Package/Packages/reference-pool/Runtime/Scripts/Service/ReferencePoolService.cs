@@ -20,6 +20,8 @@ namespace Cyggie.ReferencePool.Runtime.ServicesNS
     {
         private Dictionary<ReferencePoolObject, GameObject> _referencePool = new Dictionary<ReferencePoolObject, GameObject>();
 
+        protected override int Priority => int.MaxValue;
+
         /// <inheritdoc/>
         public override void Start()
         {
