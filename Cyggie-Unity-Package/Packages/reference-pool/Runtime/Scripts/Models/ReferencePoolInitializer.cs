@@ -1,3 +1,4 @@
+using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.ReferencePool.Runtime.ServicesNS;
 using Cyggie.ReferencePool.Runtime.Utils.Helpers;
 using UnityEngine;
@@ -15,13 +16,25 @@ namespace Cyggie.ReferencePool.Runtime
 
         private void Awake()
         {
+            if (_refPoolObj == null)
+            {
+                Debug.LogError($"[Reference Pool] Initializer's reference is missing. Assign it in the inspector. GameObject: {gameObject}.");
+                return;
+            }
+
             if (Services.ReferencePool == null)
             {
                 Debug.LogError("[Reference Pool] Service not found. Make sure it is initialized.");
                 return;
             }
 
+            ServiceManager.OnServicesInitialized += OnServicesInitialized;
+        }
+
+        private void OnServicesInitialized()
+        {
             Services.ReferencePool.AddToPool(_refPoolObj, gameObject);
+            ServiceManager.OnServicesInitialized -= OnServicesInitialized;
         }
     }
 }
