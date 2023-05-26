@@ -14,12 +14,6 @@ namespace Cyggie.Main.Runtime.ServicesNS
     public class ServiceManager : MonoBehaviour
     {
         /// <summary>
-        /// Action when all services have been created <br/>
-        /// This is called before <see cref="Service.Awake"/>
-        /// </summary>
-        public static Action OnServicesInitialized = null;
-
-        /// <summary>
         /// Instance object of this class
         /// </summary>
         private static ServiceManager _instance = null;
@@ -89,7 +83,6 @@ namespace Cyggie.Main.Runtime.ServicesNS
             }
 
             Debug.Log($"[Service Manager] Initialized Services. Count: {_services.Count}.");
-            OnServicesInitialized?.Invoke();
         }
 
         #endregion
@@ -104,7 +97,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             // Check if Service Manager has been initialized
             if (_instance == null)
             {
-                Debug.LogError($"Failed to get a service, Service Manager has not yet been initialized. Use {nameof(OnServicesInitialized)} or call Get in {nameof(Start)}.");
+                Debug.LogError($"Failed to get a service, Service Manager has not yet been initialized.");
                 return default;
             }
 

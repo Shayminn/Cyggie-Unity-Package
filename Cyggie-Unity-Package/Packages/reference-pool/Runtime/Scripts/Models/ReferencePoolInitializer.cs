@@ -28,13 +28,7 @@ namespace Cyggie.ReferencePool.Runtime
                 return;
             }
 
-            ServiceManager.OnServicesInitialized += OnServicesInitialized;
-        }
-
-        private void OnServicesInitialized()
-        {
             Services.ReferencePool.AddToPool(_refPoolObj, gameObject);
-            ServiceManager.OnServicesInitialized -= OnServicesInitialized;
         }
     }
 }
