@@ -37,10 +37,10 @@ namespace Cyggie.Main.Runtime.Services
         #region Initialization
 
         /// <summary>
-        /// Called at the start of runtime <br/>
+        /// Called at the start of runtime before awake <br/>
         /// Create the <see cref="ServiceManager"/> object prefab in the scene
         /// </summary>
-        [RuntimeInitializeOnLoadMethod]
+        [RuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Initialize()
         {
             // Get settings saved in Resources folder
@@ -88,6 +88,7 @@ namespace Cyggie.Main.Runtime.Services
                 service.Initialize(this, configuration);
             }
 
+            Debug.Log("Initialized services");
             OnServicesInitialized?.Invoke();
         }
 

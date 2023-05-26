@@ -248,6 +248,14 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "cyggie.reference-pool": {
+      "version": "file:reference-pool",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cyggie.main": "1.0.9"
+      }
+    },
     "cyggie.scene-changer": {
       "version": "file:scene-changer",
       "depth": 0,
