@@ -1,4 +1,4 @@
-using Cyggie.Main.Runtime.Services;
+using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.SceneChanger.Runtime.Configurations;
 using Cyggie.SceneChanger.Runtime.Settings;
 using System;
@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Cyggie.SceneChanger.Runtime.Services
+namespace Cyggie.SceneChanger.Runtime.ServicesNS
 {
     /// <summary>
     /// Service class for managing Scene Changes

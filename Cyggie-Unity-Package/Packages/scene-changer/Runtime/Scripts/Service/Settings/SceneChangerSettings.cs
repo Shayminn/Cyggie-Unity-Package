@@ -1,6 +1,6 @@
 ﻿using Cyggie.Main.Runtime.Configurations;
 using Cyggie.SceneChanger.Runtime.Enums;
-using Cyggie.SceneChanger.Runtime.Services;
+using Cyggie.SceneChanger.Runtime.ServicesNS;
 using Cyggie.SceneChanger.Runtime.Settings;
 using UnityEngine;
 using static UnityEngine.UI.Image;

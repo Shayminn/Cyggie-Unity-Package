@@ -3,7 +3,7 @@ using Cyggie.SQLite.Runtime.Utils.Constants;
 using System;
 using UnityEngine;
 
-namespace Cyggie.SQLite.Runtime.Services
+namespace Cyggie.SQLite.Runtime.ServicesNS
 {
     /// <summary>
     /// Settings for <see cref="SQLiteService"/>

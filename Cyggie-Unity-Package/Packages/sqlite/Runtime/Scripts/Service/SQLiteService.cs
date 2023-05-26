@@ -1,5 +1,5 @@
 using Cyggie.Main.Runtime.Configurations;
-using Cyggie.Main.Runtime.Services;
+using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.Runtime.SQLite.Models;
 using Cyggie.Runtime.SQLite.Utils.Attributes;
@@ -16,7 +16,7 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 
-namespace Cyggie.SQLite.Runtime.Services
+namespace Cyggie.SQLite.Runtime.ServicesNS
 {
     /// <summary>
     /// Service for managing an SQLite database <br/>

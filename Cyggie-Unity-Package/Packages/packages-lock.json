@@ -239,7 +239,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "cyggie.main": "1.0.6"
+        "cyggie.main": "1.0.10"
       }
     },
     "cyggie.main": {
@@ -253,7 +253,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "cyggie.main": "1.0.9"
+        "cyggie.main": "1.0.10"
       }
     },
     "cyggie.scene-changer": {
@@ -261,7 +261,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "cyggie.main": "1.0.8",
+        "cyggie.main": "1.0.10",
         "com.unity.inputsystem": "1.3.0",
         "com.unity.textmeshpro": "3.0.6"
       }
@@ -271,7 +271,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "cyggie.main": "1.0.6"
+        "cyggie.main": "1.0.10"
       }
     },
     "com.unity.modules.ai": {

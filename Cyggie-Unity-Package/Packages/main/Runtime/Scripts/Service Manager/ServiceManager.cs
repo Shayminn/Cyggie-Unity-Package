@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Cyggie.Main.Runtime.Services
+namespace Cyggie.Main.Runtime.ServicesNS
 {
     /// <summary>
     /// Manager class for all services of type <see cref="Service"/> <br/>

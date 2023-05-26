@@ -1,6 +1,6 @@
 ﻿using Cyggie.Encryption;
 using Cyggie.FileManager.Runtime.Data;
-using Cyggie.Main.Runtime.Services;
+using Cyggie.Main.Runtime.ServicesNS;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Cyggie.FileManager.Runtime.Services
+namespace Cyggie.FileManager.Runtime.ServicesNS
 {
     /// <summary>
     /// Service for loading/saving files on the local device with the Newtonsoft's JsonConvert (w/ encryption) <br/>

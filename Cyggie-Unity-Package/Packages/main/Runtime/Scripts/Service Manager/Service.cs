@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Cyggie.Main.Runtime.Services
+namespace Cyggie.Main.Runtime.ServicesNS
 {
     /// <summary>
     /// Model abstract class of Service to be used by <see cref="ServiceManager"/>

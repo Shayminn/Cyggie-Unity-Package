@@ -1,5 +1,5 @@
-using Cyggie.Main.Runtime.Services;
-using Cyggie.SceneChanger.Runtime.Services;
+using Cyggie.Main.Runtime.ServicesNS;
+using Cyggie.SceneChanger.Runtime.ServicesNS;
 using Cyggie.SceneChanger.Runtime.Settings;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;

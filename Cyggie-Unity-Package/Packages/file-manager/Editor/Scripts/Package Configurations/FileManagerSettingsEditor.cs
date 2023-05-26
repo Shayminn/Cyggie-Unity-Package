@@ -1,6 +1,5 @@
-﻿using Cyggie.FileManager.Runtime.Services;
+﻿using Cyggie.FileManager.Runtime.ServicesNS;
 using Cyggie.Main.Editor;
-using Cyggie.Main.Editor.Utils.Helpers;
 using UnityEditor;
 
 namespace Cyggie.FileManager.Editor.Configurations

@@ -1,4 +1,4 @@
-﻿using Cyggie.Main.Runtime.Services;
+﻿using Cyggie.Main.Runtime.ServicesNS;
 using UnityEngine;
 
 namespace Cyggie.Main.Runtime.Configurations

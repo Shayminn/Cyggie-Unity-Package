@@ -1,10 +1,10 @@
-using Cyggie.Main.Runtime.Services;
+using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Enums;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.Main.Runtime.Utils.Helpers;
 using Cyggie.SceneChanger.Runtime.Configurations;
 using Cyggie.SceneChanger.Runtime.Enums;
-using Cyggie.SceneChanger.Runtime.Services;
+using Cyggie.SceneChanger.Runtime.ServicesNS;
 using Cyggie.SceneChanger.Runtime.Settings;
 using System;
 using System.Collections;

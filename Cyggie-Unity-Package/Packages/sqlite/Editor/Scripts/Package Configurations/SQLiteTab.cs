@@ -1,7 +1,7 @@
 using Cyggie.Main.Editor.Configurations;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.SQLite.Editor.Utils.Styles;
-using Cyggie.SQLite.Runtime.Services;
+using Cyggie.SQLite.Runtime.ServicesNS;
 using Cyggie.SQLite.Runtime.Utils.Constants;
 using Mono.Data.Sqlite;
 using System;

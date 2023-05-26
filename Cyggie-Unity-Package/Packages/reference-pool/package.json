@@ -5,7 +5,7 @@
   "description": "This package derives from the Cyggie package. It contains relevant scripts and settings to manage a reference pool, allowing game objects to access initialized reference through scriptable objects.",
   "unity": "2019.1",
   "dependencies": {
-    "cyggie.main": "1.0.9"
+    "cyggie.main": "1.0.10"
   },
   "keywords": [
     "cyggie",

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Cyggie.Main.Runtime.Services
+namespace Cyggie.Main.Runtime.ServicesNS
 {
     /// <summary>
     /// Configuration class to apply to a <see cref="Service"/>

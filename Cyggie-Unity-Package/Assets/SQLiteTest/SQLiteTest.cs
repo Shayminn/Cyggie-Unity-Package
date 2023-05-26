@@ -1,5 +1,5 @@
-using Cyggie.Main.Runtime.Services;
-using Cyggie.SQLite.Runtime.Services;
+using Cyggie.Main.Runtime.ServicesNS;
+using Cyggie.SQLite.Runtime.ServicesNS;
 using Mono.Data.Sqlite;
 using System.Collections.Generic;
 using System.Linq;

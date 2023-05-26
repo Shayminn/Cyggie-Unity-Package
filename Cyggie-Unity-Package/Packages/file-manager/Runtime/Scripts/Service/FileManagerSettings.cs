@@ -2,7 +2,7 @@ using Cyggie.Main.Runtime.Configurations;
 using System;
 using UnityEngine;
 
-namespace Cyggie.FileManager.Runtime.Services
+namespace Cyggie.FileManager.Runtime.ServicesNS
 {
     /// <summary>
     /// Settings for <see cref="FileManagerService"/>

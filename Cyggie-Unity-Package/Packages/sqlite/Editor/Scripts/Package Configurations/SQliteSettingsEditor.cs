@@ -1,6 +1,5 @@
 using Cyggie.Main.Editor;
-using Cyggie.Main.Editor.Utils.Helpers;
-using Cyggie.SQLite.Runtime.Services;
+using Cyggie.SQLite.Runtime.ServicesNS;
 using UnityEditor;
 
 namespace Cyggie.SQLite.Editor.Configurations
