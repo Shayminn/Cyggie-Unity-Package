@@ -160,7 +160,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
         private void Update()
         {
-            _services.ForEach(x => x.OnDisable());
+            _services.ForEach(x => x.Update());
         }
 
         private void FixedUpdate()
