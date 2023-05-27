@@ -253,7 +253,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "cyggie.main": "1.0.10"
+        "cyggie.main": "1.0.11"
       }
     },
     "cyggie.scene-changer": {
