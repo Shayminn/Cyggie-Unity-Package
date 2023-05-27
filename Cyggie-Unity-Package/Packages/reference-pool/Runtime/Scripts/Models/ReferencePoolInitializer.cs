@@ -1,4 +1,3 @@
-using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.ReferencePool.Runtime.ServicesNS;
 using Cyggie.ReferencePool.Runtime.Utils.Helpers;
 using UnityEngine;
@@ -13,6 +12,9 @@ namespace Cyggie.ReferencePool.Runtime
     {
         [SerializeField, Tooltip("The reference pool scriptable object to add to the service.")]
         private ReferencePoolObject _refPoolObj = null;
+
+        [SerializeField, Tooltip("Whether this gameObject should be set to inactive rigth after adding itself to the Reference Pool service.")]
+        private bool _disableAfterAwake = false;
 
         private void Awake()
         {
@@ -29,6 +31,11 @@ namespace Cyggie.ReferencePool.Runtime
             }
 
             Services.ReferencePool.AddToPool(_refPoolObj, gameObject);
+
+            if (_disableAfterAwake)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }
