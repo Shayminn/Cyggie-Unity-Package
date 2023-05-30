@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee6208939e582940914941b98d7ac44, type: 3}
   m_Name: ServiceManagerSettings
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 0}
-  ServiceConfigurations: []
-  IsValid: 1
+  Prefab: {fileID: 5703444348504700640, guid: 9a5fad89ca320d34fb9a7b3c02b9d9d9, type: 3}
+  ServiceConfigurations:
+  - {fileID: 11400000, guid: 5517db2600634a14a8309cdaf46e7e61, type: 2}
+  - {fileID: 11400000, guid: ecd4008b89bd84647bdff179dfc4a606, type: 2}
+  - {fileID: 11400000, guid: 76406bfdce751ed4d95a0668dcbd05c1, type: 2}

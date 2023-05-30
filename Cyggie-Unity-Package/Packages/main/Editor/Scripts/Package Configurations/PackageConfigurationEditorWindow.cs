@@ -138,24 +138,29 @@ namespace Cyggie.Main.Editor.Configurations
                 .Where(type => !settings.ServiceConfigurations.Any(x => x.GetType() == type))
                 .ToList();
 
-            foreach (Type type in _missingTypes)
+            if (_missingTypes.Count > 0)
             {
-                Debug.Log($"[Cyggie.Main] Service configuration ({type.Name}) not found. Creating it...");
-                ScriptableObject scriptableObj = ScriptableObject.CreateInstance(type);
-
-                if (scriptableObj is ServiceConfigurationSO configuration)
+                foreach (Type type in _missingTypes)
                 {
-                    string folderName = configuration.IsPackageSettings ? FolderConstants.cPackageConfigurations : FolderConstants.cServiceConfigurations;
-                    string assetPath = FolderConstants.cAssets +
-                                       FolderConstants.cCyggie +
-                                       folderName +
-                                       configuration.GetType().Name + FileExtensionConstants.cAsset;
+                    Debug.Log($"[Cyggie.Main] Service configuration ({type.Name}) not found. Creating it...");
+                    ScriptableObject scriptableObj = ScriptableObject.CreateInstance(type);
 
-                    if (!AssetDatabaseHelper.CreateAsset(scriptableObj, assetPath)) continue;
+                    if (scriptableObj is ServiceConfigurationSO configuration)
+                    {
+                        string folderName = configuration.IsPackageSettings ? FolderConstants.cPackageConfigurations : FolderConstants.cServiceConfigurations;
+                        string assetPath = FolderConstants.cAssets +
+                                           FolderConstants.cCyggie +
+                                           folderName +
+                                           configuration.GetType().Name + FileExtensionConstants.cAsset;
 
-                    configuration.OnScriptableObjectCreated();
-                    settings.ServiceConfigurations.Add(configuration);
+                        if (!AssetDatabaseHelper.CreateAsset(scriptableObj, assetPath)) continue;
+
+                        configuration.OnScriptableObjectCreated();
+                        settings.ServiceConfigurations.Add(configuration);
+                    }
                 }
+
+                EditorUtility.SetDirty(settings);
             }
         }
 

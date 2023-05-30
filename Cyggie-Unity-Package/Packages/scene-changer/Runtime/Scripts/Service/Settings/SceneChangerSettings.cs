@@ -110,6 +110,9 @@ namespace Cyggie.SceneChanger.Runtime.Configurations
             base.OnScriptableObjectCreated();
 
             LoadingScreenPrefab = AssetDatabase.LoadAssetAtPath<LoadingScreen>(SceneChangerPaths.cLoadingScreenPrefab);
+
+            // This makes sure that the above reference is saved after closing the editor
+            EditorUtility.SetDirty(this);
         }
 
 #endif
