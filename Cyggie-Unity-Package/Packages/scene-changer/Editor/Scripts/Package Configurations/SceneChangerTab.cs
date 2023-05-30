@@ -5,6 +5,7 @@ using Cyggie.SceneChanger.Editor.Utils;
 using Cyggie.SceneChanger.Editor.Utils.Styles;
 using Cyggie.SceneChanger.Runtime;
 using Cyggie.SceneChanger.Runtime.Configurations;
+using Cyggie.SceneChanger.Runtime.ServicesNS;
 using Cyggie.SceneChanger.Runtime.Utils.Constants;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace Cyggie.SceneChanger.Editor.Configurations
     /// Package tab for <see cref="SceneChangerSettings"/> <br/>
     /// Accessible through Cyggie/Package Configurations
     /// </summary>
-    internal class SceneChangerTab : PackageConfigurationTab
+    internal class SceneChangerTab : PackageConfigurationTab<SceneChangerService, SceneChangerSettings>
     {
         // GUI Labels
         private const string cLoadingScreenLabel = "Loading Screen Settings";
@@ -57,24 +58,20 @@ namespace Cyggie.SceneChanger.Editor.Configurations
 
         #endregion
 
-        /// <inheritdoc/>
-        internal override System.Type SettingsType => typeof(SceneChangerSettings);
-
-        /// <inheritdoc/>
-        internal override string ResourcesPath => SceneChangerSettings.cResourcesPath;
-
         private SceneChangerSettings Settings => (SceneChangerSettings) _settings;
 
         /// <inheritdoc/>
         protected override void OnSettingsCreated()
         {
-            Settings.LoadingScreenPrefab = AssetDatabase.LoadAssetAtPath<LoadingScreen>(SceneChangerPaths.cLoadingScreen);
+            Settings.LoadingScreenPrefab = AssetDatabase.LoadAssetAtPath<LoadingScreen>(SceneChangerPaths.cLoadingScreenPrefab);
             EditorUtility.SetDirty(Settings);
         }
 
         /// <inheritdoc/>
         protected override void OnInitialized()
         {
+            base.OnInitialized();
+
             _loadingScreenPrefab = _serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingScreenPrefab));
 
             _images = _serializedObject.FindProperty(nameof(SceneChangerSettings.Images));

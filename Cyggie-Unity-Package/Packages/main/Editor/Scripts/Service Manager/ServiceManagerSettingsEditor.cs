@@ -1,10 +1,8 @@
-﻿using Cyggie.Main.Editor.Utils.Helpers;
-using Cyggie.Main.Runtime.Configurations;
+﻿using Cyggie.Main.Runtime.Configurations;
 using UnityEditor;
 
 namespace Cyggie.Main.Editor.Configurations
 {
-
     /// <summary>
     /// Inspector editor for <see cref="ServiceManagerSettings"/>
     /// </summary>

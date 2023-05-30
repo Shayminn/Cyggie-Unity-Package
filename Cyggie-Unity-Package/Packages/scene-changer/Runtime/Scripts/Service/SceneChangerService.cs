@@ -38,7 +38,7 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         private bool IsInitialized => _settings != null || _loadingScreen != null;
 
         /// <inheritdoc/>
-        protected override void OnInitialized(ServiceConfiguration configuration)
+        protected override void OnInitialized(ServiceConfigurationSO configuration)
         {
             base.OnInitialized(configuration);
 

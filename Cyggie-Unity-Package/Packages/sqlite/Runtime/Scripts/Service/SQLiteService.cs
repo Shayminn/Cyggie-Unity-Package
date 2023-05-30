@@ -25,8 +25,6 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
     /// </summary>
     public class SQLiteService : Service
     {
-        internal const string cResourcesPath = ConfigurationSettings.cResourcesFolderPath + nameof(SQLiteService);
-
         private IDbConnection _connection = null;
         private bool _readOnly = false;
         private bool _readAllOnStart = false;
@@ -36,13 +34,12 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
         private bool IsInitialized => _connection != null;
 
         /// <inheritdoc/>
-        protected override void OnInitialized(ServiceConfiguration configuration)
+        protected override void OnInitialized(ServiceConfigurationSO configuration)
         {
             base.OnInitialized(configuration);
 
             // Get the service configuration
-            if (configuration == null ||
-                configuration is not SQLiteSettings sqliteSettings)
+            if (configuration == null || configuration is not SQLiteSettings sqliteSettings)
             {
                 Debug.LogError($"Failed in {nameof(OnInitialized)}, configuration is null or is not type of {typeof(SQLiteSettings)}.");
                 return;
@@ -53,13 +50,13 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             _addTrailingS = sqliteSettings.AddSToTableName;
 
             // Make sure the database path exists
-            string databaseAbsPath = $"{Application.streamingAssetsPath}/{SQLiteSettings.cStreamingAssetsFolderPath}{sqliteSettings.DatabaseName}".InsertEndsWith(FileExtensionConstants.cSQLite);
-            if (!Directory.Exists(databaseAbsPath))
+            string databasePath = Application.streamingAssetsPath + sqliteSettings.DatabasePath;
+            if (!Directory.Exists(databasePath))
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(databaseAbsPath));
+                Directory.CreateDirectory(Path.GetDirectoryName(databasePath));
             }
 
-            _connection = new SqliteConnection($"{Constants.cDatabaseURI}{databaseAbsPath}");
+            _connection = new SqliteConnection($"{Constants.cDatabaseURI}{databasePath}");
 
             // Test database connection
             try
@@ -136,6 +133,10 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
                 }
 
                 Debug.LogError($"SQLite exception when executing Query:\n{query}\n (Parameters: {paramss})\nException: {ex}");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[Cyggie.SQLite] Error when executing SQL Statement: {ex}\n{ex.StackTrace}");
             }
             finally
             {

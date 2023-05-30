@@ -1,4 +1,5 @@
 using Cyggie.Main.Runtime.Configurations;
+using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.SQLite.Runtime.Utils.Constants;
 using System;
 using UnityEngine;
@@ -8,10 +9,9 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
     /// <summary>
     /// Settings for <see cref="SQLiteService"/>
     /// </summary>
-    internal sealed class SQLiteSettings : PackageConfigurationSettings
+    internal sealed class SQLiteSettings : PackageConfigurationSettings<SQLiteService>
     {
-        internal const string cResourcesPath = ConfigurationSettings.cResourcesFolderPath + nameof(SQLiteSettings);
-        internal const string cStreamingAssetsFolderPath = ConfigurationSettings.cStreamingAssetsFolderPath + "SQLite/";
+        internal const string cStreamingAssetsFolderPath = "SQLite/";
 
         [SerializeField]
         internal string DatabaseName = Constants.cDefaultDatabaseName;
@@ -25,8 +25,11 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
         [SerializeField]
         internal bool AddSToTableName = true;
 
-        internal string DatabasePath => cStreamingAssetsFolderPath + DatabaseName;
+        internal string DatabaseAbsolutePath => FolderConstants.cAssets + 
+                                                FolderConstants.cCyggieStreamingAssets + 
+                                                DatabasePath;
 
-        public override Type ServiceType => typeof(SQLiteService);
+        internal string DatabasePath => cStreamingAssetsFolderPath +
+                                        DatabaseName + FileExtensionConstants.cSQLite;
     }
 }

@@ -84,11 +84,11 @@ namespace Cyggie.Main.Runtime.ServicesNS
             foreach (Service service in _services.OrderByDescending(x => x.InternalPriority))
             {
                 // Add configuration to service if it exists
-                ServiceConfiguration configuration = _settings.ServiceConfigurations.FirstOrDefault(c => c.ServiceType == service.GetType());
+                ServiceConfigurationSO configuration = _settings.ServiceConfigurations.FirstOrDefault(c => c.ServiceType == service.GetType());
                 service.Initialize(this, configuration);
             }
 
-            Debug.Log($"[Service Manager] Initialized Services. Count: {_services.Count}.");
+            Debug.Log($"[Cyggie.Main] Service Manager initialized services. Count: {_services.Count}.");
             OnServicesInitialized?.Invoke();
         }
 

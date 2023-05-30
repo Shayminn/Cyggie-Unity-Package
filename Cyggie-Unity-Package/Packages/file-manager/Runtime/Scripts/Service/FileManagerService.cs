@@ -35,7 +35,7 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
         private FileManagerSettings _settings = null;
 
         /// <inheritdoc/>
-        protected override void OnInitialized(ServiceConfiguration configuration)
+        protected override void OnInitialized(ServiceConfigurationSO configuration)
         {
             base.OnInitialized(configuration);
 

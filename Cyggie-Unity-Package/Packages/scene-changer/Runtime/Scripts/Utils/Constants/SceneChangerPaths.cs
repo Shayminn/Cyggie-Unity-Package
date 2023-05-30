@@ -15,6 +15,6 @@ namespace Cyggie.SceneChanger.Runtime.Utils.Constants
         public const string cPrefabs = cRuntime + "Prefabs/";
 
         public const string cSettings = cResources + SceneChangerConstants.cSettingsFileWithExtension;
-        public const string cLoadingScreen = cRuntime + "Prefabs/LoadingScreen.prefab";
+        public const string cLoadingScreenPrefab = cRuntime + "Prefabs/LoadingScreen.prefab";
     }
 }

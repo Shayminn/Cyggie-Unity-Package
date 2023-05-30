@@ -1,5 +1,4 @@
 using Cyggie.Main.Runtime.Configurations;
-using System;
 using UnityEngine;
 
 namespace Cyggie.FileManager.Runtime.ServicesNS
@@ -7,10 +6,8 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
     /// <summary>
     /// Settings for <see cref="FileManagerService"/>
     /// </summary>
-    internal class FileManagerSettings : PackageConfigurationSettings
+    internal class FileManagerSettings : PackageConfigurationSettings<FileManagerService>
     {
-        internal const string cResourcesPath = ConfigurationSettings.cResourcesFolderPath + nameof(FileManagerSettings);
-
         [SerializeField]
         internal bool UsePersistentDataPath = true;
 
@@ -29,7 +26,5 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
             "Player.log",
             "Player-prev.log"
         };
-
-        public override Type ServiceType => typeof(FileManagerService);
     }
 }

@@ -10,7 +10,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// <summary>
         /// Configuration object
         /// </summary>
-        protected ServiceConfiguration _configuration = null;
+        protected ServiceConfigurationSO _configuration = null;
 
         /// <summary>
         /// The monobehaviour that holds this Service <br/>
@@ -144,7 +144,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// <see cref="OnServicesInitialized"/> instead
         /// </summary>
         /// <param name="configuration">Configuration for the service, null if not set</param>
-        protected virtual void OnInitialized(ServiceConfiguration configuration) { }
+        protected virtual void OnInitialized(ServiceConfigurationSO configuration) { }
 
         /// <summary>
         /// Called when all services have been initialized (equivalent to subscribing to <see cref="ServiceManager.OnServicesInitialized"/>)
@@ -164,7 +164,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// Object has been initialized
         /// </summary>
         /// <param name="configuration">Configuration for the service, null if not set</param>
-        internal virtual void Initialize(ServiceManager manager, ServiceConfiguration configuration)
+        internal virtual void Initialize(ServiceManager manager, ServiceConfigurationSO configuration)
         {
             _manager = manager;
             ServiceManager.OnServicesInitialized += OnServicesInitialize;

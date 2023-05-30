@@ -1,8 +1,10 @@
-﻿using Cyggie.Main.Editor.Utils.Helpers;
+﻿using Cyggie.Main.Editor.Utils.Constants;
+using Cyggie.Main.Editor.Utils.Helpers;
 using Cyggie.Main.Runtime.Configurations;
-using Cyggie.Main.Runtime.Utils.Extensions;
+using Cyggie.Main.Runtime.ServicesNS;
+using Cyggie.Main.Runtime.Utils.Constants;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -16,24 +18,21 @@ namespace Cyggie.Main.Editor.Configurations
     {
         private const string cEditorPrefSelectedTabKey = "CyggiePackageConfigurationSelectedTabIndex";
 
-        private List<PackageConfigurationTab> _tabs = null;
-        private PackageConfigurationTab _selectedTab = null;
+        private List<AbstractPackageConfigurationTab> _tabs = null;
+        private AbstractPackageConfigurationTab _selectedTab = null;
         private string[] _tabStrings = null;
 
         private int _selectedTabIndex = 0;
         private Vector2 _tabScrollViewPos = Vector2.zero;
 
-        private ConfigurationSettings _configSettings = null;
-        private SerializedObject _serializedObject = null;
-        private SerializedProperty _resourcesPath = null;
-
         internal static PackageConfigurationEditorWindow Window = null;
+        internal ServiceManagerTab ServiceManagerTab = null;
 
         /// <summary>
         /// Initialize the window with tabs
         /// </summary>
         /// <param name="tabs">List of tabs in projects</param>
-        internal void Initialize(List<PackageConfigurationTab> tabs)
+        internal void Initialize(List<AbstractPackageConfigurationTab> tabs)
         {
             Window = this;
             _tabs = tabs;
@@ -41,39 +40,14 @@ namespace Cyggie.Main.Editor.Configurations
 
             _tabStrings = _tabs.Select(x => x.DropdownName).ToArray();
 
-            _configSettings = Resources.Load<ConfigurationSettings>(ConfigurationSettings.cResourcesPath);
-            if (_configSettings == null)
-            {
-                // Settings not found, create a new one
-                Debug.Log($"Couldn't find configuration settings file, creating a new one...");
-
-                _configSettings = CreateInstance<ConfigurationSettings>();
-
-                // Create asset at default folder path
-                string directory = $"{ConfigurationSettings.cDefaultResourcesFolderPath}{ConfigurationSettings.cResourcesFolderPath}";
-                string configPath = $"{directory}{ConfigurationSettings.cFileName}";
-
-                AssetDatabaseHelper.CreateAsset(_configSettings, configPath, true);
-
-                // Save asset
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-
-                Debug.Log($"Created configuration settings file at {configPath}.");
-            }
-
-            // Initialize all tabs with config settings
+            // Initialize all tabs
             _tabs.ForEach(x =>
             {
                 // Initialize the tab with configuration settings
-                x.Initialize(_configSettings);
+                x.CallInitialized();
             });
 
-            _serializedObject = new SerializedObject(_configSettings);
-            _resourcesPath = _serializedObject.FindProperty(nameof(ConfigurationSettings.ResourcesPath));
-
             _selectedTabIndex = EditorPrefs.GetInt(cEditorPrefSelectedTabKey, 0);
-
             if (_selectedTabIndex >= _tabs.Count)
             {
                 _selectedTabIndex = 0;
@@ -87,7 +61,7 @@ namespace Cyggie.Main.Editor.Configurations
         /// </summary>
         internal void OnGUI()
         {
-            if (_tabStrings == null || _tabs == null || _selectedTabIndex >= _tabs.Count || _configSettings == null)
+            if (_tabStrings == null || _tabs == null || _selectedTabIndex >= _tabs.Count)
             {
                 Close();
                 return;
@@ -98,82 +72,17 @@ namespace Cyggie.Main.Editor.Configurations
             {
                 EditorGUILayout.Space(5);
 
-                EditorGUIUtility.labelWidth = 140;
-
-                // Draw configuration path text field
-                string oldResourcesPath = _resourcesPath.stringValue;
-                if (EditorGUIHelper.CheckChange(gui: () => _resourcesPath.stringValue = EditorGUILayout.DelayedTextField("Resources Path", _resourcesPath.stringValue)))
-                {
-                    string newResourcesPath = _resourcesPath.stringValue;
-                    string error = "";
-
-                    if (newResourcesPath.EndsWith("/Resources"))
-                    {
-                        newResourcesPath = $"{newResourcesPath}/";
-                    }
-                    else if (!newResourcesPath.EndsWith("/Resources/"))
-                    {
-                        // Add Resources folder with always one "/" before
-                        newResourcesPath = newResourcesPath.EndsWith("/") ?
-                                           $"{newResourcesPath}Resources/" :
-                                           $"{newResourcesPath}/Resources/";
-                    }
-
-                    if (!Directory.Exists(newResourcesPath))
-                    {
-                        Directory.CreateDirectory(newResourcesPath);
-                        Debug.Log($"Directory couldn't be found, created a new Resources directory at: {newResourcesPath}");
-                    }
-
-                    // Check for error
-                    if (string.IsNullOrEmpty(error))
-                    {
-                        Debug.Log($"Resources Folder changed from \"{oldResourcesPath}\" to \"{newResourcesPath}\"");
-
-                        string oldFolderPath = $"{oldResourcesPath}{ConfigurationSettings.cResourcesFolderPath}";
-                        string newFolderPath = $"{newResourcesPath}{ConfigurationSettings.cResourcesFolderPath}";
-
-                        // Move configuration settings file
-                        AssetDatabaseHelper.MoveAsset($"{oldFolderPath}{ConfigurationSettings.cFileName}", $"{newFolderPath}{ConfigurationSettings.cFileName}");
-
-                        // Move package configuration settings file
-                        foreach (PackageConfigurationTab tab in _tabs)
-                        {
-                            AssetDatabaseHelper.MoveAsset($"{oldFolderPath}{tab.FileName}", $"{newFolderPath}{tab.FileName}");
-
-                            foreach (string otherPath in tab.SettingsOtherPaths)
-                            {
-                                string path = otherPath.EndsWith("/") ?
-                                              otherPath.Remove(otherPath.Length - 1) :
-                                              otherPath;
-
-                                AssetDatabaseHelper.MoveAsset($"{oldFolderPath}{path}", $"{newFolderPath}{path}");
-                            }
-                        }
-
-                        AssetDatabase.Refresh();
-                        _resourcesPath.stringValue = newResourcesPath;
-                        _serializedObject.ApplyModifiedProperties();
-                    }
-                    // Has error
-                    // Revert changes in path
-                    else
-                    {
-                        Debug.LogError($"Failed to change Configuration path to: {newResourcesPath}");
-                        Debug.LogError(error);
-                        _resourcesPath.stringValue = oldResourcesPath;
-                    }
-                }
-                EditorGUILayout.Space(5);
-
                 EditorGUIHelper.DrawHorizontal(gui: () =>
                 {
-                    EditorGUILayout.LabelField("Select configuration: ", GUILayout.Width(140));
-
-                    if (EditorGUIHelper.CheckChange(gui: () => _selectedTabIndex = EditorGUILayout.Popup(_selectedTabIndex, _tabStrings)))
+                    if (_tabs.Count > 1)
                     {
-                        EditorPrefs.SetInt(cEditorPrefSelectedTabKey, _selectedTabIndex);
-                        _selectedTab = _tabs[_selectedTabIndex];
+                        EditorGUILayout.LabelField("Select configuration: ", GUILayout.Width(140));
+
+                        if (EditorGUIHelper.CheckChange(gui: () => _selectedTabIndex = EditorGUILayout.Popup(_selectedTabIndex, _tabStrings)))
+                        {
+                            EditorPrefs.SetInt(cEditorPrefSelectedTabKey, _selectedTabIndex);
+                            _selectedTab = _tabs[_selectedTabIndex];
+                        }
                     }
                 });
                 EditorGUILayout.Space(10);
@@ -186,21 +95,70 @@ namespace Cyggie.Main.Editor.Configurations
         }
 
         /// <summary>
-        /// Try get a tab by its type <typeparamref name="T"/> in the list of tabs
+        /// Try get settings of <typeparamref name="T"/>
         /// </summary>
-        /// <typeparam name="T">Type of tab</typeparam>
-        /// <param name="tab">Outputted tab</param>
+        /// <param name="settings">Output settings (null if not found)</param>
         /// <returns>Found?</returns>
-        internal bool TryGetTab<T>(out T tab) where T : PackageConfigurationTab
+        internal bool TryGetSettings<T>(out ServiceConfigurationSO settings) where T : Service
         {
-            tab = (T)_tabs.FirstOrDefault(x => x.GetType() == typeof(T));
-
-            if (tab == null)
-            {
-                Debug.LogError($"Unable to find tab of type: {typeof(T)}.");
-            }
-
-            return tab != null;
+            settings = ServiceManagerTab.Settings.ServiceConfigurations.FirstOrDefault(x => x.ServiceType == typeof(T));
+            return settings != null;
         }
+
+        #region Static methods
+
+        /// <summary>
+        /// Automatically adds service configurations on every assembly refresh
+        /// </summary>
+        [InitializeOnLoadMethod]
+        internal static void AutoAddMissingServiceConfigurations()
+        {
+            // Don't refresh if application is playing
+            if (Application.isPlaying) return;
+
+            ServiceManagerSettings settings = ServiceManagerTab.GetServiceManagerSettings();
+            RefreshServiceConfigurations(settings);
+        }
+
+        /// <summary>
+        /// Refresh the list of service configurations <br/>
+        /// Automatically creating missing ones
+        /// </summary>
+        /// <param name="settings">The service manager settings to check the list of configurations</param>
+        internal static void RefreshServiceConfigurations(ServiceManagerSettings settings)
+        {
+            // Remove all null references
+            settings.ServiceConfigurations.RemoveAll(config => config == null);
+
+            // Retrieve all classes that implements ServiceConfiguration
+            // that are not present in the Service Manager Settings
+            List<Type> _missingTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => typeof(ServiceConfigurationSO).IsAssignableFrom(type) && !type.IsAbstract && type != typeof(ServiceManagerSettings))
+                .Where(type => !settings.ServiceConfigurations.Any(x => x.GetType() == type))
+                .ToList();
+
+            foreach (Type type in _missingTypes)
+            {
+                Debug.Log($"[Cyggie.Main] Service configuration ({type.Name}) not found. Creating it...");
+                ScriptableObject scriptableObj = ScriptableObject.CreateInstance(type);
+
+                if (scriptableObj is ServiceConfigurationSO configuration)
+                {
+                    string folderName = configuration.IsPackageSettings ? FolderConstants.cPackageConfigurations : FolderConstants.cServiceConfigurations;
+                    string assetPath = FolderConstants.cAssets +
+                                       FolderConstants.cCyggie +
+                                       folderName +
+                                       configuration.GetType().Name + FileExtensionConstants.cAsset;
+
+                    if (!AssetDatabaseHelper.CreateAsset(scriptableObj, assetPath)) continue;
+
+                    configuration.OnScriptableObjectCreated();
+                    settings.ServiceConfigurations.Add(configuration);
+                }
+            }
+        }
+
+        #endregion
     }
 }

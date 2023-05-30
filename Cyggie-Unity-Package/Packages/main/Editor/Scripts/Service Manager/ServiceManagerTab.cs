@@ -1,9 +1,8 @@
+using Cyggie.Main.Editor.Utils.Constants;
 using Cyggie.Main.Editor.Utils.Helpers;
 using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.ServicesNS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Cyggie.Main.Runtime.Utils.Constants;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,44 +11,25 @@ namespace Cyggie.Main.Editor.Configurations
     /// <summary>
     /// Tab for <see cref="ServiceManager"/>
     /// </summary>
-    internal class ServiceManagerTab : PackageConfigurationTab
+    internal class ServiceManagerTab : PackageConfigurationTab<Service, ServiceManagerSettings>
     {
-        // Const labels
-        private const string cServiceConfigurationManagerLabel = "Service Configuration Manager";
-        private const string cSearchLabel = "Search: ";
-        private const string cFilterLabel = "Filter added configs";
-        private const string cCreateButtonLabel = "Create new configuration";
+        internal const string cSettingsAssetPath = FolderConstants.cAssets +
+                                                   FolderConstants.cCyggieResources +
+                                                   FolderConstants.cCyggie +
+                                                   nameof(ServiceManagerSettings) + FileExtensionConstants.cAsset;
 
         // Serialized Properties
         private SerializedProperty _prefab = null;
         private SerializedProperty _serviceConfigurations = null;
 
-        private int _selectedConfigIndex = -1;
-        private bool _filterAdded = true;
-        private string _logMessage = "";
-        private string _search = "";
-
-        private List<Type> _configTypes = null;
-
         /// <inheritdoc/>
-        private ServiceManagerSettings Settings => (ServiceManagerSettings)_settings;
-
-        /// <inheritdoc/>
-        internal override Type SettingsType => typeof(ServiceManagerSettings);
-
-        /// <inheritdoc/>
-        internal override string ResourcesPath => ServiceManagerSettings.cResourcesPath;
+        internal ServiceManagerSettings Settings => (ServiceManagerSettings) _settings;
 
         /// <inheritdoc/>
         protected override void OnInitialized()
         {
-            // Retrieve all classes that implements ServiceConfiguration
-            _configTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetTypes())
-
-                // don't add package configuration settings as something instantiable, they are built-in packages and shouldn't be created outside
-                .Where(t => !typeof(PackageConfigurationSettings).IsAssignableFrom(t) && typeof(ServiceConfiguration).IsAssignableFrom(t) && !t.IsAbstract)
-                .ToList();
+            _settings = GetServiceManagerSettings();
+            _serializedObject = new SerializedObject(_settings);
 
             _prefab = _serializedObject.FindProperty(nameof(ServiceManagerSettings.Prefab));
             _serviceConfigurations = _serializedObject.FindProperty(nameof(ServiceManagerSettings.ServiceConfigurations));
@@ -66,123 +46,38 @@ namespace Cyggie.Main.Editor.Configurations
             });
             EditorGUILayout.Space(10);
 
-            EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(_serviceConfigurations);
-            if (EditorGUI.EndChangeCheck())
+            EditorGUILayout.LabelField($"Service Configurations ({_serviceConfigurations.arraySize})", EditorStyles.boldLabel);
+            EditorGUIHelper.DrawAsReadOnly(gui: () =>
             {
-                // Reset the log message if the list of configurations has changed
-                _logMessage = "";
+                float labelWidth = EditorGUIUtility.labelWidth;
+                EditorGUIUtility.labelWidth = 0;
 
-                // Updates the settings object
-                _serializedObject.ApplyModifiedProperties();
-            }
-
-            EditorGUILayout.Space(10);
-
-            // Draw service configuration class selection
-            EditorGUILayout.LabelField(cServiceConfigurationManagerLabel, EditorStyles.boldLabel);
-            EditorGUILayout.Space(5);
-
-            // Draw filter toggle
-            _filterAdded = EditorGUILayout.Toggle(cFilterLabel, _filterAdded);
-            EditorGUILayout.Space(5);
-
-            // Draw search bar
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(cSearchLabel, GUILayout.Width(50));
-            _search = EditorGUILayout.TextField(_search);
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.Space(10);
-
-            List<Type> filteredTypes = new List<Type>(_configTypes);
-
-            // Filter by search
-            if (!string.IsNullOrEmpty(_search))
-            {
-                filteredTypes.RemoveAll(type => !type.Name.Contains(_search, StringComparison.OrdinalIgnoreCase));
-            }
-
-            // Filter by added configurations
-            if (_filterAdded)
-            {
-                filteredTypes.RemoveAll(type => Settings.ServiceConfigurations.Any(x => x != null && x.GetType() == type));
-            }
-
-            // Draw selection grid
-            _selectedConfigIndex = GUILayout.SelectionGrid(_selectedConfigIndex, filteredTypes.Select(x => x.FullName).ToArray(), 1);
-            EditorGUILayout.Space(10);
-
-            bool isError = false;
-
-            // Draw create configuration button
-            Type type = _selectedConfigIndex != -1 ?
-                        filteredTypes.ElementAt(_selectedConfigIndex) :
-                        null;
-
-            ScriptableObject scriptableObj = null;
-            if (type != null)
-            {
-                scriptableObj = ScriptableObject.CreateInstance(type);
-
-                if (scriptableObj is ServiceConfiguration configuration)
+                for (int i = 0; i < _serviceConfigurations.arraySize; i++)
                 {
-                    if (!configuration.Validate())
-                    {
-                        isError = true;
-                        _logMessage = $"Selected configuration ({type}) is invalid. Make sure the {nameof(ServiceConfiguration.ServiceType)} derives from {typeof(Service)}";
-                    }
+                    SerializedProperty _serviceConfigProperty = _serviceConfigurations.GetArrayElementAtIndex(i);
+                    EditorGUILayout.PropertyField(_serviceConfigProperty, new GUIContent(""));
+                    EditorGUILayout.Space(1);
                 }
-            }
-
-            EditorGUIHelper.DrawAsReadOnly(_selectedConfigIndex == -1 || isError, gui: () =>
-            {
-                if (GUILayout.Button(cCreateButtonLabel, GUILayout.Width(160)))
-                {
-                    scriptableObj.name = type.Name;
-
-                    if (scriptableObj is ServiceConfiguration configuration)
-                    {
-                        if (configuration.Validate())
-                        {
-                            string uniquePath = AssetDatabase.GenerateUniqueAssetPath($"Assets/{scriptableObj.name}.asset");
-                            AssetDatabaseHelper.CreateAsset(scriptableObj, uniquePath);
-
-                            AddConfiguration(configuration);
-                            _selectedConfigIndex = -1;
-
-                            _logMessage = $"Created new service configuration of type {type} at \"{uniquePath}\".";
-                        }
-                    }
-                }
+                EditorGUIUtility.labelWidth = labelWidth;
             });
 
             EditorGUILayout.Space(10);
-
-            // Validate settings
-            if (!isError)
+            if (GUILayout.Button("Refresh", GUILayout.Width(100)))
             {
-                if (!Settings.Validate(out string error))
-                {
-                    isError = true;
-                    _logMessage = error;
-                }
-            }
+                PackageConfigurationEditorWindow.RefreshServiceConfigurations(Settings);
 
-            // Draw log message
-            if (!string.IsNullOrEmpty(_logMessage))
-            {
-                EditorGUILayout.HelpBox(_logMessage, isError ? MessageType.Error : MessageType.Info);
-            }
+                // This is necessary the missing references in the window
+                EditorUtility.SetDirty(Settings);
 
-            EditorGUILayout.Space(10);
-            _serializedObject.ApplyModifiedProperties();
+                _serializedObject.ApplyModifiedProperties();
+            }
         }
 
         /// <summary>
         /// Add configuration through script from settings
         /// </summary>
         /// <param name="config">Configuration to add</param>
-        internal void AddConfiguration(ServiceConfiguration config)
+        internal void AddConfiguration(ServiceConfigurationSO config)
         {
             Settings.ServiceConfigurations.Add(config);
 
@@ -193,6 +88,36 @@ namespace Cyggie.Main.Editor.Configurations
             EditorUtility.SetDirty(Settings);
 
             _serializedObject.ApplyModifiedProperties();
+        }
+
+        /// <summary>
+        /// Get the service manager settings <br/>
+        /// Creating one if not found
+        /// </summary>
+        /// <returns>The service manager settings</returns>
+        public static ServiceManagerSettings GetServiceManagerSettings()
+        {
+            ServiceManagerSettings settings = Resources.Load<ServiceManagerSettings>(ServiceManagerSettings.cResourcesPath);
+
+            // Create settings object if not found
+            if (settings == null)
+            {
+                Debug.Log($"[Cyggie.Main] {nameof(ServiceManagerSettings)} not found. Creating it...");
+                settings = CreateServiceManagerSettings();
+            }
+
+            return settings;
+        }
+
+        private static ServiceManagerSettings CreateServiceManagerSettings()
+        {
+            ServiceManagerSettings settings = (ServiceManagerSettings) ScriptableObject.CreateInstance(typeof(ServiceManagerSettings));
+
+            // Create asset
+            if (!AssetDatabaseHelper.CreateAsset(settings, cSettingsAssetPath)) return null;
+
+            settings.OnScriptableObjectCreated();
+            return settings;
         }
     }
 }

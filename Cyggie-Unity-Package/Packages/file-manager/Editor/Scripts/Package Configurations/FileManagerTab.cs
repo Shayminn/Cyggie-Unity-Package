@@ -10,7 +10,7 @@ namespace Cyggie.SceneChanger.Editor.Configurations
     /// Package tab for <see cref="FileManagerSettings"/> <br/>
     /// Accessible through Cyggie/Package Configurations
     /// </summary>
-    internal class FileManagerTab : PackageConfigurationTab
+    internal class FileManagerTab : PackageConfigurationTab<FileManagerService, FileManagerSettings>
     {
         // GUI Labels
         private const string cSaveLocationLabel = "Save Location Settings";
@@ -24,14 +24,10 @@ namespace Cyggie.SceneChanger.Editor.Configurations
         private SerializedProperty _filesToIgnore = null;
 
         /// <inheritdoc/>
-        internal override System.Type SettingsType => typeof(FileManagerSettings);
-
-        /// <inheritdoc/>
-        internal override string ResourcesPath => FileManagerSettings.cResourcesPath;
-
-        /// <inheritdoc/>
         protected override void OnInitialized()
         {
+            base.OnInitialized();
+
             _usePersistentDataPath = _serializedObject.FindProperty(nameof(FileManagerSettings.UsePersistentDataPath));
             _localSavePath = _serializedObject.FindProperty(nameof(FileManagerSettings.LocalSavePath));
             _defaultFileExtension = _serializedObject.FindProperty(nameof(FileManagerSettings.DefaultFileExtension));

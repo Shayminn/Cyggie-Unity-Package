@@ -44,6 +44,10 @@ namespace Cyggie.Main.Editor.Utils.Helpers
                 }
 
                 AssetDatabase.CreateAsset(asset, path);
+                Debug.Log($"[Cyggie.Main] Created asset {asset} at path: \"{path}\".");
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
             }
             catch (Exception ex)
             {
@@ -90,6 +94,9 @@ namespace Cyggie.Main.Editor.Utils.Helpers
                 Debug.LogError($"Failed in {nameof(MoveAsset)}: {errorMessage}");
                 return false;
             }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
 
             return true;
         }

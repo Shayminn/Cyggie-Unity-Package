@@ -2,18 +2,21 @@
 using Cyggie.SceneChanger.Runtime.Enums;
 using Cyggie.SceneChanger.Runtime.ServicesNS;
 using Cyggie.SceneChanger.Runtime.Settings;
+using Cyggie.SceneChanger.Runtime.Utils.Constants;
 using UnityEngine;
 using static UnityEngine.UI.Image;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Cyggie.SceneChanger.Runtime.Configurations
 {
     /// <summary>
     /// Settings for <see cref="SceneChangerService"/>
     /// </summary>
-    internal class SceneChangerSettings : PackageConfigurationSettings
+    internal class SceneChangerSettings : PackageConfigurationSettings<SceneChangerService>
     {
-        internal const string cResourcesPath = ConfigurationSettings.cResourcesFolderPath + nameof(SceneChangerSettings);
-
         /// <summary>
         /// Loading Screen prefab object
         /// </summary>
@@ -99,6 +102,16 @@ namespace Cyggie.SceneChanger.Runtime.Configurations
 
         internal bool HasTexts => Texts != null && Texts.Length > 0;
 
-        public override System.Type ServiceType => typeof(SceneChangerService);
+#if UNITY_EDITOR
+
+        /// <inheritdoc/>
+        internal override void OnScriptableObjectCreated()
+        {
+            base.OnScriptableObjectCreated();
+
+            LoadingScreenPrefab = AssetDatabase.LoadAssetAtPath<LoadingScreen>(SceneChangerPaths.cLoadingScreenPrefab);
+        }
+
+#endif
     }
 }

@@ -1,7 +1,7 @@
 using Cyggie.Main.Editor.Configurations;
 using Cyggie.Main.Editor.Utils.Helpers;
+using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.Utils.Extensions;
-using Cyggie.SQLite.Editor.Utils;
 using Cyggie.SQLite.Editor.Utils.Styles;
 using Cyggie.SQLite.Runtime.ServicesNS;
 using System.IO;
@@ -47,9 +47,12 @@ namespace Cyggie.SQLite.Editor
         /// </summary>
         private void Initialize()
         {
-            // Get sqlite settings or create new if not found
-            _settings = Resources.Load<SQLiteSettings>(SQLiteSettings.cResourcesPath)
-                .AssignIfNull(PackageConfigurationTab.GetOrCreateSettings<SQLiteSettings>(SQLiteSettings.cResourcesPath));
+            ServiceManagerSettings serviceManagerSettings = ServiceManagerTab.GetServiceManagerSettings();
+
+            if (!AssignSQLiteSettings(serviceManagerSettings, 3))
+            {
+
+            }
 
             _service = new SQLiteService();
         }
@@ -124,6 +127,28 @@ namespace Cyggie.SQLite.Editor
                 EditorGUILayout.Space(3);
                 EditorGUILayout.HelpBox("File/Directory does not exists.", MessageType.Error);
             }
+        }
+
+        private bool AssignSQLiteSettings(ServiceManagerSettings serviceManagerSettings, int maxRetryAttempt)
+        {
+            if (!serviceManagerSettings.TryGetServiceConfiguration(out _settings))
+            {
+                if (maxRetryAttempt == 0)
+                {
+                    Debug.LogError($"[Cyggie.SQLite] Unable to get sqlite settings. Maximum number of retry attempts reached.");
+                    return false;
+                }
+
+                PackageConfigurationEditorWindow.RefreshServiceConfigurations(serviceManagerSettings);
+
+                if (!serviceManagerSettings.TryGetServiceConfiguration(out _settings))
+                {
+                    --maxRetryAttempt;
+                    AssignSQLiteSettings(serviceManagerSettings, maxRetryAttempt);
+                }
+            }
+
+            return true;
         }
     }
 }

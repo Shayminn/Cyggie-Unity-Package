@@ -261,7 +261,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "cyggie.main": "1.0.10",
+        "cyggie.main": "2.0.0",
         "com.unity.inputsystem": "1.3.0",
         "com.unity.textmeshpro": "3.0.6"
       }

@@ -1,6 +1,6 @@
 {
   "name": "cyggie.reference-pool",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "displayName": "Reference Pool",
   "description": "This package derives from the Cyggie package. It contains relevant scripts and settings to manage a reference pool, allowing game objects to access initialized reference through scriptable objects.",
   "unity": "2019.1",

@@ -1,4 +1,5 @@
 using Cyggie.Main.Editor.Configurations;
+using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.SQLite.Editor.Utils.Styles;
 using Cyggie.SQLite.Runtime.ServicesNS;
@@ -15,39 +16,31 @@ namespace Cyggie.SQLite.Editor.Configurations
     /// Package tab for <see cref="SQLiteSettings"/> <br/>
     /// Accessible through Cyggie/Package Configurations
     /// </summary>
-    internal class SQLiteTab : PackageConfigurationTab
+    internal class SQLiteTab : PackageConfigurationTab<SQLiteService, SQLiteSettings>
     {
+        internal override string DropdownName => "SQLite";
+
         private SerializedProperty _databaseName = null;
         private SerializedProperty _readOnly = null;
         private SerializedProperty _readAllOnStart = null;
         private SerializedProperty _addSToTableName = null;
-
-        /// <inheritdoc/>
-        internal override string ResourcesPath => SQLiteSettings.cResourcesPath;
-
-        /// <inheritdoc/>
-        internal override Type SettingsType => typeof(SQLiteSettings);
-
-        /// <inheritdoc/>
-        internal override string DropdownName => "SQLite";
-
-        /// <inheritdoc/>
-        internal override string Title => "SQLite Settings";
 
         protected SQLiteSettings Settings => _settings as SQLiteSettings;
 
         /// <inheritdoc/>
         protected override void OnInitialized()
         {
+            base.OnInitialized();
+
             _databaseName = _serializedObject.FindProperty(nameof(SQLiteSettings.DatabaseName));
             _readOnly = _serializedObject.FindProperty(nameof(SQLiteSettings.ReadOnly));
             _readAllOnStart = _serializedObject.FindProperty(nameof(SQLiteSettings.ReadAllOnStart));
             _addSToTableName = _serializedObject.FindProperty(nameof(SQLiteSettings.AddSToTableName));
 
-            string databaseAbsPath = $"{Application.streamingAssetsPath}/{SQLiteSettings.cStreamingAssetsFolderPath}{Settings.DatabaseName}".InsertEndsWith(FileExtensionConstants.cSQLite);
+            string databaseAbsPath = Settings.DatabaseAbsolutePath;
             if (!File.Exists(databaseAbsPath))
             {
-                Debug.Log($"Database file not found, creating a new one at: {databaseAbsPath}.");
+                Debug.Log($"[Cyggie.SQLite] Database file not found, creating a new one...");
                 Directory.CreateDirectory(Path.GetDirectoryName(databaseAbsPath));
 
                 // This will create a new .sqlite database at path
@@ -57,6 +50,8 @@ namespace Cyggie.SQLite.Editor.Configurations
                     conn = new SqliteConnection($"{Constants.cDatabaseURI}{databaseAbsPath}");
                     conn.Open();
                     conn.Close();
+
+                    Debug.Log($"[Cyggie.SQLite] Created a new sqlite database at {databaseAbsPath}");
                 }
                 catch (Exception ex)
                 {
