@@ -45,7 +45,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
             {
                 if (!suppressError)
                 {
-                    Debug.LogError($"Failed in {nameof(FileHelper)}. File {fileName} not found in the project.");
+                    Debug.LogError($"[Cyggie.Main] File {fileName} not found in the project.");
                 }
 
                 return false;

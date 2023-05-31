@@ -1,4 +1,5 @@
 using Cyggie.Main.Runtime.Configurations;
+using Cyggie.Main.Runtime.ServicesNS.ReferencePool;
 using Cyggie.Main.Runtime.Utils.Helpers;
 using System;
 using System.Collections.Generic;
@@ -48,13 +49,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
             if (_settings == null)
             {
-                Debug.LogError($"Unable to find Service Manager Settings in Resources.");
-                return;
-            }
-
-            if (!_settings.IsValid)
-            {
-                Debug.LogError($"Service Manager failed to initialize. Settings are invalid; fix them in the Project Settings.");
+                Debug.LogError($"[Cyggie.Main] Unable to find Service Manager Settings in Resources.");
                 return;
             }
 
@@ -104,7 +99,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             // Check if Service Manager has been initialized
             if (_instance == null)
             {
-                Debug.LogError($"Failed to get a service, Service Manager has not yet been initialized. Use {nameof(OnServicesInitialized)} or call Get in {nameof(Start)}.");
+                Debug.LogError($"[Cyggie.Main] Failed to get a service, Service Manager has not yet been initialized. Use {nameof(OnServicesInitialized)} or call Get in {nameof(Start)}.");
                 return default;
             }
 
@@ -112,7 +107,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
             if (service == null)
             {
-                Debug.LogError($"Unable to find service of type: {typeof(T)}.");
+                Debug.LogError($"[Cyggie.Main] Unable to find service of type: {typeof(T)}.");
             }
 
             return (T) service;

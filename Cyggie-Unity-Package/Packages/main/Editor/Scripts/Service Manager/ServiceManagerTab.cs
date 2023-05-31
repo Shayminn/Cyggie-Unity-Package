@@ -47,6 +47,8 @@ namespace Cyggie.Main.Editor.Configurations
             EditorGUILayout.Space(10);
 
             EditorGUILayout.LabelField($"Service Configurations ({_serviceConfigurations.arraySize})", EditorStyles.boldLabel);
+            EditorGUILayout.Space(5);
+
             EditorGUIHelper.DrawAsReadOnly(gui: () =>
             {
                 float labelWidth = EditorGUIUtility.labelWidth;

@@ -55,7 +55,7 @@ namespace Cyggie.Runtime.SQLite.Utils.Helpers
                     {
                         if (!DateTime.TryParse((string) value, out DateTime result))
                         {
-                            Debug.LogError($"Couldn't convert {value} to DateTime");
+                            Debug.LogError($"[Cyggie.SQLite] Couldn't convert {value} to DateTime");
                             return value;
                         }
 

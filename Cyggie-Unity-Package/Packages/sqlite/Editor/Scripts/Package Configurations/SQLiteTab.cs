@@ -55,7 +55,7 @@ namespace Cyggie.SQLite.Editor.Configurations
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"Failed on {nameof(OnInitialized)}, test connection failed, connection string: {conn.ConnectionString}\n, exception: {ex}.");
+                    Debug.LogError($"[Cyggie.SQLite] Test connection failed, connection string: {conn.ConnectionString}\n, exception: {ex}.");
                     PackageConfigurationEditorWindow.Window.Close();
                     return;
                 }

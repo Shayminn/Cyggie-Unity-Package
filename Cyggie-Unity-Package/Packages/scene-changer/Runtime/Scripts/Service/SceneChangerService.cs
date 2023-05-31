@@ -44,7 +44,7 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
 
             if (configuration == null || configuration is not SceneChangerSettings settings)
             {
-                Debug.Log($"Scene Changer's configuration was not found in the Service Manager Configurations.");
+                Debug.Log($"[Cyggie.SceneChanger] Configuration was not found in the Service Manager Configurations.");
                 return;
             }
 
@@ -139,14 +139,14 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
             // Make sure Scene Changer is initialized
             if (!IsInitialized)
             {
-                Debug.LogError($"Scene Changer was not initialized properly, unable to change scene at {nameof(ChangeScene)}.");
+                Debug.LogError($"[Cyggie.SceneChanger] Scene Changer was not initialized properly, unable to change scene at {nameof(ChangeScene)}.");
                 return false;
             }
 
             // Make sure a scene change is not already in progress
             if (_inProgress)
             {
-                Debug.LogError($"Scene change already in progress, cancelling new call...");
+                Debug.LogError($"[Cyggie.SceneChanger] Scene change already in progress, cancelling new call...");
                 return false;
             }
 
@@ -174,7 +174,7 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
                 {
                     if (i >= _settings.Texts.Length)
                     {
-                        Debug.LogError($"Index is out of range: Settings has {_settings.Texts.Length} texts, but request index was {i} (array is in base 0).");
+                        Debug.LogError($"[Cyggie.SceneChanger] Index is out of range: Settings has {_settings.Texts.Length} texts, but request index was {i} (array is in base 0).");
                         continue;
                     }
 

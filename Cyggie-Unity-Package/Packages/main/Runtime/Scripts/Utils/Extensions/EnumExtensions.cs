@@ -19,7 +19,7 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
         {
             if (!@enum.GetType().GetCustomAttributes(typeof(FlagsAttribute), false).Any())
             {
-                Debug.LogError($"Failed in {nameof(GetFlagsCount)}, type {@enum.GetType()} does not have the attribute {nameof(FlagsAttribute)}.");
+                Debug.LogError($"[Cyggie.Main] Type {@enum.GetType()} does not have the attribute {nameof(FlagsAttribute)}.");
                 return 0;
             }
 

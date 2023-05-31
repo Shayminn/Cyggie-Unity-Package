@@ -1,6 +1,6 @@
 {
   "name": "cyggie.scene-changer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "displayName": "Scene Changer",
   "description": "This package derives from the Cyggie package. It contains relevant scripts and settings to control a scene changer.",
   "unity": "2019.1",
@@ -9,7 +9,7 @@
     "url": "git+https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/scene-changer"
   },
   "dependencies": {
-    "cyggie.main": "2.0.0",
+    "cyggie.main": "2.0.1",
     "com.unity.inputsystem": "1.3.0",
     "com.unity.textmeshpro": "3.0.6"
   },

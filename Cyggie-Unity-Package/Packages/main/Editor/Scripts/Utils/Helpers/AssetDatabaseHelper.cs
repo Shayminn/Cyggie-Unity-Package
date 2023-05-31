@@ -31,7 +31,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
                 }
                 else
                 {
-                    Debug.LogError($"Failed in {nameof(CreateAsset)}, directories to path does not exist: {path}");
+                    Debug.LogError($"[Cyggie.Main] directories to path does not exist: {path}");
                     return false;
                 }
             }
@@ -51,7 +51,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed in {nameof(CreateAsset)}: {ex}");
+                Debug.LogError($"[Cyggie.Main] Unknown error occured, exception: {ex}.");
                 return false;
             }
 
@@ -70,7 +70,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
         {
             if (oldAssetPath == newAssetPath)
             {
-                Debug.LogError($"Failed in {nameof(MoveAsset)}, old path is equal to new path.");
+                Debug.LogError($"[Cyggie.Main] Old path is equal to new path.");
                 return false;
             }
 
@@ -83,7 +83,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
                 }
                 else
                 {
-                    Debug.LogError($"Failed in {nameof(MoveAsset)}, directories to path does not exist: {newAssetPath}");
+                    Debug.LogError($"[Cyggie.Main] Directories to path does not exist: {newAssetPath}");
                     return false;
                 }
             }
@@ -91,7 +91,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
             string errorMessage = AssetDatabase.MoveAsset(oldAssetPath, newAssetPath);
             if (!string.IsNullOrEmpty(errorMessage))
             {
-                Debug.LogError($"Failed in {nameof(MoveAsset)}: {errorMessage}");
+                Debug.LogError($"[Cyggie.Main] Error: {errorMessage}");
                 return false;
             }
 

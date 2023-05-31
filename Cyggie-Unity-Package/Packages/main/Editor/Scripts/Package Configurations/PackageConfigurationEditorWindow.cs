@@ -3,6 +3,7 @@ using Cyggie.Main.Editor.Utils.Helpers;
 using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Constants;
+using Cyggie.Main.Runtime.Utils.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +26,12 @@ namespace Cyggie.Main.Editor.Configurations
         private int _selectedTabIndex = 0;
         private Vector2 _tabScrollViewPos = Vector2.zero;
 
+        private bool _cIsPressed = false;
+        private bool _altIsPressed = false;
+
         internal static PackageConfigurationEditorWindow Window = null;
         internal ServiceManagerTab ServiceManagerTab = null;
+        internal bool ClosedByShortcut = false;
 
         /// <summary>
         /// Initialize the window with tabs
@@ -59,13 +64,15 @@ namespace Cyggie.Main.Editor.Configurations
         /// <summary>
         /// Draw GUI for the window
         /// </summary>
-        internal void OnGUI()
+        private void OnGUI()
         {
             if (_tabStrings == null || _tabs == null || _selectedTabIndex >= _tabs.Count)
             {
                 Close();
                 return;
             }
+
+            if (HandleCloseWindowShortcut()) return;
 
             // Draw the whole window with a vertical scroll view
             EditorGUIHelper.DrawWithScrollview(ref _tabScrollViewPos, gui: () =>
@@ -94,6 +101,11 @@ namespace Cyggie.Main.Editor.Configurations
             }, horizontalStyle: GUIStyle.none);
         }
 
+        private void OnDestroy()
+        {
+            Window = null;
+        }
+
         /// <summary>
         /// Try get settings of <typeparamref name="T"/>
         /// </summary>
@@ -103,6 +115,59 @@ namespace Cyggie.Main.Editor.Configurations
         {
             settings = ServiceManagerTab.Settings.ServiceConfigurations.FirstOrDefault(x => x.ServiceType == typeof(T));
             return settings != null;
+        }
+
+        private bool HandleCloseWindowShortcut()
+        {
+            Event e = Event.current;
+            if (e != null)
+            {
+                switch (e.type)
+                {
+                    case EventType.KeyDown:
+                        {
+                            switch (Event.current.keyCode)
+                            {
+                                case KeyCode.C:
+                                    _cIsPressed = true;
+                                    break;
+
+                                case KeyCode.LeftAlt:
+                                case KeyCode.RightAlt:
+                                    _altIsPressed = true;
+                                    break;
+
+                            }
+
+                            if (_cIsPressed && _altIsPressed)
+                            {
+                                EditorMenuItems.ExpectPackageConfigurationsShortcut = true;
+                                Close();
+                                return true;
+                            }
+                            break;
+                        }
+
+                    case EventType.KeyUp:
+                        {
+                            switch (Event.current.keyCode)
+                            {
+                                case KeyCode.C:
+                                    _cIsPressed = false;
+                                    break;
+
+                                case KeyCode.LeftAlt:
+                                case KeyCode.RightAlt:
+                                    _altIsPressed = false;
+                                    break;
+
+                            }
+                            break;
+                        }
+                }
+            }
+
+            return false;
         }
 
         #region Static methods
@@ -132,15 +197,15 @@ namespace Cyggie.Main.Editor.Configurations
 
             // Retrieve all classes that implements ServiceConfiguration
             // that are not present in the Service Manager Settings
-            List<Type> _missingTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => typeof(ServiceConfigurationSO).IsAssignableFrom(type) && !type.IsAbstract && type != typeof(ServiceManagerSettings))
-                .Where(type => !settings.ServiceConfigurations.Any(x => x.GetType() == type))
-                .ToList();
-
-            if (_missingTypes.Count > 0)
+            List<Type> missingTypes = TypeHelper.GetAllIsAssignableFrom<ServiceConfigurationSO>(type =>
             {
-                foreach (Type type in _missingTypes)
+                return type != typeof(ServiceManagerSettings) && // don't add ServiceManagerSettings
+                       !settings.ServiceConfigurations.Any(x => x.GetType() == type); // make sure the service configuration doesn't already exists
+            }).ToList();
+
+            if (missingTypes.Count > 0)
+            {
+                foreach (Type type in missingTypes)
                 {
                     Debug.Log($"[Cyggie.Main] Service configuration ({type.Name}) not found. Creating it...");
                     ScriptableObject scriptableObj = ScriptableObject.CreateInstance(type);

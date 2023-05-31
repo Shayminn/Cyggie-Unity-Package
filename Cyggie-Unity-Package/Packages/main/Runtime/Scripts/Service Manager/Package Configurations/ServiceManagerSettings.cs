@@ -28,12 +28,6 @@ namespace Cyggie.Main.Runtime.Configurations
         internal List<ServiceConfigurationSO> ServiceConfigurations = new List<ServiceConfigurationSO>();
 
         /// <summary>
-        /// Whether the settings are valid
-        /// </summary>
-        [SerializeField]
-        internal bool IsValid = true;
-
-        /// <summary>
         /// Try get a service configuration from the list of assigned service configurations
         /// </summary>
         /// <param name="serviceConfiguration">Output service configuration (null if not found)</param>
@@ -55,6 +49,9 @@ namespace Cyggie.Main.Runtime.Configurations
             base.OnScriptableObjectCreated();
 
             Prefab = AssetDatabase.LoadAssetAtPath<ServiceManager>(cPrefabPath);
+
+            // This makes sure that the above reference is saved after closing the editor
+            EditorUtility.SetDirty(this);
         }
 
 #endif

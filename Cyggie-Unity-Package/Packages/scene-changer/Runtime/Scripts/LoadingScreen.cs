@@ -348,7 +348,7 @@ namespace Cyggie.SceneChanger.Runtime
 
                                         if (_images.Length == 1)
                                         {
-                                            Debug.LogError($"Loading Screen's {nameof(SceneChangerSettings.RandomType)} set to {nameof(SceneChangeRandomType.ResetAfterEachNoPreviousRepeat)} but there's only one possible image. Add more images or use {nameof(SceneChangeRandomType.ResetAfterEach)} instead.");
+                                            Debug.LogError($"[Cyggie.SceneChanger] Loading Screen's {nameof(SceneChangerSettings.RandomType)} set to {nameof(SceneChangeRandomType.ResetAfterEachNoPreviousRepeat)} but there's only one possible image. Add more images or use {nameof(SceneChangeRandomType.ResetAfterEach)} instead.");
                                             break;
                                         }
                                     }

@@ -41,7 +41,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             // Get the service configuration
             if (configuration == null || configuration is not SQLiteSettings sqliteSettings)
             {
-                Debug.LogError($"Failed in {nameof(OnInitialized)}, configuration is null or is not type of {typeof(SQLiteSettings)}.");
+                Debug.LogError($"[Cyggie.SQLite] Configuration is null or is not type of {typeof(SQLiteSettings)}.");
                 return;
             }
 
@@ -67,7 +67,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             catch (Exception ex)
             {
                 _connection = null; // this signals that IsInitialized = false
-                Debug.LogError($"Failed on {nameof(OnInitialized)}, test connection failed, connection string: {_connection.ConnectionString}\n, exception: {ex}.");
+                Debug.LogError($"[Cyggie.SQLite] Test connection failed, connection string: {_connection.ConnectionString}\n, exception: {ex}.");
                 return;
             }
 
@@ -98,13 +98,13 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
         {
             if (!IsInitialized)
             {
-                Debug.LogError($"Failed in {nameof(Execute)}, SQLite Service is not initialized.");
+                Debug.LogError($"[Cyggie.SQLite] SQLite Service is not initialized.");
                 return 0;
             }
 
             if (_readOnly)
             {
-                Debug.LogError($"Failed in {nameof(Execute)}, SQLite Service is in read-only mode, use {nameof(Read)} instead.");
+                Debug.LogError($"[Cyggie.SQLite] SQLite Service is in read-only mode, only {nameof(Read)} is available.");
                 return 0;
             }
 
@@ -132,7 +132,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
                     paramss += $"[{sqlParam.ParameterName}, {sqlParam.Value}]";
                 }
 
-                Debug.LogError($"SQLite exception when executing Query:\n{query}\n (Parameters: {paramss})\nException: {ex}");
+                Debug.LogError($"[Cyggie.SQLite] SQLite exception when executing Query:\n{query}\n (Parameters: {paramss})\nException: {ex}");
             }
             catch (Exception ex)
             {
@@ -156,7 +156,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
         {
             if (!_readAllOnStart)
             {
-                Debug.LogError($"Failed in {nameof(Get)}, list of objects is empty since {nameof(SQLiteSettings.ReadAllOnStart)} is disabled. Enable it in Package Configurations or use {nameof(Read)} instead.");
+                Debug.LogError($"[Cyggie.SQLite] List of objects is empty since {nameof(SQLiteSettings.ReadAllOnStart)} is disabled. Enable it in Package Configurations or use {nameof(Read)} instead.");
                 return new List<T>();
             }
 
@@ -257,7 +257,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
                         int index = reader.GetOrdinal(property.Name);
                         if (index == -1)
                         {
-                            Debug.LogWarning($"Property ({property.Name} from {type}) not found within table columns. ");
+                            Debug.LogWarning($"[Cyggie.SQLite] Property ({property.Name} from {type}) not found within table columns. ");
                             continue;
                         }
                         object arg = SQLiteHelper.ConvertValue(reader.GetValue(index), property.PropertyType);
@@ -270,7 +270,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed to read from the database. Command: " + (command != null ? command.CommandText : "") + $", Exception: \n{ex}");
+                Debug.LogError($"[Cyggie.SQLite] Failed to read from the database. Command: " + (command != null ? command.CommandText : "") + $", Exception: \n{ex}");
             }
             finally
             {
@@ -373,7 +373,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
                         int index = reader.GetOrdinal(property.Name);
                         if (index == -1)
                         {
-                            Debug.LogError($"Property ({property.Name} from {type}) not found within table columns. ");
+                            Debug.LogError($"[Cyggie.SQLite] Property ({property.Name} from {type}) not found within table columns. ");
                             continue;
                         }
                         object arg = SQLiteHelper.ConvertValue(reader.GetValue(index), property.PropertyType);
@@ -392,7 +392,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed to read from the database. Command: {command.CommandText} \n{ex}");
+                Debug.LogError($"[Cyggie.SQLite] Failed to read from the database. Command: {command.CommandText} \n{ex}");
             }
             finally
             {
@@ -425,7 +425,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed in {nameof(Count)}, unknown error occured: {ex}.");
+                Debug.LogError($"[Cyggie.SQLite] Unknown error occured: {ex}.");
             }
             finally
             {
@@ -459,11 +459,11 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
                 OnInitialized(settings);
             }
 
-            //if (!string.IsNullOrEmpty(path) && !path.EndsWith(".sql"))
-            //{
-            //    Debug.LogError($"Failed at {nameof(CreateBlueprint)}, path is empty or does not end with \".sql\".");
-            //    return;
-            //}
+            if (!string.IsNullOrEmpty(path) && !path.EndsWith(".sql"))
+            {
+                Debug.LogError($"[Cyggie.SQLite] Path is empty or does not end with \".sql\".");
+                return;
+            }
 
             List<string> tableNames = new List<string>();
             StringBuilder blueprint = new StringBuilder();
@@ -546,7 +546,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed in {nameof(CreateBlueprint)}, unknown error occured, exception: {ex}.");
+                Debug.LogError($"[Cyggie.SQLite] Unknown error occured, exception: {ex}.");
             }
             finally
             {
@@ -562,7 +562,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
                 // Write the new blueprint to the path
                 File.WriteAllText(path, blueprint.ToString());
 
-                Debug.Log($"Blueprint successfully created at: {path}");
+                Debug.Log($"[Cyggie.SQLite] Blueprint successfully created at: {path}");
             }
         }
 
@@ -580,7 +580,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
                 OnInitialized(settings);
             }
 
-            Debug.Log($"Executing files from folder path: {path}");
+            Debug.Log($"[Cyggie.SQLite] Executing files from folder path: {path}");
 
             // Directory
             if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
@@ -595,7 +595,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
                     }
                     else
                     {
-                        Debug.Log($"Executing .sql file: {p}");
+                        Debug.Log($"[Cyggie.SQLite] Executing .sql file: {p}");
 
                         string script = File.ReadAllText(p);
                         Execute(script);
@@ -605,7 +605,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             // File
             else
             {
-                Debug.Log($"Executing .sql file: {path}");
+                Debug.Log($"[Cyggie.SQLite] Executing .sql file: {path}");
 
                 string script = File.ReadAllText(path);
                 Execute(script);
@@ -637,7 +637,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed in {nameof(Count)}, unknown error occured: {ex}.");
+                Debug.LogError($"[Cyggie.SQLite] Unknown error occured: {ex}.");
             }
             finally
             {
@@ -668,7 +668,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             obj = default;
             if (!typeof(SQLiteObject).IsAssignableFrom(type) || type == typeof(SQLiteObject))
             {
-                Debug.LogError($"Failed in {nameof(TryCreateInstance)}, type is {typeof(SQLiteObject)} or does not derive from it.");
+                Debug.LogError($"[Cyggie.SQLite] Type is {typeof(SQLiteObject)} or does not derive from it.");
                 return false;
             }
 
@@ -688,12 +688,12 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
                     argsStr += o.GetType();
                 }
 
-                Debug.LogError($"Failed to read from the database. No valid constructor was found for {type} with {args.Count} arguments ({argsStr})");
-                Debug.LogError($"Exception: {ex}");
+                Debug.LogError($"[Cyggie.SQLite] Failed to read from the database. No valid constructor was found for {type} with {args.Count} arguments ({argsStr})");
+                Debug.LogError($"[Cyggie.SQLite] Exception: {ex}");
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed in {nameof(TryCreateInstance)}, unexpected error occurred: {ex}");
+                Debug.LogError($"[Cyggie.SQLite] Failed in {nameof(TryCreateInstance)}, unexpected error occurred: {ex}");
             }
 
             return false;
@@ -713,7 +713,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed in {nameof(OpenConnection)}, unknown error occured, exception: {ex}.");
+                Debug.LogError($"[Cyggie.SQLite] Unknown error occured, exception: {ex}.");
             }
         }
 
@@ -731,7 +731,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed in {nameof(CloseConnection)}, unknown error occured, exception: {ex}.");
+                Debug.LogError($"[Cyggie.SQLite] Unknown error occured, exception: {ex}.");
             }
         }
 

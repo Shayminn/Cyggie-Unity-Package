@@ -1,10 +1,10 @@
-using Cyggie.Main.Runtime.ServicesNS;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Cyggie.ReferencePool.Runtime.ServicesNS
+namespace Cyggie.Main.Runtime.ServicesNS.ReferencePool
 {
     /// <summary>
     /// Service that manages a Reference Pool <br/>
@@ -23,45 +23,54 @@ namespace Cyggie.ReferencePool.Runtime.ServicesNS
         protected override int Priority => int.MaxValue;
 
         /// <inheritdoc/>
-        public override void Start()
+        public override void OnEnable()
         {
-            base.Start();
+            base.OnEnable();
 
-            SceneManager.activeSceneChanged += OnActiveSceneChanged;
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
+        }
+
+        /// <inheritdoc/>
+        public override void OnDisable()
+        {
+            base.OnDisable();
+
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
 
         /// <summary>
-        /// Get the game object reference using the key <paramref name="refPoolObj"/>.
+        /// Get the game object reference using the key <paramref name="refObj"/>.
         /// </summary>
-        /// <param name="refPoolObj">Referenced scriptable object</param>
+        /// <param name="refObj">Referenced scriptable object</param>
         /// <returns>Referenced game object (null if not found)</returns>
-        public GameObject GetReference(ReferencePoolObject refPoolObj)
+        public GameObject GetReference(ReferencePoolObject refObj)
         {
-            if (refPoolObj == null)
-            {
-                Debug.LogError($"[Reference Pool] Failed in {nameof(GetReference)}, argument {nameof(refPoolObj)} is null.");
-                return null;
-            }
+            TryGetReference(refObj, out GameObject obj);
 
-            return _referencePool.ContainsKey(refPoolObj) ? _referencePool[refPoolObj] : null;
+            return obj;
         }
 
         /// <summary>
-        /// Try get a game object reference using the key <paramref name="refPoolObj"/>
+        /// Try get a game object reference using the key <paramref name="refObj"/>
         /// </summary>
-        /// <param name="refPoolObj">Referenced scriptable object</param>
+        /// <param name="refObj">Referenced scriptable object</param>
         /// <param name="gameObject">The referenced game object (null if not found)</param>
         /// <returns>Exists?</returns>
-        public bool TryGetReference(ReferencePoolObject refPoolObj, out GameObject gameObject)
+        public bool TryGetReference(ReferencePoolObject refObj, out GameObject gameObject)
         {
             gameObject = null;
-            if (refPoolObj == null)
+            if (refObj == null)
             {
-                Debug.LogError($"[Reference Pool] Failed in {nameof(TryGetReference)}, argument {nameof(refPoolObj)} is null.");
+                Debug.LogError($"[Cyggie.Main] Argument {nameof(refObj)} is null.");
                 return false;
             }
 
-            return _referencePool.TryGetValue(refPoolObj, out gameObject);
+            if (!_referencePool.TryGetValue(refObj, out gameObject))
+            {
+                Debug.LogError($"[Cyggie.Main] Reference object not found: {refObj.name}. Make sure this is called after Awake. {nameof(ReferencePoolInitializer)}s are called in Awake and the order of execution is not guaranteed.");
+            }
+
+            return gameObject != null;
         }
 
         /// <summary>
@@ -73,16 +82,19 @@ namespace Cyggie.ReferencePool.Runtime.ServicesNS
         {
             if (_referencePool.ContainsKey(refPoolObj))
             {
-                Debug.LogError($"[Reference Pool] Pool already contains reference. Make sure that the reference is not being added multiple times! Reference: {refPoolObj}, GameObject: {gameObject}.");
+                Debug.LogError($"[Cyggie.Main] Pool already contains reference. Make sure that the reference is not being added multiple times! Reference: {refPoolObj}, GameObject: {gameObject}.");
                 return;
             }
 
             _referencePool.Add(refPoolObj, gameObject);
         }
 
-        private void OnActiveSceneChanged(Scene from, Scene to)
+        private void OnSceneUnloaded(Scene scene)
         {
-            _referencePool = _referencePool.Where(x => x.Value != null).ToDictionary(x => x.Key, y => y.Value);
+            if (_referencePool.Count > 0)
+            {
+                _referencePool = _referencePool.Where(x => x.Value != null).ToDictionary(x => x.Key, y => y.Value);
+            }
         }
     }
 }

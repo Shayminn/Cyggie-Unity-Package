@@ -13,12 +13,20 @@ namespace Cyggie.Main.Editor
     /// </summary>
     internal static class EditorMenuItems
     {
+        internal static bool ExpectPackageConfigurationsShortcut = false;
+
         /// <summary>
         /// Menu Item for managing Package Configurations
         /// </summary>
         [MenuItem(itemName: "Cyggie/Package Configurations &c")]
         private static void PackageConfiguration()
         {
+            if (ExpectPackageConfigurationsShortcut)
+            {
+                ExpectPackageConfigurationsShortcut = false;
+                return;
+            }
+
             // Get all PackageConfigurationTab in project
             List<Type> tabTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
@@ -29,7 +37,7 @@ namespace Cyggie.Main.Editor
 
             if (tabs == null || tabs.Count == 0)
             {
-                Debug.Log($"Failed to open Package Configuration window: No tab of type {typeof(AbstractPackageConfigurationTab)} was found.");
+                Debug.Log($"[Cyggie.Main] Failed to open Package Configuration window: No tab of type {typeof(AbstractPackageConfigurationTab)} was found.");
                 return;
             }
 
