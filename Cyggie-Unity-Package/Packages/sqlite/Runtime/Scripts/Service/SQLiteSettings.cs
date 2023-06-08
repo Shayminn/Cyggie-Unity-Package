@@ -1,7 +1,6 @@
 using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.SQLite.Runtime.Utils.Constants;
-using System;
 using UnityEngine;
 
 namespace Cyggie.SQLite.Runtime.ServicesNS
@@ -25,11 +24,11 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
         [SerializeField]
         internal bool AddSToTableName = true;
 
-        internal string DatabaseAbsolutePath => FolderConstants.cAssets + 
-                                                FolderConstants.cCyggieStreamingAssets + 
+        internal string DatabaseAbsolutePath => FolderConstants.cAssets +
+                                                FolderConstants.cCyggieStreamingAssets +
                                                 DatabasePath;
 
         internal string DatabasePath => cStreamingAssetsFolderPath +
-                                        DatabaseName + FileExtensionConstants.cSQLite;
+                                        DatabaseName + SQLite.Runtime.Utils.Constants.FileExtensionConstants.cSQLite;
     }
 }

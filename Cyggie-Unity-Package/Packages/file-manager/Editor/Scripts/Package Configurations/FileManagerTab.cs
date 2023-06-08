@@ -44,7 +44,7 @@ namespace Cyggie.SceneChanger.Editor.Configurations
             EditorGUILayout.LabelField(cSaveLocationLabel, EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(_usePersistentDataPath, GUIContents.cUsePersistentDataPath);
 
-            EditorGUIHelper.DrawAsReadOnly(_usePersistentDataPath.boolValue, gui: () =>
+            GUIHelper.DrawAsReadOnly(_usePersistentDataPath.boolValue, gui: () =>
             {
                 EditorGUILayout.PropertyField(_localSavePath, GUIContents.cLocalSavePath);
             });

@@ -114,7 +114,7 @@ namespace Cyggie.SQLite.Editor
             }
 
             EditorGUILayout.Space(5);
-            EditorGUIHelper.DrawAsReadOnly(!canExecute, gui: () =>
+            GUIHelper.DrawAsReadOnly(!canExecute, gui: () =>
             {
                 if (GUILayout.Button("Execute files", GUILayout.Width(150)))
                 {

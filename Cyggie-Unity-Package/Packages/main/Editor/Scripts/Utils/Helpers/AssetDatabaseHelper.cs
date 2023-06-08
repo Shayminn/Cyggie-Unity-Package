@@ -1,4 +1,5 @@
 ﻿using Codice.Client.BaseCommands;
+using Cyggie.Main.Runtime;
 using System;
 using System.IO;
 using UnityEditor;
@@ -52,6 +53,33 @@ namespace Cyggie.Main.Editor.Utils.Helpers
             catch (Exception ex)
             {
                 Debug.LogError($"[Cyggie.Main] Unknown error occured, exception: {ex}.");
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Delete an asset <br/>
+        /// </summary>
+        /// <param name="objectToDelete">Asset to delete</param>
+        /// <returns></returns>
+        public static bool DeleteAsset(UnityEngine.Object objectToDelete) => DeleteAsset(AssetDatabase.GetAssetPath(objectToDelete));
+
+        /// <summary>
+        /// Delete an asset at a specified path
+        /// </summary>
+        /// <param name="assetPath"></param>
+        /// <returns></returns>
+        public static bool DeleteAsset(string assetPath)
+        {
+            try
+            {
+                AssetDatabase.DeleteAsset(assetPath);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Unknown error occured, exception: {ex}.", nameof(AssetDatabaseHelper));
                 return false;
             }
 

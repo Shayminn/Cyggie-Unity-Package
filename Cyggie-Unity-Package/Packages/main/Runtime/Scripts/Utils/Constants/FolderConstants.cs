@@ -1,4 +1,6 @@
-﻿namespace Cyggie.Main.Runtime.Utils.Constants
+﻿using Codice.CM.Common;
+
+namespace Cyggie.Main.Runtime.Utils.Constants
 {
     /// <summary>
     /// Struct that contains all constants related to folder names
@@ -12,11 +14,15 @@
 
         // Cyggie folders
         public const string cCyggie = "Cyggie/";
-        public const string cPackageConfigurations = "PackageConfigurations/";
-        public const string cServiceConfigurations = "ServiceConfigurations/";
+        public const string cLogProfiles = "LogProfiles/";
+        public const string cScriptableObjects = "ScriptableObjects/";
 
         // Shortcuts
         public const string cCyggieResources = cCyggie + cResources;
         public const string cCyggieStreamingAssets = cCyggie + cStreamingAssets;
+        public const string cCyggieScriptableObjects = cCyggie + cScriptableObjects;
+
+        public const string cPackageConfigurations = cScriptableObjects + "PackageConfigurations/";
+        public const string cServiceConfigurations = cScriptableObjects + "ServiceConfigurations/";
     }
 }

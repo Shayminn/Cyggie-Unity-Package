@@ -102,7 +102,7 @@ namespace Cyggie.SceneChanger.Editor.Configurations
         /// <inheritdoc/>
         protected override void DrawGUI()
         {
-            EditorGUIHelper.DrawAsReadOnly(gui: () =>
+            GUIHelper.DrawAsReadOnly(gui: () =>
             {
                 EditorGUILayout.PropertyField(_loadingScreenPrefab, GUIContents.cLoadingScreenPrefab);
                 EditorGUILayout.Space(10);
@@ -117,13 +117,13 @@ namespace Cyggie.SceneChanger.Editor.Configurations
                 EditorGUILayout.PropertyField(_images, GUIContents.cImages);
 
                 // Extra settings if with custom loading screen images
-                EditorGUIHelper.DrawAsReadOnly(Settings.Images == null || Settings.Images.Length == 0, gui: () =>
+                GUIHelper.DrawAsReadOnly(Settings.Images == null || Settings.Images.Length == 0, gui: () =>
                 {
                     EditorGUILayout.PropertyField(_scaleImageToResolution, GUIContents.cScaleImageToResolution);
                     EditorGUILayout.PropertyField(_randomizeImages, GUIContents.cRandomizeImages);
 
                     // Extra settings if randomized images
-                    EditorGUIHelper.DrawAsReadOnly(!Settings.RandomizeImages, gui: () =>
+                    GUIHelper.DrawAsReadOnly(!Settings.RandomizeImages, gui: () =>
                     {
                         EditorGUILayout.PropertyField(_randomType, GUIContents.cRandomType);
                     });
@@ -195,7 +195,7 @@ namespace Cyggie.SceneChanger.Editor.Configurations
                 EditorGUILayout.Space(5);
 
                 EditorGUILayout.PropertyField(_enableTextProgress, GUIContents.cEnableTextProgress);
-                EditorGUIHelper.DrawAsReadOnly(!_enableTextProgress.boolValue, gui: () =>
+                GUIHelper.DrawAsReadOnly(!_enableTextProgress.boolValue, gui: () =>
                 {
                     EditorGUILayout.Space(5);
                     EditorGUILayout.PropertyField(_textProgressPosition, GUIContents.cTextProgressPosition);
@@ -215,12 +215,12 @@ namespace Cyggie.SceneChanger.Editor.Configurations
             {
                 EditorGUILayout.PropertyField(_autoAdjustToResolution, GUIContents.cAutoAdjustToResolution);
 
-                EditorGUIHelper.DrawAsReadOnly(Settings.AutoAdjustToResolution, gui: () =>
+                GUIHelper.DrawAsReadOnly(Settings.AutoAdjustToResolution, gui: () =>
                 {
                     EditorGUILayout.PropertyField(_screenSize, GUIContents.cScreenSize);
                 });
 
-                EditorGUIHelper.DrawAsReadOnly(!Settings.AutoAdjustToResolution, gui: () =>
+                GUIHelper.DrawAsReadOnly(!Settings.AutoAdjustToResolution, gui: () =>
                 {
                     EditorGUILayout.PropertyField(_resolutionCheckDelay, GUIContents.cResolutionCheckDelay);
                 });

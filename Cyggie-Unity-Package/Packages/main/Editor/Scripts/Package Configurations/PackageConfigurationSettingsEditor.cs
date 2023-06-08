@@ -17,7 +17,7 @@ namespace Cyggie.Main.Editor
             EditorGUILayout.LabelField("Edit these values in the Toolbar at \"Cyggie/Package Configurations\".");
             EditorGUILayout.Space(10);
 
-            EditorGUIHelper.DrawAsReadOnly(gui: () =>
+            GUIHelper.DrawAsReadOnly(gui: () =>
             {
                 base.OnInspectorGUI();
             });

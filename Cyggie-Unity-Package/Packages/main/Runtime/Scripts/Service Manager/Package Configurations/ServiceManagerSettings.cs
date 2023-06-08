@@ -21,11 +21,14 @@ namespace Cyggie.Main.Runtime.Configurations
         // Error strings
         private const string cDuplicateConfiguration = "Multiple of the same configuration has been assigned to " + nameof(ServiceConfigurations);
 
-        [SerializeField]
+        [SerializeField, Tooltip("Prefab instantiated at the start which contains this component.")]
         internal ServiceManager Prefab = null;
 
-        [SerializeField]
+        [SerializeField, Tooltip("List of service configurations. Automatically generated upon refresh.")]
         internal List<ServiceConfigurationSO> ServiceConfigurations = new List<ServiceConfigurationSO>();
+
+        [SerializeField, Tooltip("List of log profiles. Created in the Configuration window.")]
+        internal List<LogProfile> LogProfiles = new List<LogProfile>();
 
         /// <summary>
         /// Try get a service configuration from the list of assigned service configurations
@@ -52,6 +55,15 @@ namespace Cyggie.Main.Runtime.Configurations
 
             // This makes sure that the above reference is saved after closing the editor
             EditorUtility.SetDirty(this);
+        }
+
+        internal void Refresh()
+        {
+            // Remove null/missing configurations
+            ServiceConfigurations.RemoveAll(config => config == null);
+
+            // Remove null/missing profiles
+            LogProfiles.RemoveAll(profile => profile == null);
         }
 
 #endif

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cyggie.Main.Runtime.Utils.Constants;
+using System;
 using System.Text.RegularExpressions;
 
 namespace Cyggie.Main.Runtime.Utils.Extensions
@@ -85,12 +86,12 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
         /// i.e. Assets/Resources/Cyggie will return Cyggie
         /// </summary>
         /// <param name="path">Path to convert</param>
-        /// <returns><paramref name="path"/> if it doesn't contain <see cref="StringConstants.cResources"/></returns>
+        /// <returns><paramref name="path"/> if it doesn't contain <see cref="FolderConstants.cResources"/></returns>
         public static string ToResourcesRelativePath(this string path)
         {
-            if (!path.Contains(StringConstants.cResources)) return path;
+            if (!path.Contains(FolderConstants.cResources)) return path;
 
-            return path[(path.IndexOf(StringConstants.cResources) + StringConstants.cResources.Length + 1)..];
+            return path[(path.IndexOf(FolderConstants.cResources) + FolderConstants.cResources.Length + 1)..];
         }
     }
 }

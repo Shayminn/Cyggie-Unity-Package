@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prefab: {fileID: 5703444348504700640, guid: 9a5fad89ca320d34fb9a7b3c02b9d9d9, type: 3}
   ServiceConfigurations:
-  - {fileID: 11400000, guid: 5517db2600634a14a8309cdaf46e7e61, type: 2}
-  - {fileID: 11400000, guid: ecd4008b89bd84647bdff179dfc4a606, type: 2}
-  - {fileID: 11400000, guid: 76406bfdce751ed4d95a0668dcbd05c1, type: 2}
+  - {fileID: 11400000, guid: 6275b7a2043919749952713608b4c097, type: 2}
+  - {fileID: 11400000, guid: 34ba60e670ac7854f94da5515a2a5392, type: 2}
+  - {fileID: 11400000, guid: 9400bd91889e1d04fbe4a59f2201af20, type: 2}
+  LogProfiles:
+  - {fileID: 11400000, guid: ef5e74c5780e57d42b1cab7187d3721f, type: 2}

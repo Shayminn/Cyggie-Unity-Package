@@ -17,8 +17,6 @@ namespace Cyggie.Main.Editor.Configurations
     /// </summary>
     internal class PackageConfigurationEditorWindow : EditorWindow
     {
-        private const string cEditorPrefSelectedTabKey = "CyggiePackageConfigurationSelectedTabIndex";
-
         private List<AbstractPackageConfigurationTab> _tabs = null;
         private AbstractPackageConfigurationTab _selectedTab = null;
         private string[] _tabStrings = null;
@@ -52,7 +50,7 @@ namespace Cyggie.Main.Editor.Configurations
                 x.CallInitialized();
             });
 
-            _selectedTabIndex = EditorPrefs.GetInt(cEditorPrefSelectedTabKey, 0);
+            _selectedTabIndex = EditorPrefs.GetInt(EditorPrefsConstants.cPackageWindowSelectedTabIndex, 0);
             if (_selectedTabIndex >= _tabs.Count)
             {
                 _selectedTabIndex = 0;
@@ -87,7 +85,7 @@ namespace Cyggie.Main.Editor.Configurations
 
                         if (EditorGUIHelper.CheckChange(gui: () => _selectedTabIndex = EditorGUILayout.Popup(_selectedTabIndex, _tabStrings)))
                         {
-                            EditorPrefs.SetInt(cEditorPrefSelectedTabKey, _selectedTabIndex);
+                            EditorPrefs.SetInt(EditorPrefsConstants.cPackageWindowSelectedTabIndex, _selectedTabIndex);
                             _selectedTab = _tabs[_selectedTabIndex];
                         }
                     }
@@ -192,8 +190,8 @@ namespace Cyggie.Main.Editor.Configurations
         /// <param name="settings">The service manager settings to check the list of configurations</param>
         internal static void RefreshServiceConfigurations(ServiceManagerSettings settings)
         {
-            // Remove all null references
-            settings.ServiceConfigurations.RemoveAll(config => config == null);
+            // Refresh the settings to remove any incorrect data
+            settings.Refresh();
 
             // Retrieve all classes that implements ServiceConfiguration
             // that are not present in the Service Manager Settings
