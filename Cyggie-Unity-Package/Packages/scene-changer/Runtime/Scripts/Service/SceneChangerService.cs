@@ -1,3 +1,4 @@
+using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.SceneChanger.Runtime.Configurations;
 using Cyggie.SceneChanger.Runtime.Settings;
@@ -44,7 +45,7 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
 
             if (configuration == null || configuration is not SceneChangerSettings settings)
             {
-                Debug.Log($"[Cyggie.SceneChanger] Configuration was not found in the Service Manager Configurations.");
+                Log.Debug($"Configuration was not found in the Service Manager Configurations.", nameof(SceneChangerService));
                 return;
             }
 
@@ -139,14 +140,14 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
             // Make sure Scene Changer is initialized
             if (!IsInitialized)
             {
-                Debug.LogError($"[Cyggie.SceneChanger] Scene Changer was not initialized properly, unable to change scene at {nameof(ChangeScene)}.");
+                Log.Error($"Scene Changer was not initialized properly, unable to change scene at {nameof(ChangeScene)}.", nameof(SceneChangerService));
                 return false;
             }
 
             // Make sure a scene change is not already in progress
             if (_inProgress)
             {
-                Debug.LogError($"[Cyggie.SceneChanger] Scene change already in progress, cancelling new call...");
+                Log.Error($"Scene change already in progress, cancelling new call...", nameof(SceneChangerService));
                 return false;
             }
 
@@ -174,7 +175,7 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
                 {
                     if (i >= _settings.Texts.Length)
                     {
-                        Debug.LogError($"[Cyggie.SceneChanger] Index is out of range: Settings has {_settings.Texts.Length} texts, but request index was {i} (array is in base 0).");
+                        Log.Error($"Index is out of range: Settings has {_settings.Texts.Length} texts, but request index was {i} (array is in base 0).", nameof(SceneChangerService));
                         continue;
                     }
 

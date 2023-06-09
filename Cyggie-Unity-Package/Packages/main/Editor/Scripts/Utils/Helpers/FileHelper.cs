@@ -1,3 +1,4 @@
+using Cyggie.Main.Runtime;
 using System.IO;
 using UnityEngine;
 
@@ -45,7 +46,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
             {
                 if (!suppressError)
                 {
-                    Debug.LogError($"[Cyggie.Main] File {fileName} not found in the project.");
+                    Log.Error($"[Cyggie.Main] File {fileName} not found in the project.", nameof(FileHelper));
                 }
 
                 return false;

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using UnityEngine;
 
 namespace Cyggie.Main.Runtime.Utils.Extensions
 {
@@ -19,7 +18,7 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
         {
             if (!@enum.GetType().GetCustomAttributes(typeof(FlagsAttribute), false).Any())
             {
-                Debug.LogError($"[Cyggie.Main] Type {@enum.GetType()} does not have the attribute {nameof(FlagsAttribute)}.");
+                Log.Error($"Type {@enum.GetType()} does not have the attribute {nameof(FlagsAttribute)}.", nameof(EnumExtensions));
                 return 0;
             }
 

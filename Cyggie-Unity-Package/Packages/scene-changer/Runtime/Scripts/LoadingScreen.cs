@@ -1,3 +1,4 @@
+using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Enums;
 using Cyggie.Main.Runtime.Utils.Extensions;
@@ -348,7 +349,7 @@ namespace Cyggie.SceneChanger.Runtime
 
                                         if (_images.Length == 1)
                                         {
-                                            Debug.LogError($"[Cyggie.SceneChanger] Loading Screen's {nameof(SceneChangerSettings.RandomType)} set to {nameof(SceneChangeRandomType.ResetAfterEachNoPreviousRepeat)} but there's only one possible image. Add more images or use {nameof(SceneChangeRandomType.ResetAfterEach)} instead.");
+                                            Log.Error($"Loading Screen's {nameof(SceneChangerSettings.RandomType)} set to {nameof(SceneChangeRandomType.ResetAfterEachNoPreviousRepeat)} but there's only one possible image. Add more images or use {nameof(SceneChangeRandomType.ResetAfterEach)} instead.", nameof(LoadingScreen));
                                             break;
                                         }
                                     }

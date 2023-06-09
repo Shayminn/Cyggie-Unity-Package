@@ -39,7 +39,7 @@ namespace Cyggie.Main.Runtime.ServicesNS.ReferencePool
             _initialized = true;
             if (_referenceObject == null)
             {
-                Debug.LogError($"[Cyggie.Main] Initializer's reference is missing. Assign it in the inspector. GameObject: {gameObject}.");
+                Log.Error($"Initializer's reference is missing. Assign it in the inspector. GameObject: {gameObject}.", nameof(ReferencePoolInitializer));
                 return;
             }
 

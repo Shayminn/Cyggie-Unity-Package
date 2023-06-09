@@ -1,5 +1,6 @@
 using Cyggie.Main.Editor.Configurations;
 using Cyggie.Main.Editor.Utils.Helpers;
+using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.SQLite.Editor.Utils.Styles;
@@ -135,7 +136,7 @@ namespace Cyggie.SQLite.Editor
             {
                 if (maxRetryAttempt == 0)
                 {
-                    Debug.LogError($"[Cyggie.SQLite] Unable to get sqlite settings. Maximum number of retry attempts reached.");
+                    Log.Error($"Unable to get sqlite settings. Maximum number of retry attempts reached.", nameof(AssignSQLiteSettings));
                     return false;
                 }
 

@@ -12,6 +12,7 @@ namespace Cyggie.Main.Runtime
     public static class Log
     {
         private static LogProfile _profile = null;
+        private static bool _enabled = true;
 
         #region Events
 
@@ -76,6 +77,20 @@ namespace Cyggie.Main.Runtime
         /// <param name="context">The Object that this log is associated to, clicking on this log will select the Object</param>
         public static void Error(object message, string tag = "", UnityEngine.Object context = null) => SendLog(LogTypes.Error, message, tag, context);
 
+        /// <summary>
+        /// Set the profile's log types during runtime <br/>
+        /// This will not update the profile's Serialized Object (if any) <br/>
+        /// Changes only affect the current run
+        /// </summary>
+        /// <param name="types">Filter types (flags)</param>
+        public static void SetTypes(LogTypes types) => _profile.Types = types;
+
+        /// <summary>
+        /// Toggle logs during runtime
+        /// </summary>
+        /// <param name="toggle">Enabled/Disabled</param>
+        public static void Toggle(bool toggle) => _enabled = toggle;
+
         #endregion
 
         #region Internal methods
@@ -83,17 +98,19 @@ namespace Cyggie.Main.Runtime
         /// <summary>
         /// Set the current profile based on the <see cref="Application.platform"/>
         /// </summary>
-        /// <param name="profile"></param>
+        /// <param name="profile">Platform's profile</param>
         internal static void SetProfile(LogProfile profile) => _profile = profile;
 
         #endregion
 
         private static void SendLog(LogTypes type, object message, string tag, UnityEngine.Object context)
         {
+            if (!_enabled) return;
+
             // Use default if not set
             if (_profile == null)
             {
-                _profile = new LogProfile();
+                _profile = ScriptableObject.CreateInstance<LogProfile>();
             }
 
             if (!_profile.IsEnabled(type)) return;

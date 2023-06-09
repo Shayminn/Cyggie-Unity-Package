@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cyggie.Main.Runtime;
+using System;
 using UnityEngine;
 
 namespace Cyggie.Runtime.SQLite.Utils.Helpers
@@ -55,7 +56,7 @@ namespace Cyggie.Runtime.SQLite.Utils.Helpers
                     {
                         if (!DateTime.TryParse((string) value, out DateTime result))
                         {
-                            Debug.LogError($"[Cyggie.SQLite] Couldn't convert {value} to DateTime");
+                            Log.Error($"[Cyggie.SQLite] Couldn't convert {value} to DateTime.", nameof(SQLiteHelper));
                             return value;
                         }
 

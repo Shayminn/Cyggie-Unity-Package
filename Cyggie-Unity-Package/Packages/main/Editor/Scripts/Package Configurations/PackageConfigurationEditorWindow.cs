@@ -1,5 +1,6 @@
 ﻿using Cyggie.Main.Editor.Utils.Constants;
 using Cyggie.Main.Editor.Utils.Helpers;
+using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Constants;
@@ -205,7 +206,7 @@ namespace Cyggie.Main.Editor.Configurations
             {
                 foreach (Type type in missingTypes)
                 {
-                    Debug.Log($"[Cyggie.Main] Service configuration ({type.Name}) not found. Creating it...");
+                    Log.Debug($"Service configuration ({type.Name}) not found. Creating it...", nameof(PackageConfigurationEditorWindow));
                     ScriptableObject scriptableObj = ScriptableObject.CreateInstance(type);
 
                     if (scriptableObj is ServiceConfigurationSO configuration)

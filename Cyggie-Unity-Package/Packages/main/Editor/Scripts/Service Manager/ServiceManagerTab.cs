@@ -266,7 +266,10 @@ namespace Cyggie.Main.Editor.Configurations
                     });
                 }
 
-                _serializedLogProfile.ApplyModifiedProperties();
+                if (_logProfile != null)
+                {
+                    _serializedLogProfile.ApplyModifiedProperties();
+                }
             }
         }
 
@@ -300,7 +303,7 @@ namespace Cyggie.Main.Editor.Configurations
             // Create settings object if not found
             if (settings == null)
             {
-                Debug.Log($"[Cyggie.Main] {nameof(ServiceManagerSettings)} not found. Creating it...");
+                Log.Debug($"{nameof(ServiceManagerSettings)} not found. Creating it...", nameof(ServiceManagerTab));
                 settings = CreateServiceManagerSettings();
             }
 

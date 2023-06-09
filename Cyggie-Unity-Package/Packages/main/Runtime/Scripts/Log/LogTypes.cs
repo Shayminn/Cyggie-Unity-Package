@@ -6,7 +6,7 @@ namespace Cyggie.Main.Runtime
     /// The supported log types
     /// </summary>
     [Flags]
-    internal enum LogTypes
+    public enum LogTypes
     {
         None = 0,
         Debug = 1 << 0,

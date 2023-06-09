@@ -1,3 +1,4 @@
+using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.SQLite.Runtime.ServicesNS;
 using Mono.Data.Sqlite;
@@ -25,15 +26,15 @@ public class SQLiteTest : MonoBehaviour
 
         if (testObject != null)
         {
-            Debug.Log("Test object params length: " + testObject.SQLParams.Length);
-            Debug.Log(testObject.Test);
+            Log.Debug("Test object params length: " + testObject.SQLParams.Length, nameof(SQLiteTest));
+            Log.Debug(testObject.Test, nameof(SQLiteTest));
         }
 
         IEnumerable<DBTestObject> testObjects = Service.Get<DBTestObject>();
         if (testObjects.Count() > 0)
         {
-            Debug.Log("Get count: " + testObjects.Count());
-            Debug.Log(testObjects.First().Test);
+            Log.Debug("Get count: " + testObjects.Count(), nameof(SQLiteTest));
+            Log.Debug(testObjects.First().Test, nameof(SQLiteTest));
         }
     }
 }

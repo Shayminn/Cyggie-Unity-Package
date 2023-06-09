@@ -49,7 +49,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
             if (_settings == null)
             {
-                Debug.LogError($"[Cyggie.Main] Unable to find Service Manager Settings in Resources.");
+                Log.Error($"Unable to find Service Manager Settings in Resources.", nameof(ServiceManager));
                 return;
             }
 
@@ -83,7 +83,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
                 service.Initialize(this, configuration);
             }
 
-            Debug.Log($"[Cyggie.Main] Service Manager initialized services. Count: {_services.Count}.");
+            Log.Debug($"Service Manager initialized services. Count: {_services.Count}.", nameof(ServiceManager));
             OnServicesInitialized?.Invoke();
         }
 
@@ -99,7 +99,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             // Check if Service Manager has been initialized
             if (_instance == null)
             {
-                Debug.LogError($"[Cyggie.Main] Failed to get a service, Service Manager has not yet been initialized. Use {nameof(OnServicesInitialized)} or call Get in {nameof(Start)}.");
+                Log.Error($"Failed to get a service, Service Manager has not yet been initialized. Use {nameof(OnServicesInitialized)} or call Get in {nameof(Start)}.", nameof(ServiceManager));
                 return default;
             }
 
@@ -107,7 +107,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
             if (service == null)
             {
-                Debug.LogError($"[Cyggie.Main] Unable to find service of type: {typeof(T)}.");
+                Log.Error($"Unable to find service of type: {typeof(T)}.", nameof(ServiceManager));
             }
 
             return (T) service;

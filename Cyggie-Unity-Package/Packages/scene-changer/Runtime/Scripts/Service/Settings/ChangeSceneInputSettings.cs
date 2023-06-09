@@ -1,7 +1,7 @@
+using Cyggie.Main.Runtime;
 using Cyggie.SceneChanger.Runtime.InputSystems;
 using System.Collections;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
@@ -107,7 +107,7 @@ namespace Cyggie.SceneChanger.Runtime.Settings
             {
                 if (string.IsNullOrEmpty(inputBinding.path))
                 {
-                    Debug.LogError($"Input binding's path is null or empty.");
+                    Log.Error($"Input binding's path is null or empty.", nameof(ChangeSceneInputSettings));
                     continue;
                 }
 

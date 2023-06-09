@@ -1,5 +1,6 @@
 ﻿using Cyggie.Encryption;
 using Cyggie.FileManager.Runtime.Data;
+using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.ServicesNS;
 using Newtonsoft.Json;
 using System;
@@ -43,7 +44,7 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
             if (configuration == null ||
                 configuration is not FileManagerSettings fileManagerSettings)
             {
-                Debug.LogError($"[Cyggie.FileManager] Configuration is null or is not type of {typeof(FileManagerSettings)}.");
+                Log.Error($"Configuration is null or is not type of {typeof(FileManagerSettings)}.", nameof(FileManagerService));
                 return;
             }
 
@@ -55,7 +56,7 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
             // Make sure the save path is not null or empty
             if (string.IsNullOrEmpty(_savePath))
             {
-                Debug.LogError($"[Cyggie.FileManager] String {nameof(_savePath)} is null or empty.");
+                Log.Error($"String {nameof(_savePath)} is null or empty.", nameof(FileManagerService));
                 return;
             }
 
@@ -87,7 +88,7 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
         {
             if (typeof(T) == typeof(SaveableObject))
             {
-                Debug.LogError($"[Cyggie.FileManager] Unable to create object of abstract class {typeof(SaveableObject)}.");
+                Log.Error($"Unable to create object of abstract class {typeof(SaveableObject)}.", nameof(FileManagerService));
                 return null;
             }
 
@@ -220,12 +221,12 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
             }
             catch (JsonSerializationException ex)
             {
-                Debug.LogError($"[Cyggie.FileManager] Unable to serialize data: {obj}, exception: {ex}.");
+                Log.Error($"Unable to serialize data: {obj}, exception: {ex}.", nameof(FileManagerService));
                 return false;
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[Cyggie.FileManager] Unknown error occured, exception: {ex}.");
+                Log.Error($"Unknown error occured, exception: {ex}.", nameof(FileManagerService));
                 return false;
             }
         }
@@ -241,7 +242,7 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
             saveFile = default;
             if (string.IsNullOrEmpty(data))
             {
-                Debug.LogError($"[Cyggie.FileManager] String {nameof(data)} is null or empty.");
+                Log.Error($"String {nameof(data)} is null or empty.", nameof(FileManagerService));
                 return false;
             }
 
@@ -257,12 +258,12 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
             }
             catch (JsonSerializationException ex)
             {
-                Debug.LogError($"[Cyggie.FileManager] Unable to deserialize data to {typeof(SaveFileModel)}: \"{data}\". Exception: {ex}.");
+                Log.Error($"Unable to deserialize data to {typeof(SaveFileModel)}: \"{data}\". Exception: {ex}.", nameof(FileManagerService));
                 return false;
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[Cyggie.FileManager] Unknown error occured, exception: {ex}.");
+                Log.Error($"Unknown error occured, exception: {ex}.", nameof(FileManagerService));
                 return false;
             }
         }

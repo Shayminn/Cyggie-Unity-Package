@@ -1,4 +1,5 @@
-﻿using Cyggie.Main.Runtime.Configurations;
+﻿using Cyggie.Main.Runtime;
+using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using System;
@@ -46,7 +47,7 @@ namespace Cyggie.Main.Editor.Configurations
             {
                 if (_maxRetryAttempts <= 0)
                 {
-                    Debug.LogError($"[Cyggie.Main] Unable to initialize configuration tab: {GetType()}. Maximum number of retry attempts reached.");
+                    Log.Error("Unable to initialize configuration tab: {GetType()}. Maximum number of retry attempts reached.", nameof(PackageConfigurationTab<TService, TSettings>));
                     return;
                 }
 

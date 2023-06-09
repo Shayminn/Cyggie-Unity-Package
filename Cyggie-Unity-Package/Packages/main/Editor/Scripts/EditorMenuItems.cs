@@ -1,4 +1,5 @@
 ﻿using Cyggie.Main.Editor.Configurations;
+using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace Cyggie.Main.Editor
 
             if (tabs == null || tabs.Count == 0)
             {
-                Debug.Log($"[Cyggie.Main] Failed to open Package Configuration window: No tab of type {typeof(AbstractPackageConfigurationTab)} was found.");
+                Log.Debug($"Failed to open Package Configuration window: No tab of type {typeof(AbstractPackageConfigurationTab)} was found.", nameof(EditorMenuItems));
                 return;
             }
 

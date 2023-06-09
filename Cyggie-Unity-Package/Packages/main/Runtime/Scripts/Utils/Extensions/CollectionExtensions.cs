@@ -38,7 +38,7 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
         {
             if (fromIndex == toIndex)
             {
-                Debug.Log($"[Cyggie.Main] Both indexes are the same (From: {fromIndex}, To: {toIndex}).");
+                Log.Debug($"Both indexes are the same (From: {fromIndex}, To: {toIndex}).", nameof(CollectionExtensions));
                 return collection;
             }
 
@@ -46,7 +46,7 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
 
             if (fromIndex >= list.Count || toIndex >= list.Count)
             {
-                Debug.LogError($"[Cyggie.Main] Index out of range (From: {fromIndex}, To: {toIndex}).");
+                Log.Debug($"Index out of range (From: {fromIndex}, To: {toIndex}).", nameof(CollectionExtensions));
                 return collection;
             }
 
@@ -69,7 +69,7 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
         {
             if (element == null)
             {
-                Debug.LogError($"[Cyggie.Main] Element is null.");
+                Log.Error($"Element is null.", nameof(CollectionExtensions));
                 return collection;
             }
 
@@ -78,13 +78,13 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
             int elementIndex = list.IndexOf(element);
             if (elementIndex <= -1)
             {
-                Debug.LogError($"[Cyggie.Main] Element {element} not found in {collection} (Count: {collection.Count()}).");
+                Log.Error($"Element {element} not found in {collection} (Count: {collection.Count()}).", nameof(CollectionExtensions));
                 return collection;
             }
 
             if (elementIndex >= list.Count || toIndex >= list.Count)
             {
-                Debug.LogError($"[Cyggie.Main] Index out of range (From: {elementIndex}, To: {toIndex}).");
+                Log.Error($"Index out of range (From: {elementIndex}, To: {toIndex}).", nameof(CollectionExtensions));
                 return collection;
             }
 
@@ -106,7 +106,7 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
             int index = collection.IndexOf(element);
             if (index <= -1)
             {
-                Debug.LogError($"[Cyggie.Main] Element {element} not found in {collection} (Count: {collection.Count()}).");
+                Log.Error($"Element {element} not found in {collection} (Count: {collection.Count()}).", nameof(CollectionExtensions));
                 return collection;
             }
 
@@ -137,7 +137,7 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
             int index = collection.IndexOf(element);
             if (index <= -1)
             {
-                Debug.LogError($"[Cyggie.Main] Element {element} not found in {collection} (Count: {collection.Count()}).");
+                Log.Error($"Element {element} not found in {collection} (Count: {collection.Count()}).", nameof(CollectionExtensions));
                 return collection;
             }
 
@@ -221,14 +221,14 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
             int fromIndex = collection.IndexOf(fromElement);
             if (fromIndex <= -1)
             {
-                Debug.LogError($"[Cyggie.Main] From Element {fromElement} not found in {collection} (Count: {collection.Count()}).");
+                Log.Error($"From Element {fromElement} not found in {collection} (Count: {collection.Count()}).", nameof(CollectionExtensions));
                 return collection;
             }
 
             int toIndex = collection.IndexOf(toElement);
             if (toIndex <= -1)
             {
-                Debug.LogError($"[Cyggie.Main] To Element {toElement} not found in {collection} (Count: {collection.Count()}).");
+                Log.Error($"To Element {toElement} not found in {collection} (Count: {collection.Count()}).", nameof(CollectionExtensions));
                 return collection;
             }
 
@@ -249,7 +249,7 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
 
             if (fromIndex <= -1)
             {
-                Debug.LogError($"[Cyggie.Main] Element {element} not found in {collection} (Count: {collection.Count()}).");
+                Log.Error($"Element {element} not found in {collection} (Count: {collection.Count()}).", nameof(CollectionExtensions));
                 return collection;
             }
 

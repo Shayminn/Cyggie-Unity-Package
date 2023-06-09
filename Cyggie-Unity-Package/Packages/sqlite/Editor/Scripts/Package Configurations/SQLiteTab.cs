@@ -1,4 +1,5 @@
 using Cyggie.Main.Editor.Configurations;
+using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.SQLite.Editor.Utils.Styles;
@@ -40,7 +41,7 @@ namespace Cyggie.SQLite.Editor.Configurations
             string databaseAbsPath = Settings.DatabaseAbsolutePath;
             if (!File.Exists(databaseAbsPath))
             {
-                Debug.Log($"[Cyggie.SQLite] Database file not found, creating a new one...");
+                Log.Debug($"Database file not found, creating a new one...", nameof(SQLiteTab));
                 Directory.CreateDirectory(Path.GetDirectoryName(databaseAbsPath));
 
                 // This will create a new .sqlite database at path
@@ -51,11 +52,11 @@ namespace Cyggie.SQLite.Editor.Configurations
                     conn.Open();
                     conn.Close();
 
-                    Debug.Log($"[Cyggie.SQLite] Created a new sqlite database at {databaseAbsPath}");
+                    Log.Debug($"Created a new sqlite database at {databaseAbsPath}", nameof(SQLiteTab));
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"[Cyggie.SQLite] Test connection failed, connection string: {conn.ConnectionString}\n, exception: {ex}.");
+                    Log.Error($"Test connection failed, connection string: {conn.ConnectionString}\n, exception: {ex}.", nameof(SQLiteTab));
                     PackageConfigurationEditorWindow.Window.Close();
                     return;
                 }

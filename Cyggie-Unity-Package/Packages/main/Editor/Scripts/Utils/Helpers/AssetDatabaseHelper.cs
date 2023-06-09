@@ -32,7 +32,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
                 }
                 else
                 {
-                    Debug.LogError($"[Cyggie.Main] directories to path does not exist: {path}");
+                    Log.Error($"Directories to path does not exist: {path}.", nameof(AssetDatabaseHelper));
                     return false;
                 }
             }
@@ -45,14 +45,14 @@ namespace Cyggie.Main.Editor.Utils.Helpers
                 }
 
                 AssetDatabase.CreateAsset(asset, path);
-                Debug.Log($"[Cyggie.Main] Created asset {asset} at path: \"{path}\".");
+                Log.Debug($"Created asset {asset} at path: \"{path}\".", nameof(AssetDatabaseHelper));
 
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[Cyggie.Main] Unknown error occured, exception: {ex}.");
+                Log.Error($"[Cyggie.Main] Unknown error occured, exception: {ex}.", nameof(AssetDatabaseHelper));
                 return false;
             }
 
@@ -98,7 +98,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
         {
             if (oldAssetPath == newAssetPath)
             {
-                Debug.LogError($"[Cyggie.Main] Old path is equal to new path.");
+                Log.Error($"Old path is equal to new path.", nameof(AssetDatabaseHelper));
                 return false;
             }
 
@@ -111,7 +111,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
                 }
                 else
                 {
-                    Debug.LogError($"[Cyggie.Main] Directories to path does not exist: {newAssetPath}");
+                    Log.Error($"Directories to path does not exist: {newAssetPath}.", nameof(AssetDatabaseHelper));
                     return false;
                 }
             }
@@ -119,7 +119,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
             string errorMessage = AssetDatabase.MoveAsset(oldAssetPath, newAssetPath);
             if (!string.IsNullOrEmpty(errorMessage))
             {
-                Debug.LogError($"[Cyggie.Main] Error: {errorMessage}");
+                Log.Error($"Error: {errorMessage}.", nameof(AssetDatabaseHelper));
                 return false;
             }
 

@@ -61,13 +61,13 @@ namespace Cyggie.Main.Runtime.ServicesNS.ReferencePool
             gameObject = null;
             if (refObj == null)
             {
-                Debug.LogError($"[Cyggie.Main] Argument {nameof(refObj)} is null.");
+                Log.Error($"Argument {nameof(refObj)} is null.", nameof(ReferencePoolService));
                 return false;
             }
 
             if (!_referencePool.TryGetValue(refObj, out gameObject))
             {
-                Debug.LogError($"[Cyggie.Main] Reference object not found: {refObj.name}. Make sure this is called after Awake. {nameof(ReferencePoolInitializer)}s are called in Awake and the order of execution is not guaranteed.");
+                Log.Error($"Reference object not found: {refObj.name}. Make sure this is called after Awake. {nameof(ReferencePoolInitializer)}s are called in Awake and the order of execution is not guaranteed.", nameof(ReferencePoolService));
             }
 
             return gameObject != null;
@@ -82,7 +82,7 @@ namespace Cyggie.Main.Runtime.ServicesNS.ReferencePool
         {
             if (_referencePool.ContainsKey(refPoolObj))
             {
-                Debug.LogError($"[Cyggie.Main] Pool already contains reference. Make sure that the reference is not being added multiple times! Reference: {refPoolObj}, GameObject: {gameObject}.");
+                Log.Error($"Pool already contains reference. Make sure that the reference is not being added multiple times! Reference: {refPoolObj}, GameObject: {gameObject}.", nameof(ReferencePoolService));
                 return;
             }
 
