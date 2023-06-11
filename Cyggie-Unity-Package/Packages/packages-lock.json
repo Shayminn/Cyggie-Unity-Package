@@ -239,7 +239,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "cyggie.main": "2.0.0"
+        "cyggie.main": "2.0.2"
       }
     },
     "cyggie.main": {
@@ -263,7 +263,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "cyggie.main": "2.0.0"
+        "cyggie.main": "2.0.2"
       }
     },
     "com.unity.modules.ai": {
