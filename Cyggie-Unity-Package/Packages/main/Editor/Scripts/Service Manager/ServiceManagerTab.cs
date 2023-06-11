@@ -25,6 +25,9 @@ namespace Cyggie.Main.Editor.Configurations
 
         // Serialized Properties
         private SerializedProperty _prefab = null;
+        private SerializedProperty _enabledServices = null;
+        private SerializedProperty _enableLog = null;
+
         private SerializedProperty _serviceConfigurations = null;
         private SerializedProperty _logProfiles = null;
 
@@ -47,6 +50,9 @@ namespace Cyggie.Main.Editor.Configurations
             _serializedObject = new SerializedObject(_settings);
 
             _prefab = _serializedObject.FindProperty(nameof(ServiceManagerSettings.Prefab));
+            _enabledServices = _serializedObject.FindProperty(nameof(ServiceManagerSettings.EnabledServices));
+            _enableLog = _serializedObject.FindProperty(nameof(ServiceManagerSettings.EnableLog));
+
             _serviceConfigurations = _serializedObject.FindProperty(nameof(ServiceManagerSettings.ServiceConfigurations));
             _logProfiles = _serializedObject.FindProperty(nameof(ServiceManagerSettings.LogProfiles));
 
@@ -57,27 +63,35 @@ namespace Cyggie.Main.Editor.Configurations
         /// <inheritdoc/>
         protected override void DrawGUI()
         {
-            // Draw settings properties
-            GUIHelper.DrawAsReadOnly(gui: () =>
-            {
-                EditorGUILayout.Space(5);
-                EditorGUILayout.PropertyField(_prefab);
-            });
+            DrawServiceManagerSettings();
             EditorGUILayout.Space(10);
-
-            EditorGUILayout.LabelField($"Service Configurations ({_serviceConfigurations.arraySize})", EditorStyles.boldLabel);
-            EditorGUILayout.Space(5);
 
             DrawServiceConfigurations();
             EditorGUILayout.Space(10);
 
             DrawLogProfiles();
+            EditorGUILayout.Space(10);
+        }
+
+        private void DrawServiceManagerSettings()
+        {
+            // Draw settings properties
+            GUIHelper.DrawAsReadOnly(gui: () =>
+            {
+                EditorGUILayout.Space(5);
+                EditorGUILayout.PropertyField(_prefab);
+                EditorGUILayout.Space(5);
+            });
+
+            // Draw Service Manager toggles
+            EditorGUILayout.PropertyField(_enabledServices);
+            EditorGUILayout.PropertyField(_enableLog);
         }
 
         /// <summary>
         /// Add configuration through script from settings
         /// </summary>
-        /// <param name="config">Configuration to add</param>
+        /// <param name="config">Configuration to add</param>   
         internal void AddConfiguration(ServiceConfigurationSO config)
         {
             Settings.ServiceConfigurations.Add(config);
@@ -93,6 +107,8 @@ namespace Cyggie.Main.Editor.Configurations
 
         private void DrawServiceConfigurations()
         {
+            EditorGUILayout.LabelField($"Service Configurations ({_serviceConfigurations.arraySize})", EditorStyles.boldLabel);
+
             GUIHelper.DrawAsReadOnly(gui: () =>
             {
                 float labelWidth = EditorGUIUtility.labelWidth;

@@ -26,32 +26,19 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
     /// </summary>
     public class SQLiteService : Service
     {
+        private SQLiteSettings _settings = null;
         private IDbConnection _connection = null;
-        private bool _readOnly = false;
-        private bool _readAllOnStart = false;
-        private bool _addTrailingS = false;
         private readonly List<SQLiteObject> _sqliteObjects = new List<SQLiteObject>();
 
         private bool IsInitialized => _connection != null;
 
         /// <inheritdoc/>
-        protected override void OnInitialized(ServiceConfigurationSO configuration)
+        protected override void OnInitialized()
         {
-            base.OnInitialized(configuration);
-
-            // Get the service configuration
-            if (configuration == null || configuration is not SQLiteSettings sqliteSettings)
-            {
-                Log.Error($"Configuration is null or is not type of {typeof(SQLiteSettings)}.", nameof(SQLiteService));
-                return;
-            }
-
-            _readOnly = sqliteSettings.ReadOnly;
-            _readAllOnStart = sqliteSettings.ReadAllOnStart;
-            _addTrailingS = sqliteSettings.AddSToTableName;
+            _settings = (SQLiteSettings) _configuration;
 
             // Make sure the database path exists
-            string databasePath = Application.streamingAssetsPath + sqliteSettings.DatabasePath;
+            string databasePath = Application.streamingAssetsPath + _settings.DatabasePath;
             if (!Directory.Exists(databasePath))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(databasePath));
@@ -73,7 +60,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             }
 
             // Read all objects in database and add it to 
-            if (sqliteSettings.ReadAllOnStart)
+            if (_settings.ReadAllOnStart)
             {
                 List<Type> objectTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).Where(t => t.IsSubclassOf(typeof(SQLiteObject)) && !t.IsAbstract).ToList();
 
@@ -103,7 +90,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
                 return 0;
             }
 
-            if (_readOnly)
+            if (_settings.ReadOnly)
             {
                 Log.Error($"SQLite Service is in read-only mode, only {nameof(Read)} is available.", nameof(SQLiteService));
                 return 0;
@@ -155,7 +142,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
         /// <returns>Collection of <typeparamref name="T"/> objects (empty list if failed)</returns>
         public IEnumerable<T> Get<T>()
         {
-            if (!_readAllOnStart)
+            if (!_settings.ReadAllOnStart)
             {
                 Log.Error($"List of objects is empty since {nameof(SQLiteSettings.ReadAllOnStart)} is disabled. Enable it in Package Configurations or use {nameof(Read)} instead.", nameof(SQLiteService));
                 return new List<T>();
@@ -241,7 +228,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
 
                 // Create query command
                 command = _connection.CreateCommand();
-                command.CommandText = $"SELECT * FROM " + ((_addTrailingS) ? tableName.InsertEndsWith("s") : tableName).ToLower();
+                command.CommandText = $"SELECT * FROM " + ((_settings.AddSToTableName) ? tableName.InsertEndsWith("s") : tableName).ToLower();
                 command.AddParameters(true, sqlParams);
                 command.CommandText += $" {suffix}";
 
@@ -357,7 +344,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
                 OpenConnection();
 
                 command = _connection.CreateCommand();
-                command.CommandText = $"SELECT * FROM " + ((_addTrailingS) ? tableName.InsertEndsWith("s") : tableName).ToLower();
+                command.CommandText = $"SELECT * FROM " + (_settings.AddSToTableName ? tableName.InsertEndsWith("s") : tableName).ToLower();
                 command.AddParameters(true, sqlParams);
                 command.CommandText += $" {suffix}";
 
@@ -457,7 +444,8 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             // Initialize service 
             if (_connection == null)
             {
-                OnInitialized(settings);
+                _settings = settings;
+                OnInitialized();
             }
 
             if (!string.IsNullOrEmpty(path) && !path.EndsWith(".sql"))
@@ -578,7 +566,8 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             // Initialize service 
             if (_connection == null)
             {
-                OnInitialized(settings);
+                _settings = settings;
+                OnInitialized();
             }
 
             Log.Debug($"Executing files from folder path: {path}", nameof(SQLiteService));

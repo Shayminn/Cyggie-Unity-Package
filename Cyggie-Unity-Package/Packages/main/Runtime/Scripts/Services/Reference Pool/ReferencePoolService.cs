@@ -1,3 +1,4 @@
+using Cyggie.Main.Runtime.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +73,9 @@ namespace Cyggie.Main.Runtime.ServicesNS.ReferencePool
 
             return gameObject != null;
         }
+
+        /// <inheritdoc/>
+        protected override bool ShouldInitialize() => ServiceManager.Settings.EnabledServices.HasFlag(MainServiceTypes.ReferencePool);
 
         /// <summary>
         /// Add <paramref name="refPoolObj"/> to the pool if it doesn't already exists.

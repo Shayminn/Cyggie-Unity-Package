@@ -1,3 +1,4 @@
+using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using System;
@@ -12,7 +13,6 @@ namespace Cyggie.Main.Runtime
     public static class Log
     {
         private static LogProfile _profile = null;
-        private static bool _enabled = true;
 
         #region Events
 
@@ -89,7 +89,7 @@ namespace Cyggie.Main.Runtime
         /// Toggle logs during runtime
         /// </summary>
         /// <param name="toggle">Enabled/Disabled</param>
-        public static void Toggle(bool toggle) => _enabled = toggle;
+        public static void Toggle(bool toggle) => ServiceManager.Settings.EnableLog = toggle;
 
         #endregion
 
@@ -105,7 +105,7 @@ namespace Cyggie.Main.Runtime
 
         private static void SendLog(LogTypes type, object message, string tag, UnityEngine.Object context)
         {
-            if (!_enabled) return;
+            if (!ServiceManager.Settings.EnableLog) return;
 
             // Use default if not set
             if (_profile == null)

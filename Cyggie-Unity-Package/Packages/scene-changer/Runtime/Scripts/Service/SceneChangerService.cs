@@ -39,17 +39,9 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         private bool IsInitialized => _settings != null || _loadingScreen != null;
 
         /// <inheritdoc/>
-        protected override void OnInitialized(ServiceConfigurationSO configuration)
+        protected override void OnInitialized()
         {
-            base.OnInitialized(configuration);
-
-            if (configuration == null || configuration is not SceneChangerSettings settings)
-            {
-                Log.Debug($"Configuration was not found in the Service Manager Configurations.", nameof(SceneChangerService));
-                return;
-            }
-
-            _settings = settings;
+            _settings = (SceneChangerSettings) _configuration;
 
             // Create game object from prefab
             _loadingScreen = Instantiate(_settings.LoadingScreenPrefab);

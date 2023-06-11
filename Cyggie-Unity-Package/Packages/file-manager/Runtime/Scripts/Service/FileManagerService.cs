@@ -36,19 +36,9 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
         private FileManagerSettings _settings = null;
 
         /// <inheritdoc/>
-        protected override void OnInitialized(ServiceConfigurationSO configuration)
+        protected override void OnInitialized()
         {
-            base.OnInitialized(configuration);
-
-            // Get the service configuration
-            if (configuration == null ||
-                configuration is not FileManagerSettings fileManagerSettings)
-            {
-                Log.Error($"Configuration is null or is not type of {typeof(FileManagerSettings)}.", nameof(FileManagerService));
-                return;
-            }
-
-            _settings = fileManagerSettings;
+            _settings = (FileManagerSettings) _configuration;
             _savePath = _settings.UsePersistentDataPath ?
                         Application.persistentDataPath :
                         _settings.LocalSavePath;

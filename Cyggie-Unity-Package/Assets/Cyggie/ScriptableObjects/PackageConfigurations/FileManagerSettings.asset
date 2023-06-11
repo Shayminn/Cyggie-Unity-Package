@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc45df59d94c08342b248e0bbe45811d, type: 3}
   m_Name: FileManagerSettings
   m_EditorClassIdentifier: 
+  Initialize: 1
   UsePersistentDataPath: 1
   LocalSavePath: 
   DefaultFileExtension: .save

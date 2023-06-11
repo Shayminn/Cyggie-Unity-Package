@@ -8,7 +8,8 @@ namespace Cyggie.Main.Runtime.ServicesNS
     public abstract class Service
     {
         /// <summary>
-        /// Configuration object
+        /// Service configuration associated to the object <br/>
+        /// Null if it doesn't exist, create a new class that implements <see cref="ServiceConfiguration{Service}"/> to automatically assign it to your service
         /// </summary>
         protected ServiceConfigurationSO _configuration = null;
 
@@ -132,10 +133,10 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
         /// <summary>
         /// Override this to add a condition to whether the Service is created and added to the <see cref="ServiceManager"/> <br/>
-        /// Defaults to true
+        /// This uses <see cref="ServiceConfigurationSO.Initialize"/>
         /// </summary>
-        /// <returns>Whether this service should be added</returns>
-        protected virtual bool AddService() { return true; }
+        /// <returns>Whether this service should be initialized</returns>
+        protected virtual bool ShouldInitialize() { return _configuration == null ? true : _configuration.Initialize; }
 
         /// <summary>
         /// Called when the object is initialized <br/>
@@ -143,8 +144,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// If your service depends on another service, make sure that service is already instantiated using <see cref="Service.Priority"/> or use <br/>
         /// <see cref="OnServicesInitialized"/> instead
         /// </summary>
-        /// <param name="configuration">Configuration for the service, null if not set</param>
-        protected virtual void OnInitialized(ServiceConfigurationSO configuration) { }
+        protected virtual void OnInitialized() { }
 
         /// <summary>
         /// Called when all services have been initialized (equivalent to subscribing to <see cref="ServiceManager.OnServicesInitialized"/>)
@@ -158,19 +158,20 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// <summary>
         /// Whether this object should be added to ServiceManager in runtime
         /// </summary>
-        internal bool AddServiceToServiceManager() => AddService();
+        internal bool CallShouldInitialize() => ShouldInitialize();
+
+        internal void SetConfigurationSettings(ServiceConfigurationSO configuration) => _configuration = configuration;
 
         /// <summary>
         /// Object has been initialized
         /// </summary>
-        /// <param name="configuration">Configuration for the service, null if not set</param>
-        internal virtual void Initialize(ServiceManager manager, ServiceConfigurationSO configuration)
+        /// <param name="manager">Manager component for MonoBehaviour reference</param>
+        internal virtual void Initialize(ServiceManager manager)
         {
             _manager = manager;
             ServiceManager.OnServicesInitialized += OnServicesInitialize;
 
-            _configuration = configuration;
-            OnInitialized(configuration);
+            OnInitialized();
         }
 
         /// <summary>

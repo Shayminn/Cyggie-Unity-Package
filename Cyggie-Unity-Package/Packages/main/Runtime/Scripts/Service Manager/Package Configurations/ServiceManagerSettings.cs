@@ -24,6 +24,12 @@ namespace Cyggie.Main.Runtime.Configurations
         [SerializeField, Tooltip("Prefab instantiated at the start which contains this component.")]
         internal ServiceManager Prefab = null;
 
+        [SerializeField, Tooltip("Determines which services part of the Main package should be enabled.")]
+        internal MainServiceTypes EnabledServices = MainServiceTypes.Everything;
+
+        [SerializeField, Tooltip("Whether logs using Cyggie' Logging system should be enabled.")]
+        internal bool EnableLog = true;
+
         [SerializeField, Tooltip("List of service configurations. Automatically generated upon refresh.")]
         internal List<ServiceConfigurationSO> ServiceConfigurations = new List<ServiceConfigurationSO>();
 

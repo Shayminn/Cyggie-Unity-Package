@@ -4,7 +4,6 @@ using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using System;
 using UnityEditor;
-using UnityEngine;
 
 namespace Cyggie.Main.Editor.Configurations
 {
@@ -33,6 +32,7 @@ namespace Cyggie.Main.Editor.Configurations
         /// </summary>
         protected SerializedObject _serializedObject = null;
 
+        private SerializedProperty _initialize = null;
         private int _maxRetryAttempts = 3;
 
         /// <inheritdoc/>
@@ -42,6 +42,7 @@ namespace Cyggie.Main.Editor.Configurations
             {
                 _settings = settings as PackageConfigurationSettings<TService>;
                 _serializedObject = new SerializedObject(_settings);
+                _initialize = _serializedObject.FindProperty(nameof(ServiceConfigurationSO.Initialize));
             }
             else
             {
@@ -64,6 +65,12 @@ namespace Cyggie.Main.Editor.Configurations
             if (_serializedObject == null) return;
 
             _serializedObject.Update();
+
+            if (_initialize != null)
+            {
+                EditorGUILayout.PropertyField(_initialize);
+                EditorGUILayout.Space(5);
+            }
 
             DrawGUI();
 

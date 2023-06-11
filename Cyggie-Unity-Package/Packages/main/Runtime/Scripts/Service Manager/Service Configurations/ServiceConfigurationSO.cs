@@ -15,6 +15,9 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// </summary>
         public abstract Type ServiceType { get; }
 
+        [SerializeField, Tooltip("Whether the service should be initialized.")]
+        internal bool Initialize = true;
+
 #if UNITY_EDITOR
 
         /// <summary>

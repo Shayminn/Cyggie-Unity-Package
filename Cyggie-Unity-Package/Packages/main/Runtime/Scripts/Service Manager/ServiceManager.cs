@@ -9,8 +9,9 @@ using UnityEngine;
 namespace Cyggie.Main.Runtime.ServicesNS
 {
     /// <summary>
-    /// Manager class for all services of type <see cref="Service"/> <br/>
-    /// Any subclass of type <see cref="Service"/> will automatically be created and initialized
+    /// Manager class for all services of type <see cref="Service"/> <br/> 
+    /// Any subclass of type <see cref="Service"/> will automatically be created and initialized <br/>
+    /// It's a singleton of singletons
     /// </summary>
     public class ServiceManager : MonoBehaviour
     {
@@ -21,19 +22,29 @@ namespace Cyggie.Main.Runtime.ServicesNS
         internal static Action OnServicesInitialized = null;
 
         /// <summary>
-        /// Instance object of this class
-        /// </summary>
-        private static ServiceManager _instance = null;
-
-        /// <summary>
         /// Settings saved in the Resources folder, managed in Project Settings
         /// </summary>
-        private static ServiceManagerSettings _settings = null;
+        internal static ServiceManagerSettings Settings = null;
+
+        /// <summary>
+        /// Instance object of this component <br/>
+        /// This gameObject holds all the services
+        /// </summary>
+        private static ServiceManager _instance = null;
 
         /// <summary>
         /// List of all initialized services available to use
         /// </summary>
         private readonly List<Service> _services = new List<Service>();
+
+        #region Public Properties
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static GameObject GameObject => _instance.gameObject;
+
+        #endregion
 
         #region Initialization
 
@@ -42,19 +53,19 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// Create the <see cref="ServiceManager"/> object prefab in the scene
         /// </summary>
         [RuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.BeforeSceneLoad)]
-        public static void Initialize()
+        private static void Initialize()
         {
             // Get settings saved in Resources folder
-            _settings = Resources.Load<ServiceManagerSettings>(ServiceManagerSettings.cResourcesPath);
+            Settings = Resources.Load<ServiceManagerSettings>(ServiceManagerSettings.cResourcesPath);
 
-            if (_settings == null)
+            if (Settings == null)
             {
                 Log.Error($"Unable to find Service Manager Settings in Resources.", nameof(ServiceManager));
                 return;
             }
 
             // Create service manager object
-            Instantiate(_settings.Prefab);
+            Instantiate(Settings.Prefab);
         }
 
         /// <summary>
@@ -65,22 +76,21 @@ namespace Cyggie.Main.Runtime.ServicesNS
             IEnumerable<Type> servicesTypes = TypeHelper.GetAllSubclassTypes<Service>(true);
 
             // Create all the services
-            foreach (Type t in servicesTypes)
-            {
-                Service service = (Service) Activator.CreateInstance(t);
+            IEnumerable<Service> createdServices = servicesTypes.Select(type => (Service) Activator.CreateInstance(type));
 
-                if (service.AddServiceToServiceManager())
+            foreach (Service service in createdServices.OrderByDescending(x => x.InternalPriority))
+            {
+                // Get the service's configuration and assign it if any
+                ServiceConfigurationSO configuration = Settings.ServiceConfigurations.FirstOrDefault(x => x.ServiceType == service.GetType());
+                if (configuration != null)
                 {
-                    _services.Add(service);
+                    service.SetConfigurationSettings(configuration);
                 }
-            }
 
-            // Initialize all services by order of priority
-            foreach (Service service in _services.OrderByDescending(x => x.InternalPriority))
-            {
-                // Add configuration to service if it exists
-                ServiceConfigurationSO configuration = _settings.ServiceConfigurations.FirstOrDefault(c => c.ServiceType == service.GetType());
-                service.Initialize(this, configuration);
+                if (!service.CallShouldInitialize()) continue;
+
+                service.Initialize(this);
+                _services.Add(service);
             }
 
             Log.Debug($"Service Manager initialized services. Count: {_services.Count}.", nameof(ServiceManager));
