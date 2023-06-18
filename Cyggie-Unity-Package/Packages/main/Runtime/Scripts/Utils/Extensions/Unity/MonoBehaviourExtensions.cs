@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cyggie.Main.Runtime.Utils.Extensions
@@ -13,6 +9,8 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
     /// </summary>
     public static class MonoBehaviourExtensions
     {
+        #region Extension methods
+
         /// <summary>
         /// Safely (re)starts a coroutine by first stopping it if it's not null before starting it.
         /// </summary>
@@ -40,5 +38,98 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
 
             mono.StopCoroutine(coroutine);
         }
+
+        /// <summary>
+        /// Start a coroutine with a delay of <paramref name="delay"/> <br/>
+        /// This will automatically wait for <paramref name="delay"/> (seconds) before starting the <paramref name="enumerator"/>
+        /// </summary>
+        /// <param name="mono">MonoBehaviour object to start the coroutine</param>
+        /// <param name="delay">Delay before starting the enumerator</param>
+        /// <param name="enumerator">Enumerator method to start</param>
+        /// <returns>Coroutine from starting the enumerator</returns>
+        public static Coroutine StartDelayedCoroutine(this MonoBehaviour mono, float delay, IEnumerator enumerator)
+        {
+            return mono.StartCoroutine(DelayedCoroutine(delay, enumerator));
+        }
+
+        /// <summary>
+        /// Safely start a coroutine with a delay of <paramref name="delay"/> <br/>
+        /// This will automatically stop the coroutine if it's not null and automatically wait for <paramref name="delay"/> (seconds) before starting the <paramref name="enumerator"/>
+        /// </summary>
+        /// <param name="mono">MonoBehaviour object to start the coroutine</param>
+        /// <param name="coroutine">Referenced coroutine to stop</param>
+        /// <param name="delay">Delay before starting the enumerator</param>
+        /// <param name="enumerator">Enumerator method to start</param>
+        public static void SafeStartDelayedCoroutine(this MonoBehaviour mono, ref Coroutine coroutine, float delay, IEnumerator enumerator)
+        {
+            if (coroutine != null)
+            {
+                mono.StopCoroutine(coroutine);
+            }
+
+            coroutine = mono.StartCoroutine(DelayedCoroutine(delay, enumerator));
+        }
+
+        /// <summary>
+        /// Start a coroutine when a specified condition is satisfied <br/>
+        /// Set an optional max time to timeout and automatically proceed into the <paramref name="enumerator"/>
+        /// </summary>
+        /// <param name="mono">MonoBehaviour object to start the coroutine</param>
+        /// <param name="condition">Condition to satisfy</param>
+        /// <param name="enumerator">Enumerator method to start</param>
+        /// <param name="maxTime">Max time before timeout (defaults to -1, any negative value = infinite)</param>"
+        /// <returns>Coroutine from starting the enumerator</returns>
+        public static Coroutine StartConditionalCoroutine(this MonoBehaviour mono, Predicate condition, IEnumerator enumerator, float maxTime = -1)
+        {
+            return mono.StartCoroutine(ConditionalCoroutine(condition, enumerator, maxTime));
+        }
+
+        /// <summary>
+        /// Safely start a coroutine when a specified condition is satisfied <br/>
+        /// Set an optional max time to timeout and automatically proceed into the <paramref name="enumerator"/>
+        /// </summary>
+        /// <param name="mono">MonoBehaviour object to start the coroutine</param>
+        /// <param name="coroutine">Referenced coroutine to stop</param>
+        /// <param name="condition">Condition to satisfy</param>
+        /// <param name="enumerator">Enumerator method to start</param>
+        /// <param name="maxTime">Max time before timeout (defaults to -1, any negative value = infinite)</param>"
+        public static void SafeStartConditionalCoroutine(this MonoBehaviour mono, ref Coroutine coroutine, Predicate condition, IEnumerator enumerator, float maxTime = -1)
+        {
+            if (coroutine != null)
+            {
+                mono.StopCoroutine(coroutine);
+            }
+
+            coroutine = mono.StartCoroutine(ConditionalCoroutine(condition, enumerator, maxTime));
+        }
+
+        #endregion
+
+        #region Private coroutines
+
+        private static IEnumerator DelayedCoroutine(float delay, IEnumerator enumerator)
+        {
+            yield return new WaitForSeconds(delay);
+            yield return enumerator;
+        }
+
+        private static IEnumerator ConditionalCoroutine(Predicate condition, IEnumerator enumerator, float maxTime)
+        {
+            
+            while (condition.Invoke())
+            {
+                if (maxTime > 0)
+                {
+                    maxTime -= Time.deltaTime;
+                    if (maxTime < 0) break;
+                }
+
+                yield return null;
+            }
+
+            yield return enumerator;
+        }
+
+        #endregion
     }
 }
