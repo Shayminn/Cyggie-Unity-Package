@@ -19,7 +19,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// Action when all services have been created <br/>
         /// This is called before <see cref="Service.Awake"/>
         /// </summary>
-        internal static Action OnServicesInitialized = null;
+        public static Action OnServicesInitialized = null;
 
         /// <summary>
         /// Settings saved in the Resources folder, managed in Project Settings
