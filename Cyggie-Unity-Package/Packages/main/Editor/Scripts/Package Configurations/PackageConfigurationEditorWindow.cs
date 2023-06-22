@@ -7,6 +7,7 @@ using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.Main.Runtime.Utils.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -206,17 +207,27 @@ namespace Cyggie.Main.Editor.Configurations
             {
                 foreach (Type type in missingTypes)
                 {
-                    Log.Debug($"Service configuration ({type.Name}) not found. Creating it...", nameof(PackageConfigurationEditorWindow));
                     ScriptableObject scriptableObj = ScriptableObject.CreateInstance(type);
-
                     if (scriptableObj is ServiceConfigurationSO configuration)
                     {
+                        Log.Debug($"{type.Name}) not found in the Service Manager Settings. Searching for it...", nameof(PackageConfigurationEditorWindow));
                         string folderName = configuration.IsPackageSettings ? FolderConstants.cPackageConfigurations : FolderConstants.cServiceConfigurations;
                         string assetPath = FolderConstants.cAssets +
                                            FolderConstants.cCyggie +
                                            folderName +
                                            configuration.GetType().Name + FileExtensionConstants.cAsset;
 
+                        // Check if the missing type is in the usual folder
+                        ServiceConfigurationSO foundConfig = AssetDatabase.LoadAssetAtPath<ServiceConfigurationSO>(assetPath);
+                        if (foundConfig != null)
+                        {
+                            Log.Debug($"{type.Name} found in {assetPath}. Adding it to the Service Manager Settings.");
+                            settings.ServiceConfigurations.Add(foundConfig);
+                            continue;   
+                        }
+
+                        // Not found, create a new one
+                        Log.Debug($"{type.Name} not found in {assetPath}. Creating a new one...");
                         if (!AssetDatabaseHelper.CreateAsset(scriptableObj, assetPath)) continue;
 
                         configuration.OnScriptableObjectCreated();

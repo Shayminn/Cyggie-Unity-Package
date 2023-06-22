@@ -1,3 +1,4 @@
+using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.Main.Runtime.Utils.Extensions;
@@ -105,7 +106,7 @@ namespace Cyggie.Main.Runtime
 
         private static void SendLog(LogTypes type, object message, string tag, UnityEngine.Object context)
         {
-            if (ServiceManager.Settings != null || ServiceManager.Settings.EnableLog) return;
+            if (ServiceManager.Settings == null || !ServiceManager.Settings.EnableLog) return;
 
             // Use default if not set
             if (_profile == null)

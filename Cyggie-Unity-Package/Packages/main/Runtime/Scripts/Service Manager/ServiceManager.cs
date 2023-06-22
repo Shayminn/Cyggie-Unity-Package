@@ -1,5 +1,4 @@
 using Cyggie.Main.Runtime.Configurations;
-using Cyggie.Main.Runtime.ServicesNS.ReferencePool;
 using Cyggie.Main.Runtime.Utils.Helpers;
 using System;
 using System.Collections.Generic;
@@ -24,17 +23,22 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// <summary>
         /// Settings saved in the Resources folder, managed in Project Settings
         /// </summary>
-        internal static ServiceManagerSettings Settings = null;
+        internal static ServiceManagerSettings Settings
+        {
+            get
+            {
+                if (_settings == null)
+                {
+                    _settings = Resources.Load<ServiceManagerSettings>(ServiceManagerSettings.cResourcesPath);
+                }
 
-        /// <summary>
-        /// Instance object of this component <br/>
-        /// This gameObject holds all the services
-        /// </summary>
+                return _settings;
+            }
+        }
+
         private static ServiceManager _instance = null;
+        private static ServiceManagerSettings _settings = null;
 
-        /// <summary>
-        /// List of all initialized services available to use
-        /// </summary>
         private readonly List<Service> _services = new List<Service>();
 
         #region Public Properties
@@ -55,10 +59,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         [RuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Initialize()
         {
-            // Get settings saved in Resources folder
-            Settings = Resources.Load<ServiceManagerSettings>(ServiceManagerSettings.cResourcesPath);
-
-            if (Settings == null)
+            if (_settings == null)
             {
                 Log.Error($"Unable to find Service Manager Settings in Resources.", nameof(ServiceManager));
                 return;
