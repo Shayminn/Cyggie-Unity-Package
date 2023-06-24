@@ -59,7 +59,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         [RuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Initialize()
         {
-            if (_settings == null)
+            if (Settings == null)
             {
                 Log.Error($"Unable to find Service Manager Settings in Resources.", nameof(ServiceManager));
                 return;
