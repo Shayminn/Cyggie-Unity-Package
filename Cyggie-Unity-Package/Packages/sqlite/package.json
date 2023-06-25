@@ -1,6 +1,6 @@
 {
   "name": "cyggie.sqlite",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "displayName": "SQLite",
   "description": "This package derives from the Cyggie package. It contains relevant scripts and settings to manage an SQLite database.",
   "unity": "2019.1",
@@ -9,7 +9,7 @@
     "url": "git+https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/sqlite"
   },
   "dependencies": {
-    "cyggie.main": "2.0.2"
+    "cyggie.main": "2.0.4"
   },
   "keywords": [
     "cyggie",

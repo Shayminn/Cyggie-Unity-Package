@@ -1,6 +1,7 @@
 using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.ServicesNS;
+using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.Runtime.SQLite.Models;
 using Cyggie.Runtime.SQLite.Utils.Attributes;
@@ -38,7 +39,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             _settings = (SQLiteSettings) _configuration;
 
             // Make sure the database path exists
-            string databasePath = Application.streamingAssetsPath + _settings.DatabasePath;
+            string databasePath = DatabasePath();
             if (!Directory.Exists(databasePath))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(databasePath));
@@ -232,7 +233,6 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
                 command.AddParameters(true, sqlParams);
                 command.CommandText += $" {suffix}";
 
-                Log.Debug(command.CommandText, nameof(SQLiteService));
                 using IDataReader reader = command.ExecuteReader();
 
                 List<object> args = new List<object>();
@@ -423,6 +423,22 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             return count;
         }
 
+        /// <summary>
+        /// Get the database path
+        /// </summary>
+        /// <returns>Path</returns>
+        public string DatabasePath()
+        {
+            if (_settings == null) return "";
+
+            StringBuilder path = new StringBuilder(Application.dataPath);
+            path.Append('/');
+            path.Append(FolderConstants.cCyggieStreamingAssets);
+            path.Append(_settings.DatabasePath);
+
+            return path.ToString();
+        }
+
         #endregion
 
         #endregion
@@ -575,7 +591,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
             // Directory
             if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
             {
-                foreach (string p in Directory.EnumerateFileSystemEntries(path, $"*{FileExtensionConstants.cSQLite}"))
+                foreach (string p in Directory.EnumerateFileSystemEntries(path, $"*{SQLite.Runtime.Utils.Constants.FileExtensionConstants.cSQLite}"))
                 {
                     if (File.GetAttributes(p).HasFlag(FileAttributes.Directory))
                     {

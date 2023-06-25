@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/SceneChanger Test/Scenes/Scene 1.unity
+    path: Assets/Package Test/SceneChanger Test/Scenes/Scene 1.unity
     guid: 9829b296e7cedb04aa151ab02de350d3
   - enabled: 1
-    path: Assets/SceneChanger Test/Scenes/Scene 2.unity
+    path: Assets/Package Test/SceneChanger Test/Scenes/Scene 2.unity
     guid: 429c5bfd884174d4c805d3e60ecce8b7
   m_configObjects: {}
