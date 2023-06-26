@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Cyggie.Main.Runtime
 {
     /// <summary>
@@ -9,6 +5,9 @@ namespace Cyggie.Main.Runtime
     /// </summary>
     public class ErrorLogEventArgs : LogEventArgs
     {
+        /// <inheritdoc/>
+        public override LogTypes Type => LogTypes.Error;
+
         internal ErrorLogEventArgs(string log, string tag) : base(log, tag)
         {
 

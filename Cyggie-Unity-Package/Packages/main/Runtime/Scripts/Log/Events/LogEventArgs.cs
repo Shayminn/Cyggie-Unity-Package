@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace Cyggie.Main.Runtime
 {
@@ -8,6 +7,11 @@ namespace Cyggie.Main.Runtime
     /// </summary>
     public abstract class LogEventArgs
     {
+        /// <summary>
+        /// Type of log
+        /// </summary>
+        public abstract LogTypes Type { get; }
+
         /// <summary>
         /// The full log that's displayed in the console based on the <see cref="LogProfile"/> that was set
         /// </summary>

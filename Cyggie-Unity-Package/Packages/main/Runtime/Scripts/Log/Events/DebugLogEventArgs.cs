@@ -5,6 +5,9 @@ namespace Cyggie.Main.Runtime
     /// </summary>
     public class DebugLogEventArgs : LogEventArgs
     {
+        /// <inheritdoc/>
+        public override LogTypes Type => LogTypes.Debug;
+
         internal DebugLogEventArgs(string log, string tag) : base(log, tag)
         {
 

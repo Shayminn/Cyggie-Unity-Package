@@ -5,6 +5,9 @@ namespace Cyggie.Main.Runtime
     /// </summary>
     public class WarningLogEventArgs : LogEventArgs
     {
+        /// <inheritdoc/>
+        public override LogTypes Type => LogTypes.Warning;
+
         internal WarningLogEventArgs(string log, string tag) : base(log, tag)
         {
 
