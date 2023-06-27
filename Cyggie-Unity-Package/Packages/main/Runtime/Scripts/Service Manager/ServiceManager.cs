@@ -94,7 +94,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
                 _services.Add(service);
             }
 
-            Log.Debug($"Service Manager initialized services. Count: {_services.Count}.", nameof(ServiceManager));
+            Log.Debug($"Initialized services. Count: {_services.Count}.", nameof(ServiceManager));
             OnServicesInitialized?.Invoke();
         }
 
