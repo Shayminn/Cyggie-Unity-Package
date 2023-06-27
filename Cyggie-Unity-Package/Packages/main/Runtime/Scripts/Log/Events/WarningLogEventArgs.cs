@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Cyggie.Main.Runtime
 {
     /// <summary>
@@ -8,9 +10,9 @@ namespace Cyggie.Main.Runtime
         /// <inheritdoc/>
         public override LogTypes Type => LogTypes.Warning;
 
-        internal WarningLogEventArgs(string log, string tag) : base(log, tag)
-        {
+        internal WarningLogEventArgs(string log, string tag, Object context) : base(log, tag, context) { }
 
-        }
+        /// <inheritdoc/>
+        internal override void Send() => Debug.LogWarning(Log, Context);
     }
 }

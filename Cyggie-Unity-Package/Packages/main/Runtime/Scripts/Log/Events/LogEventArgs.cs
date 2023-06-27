@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Cyggie.Main.Runtime
 {
@@ -36,12 +37,24 @@ namespace Cyggie.Main.Runtime
         /// <summary>
         /// The log's stack trace
         /// </summary>
-        public string StackTrace { get; private set; }
+        public string StackTrace { get; internal set; }
 
-        internal LogEventArgs(string log, string tag)
+        /// <summary>
+        /// The object's context
+        /// </summary>
+        public UnityEngine.Object Context { get; private set; }
+
+        internal LogEventArgs(string log, string tag, UnityEngine.Object context)
         {
             Log = log;
             Tag = tag;
+            Context = context;
+            Timestamp = DateTime.Now;
         }
+
+        /// <summary>
+        /// Send the log
+        /// </summary>
+        internal abstract void Send();
     }
 }

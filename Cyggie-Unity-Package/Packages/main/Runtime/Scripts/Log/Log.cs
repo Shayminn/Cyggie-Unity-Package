@@ -1,8 +1,8 @@
-using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
@@ -14,6 +14,7 @@ namespace Cyggie.Main.Runtime
     public static class Log
     {
         private static LogProfile _profile = null;
+        private static Queue<LogEventArgs> _args = new Queue<LogEventArgs>();
 
         #region Events
 
@@ -42,6 +43,36 @@ namespace Cyggie.Main.Runtime
         public static ErrorLogEvent OnErrorEvent = null;
 
         #endregion
+
+        static Log()
+        {
+            if (ServiceManager.Settings == null || !ServiceManager.Settings.EnableLog) return;
+
+            Application.logMessageReceived += OnLogMessageReceived;
+        }
+
+        private static void OnLogMessageReceived(string condition, string stackTrace, LogType type)
+        {
+            if (_args.Count == 0) return;
+
+            LogEventArgs args = _args.Dequeue();
+            args.StackTrace = stackTrace;
+
+            switch (args)
+            {
+                case DebugLogEventArgs debugArgs:
+                    OnDebugEvent?.Invoke(debugArgs);
+                    break;
+                case WarningLogEventArgs warningArgs:
+                    OnWarningEvent?.Invoke(warningArgs);
+                    break;
+                case ErrorLogEventArgs errorArgs:
+                    OnErrorEvent?.Invoke(errorArgs);
+                    break;
+            }
+
+            OnLogEvent?.Invoke(args);
+        }
 
         #region Public methods
 
@@ -126,34 +157,20 @@ namespace Cyggie.Main.Runtime
                                                 StackTraceLogType.None;
 
             Application.SetStackTraceLogType(unityType, newStackLogType);
-            LogEventArgs args = null;
 
-            switch (type)
+            LogEventArgs args = type switch
             {
-                case LogTypes.Debug:
-                    UnityEngine.Debug.Log(log, context);
-                    args = new DebugLogEventArgs(log, tag);
-                    OnDebugEvent?.Invoke(args as DebugLogEventArgs);
-                    break;
+                LogTypes.Debug => new DebugLogEventArgs(log, tag, context),
+                LogTypes.Warning => new WarningLogEventArgs(log, tag, context),
+                LogTypes.Error => new ErrorLogEventArgs(log, tag, context),
+                _ => null
+            };
 
-                case LogTypes.Warning:
-                    UnityEngine.Debug.LogWarning(log, context);
-                    args = new WarningLogEventArgs(log, tag);
-                    OnWarningEvent?.Invoke(args as WarningLogEventArgs);
-                    break;
+            if (args == null) return;
 
-                case LogTypes.Error:
-                    UnityEngine.Debug.LogError(log, context);
-                    args = new ErrorLogEventArgs(log, tag);
-                    OnErrorEvent?.Invoke(args as ErrorLogEventArgs);
-                    break;
+            _args.Enqueue(args);
+            args.Send();
 
-                default:
-                    UnityEngine.Debug.LogError($"Unhandled switch-case type of {typeof(LogTypes)}: {type}");
-                    break;
-            }
-
-            OnLogEvent?.Invoke(args);
             Application.SetStackTraceLogType(unityType, previousStackLogType);
         }
 
