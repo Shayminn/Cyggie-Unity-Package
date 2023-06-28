@@ -1,6 +1,4 @@
-﻿using Codice.CM.Common;
-
-namespace Cyggie.Main.Runtime.Utils.Constants
+﻿namespace Cyggie.Main.Runtime.Utils.Constants
 {
     /// <summary>
     /// Struct that contains all constants related to folder names
