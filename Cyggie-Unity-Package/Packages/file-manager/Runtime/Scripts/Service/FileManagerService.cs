@@ -1,7 +1,7 @@
-﻿using Cyggie.Encryption;
-using Cyggie.FileManager.Runtime.Data;
+﻿using Cyggie.FileManager.Runtime.Data;
 using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.ServicesNS;
+using Cyggie.Plugins.Encryption;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -145,7 +145,7 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
         /// <returns></returns>
         public IEnumerable<T> Get<T>() where T : SaveableObject
         {
-            return _savedModels.Where(x => x.ObjectType == typeof(T)).Select(x => (T)x.Object);
+            return _savedModels.Where(x => x.ObjectType == typeof(T)).Select(x => (T) x.Object);
         }
 
         /// <summary>
