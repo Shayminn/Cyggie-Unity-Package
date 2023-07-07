@@ -1,5 +1,6 @@
 using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.ServicesNS;
+using Cyggie.Plugins.Logs;
 using Cyggie.SceneChanger.Runtime.Configurations;
 using Cyggie.SceneChanger.Runtime.Settings;
 using System;

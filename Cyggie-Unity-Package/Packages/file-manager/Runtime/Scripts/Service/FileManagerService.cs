@@ -1,7 +1,7 @@
 ﻿using Cyggie.FileManager.Runtime.Data;
-using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Plugins.Encryption;
+using Cyggie.Plugins.Logs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

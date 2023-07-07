@@ -1,8 +1,8 @@
-using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Enums;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.Main.Runtime.Utils.Helpers;
+using Cyggie.Plugins.Logs;
 using Cyggie.SceneChanger.Runtime.Configurations;
 using Cyggie.SceneChanger.Runtime.Enums;
 using Cyggie.SceneChanger.Runtime.ServicesNS;

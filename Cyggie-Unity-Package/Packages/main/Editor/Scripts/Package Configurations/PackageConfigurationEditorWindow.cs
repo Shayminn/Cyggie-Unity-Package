@@ -1,13 +1,12 @@
 ﻿using Cyggie.Main.Editor.Utils.Constants;
 using Cyggie.Main.Editor.Utils.Helpers;
-using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.Main.Runtime.Utils.Helpers;
+using Cyggie.Plugins.Logs;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -211,6 +210,7 @@ namespace Cyggie.Main.Editor.Configurations
                     if (scriptableObj is ServiceConfigurationSO configuration)
                     {
                         Log.Debug($"{type.Name}) not found in the Service Manager Settings. Searching for it...", nameof(PackageConfigurationEditorWindow));
+
                         string folderName = configuration.IsPackageSettings ? FolderConstants.cPackageConfigurations : FolderConstants.cServiceConfigurations;
                         string assetPath = FolderConstants.cAssets +
                                            FolderConstants.cCyggie +
@@ -223,7 +223,7 @@ namespace Cyggie.Main.Editor.Configurations
                         {
                             Log.Debug($"{type.Name} found in {assetPath}. Adding it to the Service Manager Settings.");
                             settings.ServiceConfigurations.Add(foundConfig);
-                            continue;   
+                            continue;
                         }
 
                         // Not found, create a new one

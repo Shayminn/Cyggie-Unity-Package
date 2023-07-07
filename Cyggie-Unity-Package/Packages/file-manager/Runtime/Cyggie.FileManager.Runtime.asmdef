@@ -10,6 +10,7 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "Cyggie.Plugins.Encryption.dll",
+        "Cyggie.Plugins.Logs.dll",
         "Newtonsoft.Json.dll"
     ],
     "autoReferenced": true,

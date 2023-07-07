@@ -1,4 +1,4 @@
-﻿using Cyggie.Main.Runtime;
+﻿using Cyggie.Plugins.Logs;
 using UnityEditor;
 
 namespace Cyggie.Main.Editor

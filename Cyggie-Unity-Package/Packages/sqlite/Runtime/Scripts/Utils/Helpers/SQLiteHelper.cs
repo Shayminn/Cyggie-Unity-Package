@@ -1,6 +1,5 @@
-﻿using Cyggie.Main.Runtime;
+﻿using Cyggie.Plugins.Logs;
 using System;
-using UnityEngine;
 
 namespace Cyggie.Runtime.SQLite.Utils.Helpers
 {

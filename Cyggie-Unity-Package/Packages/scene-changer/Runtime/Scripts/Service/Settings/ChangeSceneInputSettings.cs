@@ -1,4 +1,4 @@
-using Cyggie.Main.Runtime;
+using Cyggie.Plugins.Logs;
 using Cyggie.SceneChanger.Runtime.InputSystems;
 using System.Collections;
 using System.Linq;

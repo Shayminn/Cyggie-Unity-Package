@@ -1,5 +1,5 @@
 using Cyggie.Main.Runtime.Configurations;
-using System;
+using Cyggie.Plugins.Logs;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;

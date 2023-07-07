@@ -1,5 +1,6 @@
 using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.Utils.Helpers;
+using Cyggie.Plugins.Logs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +64,15 @@ namespace Cyggie.Main.Runtime.ServicesNS
             {
                 Log.Error($"Unable to find Service Manager Settings in Resources.", nameof(ServiceManager));
                 return;
+            }
+
+            if (Settings.EnableLog)
+            {
+                Log.Enable();
+            }
+            else
+            {
+                Log.Disable();
             }
 
             // Create service manager object

@@ -1,9 +1,7 @@
-﻿using Codice.Client.BaseCommands;
-using Cyggie.Main.Runtime;
+﻿using Cyggie.Plugins.Logs;
 using System;
 using System.IO;
 using UnityEditor;
-using UnityEngine;
 
 namespace Cyggie.Main.Editor.Utils.Helpers
 {

@@ -1,3 +1,4 @@
+using Cyggie.Plugins.Logs;
 using System;
 using System.Linq;
 

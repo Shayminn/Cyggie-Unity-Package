@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Cyggie.Main.Runtime.Utils.Constants;
+using Cyggie.Plugins.Logs;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -27,7 +28,7 @@ namespace Cyggie.Main.Runtime.Configurations
         [SerializeField, Tooltip("Determines which services part of the Main package should be enabled.")]
         internal MainServiceTypes EnabledServices = MainServiceTypes.Everything;
 
-        [SerializeField, Tooltip("Whether logs using Cyggie' Logging system should be enabled.")]
+        [SerializeField, Tooltip("Whether logs using Cyggie's Logging system should be enabled.")]
         internal bool EnableLog = true;
 
         [SerializeField, Tooltip("List of service configurations. Automatically generated upon refresh.")]
