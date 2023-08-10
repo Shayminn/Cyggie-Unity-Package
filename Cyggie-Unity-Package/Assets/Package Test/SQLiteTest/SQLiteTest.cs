@@ -3,6 +3,8 @@ using Cyggie.Plugins.Logs;
 using Cyggie.Plugins.SQLite;
 using Cyggie.SQLite.Runtime.ServicesNS;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 
 /// <summary>
@@ -15,6 +17,10 @@ public class SQLiteTest : MonoBehaviour
 
     [SerializeField, Tooltip("Test table name in the database.")]
     private string _testTableName = "dbtest";
+
+    [Space]
+    [SerializeField, Tooltip("Reference to the dropdown to test the retrieved rows from the test database.")]
+    private TMP_Dropdown _dropdown = null;
 
     private SQLiteService _service = null;
     private SQLiteService Service => _service ?? ServiceManager.Get<SQLiteService>();
@@ -38,15 +44,24 @@ public class SQLiteTest : MonoBehaviour
 
     private void Start()
     {
+        if (_dropdown == null)
+        {
+            Log.Error("Unable to test database, dropdown reference is null.", nameof(SQLiteTest));
+            return;
+        }
+
         if (Service.TryGetDatabase(_databaseName, out _db))
         {
             if (_db.ReadAll(_testTableName, out IEnumerable<Test> objs))
             {
-                foreach (Test test in objs)
-                {
-                    Log.Debug($"Read All: Col1: {test.TestCol1} | Col2: {test.TestCol2}", nameof(SQLiteTest));
-                }
+                _dropdown.ClearOptions();
+                _dropdown.AddOptions(objs.Select(x => $"{x.TestCol1} ({x.TestCol2})").ToList());
             }
+        }
+        else
+        {
+            Log.Error("Unable to test database, database not found/missing.", nameof(SQLiteTest));
+            return;
         }
     }
 }

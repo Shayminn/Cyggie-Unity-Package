@@ -133,8 +133,6 @@ namespace Cyggie.Plugins.SQLite
                 insertValues.Append(",");
                 insertValues.Append($"'{AESEncryptor.Encrypt(dbConfig.GetValue().ToString())}'");
                 insertValues.Append(")");
-
-                UnityEngine.Debug.Log("CREATE: " + dbConfig.GetValue() + " | " + dbConfig.GetValue().ToString());
             }
 
             // Create table
@@ -145,7 +143,6 @@ namespace Cyggie.Plugins.SQLite
                        $");");
 
             // Insert into table
-            UnityEngine.Debug.Log("CREATE: " + insertValues);
             db.Execute($"INSERT INTO {cDatabaseTableName} VALUES{insertValues};");
 
             return configs;
