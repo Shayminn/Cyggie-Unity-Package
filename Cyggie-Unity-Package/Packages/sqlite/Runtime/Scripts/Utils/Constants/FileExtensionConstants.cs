@@ -6,5 +6,6 @@
     internal struct FileExtensionConstants
     {
         internal const string cSQLite = ".sqlite";
+        internal const string cSQL = ".sql";
     }
 }

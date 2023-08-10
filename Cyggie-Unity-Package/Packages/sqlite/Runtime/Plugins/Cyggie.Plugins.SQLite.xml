@@ -1,0 +1,405 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cyggie.Plugins.SQLite</name>
+    </assembly>
+    <members>
+        <member name="T:Cyggie.Plugins.SQLite.SQLitePropertyAttribute">
+            <summary>
+            Assign attribute to properties in order to use them when reading from the Database
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.SQLite.SQLitePropertyAttribute.ColumnName">
+            <summary>
+            Custom defined column name <br/>
+            If null/empty, it'll use the Property's name instead
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.SQLite.SQLitePropertyAttribute.HasDefinedName">
+            <summary>
+            Checks if <see cref="P:Cyggie.Plugins.SQLite.SQLitePropertyAttribute.ColumnName"/> is defined
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLitePropertyAttribute.#ctor(System.String)">
+            <summary>
+            Optional custom column name <br/>
+            If column name is null/empty, it'll use the Property's name instead
+            </summary>
+            <param name="columnName"></param>
+        </member>
+        <member name="T:Cyggie.Plugins.SQLite.DbConfig">
+            <summary>
+            List of database configurations for each <see cref="T:Cyggie.Plugins.SQLite.SQLiteDatabase"/>
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.SQLite.DbConfig.Encrypted">
+            <summary>
+            Determines if the database is encrypted (bool) <br/>
+            If enabled, <see cref="F:Cyggie.Plugins.SQLite.DbConfig.ReadOnly"/> is also enabled <br/>
+            If takes slightly more time to read when encrypted as it decrypts during runtime
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.SQLite.DbConfig.ReadOnly">
+            <summary>
+            Determines if the database is in read-only mode (bool) <br/>
+            If enabled, only Read methods can be performed on the database
+            </summary>
+        </member>
+        <member name="T:Cyggie.Plugins.SQLite.SQLiteDbConfig">
+            <summary>
+            The SQLite object that holds information regarding the state of the database and its configurations <br/>
+            Not inheriting from <see cref="T:Cyggie.Plugins.SQLite.SQLiteObject"/> because this object is read manually created
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.SQLite.SQLiteDbConfig.Config">
+            <summary>
+            The database configuration associated to this object
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.SQLite.SQLiteDbConfig.Value">
+            <summary>
+            Value of the configuration
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDbConfig.#ctor(Cyggie.Plugins.SQLite.DbConfig,System.String)">
+            <summary>
+            Constructor used when reading from the database
+            </summary>
+            <param name="config">Configuration</param>
+            <param name="value">Value of the configuration</param>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDbConfig.#ctor(Cyggie.Plugins.SQLite.DbConfig)">
+            <summary>
+            Constructor used when creating a new/missing configuration <br/>
+            Value is set to its default based on <see cref="M:Cyggie.Plugins.SQLite.Utils.Extensions.DbConfigExtensions.GetDefaultValue(Cyggie.Plugins.SQLite.DbConfig)"/>
+            </summary>
+            <param name="config">Configuration</param>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDbConfig.GetValue``1">
+            <summary>
+            Get the value of the configuration in the right type
+            </summary>
+            <typeparam name="T">Type of the value</typeparam>
+            <returns>Value in type <typeparamref name="T"/></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDbConfig.GetValue">
+            <summary>
+            Get the value of the configuration as an <see cref="T:System.Object"/>
+            </summary>
+            <returns>Value as object</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDbConfig.SetValue(System.Object)">
+            <summary>
+            Set the value of the configuration
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="T:Cyggie.Plugins.SQLite.SQLiteDbConfigList">
+            <summary>
+            Class that holds a list of all database configurations
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDbConfigList.GetConfigValue``1(Cyggie.Plugins.SQLite.DbConfig)">
+            <summary>
+            Get the value of the configuration <paramref name="config"/> <br/>
+            Converting it to type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">Type of the configuration value</typeparam>
+            <param name="config">Database configuration</param>
+            <returns>Configuration value</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDbConfigList.GetConfigValue(Cyggie.Plugins.SQLite.DbConfig)">
+            <summary>
+            Get the value of the configuration <paramref name="config"/>
+            </summary>
+            <param name="config">Database configuration</param>
+            <returns>Configuration value</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDbConfigList.SetConfigValue(Cyggie.Plugins.SQLite.DbConfig,System.Object)">
+            <summary>
+            Set the value of the configuration <paramref name="config"/> <br/>
+            </summary>
+            <param name="config">Database configuration</param>
+            <param name="value">Configuration value to set</param>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDbConfigList.Create(Cyggie.Plugins.SQLite.SQLiteDatabase)">
+            <summary>
+            Create the list of database configurations <br/>
+            Create the table in the database and insert default values
+            </summary>
+            <param name="db">The database connection</param>
+            <returns>The list of database configurations</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDbConfigList.Read(Cyggie.Plugins.SQLite.SQLiteDatabase)">
+            <summary>
+            Read an existing list of database configurations <br/>
+            Calls <see cref="M:Cyggie.Plugins.SQLite.SQLiteDbConfigList.Create(Cyggie.Plugins.SQLite.SQLiteDatabase)"/> if not found, automatically creating a new one and adding it to the database
+            </summary>
+            <param name="db">The database connection</param>
+            <returns>The list of database configurations</returns>
+        </member>
+        <member name="T:Cyggie.Plugins.SQLite.SQLiteDatabase">
+            <summary>
+            Helper for managing SQLite databases
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.SQLite.SQLiteDatabase.DatabasePath">
+            <summary>
+            The database's file path
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.SQLite.SQLiteDatabase.DatabaseName">
+            <summary>
+            The database's name
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.SQLite.SQLiteDatabase.IsReadOnly">
+            <summary>
+            Determine whether the database is in Read Only mode
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.SQLite.SQLiteDatabase.IsEncrypted">
+            <summary>
+            Determine whether the database is Encrypted <br/>
+            When encrypted, Read Only is automatically enabled
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.Encrypt">
+            <summary>
+            Encrypt the database, encrypting every single field on all tables
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.Decrypt">
+            <summary>
+            Decrypt the database from an encrypted state
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.ChangeDatabaseName(System.String)">
+            <summary>
+            Change the name of the database <br/>
+            This will automatically rename the file
+            </summary>
+            <param name="newName">New name assigned to the database</param>
+            <returns>Successful?</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.Delete">
+            <summary>
+            Delete this SQLite database
+            </summary>
+            <returns>Successful?</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.CreateBlueprint(System.String)">
+            <summary>
+            Create a new blueprint to rebuild the whole SQL database. <br/>
+            Specify <paramref name="path"/> to create a file.
+            </summary>
+            <param name="path">Path to create .sql file (specify its name as well)</param>
+            <returns>Blueprint in string</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.Execute(System.String,Cyggie.Plugins.SQLite.SQLiteParams[])">
+            <summary>
+            Execute a non-query on the database <br/>
+            For queries, use <see cref="M:Cyggie.Plugins.SQLite.SQLiteDatabase.Read``1(System.String,``0@,System.String,Cyggie.Plugins.SQLite.SQLiteParams[])"/> or <see cref="M:Cyggie.Plugins.SQLite.SQLiteDatabase.ReadAll(System.String,System.Object[][]@,System.String,Cyggie.Plugins.SQLite.SQLiteParams[])"/>
+            </summary>
+            <param name="query">Non-Query command to execute</param>
+            <param name="sqlParams">Parameters to add to command</param>
+            <returns>Number of rows affected</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.Execute(System.String,System.Boolean,Cyggie.Plugins.SQLite.SQLiteParams[])">
+            <summary>
+            Execute a non-query on the database <br/>
+            For queries, use <see cref="M:Cyggie.Plugins.SQLite.SQLiteDatabase.Read``1(System.String,``0@,System.String,Cyggie.Plugins.SQLite.SQLiteParams[])"/> or <see cref="M:Cyggie.Plugins.SQLite.SQLiteDatabase.ReadAll(System.String,System.Object[][]@,System.String,Cyggie.Plugins.SQLite.SQLiteParams[])"/>
+            </summary>
+            <param name="query">Non-Query command to execute</param>
+            <param name="bypassReadOnly">Whether this call should ignore whether the database is in read-only or not</param>
+            <param name="sqlParams">Parameters to add to command</param>
+            <returns>Number of rows affected</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.Read``1(System.String,``0@,System.String,Cyggie.Plugins.SQLite.SQLiteParams[])">
+            <summary>
+            Execute a read command for the first row found <br/>
+            This reads every single column defined in the table (SELECT *) <br/>
+            Make sure there is a constructor that matches the number of Properties and their associated types
+            </summary>
+            <typeparam name="T">Object class</typeparam>
+            <param name="tableName">Table name to read from</param>
+            <param name="obj">Outputted object</param>
+            <param name="suffix">Suffix to add to command after "SELECT * FROM <paramref name="tableName"/>"</param>
+            <param name="sqlParams">Parameters to the command</param>
+            <returns>Success? (returns false if no row was found)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.ReadAll(System.String,System.Object[][]@,System.String,Cyggie.Plugins.SQLite.SQLiteParams[])">
+            <summary>
+            Execute a read command for a 2D array of each individual field (as <see cref="T:System.Object"/> without a specified type)
+            </summary>
+            <param name="tableName">Table name to read from</param>
+            <param name="objs">Outputted 2D array objects</param>
+            <param name="suffix">Suffix to add to command after "SELECT * FROM <paramref name="tableName"/>"</param>
+            <param name="sqlParams">Parameters to the command</param>
+            <returns>Success?</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.ReadAll``1(System.String,System.Collections.Generic.IEnumerable{``0}@,System.String,Cyggie.Plugins.SQLite.SQLiteParams[])">
+            <summary>
+            Execute a read command for rows found within the table<br/>
+            This reads every single column defined in the table (SELECT *) <br/>
+            Make sure there is a constructor that matches the number of Properties and their associated types
+            </summary>
+            <typeparam name="T">Object class</typeparam>
+            <param name="tableName">Table name to read from</param>
+            <param name="list">Outputted IEnumerable objects</param>
+            <param name="suffix">Suffix to add to command after "SELECT * FROM <paramref name="tableName"/>"</param>
+            <param name="sqlParams">Parameters to the command</param>
+            <returns>Success? (true even if no rows are found)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.ReadAllTableNames(System.String[]@)">
+            <summary>
+            Read all table names from the database
+            </summary>
+            <param name="tableNames">Outputted array of table names</param>
+            <returns>Success?</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.ReadAllTableColumnNames(System.String,System.String[]@)">
+            <summary>
+            Read all column names from the specified table
+            </summary>
+            <param name="tableName">Table name to read from</param>
+            <param name="columnNames">Outputted array of column names</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.Count(System.String,System.Int32@,System.String,Cyggie.Plugins.SQLite.SQLiteParams[])">
+            <summary>
+            Execute a count of the table
+            </summary>
+            <param name="tableName">Table name to read from</param>
+            <param name="count">Number of rows found</param>
+            <param name="suffix">Suffix to add to command after the "SELECT COUNT(*) FROM <paramref name="tableName"/>"</param>
+            <param name="sqlParams">SQL Params</param>
+            <returns>Success?</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.ReadAllAsString(System.String,System.Collections.Generic.List{System.Collections.Generic.List{System.String}}@)">
+            <summary>
+            Same as <see cref="M:Cyggie.Plugins.SQLite.SQLiteDatabase.ReadAll(System.String,System.Object[][]@,System.String,Cyggie.Plugins.SQLite.SQLiteParams[])"/> but as string regardless of the field's datatype
+            </summary>
+            <param name="tableName">The table name to read from</param>
+            <param name="rows">2D list of rows/columns as string</param>
+            <returns>Success?</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.TryCreate(System.String,Cyggie.Plugins.SQLite.SQLiteDatabase@)">
+            <summary>
+            Create a new SQLite database at the specified <paramref name="databasePath"/>
+            </summary>
+            <param name="databasePath">The full path where the database will be created</param>
+            <param name="db">The created SQLite database (null if exception)</param>
+            <returns>Successful?</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteDatabase.TryOpen(System.String,Cyggie.Plugins.SQLite.SQLiteDatabase@)">
+            <summary>
+            Open a new SQLite database at the specified <paramref name="databasePath"/> <br/>
+            Automatically creates one if not found
+            </summary>
+            <param name="databasePath">The full path where the database is</param>
+            <param name="db">The created SQLite database (null if exception)</param>
+            <returns>Successful? (may return true even if creating a new database)</returns>
+        </member>
+        <member name="T:Cyggie.Plugins.SQLite.SQLiteObject">
+            <summary>
+            Model for an SQLite database object <br/>
+            Each instance of this object represents a row of a database table
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.SQLite.SQLiteObject.SQLParams">
+            <summary>
+            Returns array of SQLParams for SQLManager methods
+            Parameter keys in Query must match the property name (case-insensitive)
+            Any parameters that are not found within the Query string will be ignored
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteObject.GetFields``1">
+            <summary>
+            Get all SQLiteProperty Attribute fields
+            </summary>
+            <typeparam name="T">This object's type</typeparam>
+            <returns>Enumerable of properties with SQLitePropertyAttribute</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteObject.GetConstructorArguments``1(System.Collections.Generic.IEnumerable{System.Reflection.PropertyInfo},Mono.Data.Sqlite.SqliteDataReader,System.Boolean)">
+            <summary>
+            Get all parameter arguments to its constructor based on <see cref="M:Cyggie.Plugins.SQLite.SQLiteObject.GetFields``1"/>
+            </summary>
+            <typeparam name="T">This object's type</typeparam>
+            <param name="fields">Enumerable of fields that has the SQLiteProperty attribute</param>
+            <param name="reader">Reader to get the current table's row</param>
+            <param name="encrypted">Whether the database is encrypted</param>
+            <returns>Enumerable of arguments</returns>
+        </member>
+        <member name="T:Cyggie.Plugins.SQLite.SQLiteParams">
+            <summary>
+            SQL Params used for SQLManager methods to replace Parameters
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.SQLite.SQLiteParams.ParameterKey">
+            <summary>
+            The database's column name
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.SQLite.SQLiteParams.ParameterValue">
+            <summary>
+            The assigned value to the <see cref="P:Cyggie.Plugins.SQLite.SQLiteParams.ParameterKey"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteParams.#ctor(System.String,System.Object)">
+            <summary>
+            Constructor with key/value pair
+            </summary>
+            <param name="key">The database's column name</param>
+            <param name="value">The assigned value to the <see cref="P:Cyggie.Plugins.SQLite.SQLiteParams.ParameterKey"/></param>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteParams.Encrypt">
+            <summary>
+            Encrypt the parameter key and value
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.SQLiteParams.ToString">
+            <summary>
+            Override default ToString
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Cyggie.Plugins.SQLite.Utils.Extensions.DbConfigExtensions">
+            <summary>
+            Extension class for <see cref="T:Cyggie.Plugins.SQLite.DbConfig"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.Utils.Extensions.DbConfigExtensions.GetDefaultValue(Cyggie.Plugins.SQLite.DbConfig)">
+            <summary>
+            Get the default value for <paramref name="config"/>
+            </summary>
+            <param name="config">Database configuration</param>
+            <returns>Default value (empty if not configured)</returns>
+        </member>
+        <member name="T:Cyggie.Plugins.SQLite.Utils.Extensions.SQLiteExtensions">
+            <summary>
+            Extension class for SQLite related classes
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.Utils.Extensions.SQLiteExtensions.AddParameters(Mono.Data.Sqlite.SqliteCommand,Cyggie.Plugins.SQLite.SQLiteParams[])">
+            <summary>
+            Extension for <see cref="T:Mono.Data.Sqlite.SqliteCommand"/> to add paramaters with SQLParams
+            </summary>
+            <param name="command">Command obj</param>
+            <param name="sqlParams">SQLParams associated to the where statement</param>
+        </member>
+        <member name="T:Cyggie.Plugins.SQLite.Utils.Helpers.SQLiteHelper">
+            <summary>
+            Helper class for SQLite
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.SQLite.Utils.Helpers.SQLiteHelper.ConvertValue(System.Object,System.Type)">
+            <summary>
+            Util method for converting an row-column's value to its appropriate data type
+            </summary>
+            <param name="value">The object value</param>
+            <param name="t">The system type of the object</param>
+            <returns>The object value converted to its appropriate type</returns>
+        </member>
+    </members>
+</doc>

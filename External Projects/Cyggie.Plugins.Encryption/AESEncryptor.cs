@@ -59,19 +59,26 @@ namespace Cyggie.Plugins.Encryption
         /// <returns>Decrypted data</returns>
         public static string Decrypt(string data)
         {
-            AesCryptoServiceProvider AEScryptoProvider = new AesCryptoServiceProvider();
-            AEScryptoProvider.BlockSize = 128;
-            AEScryptoProvider.KeySize = 256;
-            AEScryptoProvider.Key = ASCIIEncoding.ASCII.GetBytes(_key);
-            AEScryptoProvider.IV = ASCIIEncoding.ASCII.GetBytes(_iv);
-            AEScryptoProvider.Mode = CipherMode.CBC;
-            AEScryptoProvider.Padding = PaddingMode.PKCS7;
+            try
+            {
+                byte[] txtByteData = Convert.FromBase64String(data);
 
-            byte[] txtByteData = Convert.FromBase64String(data);
-            ICryptoTransform trnsfrm = AEScryptoProvider.CreateDecryptor();
-
-            byte[] result = trnsfrm.TransformFinalBlock(txtByteData, 0, txtByteData.Length);
-            return ASCIIEncoding.ASCII.GetString(result);
+                AesCryptoServiceProvider AEScryptoProvider = new AesCryptoServiceProvider();
+                AEScryptoProvider.BlockSize = 128;
+                AEScryptoProvider.KeySize = 256;
+                AEScryptoProvider.Key = ASCIIEncoding.ASCII.GetBytes(_key);
+                AEScryptoProvider.IV = ASCIIEncoding.ASCII.GetBytes(_iv);
+                AEScryptoProvider.Mode = CipherMode.CBC;
+                AEScryptoProvider.Padding = PaddingMode.PKCS7;
+                ICryptoTransform trnsfrm = AEScryptoProvider.CreateDecryptor();
+                
+                byte[] result = trnsfrm.TransformFinalBlock(txtByteData, 0, txtByteData.Length);
+                return ASCIIEncoding.ASCII.GetString(result);
+            }
+            catch
+            {
+                return data;
+            }
         }
     }
 }

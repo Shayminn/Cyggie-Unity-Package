@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace Cyggie.Main.Runtime.ServicesNS
 {
@@ -181,6 +182,31 @@ namespace Cyggie.Main.Runtime.ServicesNS
         {
             ServiceManager.OnServicesInitialized -= OnServicesInitialize;
             OnServicesInitialized();
+        }
+
+        #endregion
+
+        #region Statics
+
+        /// <summary>
+        /// Manually create a service <br/>
+        /// This can be useful when using a Service within an Editor window <br/>
+        /// In runtime, the <see cref="ServiceManager"/> loads all enabled services on start
+        /// </summary>
+        /// <typeparam name="T">Type of service to create</typeparam>
+        /// <returns>Created service</returns>
+        public static T Create<T>() where T : Service, new()
+        {
+            T service = new T();
+            ServiceConfigurationSO serviceConfig = ServiceManager.Settings.ServiceConfigurations.FirstOrDefault(x => x.ServiceType == typeof(T));
+            if (serviceConfig != null)
+            {
+                service.SetConfigurationSettings(serviceConfig);
+            }
+
+            service.OnInitialized();
+            service.OnServicesInitialized();
+            return service;
         }
 
         #endregion

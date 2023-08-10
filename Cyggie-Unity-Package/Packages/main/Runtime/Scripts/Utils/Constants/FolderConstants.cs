@@ -17,7 +17,6 @@
 
         // Shortcuts
         public const string cCyggieResources = cCyggie + cResources;
-        public const string cCyggieStreamingAssets = cCyggie + cStreamingAssets;
         public const string cCyggieScriptableObjects = cCyggie + cScriptableObjects;
 
         public const string cPackageConfigurations = cScriptableObjects + "PackageConfigurations/";

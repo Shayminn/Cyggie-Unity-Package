@@ -164,7 +164,7 @@ namespace Cyggie.Plugins.Logs
 
         private static void SendLog(LogTypes type, object message, string tag, UnityEngine.Object? context)
         {
-            if (!_enabled) return;
+            if (Application.isPlaying && !_enabled) return;
 
             // Use default if not set
             if (_profile == null)

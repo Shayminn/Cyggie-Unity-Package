@@ -10,3 +10,11 @@ C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugin
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.SQLite\obj\Debug\netstandard2.1\Cyggie.Plugins.SQLite.csproj.CopyComplete
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.SQLite\obj\Debug\netstandard2.1\Cyggie.Plugins.SQLite.dll
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.SQLite\obj\Debug\netstandard2.1\Cyggie.Plugins.SQLite.pdb
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.SQLite\bin\Debug\netstandard2.1\Cyggie.Plugins.Logs.dll
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.SQLite\bin\Debug\netstandard2.1\UnityEngine.dll
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.SQLite\bin\Debug\netstandard2.1\Cyggie.Plugins.Logs.xml
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.SQLite\bin\Debug\netstandard2.1\UnityEngine.xml
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.SQLite\bin\Debug\netstandard2.1\Cyggie.Plugins.SQLite.xml
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.SQLite\obj\Debug\netstandard2.1\Cyggie.Plugins.SQLite.xml
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.SQLite\bin\Debug\netstandard2.1\Cyggie.Plugins.Encryption.dll
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.SQLite\bin\Debug\netstandard2.1\Cyggie.Plugins.Encryption.xml

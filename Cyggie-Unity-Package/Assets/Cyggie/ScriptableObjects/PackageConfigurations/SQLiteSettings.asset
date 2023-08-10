@@ -13,7 +13,4 @@ MonoBehaviour:
   m_Name: SQLiteSettings
   m_EditorClassIdentifier: 
   Initialize: 1
-  DatabaseName: database
-  ReadOnly: 0
-  ReadAllOnStart: 1
-  AddSToTableName: 1
+  OpenAllOnStart: 1

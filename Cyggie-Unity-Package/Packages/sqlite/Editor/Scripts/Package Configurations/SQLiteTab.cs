@@ -1,81 +1,183 @@
-//using Cyggie.Main.Editor.Configurations;
-//using Cyggie.Main.Runtime;
-//using Cyggie.Main.Runtime.Utils.Constants;
-//using Cyggie.Main.Runtime.Utils.Extensions;
-//using Cyggie.SQLite.Editor.Utils.Styles;
-//using Cyggie.SQLite.Runtime.ServicesNS;
-//using Cyggie.SQLite.Runtime.Utils.Constants;
-//using Mono.Data.Sqlite;
-//using System;
-//using System.IO;
-//using UnityEditor;
-//using UnityEngine;
+using Cyggie.Main.Editor.Configurations;
+using Cyggie.Main.Editor.Utils.Helpers;
+using Cyggie.Main.Runtime.ServicesNS;
+using Cyggie.Plugins.SQLite;
+using Cyggie.SQLite.Editor.Utils.Styles;
+using Cyggie.SQLite.Runtime.ServicesNS;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
-//namespace Cyggie.SQLite.Editor.Configurations
-//{
-//    /// <summary>
-//    /// Package tab for <see cref="SQLiteSettings"/> <br/>
-//    /// Accessible through Cyggie/Package Configurations
-//    /// </summary>
-//    internal class SQLiteTab : PackageConfigurationTab<SQLiteService, SQLiteSettings>
-//    {
-//        internal override string DropdownName => "SQLite";
+namespace Cyggie.SQLite.Editor.Configurations
+{
+    /// <summary>
+    /// Package tab for <see cref="SQLiteSettings"/> <br/>
+    /// Accessible through Cyggie/Package Configurations
+    /// </summary>
+    internal class SQLiteTab : PackageConfigurationTab<SQLiteService, SQLiteSettings>
+    {
+        internal override string DropdownName => "SQLite";
 
-//        private SerializedProperty _databaseName = null;
-//        private SerializedProperty _readOnly = null;
-//        private SerializedProperty _readAllOnStart = null;
-//        private SerializedProperty _addSToTableName = null;
+        private SerializedProperty _openAllOnStart = null;
+        private SQLiteService _service = null;
+        private SQLiteDatabase _selectedDb = null; 
 
-//        protected SQLiteSettings Settings => _settings as SQLiteSettings;
+        private int _selectedDbIndex = -1;
+        private bool _deletingDatabase = false;
 
-//        /// <inheritdoc/>
-//        protected override void OnInitialized()
-//        {
-//            base.OnInitialized();
+        protected SQLiteSettings Settings => _settings as SQLiteSettings;
 
-//            _databaseName = _serializedObject.FindProperty(nameof(SQLiteSettings.DatabaseName));
-//            _readOnly = _serializedObject.FindProperty(nameof(SQLiteSettings.ReadOnly));
-//            _readAllOnStart = _serializedObject.FindProperty(nameof(SQLiteSettings.ReadAllOnStart));
-//            _addSToTableName = _serializedObject.FindProperty(nameof(SQLiteSettings.AddSToTableName));
+        /// <inheritdoc/>
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
 
-//            string databaseAbsPath = Settings.DatabaseAbsolutePath;
-//            if (!File.Exists(databaseAbsPath))
-//            {
-//                Log.Debug($"Database file not found, creating a new one...", nameof(SQLiteTab));
-//                Directory.CreateDirectory(Path.GetDirectoryName(databaseAbsPath));
+            _service = Service.Create<SQLiteService>();
+            if (!Settings.OpenAllOnStart)
+            {
+                _service.OpenAllConnections();
+            }
 
-//                // This will create a new .sqlite database at path
-//                SqliteConnection conn = null;
-//                try
-//                {
-//                    conn = new SqliteConnection($"{Constants.cDatabaseURI}{databaseAbsPath}");
-//                    conn.Open();
-//                    conn.Close();
+            _openAllOnStart = _serializedObject.FindProperty(nameof(SQLiteSettings.OpenAllOnStart));
+        }
 
-//                    Log.Debug($"Created a new sqlite database at {databaseAbsPath}", nameof(SQLiteTab));
-//                }
-//                catch (Exception ex)
-//                {
-//                    Log.Error($"Test connection failed, connection string: {conn.ConnectionString}\n, exception: {ex}.", nameof(SQLiteTab));
-//                    PackageConfigurationEditorWindow.Window.Close();
-//                    return;
-//                }
+        /// <inheritdoc/>
+        protected override void DrawGUI()
+        {
+            // Settings
+            EditorGUILayout.PropertyField(_openAllOnStart, GUIContents.cOpenAllOnStart);
+            EditorGUILayout.Space(10);
 
-//                AssetDatabase.Refresh();
-//            }
-//        }
+            DrawDatabaseList();
+            EditorGUILayout.Space(10);
 
-//        /// <inheritdoc/>
-//        protected override void DrawGUI()
-//        {
-//            EditorGUILayout.PropertyField(_databaseName, GUIContents.cDatabaseName);
+            DrawDatabaseControls();
+        }
 
-//            EditorGUILayout.Space(5);
-//            EditorGUILayout.PropertyField(_readOnly, GUIContents.cReadOnly);
-//            EditorGUILayout.PropertyField(_readAllOnStart, GUIContents.cReadAllOnStart);
+        private void DrawDatabaseList()
+        {
+            EditorGUILayout.LabelField($"List of Databases ({_service.DbConns.Count})", EditorStyles.boldLabel);
 
-//            EditorGUILayout.Space(5);
-//            EditorGUILayout.PropertyField(_addSToTableName, GUIContents.cAddSToTableName);
-//        }
-//    }
-//}
+            if (_service.DbConns.Count > 0)
+            {
+                if (EditorGUIHelper.CheckChange(gui: () => _selectedDbIndex = GUILayout.SelectionGrid(_selectedDbIndex, _service.DbConns.Select(x => x.DatabaseName).ToArray(), 1, GUILayout.Width(250))))
+                {
+                    if (_selectedDbIndex < 0 || _selectedDbIndex >= _service.DbConns.Count)
+                    {
+                        _selectedDbIndex = 0;
+                    }
+
+                    _selectedDb = _service.DbConns[_selectedDbIndex];
+                }
+            }
+            else
+            {
+                EditorGUILayout.LabelField("No databases found.");
+            }
+        }
+
+        private void DrawDatabaseControls()
+        {
+            if (GUILayout.Button("Create database", GUILayout.Width(130)))
+            {
+                _service.CreateDatabase();
+            }
+            EditorGUILayout.Space(10);
+
+            if (_selectedDb != null)
+            {
+                EditorGUIHelper.DrawHorizontal(gui: () =>
+                {
+                    EditorGUILayout.LabelField($"Selected database: ", EditorStyles.boldLabel, GUILayout.Width(120));
+
+                    string newName = "";
+                    if (EditorGUIHelper.CheckChange(gui:
+                        () => newName = EditorGUILayout.DelayedTextField(_selectedDb.DatabaseName, GUILayout.Width(150))))
+                    {
+                        _selectedDb.ChangeDatabaseName(newName);
+                        AssetDatabase.Refresh();
+                    }
+                });
+                EditorGUILayout.Space(2);
+                
+                // Draw encrypted field
+                bool isEncrypted = _selectedDb.IsEncrypted;
+                EditorGUIHelper.DrawHorizontal(gui: () =>
+                {
+                    EditorGUILayout.LabelField(GUIContents.cIsEncrypted, GUILayout.Width(85));
+                    if (EditorGUIHelper.CheckChange(gui:
+                            () => isEncrypted = EditorGUILayout.Toggle(_selectedDb.IsEncrypted)))
+                    {
+                        _selectedDb.IsEncrypted = isEncrypted;
+                    }
+                });
+
+                // Draw read only field
+                GUIHelper.DrawAsReadOnly(_selectedDb.IsEncrypted, gui: () =>
+                {
+                    bool isReadOnly = _selectedDb.IsReadOnly;
+                    EditorGUIHelper.DrawHorizontal(gui: () =>
+                    {
+                        EditorGUILayout.LabelField(GUIContents.cIsReadOnly, GUILayout.Width(85));
+                        if (EditorGUIHelper.CheckChange(gui:
+                                () => isReadOnly = EditorGUILayout.Toggle(_selectedDb.IsReadOnly)))
+                        {
+                            _selectedDb.IsReadOnly = isReadOnly;
+                        }
+                    });
+                    EditorGUILayout.Space(10);
+                });
+
+                // Buttons
+                EditorGUIHelper.DrawWithConfirm(ref _deletingDatabase,
+                    confirmLabel: $"Delete database \"{_selectedDb.DatabaseName}\"?",
+                    onConfirm: () =>
+                    {
+                        if (_service.DeleteDatabase(_selectedDb))
+                        {
+                            _selectedDb = null;
+                            _selectedDbIndex = -1;
+                        }
+                    },
+                    onInactiveGUI: () =>
+                    {
+                        EditorGUIHelper.DrawHorizontal(gui: () =>
+                        {
+                            if (_selectedDb.IsEncrypted)
+                            {
+                                if (GUILayout.Button("Decrypt", GUILayout.Width(75)))
+                                {
+                                    _selectedDb.Decrypt();
+                                }
+                            }
+                            else
+                            {
+                                if (GUILayout.Button("Encrypt", GUILayout.Width(75)))
+                                {
+                                    _selectedDb.Encrypt();
+                                }
+                            }
+
+                            if (GUILayout.Button("Open", GUILayout.Width(50)))
+                            {
+                                UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(_selectedDb.DatabasePath, 1);
+                            }
+                        });
+                        EditorGUILayout.Space(1);
+
+                        if (GUILayout.Button(GUIContents.cCreateBlueprint, GUILayout.Width(130)))
+                        {
+                            _service.CreateBlueprint(_selectedDb);
+                        }
+                        EditorGUILayout.Space(1);
+
+                        if (GUILayout.Button("Delete database", GUILayout.Width(130)))
+                        {
+                            _deletingDatabase = true;
+                        }
+                    }
+                );
+            }
+        }
+    }
+}

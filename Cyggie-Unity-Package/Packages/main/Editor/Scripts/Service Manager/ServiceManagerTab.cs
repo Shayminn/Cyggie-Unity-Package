@@ -243,44 +243,22 @@ namespace Cyggie.Main.Editor.Configurations
                 }
 
                 EditorGUILayout.Space(2);
-                if (_deletingProfile)
-                {
-                    EditorGUIHelper.DrawHorizontal(gui: () =>
+                EditorGUIHelper.DrawWithConfirm(ref _deletingProfile,
+                    confirmLabel: $"Delete profile \"{_logProfile.Name}\"?",
+                    onConfirm: () =>
                     {
-                        GUIHelper.DrawWithBackgroundColor(Color.green, gui: () =>
-                        {
-                            // Confirm delete
-                            if (GUILayout.Button("Confirm", GUILayout.Width(100)))
-                            {
-                                AssetDatabaseHelper.DeleteAsset(_logProfile);
-                                Settings.LogProfiles.Remove(_logProfile);
-                                _logProfile = null;
-
-                                _deletingProfile = false;
-                                return;
-                            }
-                        });
-
-                        GUIHelper.DrawWithBackgroundColor(Color.red, gui: () =>
-                        {
-                            // Cancel delete
-                            if (GUILayout.Button("Cancel", GUILayout.Width(100)))
-                            {
-                                _deletingProfile = false;
-                            }
-                        });
-                    });
-                }
-                else
-                {
-                    GUIHelper.DrawWithBackgroundColor(Color.red, gui: () =>
+                        AssetDatabaseHelper.DeleteAsset(_logProfile);
+                        Settings.LogProfiles.Remove(_logProfile);
+                        _logProfile = null;
+                    },
+                    onInactiveGUI: () =>
                     {
                         if (GUILayout.Button("Delete", GUILayout.Width(100)))
                         {
                             _deletingProfile = true;
                         }
-                    });
-                }
+                    }
+                );
 
                 if (_logProfile != null)
                 {
