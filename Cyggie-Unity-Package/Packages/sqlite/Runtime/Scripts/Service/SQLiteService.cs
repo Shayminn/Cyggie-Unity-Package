@@ -46,20 +46,10 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
         {
             get
             {
-                SQLiteDatabase? db = _dbConns.FirstOrDefault(x => x.DatabaseName == databaseName);
-                if (db == null)
-                {
-                    // Open new database connection at path
-                    if (SQLiteDatabase.TryOpen(databaseName, out db) && db != null)
-                    {
-                        return db;
-                    }
-                }
-
-                return null;
+                TryGetDatabase(databaseName, out SQLiteDatabase? db);
+                return db;
             }
         }
-#nullable disable
 
         /// <summary>
         /// Try get an SQLiteDatabase by its name <br/>
@@ -67,8 +57,9 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
         /// This will also automatically create a new database if no existing database was found <br/>
         /// </summary>
         /// <param name="databaseName">Name of the database</param>
-        /// <returns>SQLiteDatabase connection (null if Create fails)</returns>
-        public bool TryGetDatabase(string databaseName, out SQLiteDatabase db)
+        /// <param name="db">Output SQLiteDatabase connection (null if Open and Create fails)</param>
+        /// <returns>Success?</returns>
+        public bool TryGetDatabase(string databaseName, out SQLiteDatabase? db)
         {
             db = _dbConns.FirstOrDefault(x => x.DatabaseName == databaseName);
 
@@ -81,6 +72,7 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
 
             return db != null;
         }
+#nullable disable
 
         #region Internals
 
