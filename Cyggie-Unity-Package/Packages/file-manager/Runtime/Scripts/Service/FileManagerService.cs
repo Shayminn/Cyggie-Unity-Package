@@ -149,6 +149,16 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
         }
 
         /// <summary>
+        /// Get the first of type <typeparamref name="T"/> found
+        /// </summary>
+        /// <typeparam name="T">Type of find</typeparam>
+        /// <returns>First item (null if not found)</returns>
+        public T GetSingle<T>() where T : SaveableObject
+        {
+            return (T) _savedModels.FirstOrDefault(x => x.ObjectType == typeof(T)).Object;
+        }
+
+        /// <summary>
         /// Delete all saved files at local path (excluding ignore files from configuration)
         /// </summary>
         public void DeleteAll()
