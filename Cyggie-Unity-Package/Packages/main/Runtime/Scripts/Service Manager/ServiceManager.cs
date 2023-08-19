@@ -40,7 +40,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         private static ServiceManager _instance = null;
         private static ServiceManagerSettings _settings = null;
 
-        private readonly List<Service> _services = new List<Service>();
+        private static readonly List<Service> _services = new List<Service>();
 
         #region Public Properties
 
@@ -114,21 +114,14 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// Get a service of a specific type
         /// </summary>
         /// <typeparam name="T">Type of service</typeparam>
-        /// <returns>Stored service</returns>
+        /// <returns>Stored service (null if not found)</returns>
         public static T Get<T>() where T : Service
         {
-            // Check if Service Manager has been initialized
-            if (_instance == null)
-            {
-                Log.Error($"Failed to get a service, Service Manager has not yet been initialized. Use {nameof(OnServicesInitialized)} or call Get in {nameof(Start)}.", nameof(ServiceManager));
-                return default;
-            }
-
-            Service service = _instance._services.FirstOrDefault(x => x.GetType() == typeof(T));
+            Service service = _services.FirstOrDefault(x => x.GetType() == typeof(T));
 
             if (service == null)
             {
-                Log.Error($"Unable to find service of type: {typeof(T)}.", nameof(ServiceManager));
+                Log.Error($"Unable to get service {typeof(T)}. Make sure the service is initialized before calling Get; use {nameof(OnServicesInitialized)} or call Get in {nameof(Start)}.", nameof(ServiceManager));
             }
 
             return (T) service;
