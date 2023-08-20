@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Cyggie.Main.Runtime.Utils.Extensions
 {
@@ -9,7 +10,24 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
     /// </summary>
     public static class MonoBehaviourExtensions
     {
+        private const float cDefaultDelay = 0.01f;
+
         #region Extension methods
+        
+        /// <summary>
+        /// Starts an <paramref name="action"/> after a <paramref name="delay"/> (in seconds)
+        /// </summary>
+        /// <param name="mono">Monobehaviour that triggers the action</param>
+        /// <param name="action">Action to invoke after delay</param>
+        /// <param name="delay">Delay before action is invoked (in seconds)</param>
+        public static void DelayedAction(this MonoBehaviour mono, UnityAction action, float delay = cDefaultDelay)
+        {
+            mono.StartCoroutine(DelayedCoroutine(action, delay));
+        }
+
+        #endregion
+
+        #region Coroutine extension methods
 
         /// <summary>
         /// Safely (re)starts a coroutine by first stopping it if it's not null before starting it.
@@ -47,9 +65,9 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
         /// <param name="delay">Delay before starting the enumerator</param>
         /// <param name="enumerator">Enumerator method to start</param>
         /// <returns>Coroutine from starting the enumerator</returns>
-        public static Coroutine StartDelayedCoroutine(this MonoBehaviour mono, float delay, IEnumerator enumerator)
+        public static Coroutine StartDelayedCoroutine(this MonoBehaviour mono, IEnumerator enumerator, float delay)
         {
-            return mono.StartCoroutine(DelayedCoroutine(delay, enumerator));
+            return mono.StartCoroutine(DelayedCoroutine(enumerator, delay));
         }
 
         /// <summary>
@@ -60,14 +78,14 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
         /// <param name="coroutine">Referenced coroutine to stop</param>
         /// <param name="delay">Delay before starting the enumerator</param>
         /// <param name="enumerator">Enumerator method to start</param>
-        public static void SafeStartDelayedCoroutine(this MonoBehaviour mono, ref Coroutine coroutine, float delay, IEnumerator enumerator)
+        public static void SafeStartDelayedCoroutine(this MonoBehaviour mono, ref Coroutine coroutine, IEnumerator enumerator, float delay)
         {
             if (coroutine != null)
             {
                 mono.StopCoroutine(coroutine);
             }
 
-            coroutine = mono.StartCoroutine(DelayedCoroutine(delay, enumerator));
+            coroutine = mono.StartCoroutine(DelayedCoroutine(enumerator, delay));
         }
 
         /// <summary>
@@ -107,10 +125,16 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
 
         #region Private coroutines
 
-        private static IEnumerator DelayedCoroutine(float delay, IEnumerator enumerator)
+        private static IEnumerator DelayedCoroutine(IEnumerator enumerator, float delay)
         {
             yield return new WaitForSeconds(delay);
             yield return enumerator;
+        }
+
+        private static IEnumerator DelayedCoroutine(UnityAction action, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            action.Invoke();
         }
 
         private static IEnumerator ConditionalCoroutine(Predicate condition, IEnumerator enumerator, float maxTime)
