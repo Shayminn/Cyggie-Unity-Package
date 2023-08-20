@@ -30,7 +30,6 @@ namespace Cyggie.Main.Runtime.Attributes
         /// <inheritdoc/>
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            Debug.Log("HELLO");
             GUI.enabled = false;
             EditorGUI.PropertyField(position, property, label, true);
             GUI.enabled = false;
