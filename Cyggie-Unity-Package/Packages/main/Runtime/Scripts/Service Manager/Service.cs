@@ -60,53 +60,77 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
         #region MonoBehaviour virtuals
 
+        #region Internals
+
+        internal void OnGUIInternal() => OnGUI();
+
+        internal void AwakeInternal() => Awake();
+
+        internal void OnEnableInternal() => OnEnable();
+
+        internal void StartInternal() => Start();
+
+        internal void OnDisableInternal() => OnDisable();
+
+        internal void UpdateInternal() => Update();
+
+        internal void FixedUpdateInternal() => FixedUpdate();
+
+        internal void OnDestroyInternal() => OnDestroy();
+
+        #endregion
+
+        #region Protected
+
         /// <summary>
         /// MonoBehaviour's OnGUI <br/>
         /// OnGUI is called for rendering and handling GUI events
         /// </summary>
-        public virtual void OnGUI() { }
+        protected virtual void OnGUI() { }
 
         /// <summary>
         /// MonoBehaviour's Awake <br/>
         /// Awake is called when the script instance is being loaded
         /// </summary>
-        public virtual void Awake() { }
+        protected virtual void Awake() { }
 
         /// <summary>
         /// MonoBehaviour's OnEnable <br/>
         /// This function is called when the object becomes enabled and active
         /// </summary>
-        public virtual void OnEnable() { }
+        protected virtual void OnEnable() { }
 
         /// <summary>
         /// MonoBehaviour's Start <br/>
         /// Start is called just before any of the Update methods is called the first time
         /// </summary>
-        public virtual void Start() { }
+        protected virtual void Start() { }
 
         /// <summary>
         /// MonoBehaviour's OnDisable <br/>
         /// This function is called when the object becomes disabled and inactive
         /// </summary>
-        public virtual void OnDisable() { }
+        protected virtual void OnDisable() { }
 
         /// <summary>
         /// MonoBehaviour's Update <br/>
         /// Update is called every frame, if the MonoBehaviour is enabled
         /// </summary>
-        public virtual void Update() { }
+        protected virtual void Update() { }
 
         /// <summary>
         /// MonoBehaviour's FixedUpdate <br/>
         /// This function is called every fixed framerate frame, if the MonoBehaviour is enabled
         /// </summary>
-        public virtual void FixedUpdate() { }
+        protected virtual void FixedUpdate() { }
 
         /// <summary>
         /// MonoBehaviour's OnDestroy <br/>
         /// This function is called when the MonoBehaviour will be destroyed
         /// </summary>
-        public virtual void OnDestroy() { }
+        protected virtual void OnDestroy() { }
+
+        #endregion
 
         #endregion
 

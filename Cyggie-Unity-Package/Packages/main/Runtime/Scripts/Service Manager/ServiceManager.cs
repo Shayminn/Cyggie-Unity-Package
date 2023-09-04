@@ -131,7 +131,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
         private void OnGUI()
         {
-            _services.ForEach(x => x.OnGUI());
+            _services.ForEach(x => x.OnGUIInternal());
         }
 
         private void Awake()
@@ -149,37 +149,37 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
             InitializeServices();
 
-            _services.ForEach(x => x.Awake());
+            _services.ForEach(x => x.AwakeInternal());
         }
 
         private void OnEnable()
         {
-            _services.ForEach(x => x.OnEnable());
+            _services.ForEach(x => x.OnEnableInternal());
         }
 
         private void Start()
         {
-            _services.ForEach(x => x.Start());
+            _services.ForEach(x => x.StartInternal());
         }
 
         private void OnDisable()
         {
-            _services.ForEach(x => x.OnDisable());
+            _services.ForEach(x => x.OnDisableInternal());
         }
 
         private void Update()
         {
-            _services.ForEach(x => x.Update());
+            _services.ForEach(x => x.UpdateInternal());
         }
 
         private void FixedUpdate()
         {
-            _services.ForEach(x => x.FixedUpdate());
+            _services.ForEach(x => x.FixedUpdateInternal());
         }
 
         private void OnDestroy()
         {
-            _services.ForEach(x => x.OnDestroy());
+            _services.ForEach(x => x.OnDestroyInternal());
         }
 
         #endregion
