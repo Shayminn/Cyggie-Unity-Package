@@ -19,13 +19,23 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         /// Called when a Scene Change has started
         /// </summary>
         public delegate void OnSceneChangeStartedEvent(SceneChangeStartedEventArgs args);
-        public OnSceneChangeStartedEvent OnSceneChangeStarted;
+        public OnSceneChangeStartedEvent OnSceneChangeStarted = null;
+        private SceneChangeStartedEventArgs _sceneChangeStartedArgs = new SceneChangeStartedEventArgs();
 
         /// <summary>
         /// Called when a Scene Change has completed
         /// </summary>
         public delegate void OnSceneChangeCompletedEvent(SceneChangeCompletedEventArgs args);
-        public OnSceneChangeCompletedEvent OnSceneChangeCompleted;
+        public OnSceneChangeCompletedEvent OnSceneChangeCompleted = null;
+        private SceneChangeCompletedEventArgs _sceneChangeCompletedArgs = new SceneChangeCompletedEventArgs();
+
+        /// <summary>
+        /// Called when a Scene Change is completed and has changed (not called when a scene is reloaded)
+        /// </summary>
+        /// <param name="args"></param>
+        public delegate void OnSceneChangedEvent(SceneChangedEventArgs args);
+        public OnSceneChangedEvent OnSceneChanged = null;
+        private SceneChangedEventArgs _sceneChangedArgs = new SceneChangedEventArgs();
 
         /// <summary>
         /// Settings object
@@ -38,7 +48,8 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         private LoadingScreen _loadingScreen = null;
 
         private bool _inProgress = false;
-        private string _nextSceneName = string.Empty;
+        private Scene _previousScene;
+        private Scene _nextScene;
 
         private bool IsInitialized => _settings != null || _loadingScreen != null;
 
@@ -71,7 +82,7 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
             AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(scene.name);
             if (asyncOperation == null) return;
 
-            _nextSceneName = scene.name;
+            _previousScene = scene;
             _loadingScreen.StartCoroutine(ChangeSceneAsync(asyncOperation, changeSceneSettings));
         }
 
@@ -84,10 +95,11 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         {
             if (!ProcessChecks()) return;
 
-            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(name);
+            Scene scene = SceneManager.GetSceneByName(name);
+            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(scene.name);
             if (asyncOperation == null) return;
 
-            _nextSceneName = name;
+            _nextScene = scene;
             _loadingScreen.StartCoroutine(ChangeSceneAsync(asyncOperation, changeSceneSettings));
         }
 
@@ -153,7 +165,10 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         private IEnumerator ChangeSceneAsync(AsyncOperation asyncOperation, ChangeSceneSettings changeSceneSettings = null)
         {
             _inProgress = true;
-            OnSceneChangeStarted?.Invoke(new SceneChangeStartedEventArgs(_nextSceneName));
+
+            _sceneChangeStartedArgs.Scene = _nextScene;
+            OnSceneChangeStarted?.Invoke(_sceneChangeStartedArgs);
+
             _loadingScreen.ToggleCanvas(true);
 
             // Apply default settings if null
@@ -215,7 +230,19 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
             }
 
             _loadingScreen.ToggleCanvas(false);
-            OnSceneChangeCompleted?.Invoke(new SceneChangeCompletedEventArgs(_nextSceneName));
+
+            _sceneChangeCompletedArgs.Scene = _nextScene;
+            OnSceneChangeCompleted?.Invoke(_sceneChangeCompletedArgs);
+            
+            if (_nextScene.name != _previousScene.name)
+            {
+                _sceneChangedArgs.PreviousScene = _previousScene;
+                _sceneChangedArgs.NewScene = _nextScene;
+                OnSceneChanged?.Invoke(_sceneChangedArgs);
+
+                _previousScene = _nextScene;
+            }
+
             _inProgress = false;
         }
 
