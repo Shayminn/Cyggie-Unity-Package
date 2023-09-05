@@ -202,7 +202,7 @@ namespace Cyggie.SceneChanger.Runtime
             _texts[index].gameObject.SetActive(true);
 
             // Reset the text's visibility when the scene load has completed
-            void ResetText()
+            void ResetText(SceneChangeCompletedEventArgs _)
             {
                 _texts[index].gameObject.SetActive(false);
                 SceneChangerService.OnSceneChangeCompleted -= ResetText;
