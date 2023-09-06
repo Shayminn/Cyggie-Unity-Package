@@ -74,7 +74,7 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
             AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(scene.name);
             if (asyncOperation == null) return;
 
-            _previousScene = scene;
+            _nextScene = scene;
             _loadingScreen.StartCoroutine(ChangeSceneAsync(asyncOperation, changeSceneSettings));
         }
 
@@ -85,14 +85,14 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         /// <param name="changeSceneSettings">Change scene settings to apply</param>
         public void ChangeScene(string name, ChangeSceneSettings changeSceneSettings = null)
         {
-            if (!ProcessChecks()) return;
+            int index = SceneUtility.GetBuildIndexByScenePath(name);
+            if (index == -1)
+            {
+                Log.Error($"Unable to change scene, scene was not found within the build settings: {name}.", nameof(SceneChangerService));
+                return;
+            }
 
-            Scene scene = SceneManager.GetSceneByName(name);
-            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(scene.name);
-            if (asyncOperation == null) return;
-
-            _nextScene = scene;
-            _loadingScreen.StartCoroutine(ChangeSceneAsync(asyncOperation, changeSceneSettings));
+            ChangeScene(index, changeSceneSettings);
         }
 
         /// <summary>
