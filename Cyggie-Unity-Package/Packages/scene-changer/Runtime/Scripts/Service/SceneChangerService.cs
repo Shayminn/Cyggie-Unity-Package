@@ -30,14 +30,6 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         private SceneChangeCompletedEventArgs _sceneChangeCompletedArgs = new SceneChangeCompletedEventArgs();
 
         /// <summary>
-        /// Called when a Scene Change is completed and has changed (not called when a scene is reloaded)
-        /// </summary>
-        /// <param name="args"></param>
-        public delegate void OnSceneChangedEvent(SceneChangedEventArgs args);
-        public OnSceneChangedEvent OnSceneChanged = null;
-        private SceneChangedEventArgs _sceneChangedArgs = new SceneChangedEventArgs();
-
-        /// <summary>
         /// Settings object
         /// </summary>
         private SceneChangerSettings _settings = null;
@@ -231,17 +223,9 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
 
             _loadingScreen.ToggleCanvas(false);
 
-            _sceneChangeCompletedArgs.Scene = _nextScene;
+            _sceneChangeCompletedArgs.PreviousScene = _previousScene;
+            _sceneChangeCompletedArgs.NewScene = _nextScene;    
             OnSceneChangeCompleted?.Invoke(_sceneChangeCompletedArgs);
-            
-            if (_nextScene.name != _previousScene.name)
-            {
-                _sceneChangedArgs.PreviousScene = _previousScene;
-                _sceneChangedArgs.NewScene = _nextScene;
-                OnSceneChanged?.Invoke(_sceneChangedArgs);
-
-                _previousScene = _nextScene;
-            }
 
             _inProgress = false;
         }

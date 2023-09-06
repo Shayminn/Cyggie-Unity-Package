@@ -9,8 +9,18 @@ namespace Cyggie.SceneChanger.Runtime
     public class SceneChangeCompletedEventArgs
     {
         /// <summary>
-        /// Scene that was completed
+        /// Scene that was previously loaded
         /// </summary>
-        public Scene Scene { get; internal set; }
+        public Scene PreviousScene { get; internal set; }
+
+        /// <summary>
+        /// Scene that was loaded
+        /// </summary>
+        public Scene NewScene { get; internal set; }
+
+        /// <summary>
+        /// Whether the scene was reloaded or changed to a new one
+        /// </summary>
+        public bool Reloaded => PreviousScene.name == NewScene.name;
     }
 }
