@@ -1,10 +1,10 @@
-using Cyggie.Main.Runtime;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Plugins.Logs;
 using Cyggie.SceneChanger.Runtime.Configurations;
 using Cyggie.SceneChanger.Runtime.Settings;
 using System;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,8 +40,6 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         private LoadingScreen _loadingScreen = null;
 
         private bool _inProgress = false;
-        private Scene _previousScene;
-        private Scene _nextScene;
 
         private bool IsInitialized => _settings != null || _loadingScreen != null;
 
@@ -68,14 +66,14 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         /// <param name="changeSceneSettings">Change scene settings to apply</param>
         public void ChangeScene(int index, ChangeSceneSettings changeSceneSettings = null)
         {
-            if (!ProcessChecks()) return;
+            string sceneName = SceneUtility.GetScenePathByBuildIndex(index);
+            if (string.IsNullOrEmpty(sceneName))
+            {
+                Log.Error($"Unable to change scene, scene by index was not found in the build settings: {index}.", nameof(SceneChangerService));
+                return;
+            }
 
-            Scene scene = SceneManager.GetSceneByBuildIndex(index);
-            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(scene.name);
-            if (asyncOperation == null) return;
-
-            _nextScene = scene;
-            _loadingScreen.StartCoroutine(ChangeSceneAsync(asyncOperation, changeSceneSettings));
+            ChangeScene(sceneName, changeSceneSettings);
         }
 
         /// <summary>
@@ -85,14 +83,18 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         /// <param name="changeSceneSettings">Change scene settings to apply</param>
         public void ChangeScene(string name, ChangeSceneSettings changeSceneSettings = null)
         {
-            int index = SceneUtility.GetBuildIndexByScenePath(name);
-            if (index == -1)
-            {
-                Log.Error($"Unable to change scene, scene was not found within the build settings: {name}.", nameof(SceneChangerService));
-                return;
-            }
+            if (!ProcessChecks()) return;
 
-            ChangeScene(index, changeSceneSettings);
+            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(name);
+            if (asyncOperation == null) return;
+
+            string sceneName = Path.GetFileNameWithoutExtension(name);
+
+            _sceneChangeStartedArgs.Scene = sceneName;
+            _sceneChangeCompletedArgs.PreviousScene = _sceneChangeCompletedArgs.NewScene;
+            _sceneChangeCompletedArgs.NewScene = sceneName;
+
+            _loadingScreen.StartCoroutine(ChangeSceneAsync(asyncOperation, changeSceneSettings));
         }
 
         /// <summary>
@@ -158,9 +160,7 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         {
             _inProgress = true;
 
-            _sceneChangeStartedArgs.Scene = _nextScene;
             OnSceneChangeStarted?.Invoke(_sceneChangeStartedArgs);
-
             _loadingScreen.ToggleCanvas(true);
 
             // Apply default settings if null
@@ -223,8 +223,6 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
 
             _loadingScreen.ToggleCanvas(false);
 
-            _sceneChangeCompletedArgs.PreviousScene = _previousScene;
-            _sceneChangeCompletedArgs.NewScene = _nextScene;    
             OnSceneChangeCompleted?.Invoke(_sceneChangeCompletedArgs);
 
             _inProgress = false;

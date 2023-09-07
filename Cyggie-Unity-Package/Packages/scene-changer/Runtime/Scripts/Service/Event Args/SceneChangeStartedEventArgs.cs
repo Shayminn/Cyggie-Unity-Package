@@ -9,8 +9,8 @@ namespace Cyggie.SceneChanger.Runtime
     public class SceneChangeStartedEventArgs
     {
         /// <summary>
-        /// Scene that is starting
+        /// Scene name that is starting
         /// </summary>
-        public Scene Scene { get; internal set; }
+        public string Scene { get; internal set; }
     }
 }
