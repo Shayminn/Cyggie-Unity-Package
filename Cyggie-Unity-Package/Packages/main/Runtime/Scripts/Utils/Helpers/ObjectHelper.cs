@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Cyggie.Main.Runtime.Utils.Helpers
 {
@@ -11,6 +8,22 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
     /// </summary>
     public static class ObjectHelper
     {
+        /// <summary>
+        /// Prefab to an empty game object prefab
+        /// </summary>
+        internal static GameObject EmptyPrefab { get; set; }
+
+        /// <summary>
+        /// Instantiate an empty game object to the scene
+        /// </summary>
+        /// <param name="parent">Parent of the empty game object</param>
+        /// <param name="worldPositionStays">Whether the world position should stay</param>
+        /// <returns>Created empty game object</returns>
+        public static GameObject InstantiateEmptyPrefab(Transform parent = null, bool worldPositionStays = false)
+        {
+            return UnityEngine.Object.Instantiate(EmptyPrefab, parent, worldPositionStays);
+        }
+
         /// <summary>
         /// Assign value if <paramref name="obj"/> is null, returning <paramref name="obj"/> or new value from <paramref name="func"/>. <br/>
         /// The equivalent of the "??=" operator, but <see cref="UnityEngine.Object"/> null checks are different from <see cref="System.Object"/> so this step is necessary to achieve the same result.

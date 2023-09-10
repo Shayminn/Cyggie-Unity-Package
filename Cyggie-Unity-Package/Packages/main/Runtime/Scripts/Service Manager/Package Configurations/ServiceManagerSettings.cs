@@ -25,6 +25,9 @@ namespace Cyggie.Main.Runtime.Configurations
         [SerializeField, Tooltip("Prefab instantiated at the start which contains this component.")]
         internal ServiceManager Prefab = null;
 
+        [SerializeField, Tooltip("Empty prefab for the ObjectHelper.")]
+        internal GameObject EmptyPrefab = null;
+
         [SerializeField, Tooltip("Determines which services part of the Main package should be enabled.")]
         internal MainServiceTypes EnabledServices = MainServiceTypes.Everything;
 
@@ -52,6 +55,7 @@ namespace Cyggie.Main.Runtime.Configurations
 #if UNITY_EDITOR
 
         private const string cPrefabPath = "Packages/cyggie.main/Runtime/Prefabs/Service Manager.prefab";
+        private const string cEmptyPrefabPath = "Packages/cyggie.main/Runtime/Prefabs/GameObject.prefab";
 
         /// <inheritdoc/>
         internal override void OnScriptableObjectCreated()
@@ -59,6 +63,7 @@ namespace Cyggie.Main.Runtime.Configurations
             base.OnScriptableObjectCreated();
 
             Prefab = AssetDatabase.LoadAssetAtPath<ServiceManager>(cPrefabPath);
+            EmptyPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(cEmptyPrefabPath);
 
             // This makes sure that the above reference is saved after closing the editor
             EditorUtility.SetDirty(this);
@@ -66,6 +71,16 @@ namespace Cyggie.Main.Runtime.Configurations
 
         internal void Refresh()
         {
+            if (Prefab == null)
+            {
+                Prefab = AssetDatabase.LoadAssetAtPath<ServiceManager>(cPrefabPath);
+            }
+
+            if (EmptyPrefab == null)
+            {
+                EmptyPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(cEmptyPrefabPath);
+            }
+
             // Remove null/missing configurations
             ServiceConfigurations.RemoveAll(config => config == null);
 

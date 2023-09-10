@@ -45,7 +45,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         #region Public Properties
 
         /// <summary>
-        /// 
+        /// The service manager's game object in the scene
         /// </summary>
         public static GameObject GameObject => _instance.gameObject;
 
@@ -65,7 +65,8 @@ namespace Cyggie.Main.Runtime.ServicesNS
                 Log.Error($"Unable to find Service Manager Settings in Resources.", nameof(ServiceManager));
                 return;
             }
-
+            
+            // Toggle logs
             if (Settings.EnableLog)
             {
                 Log.Enable();
@@ -75,6 +76,9 @@ namespace Cyggie.Main.Runtime.ServicesNS
                 Log.Disable();
             }
 
+            // Set helpers
+            ObjectHelper.EmptyPrefab = Settings.EmptyPrefab;
+            
             // Create service manager object
             Instantiate(Settings.Prefab);
         }
