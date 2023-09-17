@@ -301,9 +301,10 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
         /// <param name="keySelector">Function selector for keys</param>
         /// <param name="elementSelector">Function selector for values</param>
         /// <returns>Serialized Dictionary of TKey and TElement</returns>
-        public static SerializedDictionary<TKey, TValue> ToSerializedDictionary<TSource, TKey, TValue>(this IEnumerable<TSource> iEnumerable, Func<TSource, TKey> keySelector, Func<TSource, TValue> elementSelector)
+        public static TSource ToSerializedDictionary<TSource, TKey, TValue>(this IEnumerable<TSource> iEnumerable, Func<TSource, TKey> keySelector, Func<TSource, TValue> elementSelector)
+            where TSource : SerializedDictionary<TKey, TValue>, new()
         {
-            SerializedDictionary<TKey, TValue> dict = new SerializedDictionary<TKey, TValue>();
+            TSource dict = new TSource();
             foreach (TSource source in iEnumerable)
             {
                 dict.Add(keySelector.Invoke(source), elementSelector.Invoke(source));

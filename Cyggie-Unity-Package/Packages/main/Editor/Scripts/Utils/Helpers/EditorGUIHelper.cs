@@ -52,8 +52,8 @@ namespace Cyggie.Main.Editor.Utils.Helpers
         /// <param name="onConfirm">Invoked when the confirm button is clicked</param>
         /// <param name="onCancel">Invoked when the cancel button is clicked</param>
         /// <param name="onInactiveGUI">Invoked when active is false</param>
-        public static void DrawWithConfirm(ref bool active, string confirmLabel, Action onConfirm, Action onCancel = null, Action onInactiveGUI = null)
-            => DrawWithConfirm(ref active, new GUIContent(confirmLabel), onConfirm, onCancel, onInactiveGUI);
+        public static void DrawWithConfirm(ref bool active, Action onInactiveGUI, string confirmLabel, Action onConfirm, Action onCancel = null)
+            => DrawWithConfirm(ref active, onInactiveGUI, new GUIContent(confirmLabel), onConfirm, onCancel);
 
         /// <summary>
         /// Draw EditorGUI with a confirm & cancel button
@@ -63,7 +63,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
         /// <param name="onConfirm">Invoked when the confirm button is clicked</param>
         /// <param name="onCancel">Invoked when the cancel button is clicked</param>
         /// <param name="onInactiveGUI">Invoked when active is false</param>
-        public static void DrawWithConfirm(ref bool active, GUIContent confirmLabel = null, Action onConfirm = null, Action onCancel = null, Action onInactiveGUI = null)
+        public static void DrawWithConfirm(ref bool active, Action onInactiveGUI, GUIContent confirmLabel = null, Action onConfirm = null, Action onCancel = null)
         {
             if (active)
             {
@@ -73,7 +73,7 @@ namespace Cyggie.Main.Editor.Utils.Helpers
                 }
 
                 bool newActive = active;
-                EditorGUIHelper.DrawHorizontal(gui: () =>
+                DrawHorizontal(gui: () =>
                 {
                     GUIHelper.DrawWithBackgroundColor(Color.green, gui: () =>
                     {

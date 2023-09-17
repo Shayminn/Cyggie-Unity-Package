@@ -17,5 +17,11 @@ namespace Cyggie.Main.Editor.Utils.Styles
         //
         internal static readonly GUIContent cPrefab = new GUIContent("Prefab", "Prefab object to instantiate on start.");
         internal static readonly GUIContent cServiceConfigurations = new GUIContent("Service Configurations", "List of service configurations to apply.");
+
+        // 
+        // Property Drawers
+        //
+        internal static readonly GUIContent cKeyAlreadyExists = new GUIContent("Key already exists!");
+        internal static readonly GUIContent cUnsupportedType = new GUIContent("Unsupported key type!");
     }
 }
