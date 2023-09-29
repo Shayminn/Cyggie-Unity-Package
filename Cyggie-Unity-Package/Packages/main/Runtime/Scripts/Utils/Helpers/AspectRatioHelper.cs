@@ -9,10 +9,10 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
     public static class AspectRatioHelper
     {
         /// <summary>
-        /// Get the aspect ratio based on the current <see cref="Screen.currentResolution.width"/> and <see cref="Screen.currentResolution.height"/>
+        /// Get the aspect ratio based on the current <see cref="Screen.width"/> and <see cref="Screen.height"/>
         /// </summary>
         /// <returns>Aspect ratio in enum value</returns>
-        public static AspectRatio GetAspectRatio() => GetAspectRatio(Screen.currentResolution.width, Screen.currentResolution.height);
+        public static AspectRatio GetAspectRatio() => GetAspectRatio(Screen.width, Screen.height);
 
         /// <summary>
         /// Get the aspect ratio from a width and a height
