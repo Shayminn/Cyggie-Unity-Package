@@ -36,13 +36,15 @@ namespace Cyggie.Plugins.Encryption
         /// <returns>Encrypted data</returns>
         public static string Encrypt(string data)
         {
-            AesCryptoServiceProvider AEScryptoProvider = new AesCryptoServiceProvider();
-            AEScryptoProvider.BlockSize = 128;
-            AEScryptoProvider.KeySize = 256;
-            AEScryptoProvider.Key = ASCIIEncoding.ASCII.GetBytes(_key);
-            AEScryptoProvider.IV = ASCIIEncoding.ASCII.GetBytes(_iv);
-            AEScryptoProvider.Mode = CipherMode.CBC;
-            AEScryptoProvider.Padding = PaddingMode.PKCS7;
+            AesCryptoServiceProvider AEScryptoProvider = new AesCryptoServiceProvider
+            {
+                BlockSize = 128,
+                KeySize = 256,
+                Key = ASCIIEncoding.ASCII.GetBytes(_key),
+                IV = ASCIIEncoding.ASCII.GetBytes(_iv),
+                Mode = CipherMode.CBC,
+                Padding = PaddingMode.PKCS7
+            };
 
             byte[] txtByteData = ASCIIEncoding.ASCII.GetBytes(data);
             ICryptoTransform trnsfrm = AEScryptoProvider.CreateEncryptor(AEScryptoProvider.Key, AEScryptoProvider.IV);
@@ -63,13 +65,15 @@ namespace Cyggie.Plugins.Encryption
             {
                 byte[] txtByteData = Convert.FromBase64String(data);
 
-                AesCryptoServiceProvider AEScryptoProvider = new AesCryptoServiceProvider();
-                AEScryptoProvider.BlockSize = 128;
-                AEScryptoProvider.KeySize = 256;
-                AEScryptoProvider.Key = ASCIIEncoding.ASCII.GetBytes(_key);
-                AEScryptoProvider.IV = ASCIIEncoding.ASCII.GetBytes(_iv);
-                AEScryptoProvider.Mode = CipherMode.CBC;
-                AEScryptoProvider.Padding = PaddingMode.PKCS7;
+                AesCryptoServiceProvider AEScryptoProvider = new AesCryptoServiceProvider
+                {
+                    BlockSize = 128,
+                    KeySize = 256,
+                    Key = ASCIIEncoding.ASCII.GetBytes(_key),
+                    IV = ASCIIEncoding.ASCII.GetBytes(_iv),
+                    Mode = CipherMode.CBC,
+                    Padding = PaddingMode.PKCS7
+                };
                 ICryptoTransform trnsfrm = AEScryptoProvider.CreateDecryptor();
                 
                 byte[] result = trnsfrm.TransformFinalBlock(txtByteData, 0, txtByteData.Length);

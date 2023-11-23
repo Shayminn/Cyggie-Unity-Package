@@ -23,7 +23,7 @@ public class SQLiteTest : MonoBehaviour
     private TMP_Dropdown _dropdown = null;
 
     private SQLiteService _service = null;
-    private SQLiteService Service => _service ?? ServiceManager.Get<SQLiteService>();
+    private SQLiteService Service => _service ?? ServiceManagerMono.Get<SQLiteService>();
 
     private SQLiteDatabase _db = null;
 

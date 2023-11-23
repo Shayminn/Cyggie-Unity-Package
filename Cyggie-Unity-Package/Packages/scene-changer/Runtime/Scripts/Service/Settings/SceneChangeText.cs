@@ -7,43 +7,43 @@ namespace Cyggie.SceneChanger.Runtime.Settings
     /// Model class for creating Text GameObjects for <see cref="LoadingScreen"/>
     /// </summary>
     [Serializable]
-    internal class SceneChangeText
+    public class SceneChangeText
     {
         [SerializeField]
         internal bool PropertyFoldout = true;
 
-        [SerializeField]
-        internal string Text = "Text";
+        [SerializeField, Tooltip("Text value.")]
+        public string Text = "Text";
 
         [SerializeField]
         internal bool TransformSettingsFoldout = true;
 
-        [SerializeField]
-        internal Vector3 Position = Vector3.zero;
+        [SerializeField, Tooltip("Position of the text.")]
+        public Vector3 Position = Vector3.zero;
 
-        [SerializeField]
-        internal Vector2 ObjectSize = new Vector2(500, 150);
+        [SerializeField, Tooltip("Transform size of the text.")]
+        public Vector2 ObjectSize = new Vector2(500, 150);
 
         [SerializeField]
         internal bool TextSettingsFoldout = true;
 
-        [SerializeField]
-        internal Color TextColor = Color.white;
+        [SerializeField, Tooltip("Color of the text.")]
+        public Color TextColor = Color.white;
 
-        [SerializeField]
-        internal int TextSize = 36;
+        [SerializeField, Tooltip("Size of the text.")]
+        public int TextSize = 36;
 
         [SerializeField, HideInInspector]
         internal bool VisibilitySettingsFoldout = true;
 
-        [SerializeField]
-        internal bool AlwaysVisible = true;
+        [SerializeField, Tooltip("Whether the text is always visible.")]
+        public bool AlwaysVisible = true;
 
-        [SerializeField]
-        internal int ImageSpecific = -1;
+        [SerializeField, Tooltip("Index of the image that this text should always apply to.")]
+        public int ImageSpecific = -1;
 
-        [SerializeField]
+        [SerializeField, Tooltip("Loading % progress to display this text.")]
         [Range(0, 100)]
-        internal float DisplayAtProgress = 0;
+        public float DisplayAtProgress = 0;
     }
 }

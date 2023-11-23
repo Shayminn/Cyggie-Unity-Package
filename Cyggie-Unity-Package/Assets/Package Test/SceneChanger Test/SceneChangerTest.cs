@@ -12,7 +12,7 @@ public class SceneChangerTest : MonoBehaviour
     private SceneChangerControls _controls;
 
     private SceneChangerService _sceneChangerService = null;
-    private SceneChangerService SceneChangerService => _sceneChangerService ??= ServiceManager.Get<SceneChangerService>();
+    private SceneChangerService SceneChangerService => _sceneChangerService ??= ServiceManagerMono.Get<SceneChangerService>();
 
     // Start is called before the first frame update
     private void Awake()

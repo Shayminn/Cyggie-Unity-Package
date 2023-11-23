@@ -4,13 +4,17 @@ using UnityEditor;
 
 using UnityEngine;
 
-namespace Cyggie.Main.Runtime.Utils.Helpers
+namespace Cyggie.Plugins.Utils.Helpers
 {
     /// <summary>
     /// Helper class for Unity-related stuff
     /// </summary>
     public static class UnityHelper
     {
+        /// <summary>
+        /// Get the current screen resolution
+        /// </summary>
+        /// <returns>Resolution struct</returns>
         public static Resolution GetCurrentResolution()
         {
 #if UNITY_EDITOR
@@ -24,7 +28,6 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
 #else
             return Screen.currentResolution;
 #endif
-
         }
 
         /// <summary>

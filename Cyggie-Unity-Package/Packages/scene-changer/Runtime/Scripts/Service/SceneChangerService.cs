@@ -13,7 +13,7 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
     /// <summary>
     /// Service class for managing Scene Changes
     /// </summary>
-    public sealed class SceneChangerService : Service
+    public sealed class SceneChangerService : PackageServiceMono<SceneChangerServiceConfiguration>
     {
         /// <summary>
         /// Called when a Scene Change has started
@@ -30,33 +30,26 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         private SceneChangeCompletedEventArgs _sceneChangeCompletedArgs = new SceneChangeCompletedEventArgs();
 
         /// <summary>
-        /// Settings object
-        /// </summary>
-        private SceneChangerSettings _settings = null;
-
-        /// <summary>
         /// Loading screen hierarchy object created from _settings.LoadingScreen (prefab)
         /// </summary>
         private LoadingScreen _loadingScreen = null;
 
         private bool _inProgress = false;
 
-        private bool IsInitialized => _settings != null || _loadingScreen != null;
+        private bool IsInitialized => Configuration != null || _loadingScreen != null;
 
         /// <inheritdoc/>
         protected override void OnInitialized()
         {
-            _settings = (SceneChangerSettings) _configuration;
-
             // Create game object from prefab
-            _loadingScreen = Instantiate(_settings.LoadingScreenPrefab);
+            _loadingScreen = Instantiate(Configuration.LoadingScreenPrefab);
 
             // Hide object
             _loadingScreen.ToggleCanvas(false);
             _loadingScreen.ToggleLoadingScreen(false, false);
 
             // Initialize the settings in the loading screen
-            _loadingScreen.SetSettings(_settings);
+            _loadingScreen.SetSettings(Configuration);
         }
 
         /// <summary>
@@ -171,9 +164,9 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
             {
                 foreach (int i in changeSceneSettings.TextIndexes)
                 {
-                    if (i >= _settings.Texts.Length)
+                    if (i >= Configuration.Texts.Length)
                     {
-                        Log.Error($"Index is out of range: Settings has {_settings.Texts.Length} texts, but request index was {i} (array is in base 0).", nameof(SceneChangerService));
+                        Log.Error($"Index is out of range: Settings has {Configuration.Texts.Length} texts, but request index was {i} (array is in base 0).", nameof(SceneChangerService));
                         continue;
                     }
 
@@ -235,7 +228,7 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         /// <param name="changeSceneSettings">The settings applied</param>
         private IEnumerator WaitLoadingScreen(AsyncOperation asyncOperation, ChangeSceneSettings changeSceneSettings)
         {
-            float minimumLoadTime = _settings.MinimumLoadTime;
+            float minimumLoadTime = Configuration.MinimumLoadTime;
 
             // Loop till scene change is done
             while (!asyncOperation.isDone)

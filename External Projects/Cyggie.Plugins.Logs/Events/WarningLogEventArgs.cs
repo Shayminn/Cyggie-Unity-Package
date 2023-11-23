@@ -10,7 +10,7 @@ namespace Cyggie.Plugins.Logs
         /// <inheritdoc/>
         public override LogTypes Type => LogTypes.Warning;
 
-        internal WarningLogEventArgs(string log, string tag, Object? context) : base(log, tag, context) { }
+        internal WarningLogEventArgs(string log, string tag, UnityEngine.Object? context) : base(log, tag, context) { }
 
         /// <inheritdoc/>
         internal override void Send() => Debug.LogWarning(Log, Context);

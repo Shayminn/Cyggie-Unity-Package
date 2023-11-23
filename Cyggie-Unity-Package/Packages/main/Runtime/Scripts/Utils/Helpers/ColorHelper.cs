@@ -16,6 +16,7 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
         /// <param name="mono">MonoBehaviour object to start the coroutine</param>
         /// <param name="color">Color to change as reference</param>
         /// <param name="targetAlpha">Target alpha value to transition to</param>
+        /// <param name="transitionDuration">The duration of the transition from current color's alpha to target alpha</param>
         /// <param name="onColorUpdated">Action called on every tick of change in alpha value</param>
         /// <param name="onTransitionCompleted">Action called when the transition is complete</param>
         public static void TransitionColorAlpha(MonoBehaviour mono, Color color, float targetAlpha, float transitionDuration = 1f, Action<Color> onColorUpdated = null, Action onTransitionCompleted = null)
@@ -25,11 +26,11 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
         }
 
         /// <summary>
-        /// Coroutine to change alpha color on every tick for <see cref="TransitionColorAlpha"/>
+        /// Coroutine to change alpha color on every tick for <see cref="TransitionColorAlpha(MonoBehaviour, Color, float, float, Action{Color}, Action)"/>
         /// </summary>
         /// <param name="color">Color struct</param>
         /// <param name="targetAlpha">Target alpha value to transition to</param>
-        /// <param name="transitionDuration">Time</param>
+        /// <param name="transitionDuration">The duration of the transition from current color's alpha to target alpha</param>
         /// <param name="onColorUpdated">Action called when the color's alpha is updated</param>
         /// <param name="onTransitionCompleted">Action called when the transition is complete</param>
         /// <returns>Coroutine enumerator</returns>

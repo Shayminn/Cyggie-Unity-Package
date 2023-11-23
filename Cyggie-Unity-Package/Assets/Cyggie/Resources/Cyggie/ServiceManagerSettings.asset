@@ -12,12 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee6208939e582940914941b98d7ac44, type: 3}
   m_Name: ServiceManagerSettings
   m_EditorClassIdentifier: 
-  Initialize: 1
   Prefab: {fileID: 5703444348504700640, guid: 9a5fad89ca320d34fb9a7b3c02b9d9d9, type: 3}
-  EnabledServices: -1
+  EmptyPrefab: {fileID: 8711039915073681441, guid: 81d726f932bb0cf48a5f59bb6b470670, type: 3}
   EnableLog: 1
+  ServiceIdentifiers:
+  - {fileID: 11400000, guid: 75b1f429bf66d5f4bbc47c9d47d13e80, type: 2}
+  - {fileID: 11400000, guid: c745853e80947804cb2bb558cd2d1976, type: 2}
+  - {fileID: 11400000, guid: 61b212349067b2e4986673c2eaa52658, type: 2}
+  - {fileID: 11400000, guid: 9cd6d8b1a7f09d74b996e9cc9510f844, type: 2}
   ServiceConfigurations:
-  - {fileID: 11400000, guid: 34ba60e670ac7854f94da5515a2a5392, type: 2}
   - {fileID: 11400000, guid: 9400bd91889e1d04fbe4a59f2201af20, type: 2}
-  - {fileID: 11400000, guid: 6275b7a2043919749952713608b4c097, type: 2}
-  LogProfiles: []
+  - {fileID: 11400000, guid: 34ba60e670ac7854f94da5515a2a5392, type: 2}
+  LogProfiles:
+  - {fileID: 11400000, guid: 985d2f849b7754e48871354ed3f63846, type: 2}

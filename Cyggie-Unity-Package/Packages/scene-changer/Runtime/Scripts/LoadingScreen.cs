@@ -1,8 +1,10 @@
 using Cyggie.Main.Runtime.ServicesNS;
-using Cyggie.Main.Runtime.Utils.Enums;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.Main.Runtime.Utils.Helpers;
 using Cyggie.Plugins.Logs;
+using Cyggie.Plugins.Utils.Enums;
+using Cyggie.Plugins.Utils.Extensions;
+using Cyggie.Plugins.Utils.Helpers;
 using Cyggie.SceneChanger.Runtime.Configurations;
 using Cyggie.SceneChanger.Runtime.Enums;
 using Cyggie.SceneChanger.Runtime.ServicesNS;
@@ -18,7 +20,7 @@ using UnityEngine.UI;
 namespace Cyggie.SceneChanger.Runtime
 {
     /// <summary>
-    /// Object class for a Loading Screen controlling UI elements based on settings from <see cref="SceneChangerSettings"/>
+    /// Object class for a Loading Screen controlling UI elements based on settings from <see cref="SceneChangerServiceConfiguration"/>
     /// </summary>
     internal class LoadingScreen : MonoBehaviour
     {
@@ -51,7 +53,7 @@ namespace Cyggie.SceneChanger.Runtime
         [SerializeField, Tooltip("Loading Screen Text prefab to instantiate.")]
         private TextMeshProUGUI _textPrefab = null;
 
-        private SceneChangerSettings _settings = null;
+        private SceneChangerServiceConfiguration _settings = null;
         private List<TextMeshProUGUI> _texts = new List<TextMeshProUGUI>();
         private List<SceneChangeText> _inactiveTextToLoad = new List<SceneChangeText>();
 
@@ -60,7 +62,7 @@ namespace Cyggie.SceneChanger.Runtime
         private int _previousRandomIndex = -1; // Used with RandomType.ResetAfterEachNoPreviousRepeat
 
         private SceneChangerService _sceneChangerService = null;
-        private SceneChangerService SceneChangerService => _sceneChangerService ??= ServiceManager.Get<SceneChangerService>();
+        private SceneChangerService SceneChangerService => _sceneChangerService ??= ServiceManagerMono.Get<SceneChangerService>();
 
         /// <summary>
         /// MonoBehaviour awake called on start up
@@ -215,7 +217,7 @@ namespace Cyggie.SceneChanger.Runtime
         /// Initialize the values for the Loading screen
         /// </summary>
         /// <param name="settings"></param>
-        internal void SetSettings(SceneChangerSettings settings)
+        internal void SetSettings(SceneChangerServiceConfiguration settings)
         {
             _settings = settings;
 
@@ -304,7 +306,7 @@ namespace Cyggie.SceneChanger.Runtime
         }
 
         /// <summary>
-        /// Coroutine to check for a change in resolution every <see cref="SceneChangerSettings.ResolutionCheckDelay"/>
+        /// Coroutine to check for a change in resolution every <see cref="SceneChangerServiceConfiguration.ResolutionCheckDelay"/>
         /// </summary>
         /// <returns></returns>
         internal IEnumerator CheckResolutionChange()
@@ -349,7 +351,7 @@ namespace Cyggie.SceneChanger.Runtime
 
                                         if (_images.Length == 1)
                                         {
-                                            Log.Error($"Loading Screen's {nameof(SceneChangerSettings.RandomType)} set to {nameof(SceneChangeRandomType.ResetAfterEachNoPreviousRepeat)} but there's only one possible image. Add more images or use {nameof(SceneChangeRandomType.ResetAfterEach)} instead.", nameof(LoadingScreen));
+                                            Log.Error($"Loading Screen's {nameof(SceneChangerServiceConfiguration.RandomType)} set to {nameof(SceneChangeRandomType.ResetAfterEachNoPreviousRepeat)} but there's only one possible image. Add more images or use {nameof(SceneChangeRandomType.ResetAfterEach)} instead.", nameof(LoadingScreen));
                                             break;
                                         }
                                     }

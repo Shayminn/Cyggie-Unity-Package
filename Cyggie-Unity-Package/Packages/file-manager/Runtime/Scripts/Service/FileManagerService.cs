@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using UnityEditor;
 using UnityEngine;
 
 namespace Cyggie.FileManager.Runtime.ServicesNS
@@ -16,7 +17,7 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
     /// Service for loading/saving files on the local device with the Newtonsoft's JsonConvert (w/ encryption) <br/>
     /// This supports (mostly) everything but Anonymous classes to be saved on files
     /// </summary>  
-    public sealed class FileManagerService : Service
+    public sealed class FileManagerService : PackageServiceMono<FileManagerServiceConfiguration>
     {
         private string _savePath = "";
         private bool _encrypt = true;
@@ -33,15 +34,12 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
         /// </summary>
         private List<SaveFileModel> _savedModels = new List<SaveFileModel>();
 
-        private FileManagerSettings _settings = null;
-
         /// <inheritdoc/>
         protected override void OnInitialized()
         {
-            _settings = (FileManagerSettings) _configuration;
-            _savePath = _settings.UsePersistentDataPath ?
+            _savePath = Configuration.UsePersistentDataPath ?
                         Application.persistentDataPath :
-                        _settings.LocalSavePath;
+                        Configuration.LocalSavePath;
 
             // Make sure the save path is not null or empty
             if (string.IsNullOrEmpty(_savePath))
@@ -62,9 +60,9 @@ namespace Cyggie.FileManager.Runtime.ServicesNS
                 _savePath = _savePath.Insert(_savePath.Length, "/");
             }
 
-            _encrypt = _settings.Encrypted;
-            _filesToIgnore = _settings.FilesToIgnore;
-            _fileExtension = _settings.DefaultFileExtension;
+            _encrypt = Configuration.Encrypted;
+            _filesToIgnore = Configuration.FilesToIgnore;
+            _fileExtension = Configuration.DefaultFileExtension;
 
             LoadSavedObjects();
         }

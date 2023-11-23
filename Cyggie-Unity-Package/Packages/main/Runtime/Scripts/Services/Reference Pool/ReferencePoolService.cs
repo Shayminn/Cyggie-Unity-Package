@@ -17,7 +17,7 @@ namespace Cyggie.Main.Runtime.ServicesNS.ReferencePool
     /// <br/>
     /// References get reset when changing scenes if they don't exist (is null) anymore.
     /// </summary>
-    public sealed class ReferencePoolService : Service
+    public sealed class ReferencePoolService : PackageServiceMono
     {
         private Dictionary<ReferencePoolObject, GameObject> _referencePool = new Dictionary<ReferencePoolObject, GameObject>();
 
@@ -73,9 +73,6 @@ namespace Cyggie.Main.Runtime.ServicesNS.ReferencePool
 
             return gameObject != null;
         }
-
-        /// <inheritdoc/>
-        protected override bool ShouldInitialize() => ServiceManager.Settings.EnabledServices.HasFlag(MainServiceTypes.ReferencePool);
 
         /// <summary>
         /// Add <paramref name="refPoolObj"/> to the pool if it doesn't already exists.

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cyggie.Plugins.Editor.Helpers;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -23,23 +24,61 @@ namespace Cyggie.Main.Editor.Utils.Helpers
         }
 
         /// <summary>
-        /// Draw EditorGUI as horizontal
+        /// Draw the editor script reference from a monobehaviour object
+        /// </summary>
+        public static void DrawScriptReference(MonoBehaviour mono)
+        {
+            GUI.enabled = false;
+            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour(mono), mono.GetType(), false);
+            GUI.enabled = true;
+        }
+
+        /// <summary>
+        /// Draw the editor script reference from a scriptable object
+        /// </summary>
+        public static void DrawScriptReference(ScriptableObject so)
+        {
+            GUI.enabled = false;
+            EditorGUILayout.ObjectField("Script", MonoScript.FromScriptableObject(so), so.GetType(), false);
+            GUI.enabled = true;
+        }
+
+        /// <summary>
+        /// Draw EditorGUI as horizontal with no style
         /// </summary>
         /// <param name="gui">GUI to draw</param>
-        public static void DrawHorizontal(Action gui, params GUILayoutOption[] guiLayoutOptions)
+        /// <param name="guiLayoutOptions">Layout options to apply</param>
+        public static void DrawHorizontal(Action gui, params GUILayoutOption[] guiLayoutOptions) => DrawHorizontal(gui, GUIStyle.none, guiLayoutOptions);
+
+        /// <summary>
+        /// Draw EditorGUI as horizontal with a style
+        /// </summary>
+        /// <param name="gui">GUI to draw</param>
+        /// <param name="style">Style to apply</param>
+        /// <param name="guiLayoutOptions">Layout options to apply</param>
+        public static void DrawHorizontal(Action gui, GUIStyle style, params GUILayoutOption[] guiLayoutOptions)
         {
-            EditorGUILayout.BeginHorizontal(guiLayoutOptions);
+            EditorGUILayout.BeginHorizontal(style, guiLayoutOptions);
             gui?.Invoke();
             EditorGUILayout.EndHorizontal();
         }
 
         /// <summary>
-        /// Draw EditorGUI as vertical
+        /// Draw EditorGUI as vertical with no style
         /// </summary>
         /// <param name="gui">GUI to draw</param>
-        public static void DrawVertical(Action gui, params GUILayoutOption[] guiLayoutOptions)
+        /// <param name="guiLayoutOptions">Layout options to apply</param>
+        public static void DrawVertical(Action gui, params GUILayoutOption[] guiLayoutOptions) => DrawVertical(gui, GUIStyle.none, guiLayoutOptions);
+
+        /// <summary>
+        /// Draw EditorGUI as vertical with a style
+        /// </summary>
+        /// <param name="gui">GUI to draw</param>
+        /// <param name="style">Style to apply</param>
+        /// <param name="guiLayoutOptions">Layout options to apply</param>
+        public static void DrawVertical(Action gui, GUIStyle style, params GUILayoutOption[] guiLayoutOptions)
         {
-            EditorGUILayout.BeginVertical(guiLayoutOptions);
+            EditorGUILayout.BeginVertical(style, guiLayoutOptions);
             gui?.Invoke();
             EditorGUILayout.EndVertical();
         }

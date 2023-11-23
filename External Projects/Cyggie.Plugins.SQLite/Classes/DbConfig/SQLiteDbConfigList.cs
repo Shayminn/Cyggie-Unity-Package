@@ -16,8 +16,8 @@ namespace Cyggie.Plugins.SQLite
         private const string cConfigColumnName = "config";
         private const string cValueColumnName = "value";
 
-        private List<SQLiteDbConfig> _configurations = new List<SQLiteDbConfig>();
-        private SQLiteDatabase? _db = null;
+        private readonly List<SQLiteDbConfig> _configurations = new List<SQLiteDbConfig>();
+        private readonly SQLiteDatabase? _db = null;
 
         private SQLiteDbConfigList(SQLiteDatabase db)
         {

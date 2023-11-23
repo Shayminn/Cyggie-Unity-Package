@@ -1,4 +1,4 @@
-﻿namespace Cyggie.Main.Runtime.Utils.Constants
+namespace Cyggie.Main.Runtime.Utils.Constants
 {
     /// <summary>
     /// Struct that contains all constants related to folder names
@@ -19,7 +19,7 @@
         public const string cCyggieResources = cCyggie + cResources;
         public const string cCyggieScriptableObjects = cCyggie + cScriptableObjects;
 
-        public const string cPackageConfigurations = cScriptableObjects + "PackageConfigurations/";
-        public const string cServiceConfigurations = cScriptableObjects + "ServiceConfigurations/";
+        public const string cCyggieServiceConfigurations = cCyggie + cScriptableObjects + "ServiceConfigurations/";
+        public const string cCyggieServiceIdentifiers = cCyggie + cScriptableObjects + "ServiceIdentifiers/";
     }
 }

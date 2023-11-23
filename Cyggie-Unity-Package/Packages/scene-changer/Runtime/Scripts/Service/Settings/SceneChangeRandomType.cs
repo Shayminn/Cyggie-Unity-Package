@@ -3,7 +3,7 @@
     /// <summary>
     /// Enum of RandomType when scene changing randomly
     /// </summary>
-    internal enum SceneChangeRandomType
+    public enum SceneChangeRandomType
     {
         ResetAfterEach,
         ResetAfterEachNoPreviousRepeat,

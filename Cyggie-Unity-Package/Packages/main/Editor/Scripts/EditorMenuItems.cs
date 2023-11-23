@@ -1,9 +1,9 @@
 ﻿using Cyggie.Main.Editor.Configurations;
-using Cyggie.Main.Runtime.Utils.Extensions;
-using Cyggie.Plugins.Logs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Cyggie.Main.Editor.Utils.Constants;
+using Cyggie.Main.Editor.Windows;
+using Cyggie.Main.Runtime.ServicesNS;
+using Cyggie.Main.Runtime.ServicesNS.ScriptableObjects;
+using Cyggie.Plugins.Services.Models;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,7 +20,7 @@ namespace Cyggie.Main.Editor
         /// Menu Item for managing Package Configurations
         /// </summary>
         [MenuItem(itemName: "Cyggie/Package Configurations &c")]
-        private static void PackageConfiguration()
+        private static void OpenPackageConfigurations()
         {
             if (ExpectPackageConfigurationsShortcut)
             {
@@ -28,30 +28,40 @@ namespace Cyggie.Main.Editor
                 return;
             }
 
-            // Get all PackageConfigurationTab in project
-            List<Type> tabTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetTypes())
-                .Where(t => typeof(AbstractPackageConfigurationTab).IsAssignableFrom(t) && !t.IsAbstract)
-                .ToList();
-
-            List<AbstractPackageConfigurationTab> tabs = tabTypes.Select(type => (AbstractPackageConfigurationTab) Activator.CreateInstance(type)).OrderBy(tab => tab.GetType().Name).ToList();
-
-            if (tabs == null || tabs.Count == 0)
-            {
-                Log.Debug($"Failed to open Package Configuration window: No tab of type {typeof(AbstractPackageConfigurationTab)} was found.", nameof(EditorMenuItems));
-                return;
-            }
-
-            AbstractPackageConfigurationTab serviceManagerTab = tabs.FirstOrDefault(x => x.GetType() == typeof(ServiceManagerTab));
-            tabs = tabs.MoveFirst(serviceManagerTab).ToList();
-
             // Create window
-            PackageConfigurationEditorWindow window = EditorWindow.GetWindow<PackageConfigurationEditorWindow>();
-            window.titleContent = new GUIContent("Cyggie's Configurations");
-            window.minSize = new Vector2(715, 600); // set window size
+            ServiceConfigurationsEditorWindow window = EditorWindow.GetWindow<ServiceConfigurationsEditorWindow>();
+            window.titleContent = EditorWindowConstants.cServiceConfigurationWindowTitle;
+            window.minSize = EditorWindowConstants.cServiceConfigurationWindowMinSize;
 
-            window.ServiceManagerTab = serviceManagerTab as ServiceManagerTab;
-            window.Initialize(tabs); // initialize window
+            window.Show();
+        }
+
+        /// <summary>
+        /// Menu item for opening a window for creating service identifiers scriptable objects
+        /// </summary>
+        [MenuItem(itemName: "Cyggie/Create/Service Identifier")]
+        private static void CreateServiceIdentifier()
+        {
+            // Create window
+            ServiceCreatorEditorWindow window = EditorWindow.GetWindow<ServiceCreatorEditorWindow>();
+            window.titleContent = EditorWindowConstants.cServiceCreatorWindowTitle;
+            window.minSize = EditorWindowConstants.cServiceCreatorWindowMinSize;
+            window.maxSize = EditorWindowConstants.cServiceCreatorWindowMaxSize;
+
+            window.Show();
+        }
+
+        /// <summary>
+        /// Menu i tem for opening a window for creating service configurations scriptable objects
+        /// </summary>
+        [MenuItem(itemName: "Cyggie/Create/Service Configuration")]
+        private static void CreateServiceConfiguration()
+        {
+            // Create window
+            ServiceConfigurationCreatorEditorWindow window = EditorWindow.GetWindow<ServiceConfigurationCreatorEditorWindow>();
+            window.titleContent = EditorWindowConstants.cServiceConfigurationCreatorWindowTitle;
+            window.minSize = EditorWindowConstants.cServiceConfigurationCreatorWindowMinSize;
+            window.maxSize = EditorWindowConstants.cServiceConfigurationCreatorWindowMaxSize;
 
             window.Show();
         }

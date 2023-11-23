@@ -14,7 +14,7 @@ namespace Cyggie.FileManager.Runtime.Data
     public abstract class SaveableObject
     {
         private static FileManagerService _fileManagerService = null;
-        internal static FileManagerService FileManagerService => _fileManagerService ??= ServiceManager.Get<FileManagerService>();
+        internal static FileManagerService FileManagerService => _fileManagerService ??= ServiceManagerMono.Get<FileManagerService>();
 
         /// <summary>
         /// This object's save file name

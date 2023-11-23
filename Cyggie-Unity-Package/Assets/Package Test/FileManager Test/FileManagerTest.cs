@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class FileManagerTest : MonoBehaviour
 {
-    private FileManagerService _service = null;
-    private FileManagerService Service => _service ??= ServiceManager.Get<FileManagerService>();
+    private FileManagerService _fileManagerService = null;
+    private FileManagerService Service => _fileManagerService ??= ServiceManagerMono.Get<FileManagerService>();
 
     // Start is called before the first frame update
     void Start()

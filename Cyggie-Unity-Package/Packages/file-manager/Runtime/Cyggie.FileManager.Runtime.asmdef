@@ -11,6 +11,7 @@
     "precompiledReferences": [
         "Cyggie.Plugins.Encryption.dll",
         "Cyggie.Plugins.Logs.dll",
+        "Cyggie.Plugins.Services.dll",
         "Newtonsoft.Json.dll"
     ],
     "autoReferenced": true,

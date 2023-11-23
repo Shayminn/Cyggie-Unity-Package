@@ -1,0 +1,659 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cyggie.Plugins.Utils</name>
+    </assembly>
+    <members>
+        <member name="T:Cyggie.Plugins.Utils.Constants.FileExtensionConstants">
+            <summary>
+            Struct that contains all constants related to file extensions
+            </summary>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Constants.FolderConstants">
+            <summary>
+            Struct that contains all constants related to folder names
+            </summary>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Constants.StringConstants">
+            <summary>
+            Struct that contains all constants related to strings
+            </summary>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Predicate">
+            <summary>
+            Delegate for an Action that returns a boolean without an argument 
+            </summary>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Enums.AspectRatio">
+            <summary>
+            Enum that contains various of the existing aspect ratios <br/>
+            Use with <see cref="!:AspectRatioHelper"/> to retrieve an aspect ratio based on width and height
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.AspectRatio._9x16">
+            <summary>
+            eg. 720x1280, 768x1366, 900x1600, 1080x1920, 1440x2560, 2160x3840, 2880x5120, 4320x7680
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.AspectRatio._2x3">
+            <summary>
+            eg. 500x750, 720x1080, 1500x2250
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.AspectRatio._16x9">
+            <summary>
+            eg. 1280x720, 1366x768, 1600x900, 1920x1080, 2560x1440, 3840x2160, 5120x2880, 7680x4320
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.AspectRatio._16x10">
+            <summary>
+            eg. 1280x800, 1920x1200, 2560x1600
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.AspectRatio._3x2">
+            <summary>
+            eg. 270x180
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.AspectRatio._4x3">
+            <summary>
+            eg. 1400x1050, 1440x1080, 1600x1200, 1920x1440, 2048x1536
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.AspectRatio._5x4">
+            <summary>
+            eg. 1080x1350
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.AspectRatio._21x9">
+            <summary>
+            eg. 2560x1080, 3440x1440, 3840x1600, 5120x2160
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.AspectRatio._32x9">
+            <summary>
+            eg. 3840x1080, 5120x1440, 7680x2160
+            </summary>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Extensions.CollectionExtensions">
+            <summary>
+            Extension class to Collections related
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.Shuffle``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Shuffle the collection <paramref name="collection"/>
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">IEnumerable to shuffle</param>
+            <returns>Randomly shuffled IEnumerable</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.Move``1(System.Collections.Generic.IEnumerable{``0},System.UInt32,System.UInt32)">
+            <summary>
+            Move the element T <paramref name="fromIndex"/> to <paramref name="toIndex"/> affecting all the other elements' indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="fromIndex">Index to move from</param>
+            <param name="toIndex">Index to move to</param>
+            <returns>Collection with moved elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.Move``1(System.Collections.Generic.IEnumerable{``0},``0,System.UInt32)">
+            <summary>
+            Move the <paramref name="element"/> to <paramref name="toIndex"/> affecting all the other elements' indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="element">Target element in the collection</param>
+            <param name="toIndex">Index to move to</param>
+            <returns>Collection with moved elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.MoveUp``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+            Move the <paramref name="element"/> up by 1 affecting all the other elements' indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="element">Target element in the collection</param>
+            <returns>Collection with moved elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.MoveUp``1(System.Collections.Generic.IEnumerable{``0},System.UInt32)">
+            <summary>
+            Move the element at <paramref name="index"/> up by 1 affecting all the other elements' indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="index">Index of element to move</param>
+            <returns>Collection with moved elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.MoveDown``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+            Move the <paramref name="element"/> down by 1 affecting all the other elements' indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="element">Target element in the collection</param>
+            <returns>Collection with moved elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.MoveDown``1(System.Collections.Generic.IEnumerable{``0},System.UInt32)">
+            <summary>
+            Move the element at <paramref name="index"/> down by 1 affecting all the other elements' indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="index">Index of element to move</param>
+            <returns>Collection with moved elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.MoveFirst``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+            Move <paramref name="element"/> to the first element of <paramref name="collection"/> affecting all other elements' indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="element">Element to move</param>
+            <returns>Collection with moved elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.MoveFirst``1(System.Collections.Generic.IEnumerable{``0},System.UInt32)">
+            <summary>
+            Move the element at <paramref name="index"/> to the first element of <paramref name="collection"/> affecting all other elements' indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="index">Element index to move</param>
+            <returns>Collection with moved elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.MoveLast``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+            Move <paramref name="element"/> to the last element of <paramref name="collection"/> affecting all other elements' indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="element">Element to move</param>
+            <returns>Collection with moved elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.MoveLast``1(System.Collections.Generic.IEnumerable{``0},System.UInt32)">
+            <summary>
+            Move the element at <paramref name="index"/> to the last element of <paramref name="collection"/> affecting all other elements' indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="index">Element index to move</param>
+            <returns>Collection with moved elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.Swap``1(System.Collections.Generic.IEnumerable{``0},``0,``0)">
+            <summary>
+            Swap the position of <paramref name="fromElement"/> and <paramref name="toElement"/> unaffecting the other elements' indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="fromElement">Element to swap from</param>
+            <param name="toElement">Element to swap with</param>
+            <returns>Collection with swapped elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.Swap``1(System.Collections.Generic.IEnumerable{``0},``0,System.UInt32)">
+            <summary>
+            Swap the position of <paramref name="element"/> and the element at <paramref name="toIndex"/> unaffecting the other elements' indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="element">Element to swap from</param>
+            <param name="toIndex">Index to swap with</param>
+            <returns>Collection with swapped elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.Swap``1(System.Collections.Generic.IEnumerable{``0},System.UInt32,System.UInt32)">
+            <summary>
+            Swap the position with elements at indexes <paramref name="fromIndex"/> and <paramref name="toIndex"/> unaffecting the other elements indexes
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="fromIndex">Index to swap from</param>
+            <param name="toIndex">Index to swap with</param>
+            <returns>Collection with swapped elements (<paramref name="collection"/> if invalid)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.IndexOf``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+            Get the index of <paramref name="element"/> in <paramref name="collection"/>
+            </summary>
+            <typeparam name="T">Any type</typeparam>
+            <param name="collection">Target collection</param>
+            <param name="element">Element to find the index of</param>
+            <returns>Index of element in collection (-1 if not found)</returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Extensions.AspectRatioExtensions">
+            <summary>
+            Extension class for <see cref="T:Cyggie.Plugins.Utils.Enums.AspectRatio"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.AspectRatioExtensions.ToVector2(Cyggie.Plugins.Utils.Enums.AspectRatio)">
+            <summary>
+            Get the Vector2 equivalent of an aspect ratio <br/>
+            where Vector2.x => width and Vector2.y = height
+            </summary>
+            <param name="ratio">Aspect ratio to convert</param>
+            <returns>Vector2 equivalent</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.AspectRatioExtensions.ToVector2(Cyggie.Plugins.Utils.Enums.AspectRatio,System.Single)">
+            <summary>
+            Get the Vector2 equivalent of an aspect ratio multiplied by <paramref name="multiplier"/> <br/>
+            where Vector2.x => width, Vector2.y => height
+            </summary>
+            <param name="ratio">Aspect ratio to convert</param>
+            <param name="multiplier">Multiplier to apply</param>
+            <returns>Vector2 equivalent</returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Extensions.EnumExtensions">
+            <summary>
+            Extension class for <see cref="T:System.Enum"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.EnumExtensions.GetFlagsCount(System.Enum)">
+            <summary>
+            Get the number of flag count on an enum with attribute <see cref="T:System.FlagsAttribute"/> <br/>
+            This will send a debug error if the enum does not have a <see cref="T:System.FlagsAttribute"/>
+            </summary>
+            <param name="enum">Enum value to check</param>
+            <returns>Flag count (0 if attribute is not found)</returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Extensions.IComparableExtensions">
+            <summary>
+            Extension class for <see cref="T:System.IComparable"/> objects
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.IComparableExtensions.IsBetween``1(``0,``0,``0)">
+            <summary>
+            Checks if <paramref name="value"/> is between <paramref name="minInclusive"/> and <paramref name="maxInclusive"/>, both inclusively
+            </summary>
+            <typeparam name="T">Comparable Type</typeparam>
+            <param name="value">Value to check</param>
+            <param name="minInclusive">Min value inclusive</param>
+            <param name="maxInclusive">Max value inclusive</param>
+            <returns></returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Extensions.StringExtensions">
+            <summary>
+            Extension class to <see cref="T:System.String"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.StringExtensions.InsertStartsWith(System.String,System.String)">
+            <summary>
+            Insert <paramref name="startString"/> if <paramref name="str"/> doesn't start with it
+            </summary>
+            <param name="str">Target string</param>
+            <param name="startString">Start string to check</param>
+            <returns>String that starts with <paramref name="startString"/></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.StringExtensions.InsertStartsWith(System.String,System.String,System.String)">
+            <summary>
+            Insert <paramref name="startString"/> if <paramref name="str"/> doesn't start with <paramref name="stringToCheck"/>
+            </summary>
+            <param name="str">Target string</param>
+            <param name="stringToCheck">String to check</param>
+            <param name="startString">Start string to input</param>
+            <returns>String that starts with <paramref name="startString"/></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.StringExtensions.InsertEndsWith(System.String,System.String)">
+            <summary>
+            Insert <paramref name="endString"/> if <paramref name="str"/> doesn't end with <paramref name="endString"/>
+            </summary>
+            <param name="str">Target string</param>
+            <param name="endString">End string to check</param>
+            <returns>String that ends with <paramref name="endString"/></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.StringExtensions.InsertEndsWith(System.String,System.String,System.String)">
+            <summary>
+            Insert <paramref name="endString"/> if <paramref name="str"/> doesn't end with <paramref name="stringToCheck"/>
+            </summary>
+            <param name="str">Target string</param>
+            <param name="stringToCheck">End string to check</param>
+            <param name="endString">End string to input</param>
+            <returns>String that ends with <paramref name="endString"/></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.StringExtensions.SplitCamelCase(System.String)">
+            <summary>
+            Add spaces to a Camelcase string. <br/>
+            ABCTestTest => ABC Test Test
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.StringExtensions.ToResourcesRelativePath(System.String)">
+            <summary>
+            Converts the <paramref name="path"/> to a relative path from the resources folder <br/>
+            i.e. Assets/Resources/Cyggie will return Cyggie
+            </summary>
+            <param name="path">Path to convert</param>
+            <returns><paramref name="path"/> if it doesn't contain <see cref="F:Cyggie.Plugins.Utils.Constants.FolderConstants.cResources"/></returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Extensions.TypeExtensions">
+            <summary>
+            Extension class to <see cref="T:System.Type"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.TypeExtensions.IsSubclassOfGenericType(System.Type,System.Type)">
+            <summary>
+            Checks if <paramref name="type"/> is of generic type and is equal to <paramref name="genericType"/> <br/>
+            This will check the current type and all its base types
+            </summary>
+            <param name="type">Current type to compare</param>
+            <param name="genericType">Generic type to check for equality</param>
+            <returns>True if this type or any of its basetype is equal to <paramref name="genericType"/></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.TypeExtensions.IsSubclassOfGenericType(System.Type,System.Type,System.Type@)">
+            <summary>
+            Checks if <paramref name="type"/> is of generic type and is equal to <paramref name="genericType"/> <br/>
+            This will check the current type and all its base types
+            </summary>
+            <param name="type">Current type to compare</param>
+            <param name="genericType">Generic type to check for equality</param>
+            <param name="outputType">Output type that is equal to generic type (null if not found)</param>
+            <returns>True if this type or any of its basetype is equal to <paramref name="genericType"/></returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Extensions.ColorExtensions">
+            <summary>
+            Extension class to <see cref="T:UnityEngine.Color"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.ColorExtensions.ChangeAlpha(UnityEngine.Color,System.Single)">
+            <summary>
+            Change the alpha (<see cref="F:UnityEngine.Color.a"/>) of <paramref name="color"/> to <paramref name="newAlpha"/>
+            </summary>
+            <param name="color">Color struct to change</param>
+            <param name="newAlpha">New alpha value to <paramref name="color"/></param>
+            <returns><paramref name="color"/> with alpha value of <paramref name="newAlpha"/></returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions">
+            <summary>
+            Extension class to <see cref="T:UnityEngine.MonoBehaviour"/> objects
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.DelayedAction(UnityEngine.MonoBehaviour,UnityEngine.Events.UnityAction,System.Single)">
+            <summary>
+            Starts an <paramref name="action"/> after a <paramref name="delay"/> (in seconds)
+            </summary>
+            <param name="mono">Monobehaviour that triggers the action</param>
+            <param name="action">Action to invoke after delay</param>
+            <param name="delay">Delay before action is invoked (in seconds)</param>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.SafeStartCoroutine(UnityEngine.MonoBehaviour,UnityEngine.Coroutine@,System.Collections.IEnumerator)">
+            <summary>
+            Safely (re)starts a coroutine by first stopping it if it's not null before starting it.
+            </summary>
+            <param name="mono">MonoBehaviour object to start the coroutine on</param>
+            <param name="coroutine">Coroutine object to reference</param>
+            <param name="enumerator">Enumerator to run</param>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.SafeStopCoroutine(UnityEngine.MonoBehaviour,UnityEngine.Coroutine@)">
+            <summary>
+            Safely stops a coroutine by checking if it's not null.
+            </summary>
+            <param name="mono">MonoBehaviour object to stop the coroutine on</param>
+            <param name="coroutine">Coroutine object to stop</param>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.StartDelayedCoroutine(UnityEngine.MonoBehaviour,System.Collections.IEnumerator,System.Single)">
+            <summary>
+            Start a coroutine with a delay of <paramref name="delay"/> <br/>
+            This will automatically wait for <paramref name="delay"/> (seconds) before starting the <paramref name="enumerator"/>
+            </summary>
+            <param name="mono">MonoBehaviour object to start the coroutine</param>
+            <param name="delay">Delay before starting the enumerator</param>
+            <param name="enumerator">Enumerator method to start</param>
+            <returns>Coroutine from starting the enumerator</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.SafeStartDelayedCoroutine(UnityEngine.MonoBehaviour,UnityEngine.Coroutine@,System.Collections.IEnumerator,System.Single)">
+            <summary>
+            Safely start a coroutine with a delay of <paramref name="delay"/> <br/>
+            This will automatically stop the coroutine if it's not null and automatically wait for <paramref name="delay"/> (seconds) before starting the <paramref name="enumerator"/>
+            </summary>
+            <param name="mono">MonoBehaviour object to start the coroutine</param>
+            <param name="coroutine">Referenced coroutine to stop</param>
+            <param name="delay">Delay before starting the enumerator</param>
+            <param name="enumerator">Enumerator method to start</param>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.StartConditionalCoroutine(UnityEngine.MonoBehaviour,Cyggie.Plugins.Utils.Predicate,System.Collections.IEnumerator,System.Single)">
+            <summary>
+            Start a coroutine when a specified condition is satisfied <br/>
+            Set an optional max time to timeout and automatically proceed into the <paramref name="enumerator"/>
+            </summary>
+            <param name="mono">MonoBehaviour object to start the coroutine</param>
+            <param name="condition">Condition to satisfy</param>
+            <param name="enumerator">Enumerator method to start</param>
+            <param name="maxTime">Max time before timeout (defaults to -1, any negative value = infinite)</param>"
+            <returns>Coroutine from starting the enumerator</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.SafeStartConditionalCoroutine(UnityEngine.MonoBehaviour,UnityEngine.Coroutine@,Cyggie.Plugins.Utils.Predicate,System.Collections.IEnumerator,System.Single)">
+            <summary>
+            Safely start a coroutine when a specified condition is satisfied <br/>
+            Set an optional max time to timeout and automatically proceed into the <paramref name="enumerator"/>
+            </summary>
+            <param name="mono">MonoBehaviour object to start the coroutine</param>
+            <param name="coroutine">Referenced coroutine to stop</param>
+            <param name="condition">Condition to satisfy</param>
+            <param name="enumerator">Enumerator method to start</param>
+            <param name="maxTime">Max time before timeout (defaults to -1, any negative value = infinite)</param>"
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Extensions.RectTransformExtensions">
+            <summary>
+            Extension class to <see cref="T:UnityEngine.RectTransform"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.RectTransformExtensions.SetAnchorType(UnityEngine.RectTransform,Cyggie.Plugins.Utils.Enums.RectTransformAnchorType)">
+            <summary>
+            Set anchor type of <paramref name="rectTransform"/> <br/>
+            Assign the right <see cref="P:UnityEngine.RectTransform.anchorMin"/> and <see cref="P:UnityEngine.RectTransform.anchorMin"/> based on <paramref name="anchorType"/>
+            </summary>
+            <param name="rectTransform">Rect transform to change</param>
+            <param name="anchorType">Anchor type to set</param>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.RectTransformExtensions.SetAnchorType(UnityEngine.RectTransform,Cyggie.Plugins.Utils.Enums.RectTransformAnchorType,System.Single,System.Single)">
+            <summary>
+            Set anchor type of <paramref name="rectTransform"/> <br/>
+            Assign the right <see cref="P:UnityEngine.RectTransform.anchorMin"/> and <see cref="P:UnityEngine.RectTransform.anchorMin"/> based on <paramref name="anchorType"/>
+            </summary>
+            <param name="rectTransform">Rect transform to change</param>
+            <param name="anchorType">Anchor type to set</param>
+            <param name="width">Width to assign to <paramref name="rectTransform"/></param>
+            <param name="height">Height to assign to <paramref name="rectTransform"/></param>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Extensions.TextureExtensions">
+            <summary>
+            Extension class to <see cref="T:UnityEngine.Texture"/> and <see cref="T:UnityEngine.Texture2D"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.TextureExtensions.ToSprite(UnityEngine.Texture2D)">
+            <summary>
+            
+            </summary>
+            <param name="texture"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Utils.Extensions.UnityObjectExtensions.AssignIfNull``1(``0,System.Func{``0})">
+            <summary>
+            Assign value if <paramref name="obj"/> is null, returning <paramref name="obj"/> or new value from <paramref name="func"/>. <br/>
+            The equivalent of the "??=" operator, but <see cref="T:UnityEngine.Object"/> null checks are different from <see cref="T:System.Object"/> so this step is necessary to achieve the same result.
+            </summary>
+            <typeparam name="T">Must derive from <see cref="T:UnityEngine.Object"/></typeparam>
+            <param name="obj">Object to check for null</param>
+            <param name="func">Func to create an object from</param>
+            <returns><paramref name="obj"/> or new value from <paramref name="func"/></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Utils.Extensions.UnityObjectExtensions.AssignIfNull``1(``0,``0)">
+            <summary>
+            Assign value if <paramref name="obj"/> is null, returning <paramref name="obj"/> or <paramref name="newValue"/>. <br/>
+            The equivalent of the "??=" operator, but <see cref="T:UnityEngine.Object"/> null checks are different from <see cref="T:System.Object"/> so this step is necessary to achieve the same result.
+            </summary>
+            <typeparam name="T">Must derive from <see cref="T:UnityEngine.Object"/></typeparam>
+            <param name="obj">Object to check for null</param>
+            <param name="newValue">New value to assign</param>
+            <returns><paramref name="obj"/> or <paramref name="newValue"/></returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Helpers.AspectRatioHelper">
+            <summary>
+            Helper class for handling Aspect ratio
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.AspectRatioHelper.GetAspectRatio">
+            <summary>
+            Get the aspect ratio based on the current <see cref="P:UnityEngine.Screen.width"/> and <see cref="P:UnityEngine.Screen.height"/>
+            </summary>
+            <returns>Aspect ratio in enum value</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.AspectRatioHelper.GetAspectRatio(System.Int32,System.Int32)">
+            <summary>
+            Get the aspect ratio from a width and a height
+            </summary>
+            <param name="width">Resolution width in int</param>
+            <param name="height">Resolution height in int</param>
+            <returns>Aspect ratio in enum value</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.AspectRatioHelper.GetAspectRatio(System.Single,System.Single)">
+            <summary>
+            Get the aspect ratio from a width and a height
+            </summary>
+            <param name="width">Resolution width in float</param>
+            <param name="height">Resolution height in float</param>
+            <returns>Aspect ratio in enum value</returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Helpers.FileHelper">
+            <summary>
+            Helper class for managing File related stuff
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.FileHelper.GenerateUniquePath(System.String)">
+            <summary>
+            Generate an unique file path adding "(index)" if it exists
+            </summary>
+            <param name="originalPath">Original file path</param>
+            <param name="fileExtension">File extension to the generated path</param>
+            <returns>Unique file path</returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Helpers.ObjectHelper">
+            <summary>
+            Helper class for <see cref="T:UnityEngine.Object"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.ObjectHelper.AssignIfNull``1(``0@,System.Func{``0})">
+            <summary>
+            Assign value if <paramref name="obj"/> is null, returning <paramref name="obj"/> or new value from <paramref name="func"/>. <br/>
+            The equivalent of the "??=" operator, but <see cref="T:UnityEngine.Object"/> null checks are different from <see cref="T:System.Object"/> so this step is necessary to achieve the same result.
+            </summary>
+            <typeparam name="T">Must derive from <see cref="T:UnityEngine.Object"/></typeparam>
+            <param name="obj">Object to check for null</param>
+            <param name="func">Func to create an object from</param>
+            <returns><paramref name="obj"/> or new value from <paramref name="func"/></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.ObjectHelper.AssignIfNull``1(``0@,``0)">
+            <summary>
+            Assign value if <paramref name="obj"/> is null, returning <paramref name="obj"/> or <paramref name="newValue"/>. <br/>
+            The equivalent of the "??=" operator, but <see cref="T:UnityEngine.Object"/> null checks are different from <see cref="T:System.Object"/> so this step is necessary to achieve the same result.
+            </summary>
+            <typeparam name="T">Must derive from <see cref="T:UnityEngine.Object"/></typeparam>
+            <param name="obj">Object to check for null</param>
+            <param name="newValue">New value to assign</param>
+            <returns><paramref name="obj"/> or <paramref name="newValue"/></returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Helpers.TypeHelper">
+            <summary>
+            Helper class that includes methods related to Types
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.TypeHelper.GetAllSubclassTypes``1(System.Boolean)">
+            <summary>
+            Get all subclass types that inherits from type <typeparamref name="T"/> in the current domain
+            </summary>
+            <typeparam name="T">Super type</typeparam>
+            <param name="checkAbstract">If true, don't include types that are abstract</param>
+            <returns>Collection of subclass types</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.TypeHelper.GetAllSubclassTypes``1(System.Predicate{System.Type},System.Boolean)">
+            <summary>
+            Get all subclass types that inherits from type <typeparamref name="T"/> in the current domain
+            </summary>
+            <typeparam name="T">Super type</typeparam>
+            <param name="checkAbstract">If true, don't include types that are abstract</param>
+            <param name="pred">Extra conditions that needs to be checked</param>
+            <returns>Collection of subclass types</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.TypeHelper.GetAllIsAssignableFrom``1(System.Boolean)">
+            <summary>
+            Get all subclass types that are assignable from <typeparamref name="T"/> in the current domain
+            </summary>
+            <typeparam name="T">Type to check</typeparam>
+            <param name="checkAbstract">If true, don't include types that are abstract</param>
+            <returns>Collection of types that are assignable</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.TypeHelper.GetAllIsAssignableFrom``1(System.Predicate{System.Type},System.Boolean)">
+            <summary>
+            Get all subclass types that are assignable from <typeparamref name="T"/> in the current domain
+            </summary>
+            <typeparam name="T">Type to check</typeparam>
+            <param name="checkAbstract">If tr ue, don't include types that are abstract</param>
+            <param name="pred">Extra conditions that needs to be checked</param>
+            <returns>Collection of types that are assignable</returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Helpers.UnityHelper">
+            <summary>
+            Helper class for Unity-related stuff
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.UnityHelper.GetVector2ScreenSize">
+            <summary>
+            Get the screen size in <see cref="T:UnityEngine.Vector2"/>.
+            </summary>
+            <returns>Vector2 of <see cref="P:UnityEngine.Screen.width"/> x <see cref="P:UnityEngine.Screen.height"/></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.UnityHelper.GetVector2Resolution">
+            <summary>
+            Get the resolution in <see cref="T:UnityEngine.Vector2"/>.
+            </summary>
+            <returns>Vector2 of <see cref="P:UnityEngine.Resolution.width"/> x <see cref="P:UnityEngine.Resolution.height"/></returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Editor.Helpers.GUIHelper">
+            <summary>
+            Helper class to GUI drawing.
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Editor.Helpers.GUIHelper.DrawAsReadOnly(System.Action)">
+            <summary>
+            Draw EditorGUI as read only.
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Editor.Helpers.GUIHelper.DrawAsReadOnly(System.Boolean,System.Action)">
+            <summary>
+            Draw EditorGUI as read only if <paramref name="condition"/> resolves to true, else it will draw it as modifiable.
+            </summary>
+            <param name="condition">Condition in order to draw GUI as read only</param>
+            <param name="gui">GUI to draw</param>
+        </member>
+        <member name="M:Cyggie.Plugins.Editor.Helpers.GUIHelper.DrawAsReadOnly(System.Boolean,System.Action{System.Boolean})">
+            <summary>
+            Draw EditorGUI as read only if <paramref name="condition"/> resolves to true, else it will draw it as modifiable.
+            </summary>
+            <param name="condition">Condition in order to draw GUI as read only</param>
+            <param name="gui">GUI to draw</param>
+        </member>
+        <member name="M:Cyggie.Plugins.Editor.Helpers.GUIHelper.DrawWithColor(UnityEngine.Color,System.Action)">
+            <summary>
+            Draw Editor GUI with a different <paramref name="color"/> <br/>
+            The GUI's color will be back to default after drawing <paramref name="gui"/>
+            </summary>
+            <param name="color">Target color</param>
+            <param name="gui">GUI to draw</param>
+        </member>
+        <member name="M:Cyggie.Plugins.Editor.Helpers.GUIHelper.DrawWithBackgroundColor(UnityEngine.Color,System.Action)">
+            <summary>
+            Draw Editor GUI with a different background <paramref name="color"/> <br/>
+            The GUI's background color will be back to default after drawing <paramref name="gui"/>
+            </summary>
+            <param name="color">Target color</param>
+            <param name="gui">GUI to draw</param>
+        </member>
+        <member name="M:Cyggie.Plugins.Editor.Helpers.GUIHelper.DrawWithTintColor(UnityEngine.Color,System.Action)">
+            <summary>
+            Draw Editor GUI with a different content <paramref name="color"/> <br/>
+            The GUI's content color will be back to default after drawing <paramref name="gui"/>
+            </summary>
+            <param name="color">Target color</param>
+            <param name="gui">GUI to draw</param>
+        </member>
+    </members>
+</doc>

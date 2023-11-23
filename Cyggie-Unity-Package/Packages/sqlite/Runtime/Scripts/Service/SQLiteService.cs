@@ -1,7 +1,7 @@
 using Cyggie.Main.Runtime.ServicesNS;
-using Cyggie.Main.Runtime.Utils.Helpers;
 using Cyggie.Plugins.Logs;
 using Cyggie.Plugins.SQLite;
+using Cyggie.Plugins.Utils.Helpers;
 using Cyggie.SQLite.Runtime.Utils.Constants;
 using System.Collections.Generic;
 using System.IO;
@@ -15,20 +15,18 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
     /// Execute SQLite queries <br/>
     /// Uses model class <see cref="SQLiteObject"/>
     /// </summary>
-    public class SQLiteService : Service
+    public class SQLiteService : PackageServiceMono<SQLiteServiceConfiguration>
     {
-        private SQLiteSettings _settings = null;
-
         private readonly List<SQLiteDatabase> _dbConns = new List<SQLiteDatabase>();
         internal List<SQLiteDatabase> DbConns => _dbConns;
 
         /// <inheritdoc/>
         protected override void OnInitialized()
         {
-            _settings = (SQLiteSettings) _configuration;
+            if (Configuration == null) return;
 
             // Open all databases at path
-            if (_settings.OpenAllOnStart)
+            if (Configuration.OpenAllOnStart)
             {
                 OpenAllConnections();
             }
