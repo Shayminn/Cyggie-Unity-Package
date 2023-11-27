@@ -524,6 +524,12 @@
             <param name="pred">Extra conditions that needs to be checked</param>
             <returns>Collection of types that are assignable</returns>
         </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.TypeHelper.GetAllTypesInDomain">
+            <summary>
+            Get all types in current domain
+            </summary>
+            <returns>Types in domain</returns>
+        </member>
         <member name="T:Cyggie.Plugins.Editor.Helpers.GUIHelper">
             <summary>
             Helper class to GUI drawing.

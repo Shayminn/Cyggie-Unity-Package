@@ -17,9 +17,7 @@ namespace Cyggie.Plugins.Utils.Helpers
         /// <returns>Collection of subclass types</returns>
         public static IEnumerable<Type> GetAllSubclassTypes<T>(bool checkAbstract = true)
         {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                        .SelectMany(assembly => assembly.GetTypes())
-                        .Where(t => t.IsSubclassOf(typeof(T)) && (!checkAbstract || !t.IsAbstract));
+            return GetAllTypesInDomain().Where(t => t.IsSubclassOf(typeof(T)) && (!checkAbstract || !t.IsAbstract));
         }
 
         /// <summary>
@@ -31,11 +29,9 @@ namespace Cyggie.Plugins.Utils.Helpers
         /// <returns>Collection of subclass types</returns>
         public static IEnumerable<Type> GetAllSubclassTypes<T>(Predicate<Type> pred, bool checkAbstract = true)
         {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                        .SelectMany(assembly => assembly.GetTypes())
-                        .Where(t => t.IsSubclassOf(typeof(T)) && pred.Invoke(t) && (!checkAbstract || !t.IsAbstract));
+            return GetAllTypesInDomain().Where(t => t.IsSubclassOf(typeof(T)) && pred.Invoke(t) && (!checkAbstract || !t.IsAbstract));
         }
-        
+
         /// <summary>
         /// Get all subclass types that are assignable from <typeparamref name="T"/> in the current domain
         /// </summary>
@@ -44,9 +40,7 @@ namespace Cyggie.Plugins.Utils.Helpers
         /// <returns>Collection of types that are assignable</returns>
         public static IEnumerable<Type> GetAllIsAssignableFrom<T>(bool checkAbstract = true)
         {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                        .SelectMany(assembly => assembly.GetTypes())
-                        .Where(t => typeof(T).IsAssignableFrom(t) && (!checkAbstract || !t.IsAbstract));
+            return GetAllTypesInDomain().Where(t => typeof(T).IsAssignableFrom(t) && (!checkAbstract || !t.IsAbstract));
         }
 
         /// <summary>
@@ -58,9 +52,16 @@ namespace Cyggie.Plugins.Utils.Helpers
         /// <returns>Collection of types that are assignable</returns>
         public static IEnumerable<Type> GetAllIsAssignableFrom<T>(Predicate<Type> pred, bool checkAbstract = true)
         {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                        .SelectMany(assembly => assembly.GetTypes())
-                        .Where(t => typeof(T).IsAssignableFrom(t) && pred.Invoke(t) && (!checkAbstract || !t.IsAbstract));
+            return GetAllTypesInDomain().Where(t => typeof(T).IsAssignableFrom(t) && pred.Invoke(t) && (!checkAbstract || !t.IsAbstract));
+        }
+
+        /// <summary>
+        /// Get all types in current domain
+        /// </summary>
+        /// <returns>Types in domain</returns>
+        public static IEnumerable<Type> GetAllTypesInDomain()
+        {
+            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes());
         }
     }
 }

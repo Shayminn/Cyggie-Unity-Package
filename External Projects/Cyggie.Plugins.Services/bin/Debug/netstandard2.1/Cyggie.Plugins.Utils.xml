@@ -9,11 +9,6 @@
             Struct that contains all constants related to file extensions
             </summary>
         </member>
-        <member name="T:Cyggie.Plugins.Utils.Constants.FolderConstants">
-            <summary>
-            Struct that contains all constants related to folder names
-            </summary>
-        </member>
         <member name="T:Cyggie.Plugins.Utils.Constants.StringConstants">
             <summary>
             Struct that contains all constants related to strings
@@ -73,6 +68,91 @@
         <member name="F:Cyggie.Plugins.Utils.Enums.AspectRatio._32x9">
             <summary>
             eg. 3840x1080, 5120x1440, 7680x2160
+            </summary>
+        </member>
+        <member name="T:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType">
+            <summary>
+            Enum of all rect transform anchor presets
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.TopLeft">
+            <summary>
+            Top-left
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.TopCenter">
+            <summary>
+            Top-center
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.TopRight">
+            <summary>
+            Top-right
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.TopStretch">
+            <summary>
+            Stretch on the top horizontally
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.MiddleLeft">
+            <summary>
+            Middle-left
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.MiddleCenter">
+            <summary>
+            Middle-center
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.MiddleRight">
+            <summary>
+            Middle-right
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.MiddleStretch">
+            <summary>
+            Stretch on the middle horizontally
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.BottomLeft">
+            <summary>
+            Bottom-left
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.BottomCenter">
+            <summary>
+            Bottom-center
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.BottomRight">
+            <summary>
+            Bottom-right
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.BottomStretch">
+            <summary>
+            Stretch on the bottom horizontally
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.StretchLeft">
+            <summary>
+            Stretch on the left vertically
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.StretchCenter">
+            <summary>
+            Stretch in the center vertically
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.StretchRight">
+            <summary>
+            Stretch on the right vertically
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Enums.RectTransformAnchorType.StretchStretch">
+            <summary>
+            Stretch on axis horizontally and vertically
             </summary>
         </member>
         <member name="T:Cyggie.Plugins.Utils.Extensions.CollectionExtensions">
@@ -316,14 +396,6 @@
             <param name="str"></param>
             <returns></returns>
         </member>
-        <member name="M:Cyggie.Plugins.Utils.Extensions.StringExtensions.ToResourcesRelativePath(System.String)">
-            <summary>
-            Converts the <paramref name="path"/> to a relative path from the resources folder <br/>
-            i.e. Assets/Resources/Cyggie will return Cyggie
-            </summary>
-            <param name="path">Path to convert</param>
-            <returns><paramref name="path"/> if it doesn't contain <see cref="F:Cyggie.Plugins.Utils.Constants.FolderConstants.cResources"/></returns>
-        </member>
         <member name="T:Cyggie.Plugins.Utils.Extensions.TypeExtensions">
             <summary>
             Extension class to <see cref="T:System.Type"/>
@@ -347,144 +419,6 @@
             <param name="genericType">Generic type to check for equality</param>
             <param name="outputType">Output type that is equal to generic type (null if not found)</param>
             <returns>True if this type or any of its basetype is equal to <paramref name="genericType"/></returns>
-        </member>
-        <member name="T:Cyggie.Plugins.Utils.Extensions.ColorExtensions">
-            <summary>
-            Extension class to <see cref="T:UnityEngine.Color"/>
-            </summary>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Extensions.ColorExtensions.ChangeAlpha(UnityEngine.Color,System.Single)">
-            <summary>
-            Change the alpha (<see cref="F:UnityEngine.Color.a"/>) of <paramref name="color"/> to <paramref name="newAlpha"/>
-            </summary>
-            <param name="color">Color struct to change</param>
-            <param name="newAlpha">New alpha value to <paramref name="color"/></param>
-            <returns><paramref name="color"/> with alpha value of <paramref name="newAlpha"/></returns>
-        </member>
-        <member name="T:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions">
-            <summary>
-            Extension class to <see cref="T:UnityEngine.MonoBehaviour"/> objects
-            </summary>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.DelayedAction(UnityEngine.MonoBehaviour,UnityEngine.Events.UnityAction,System.Single)">
-            <summary>
-            Starts an <paramref name="action"/> after a <paramref name="delay"/> (in seconds)
-            </summary>
-            <param name="mono">Monobehaviour that triggers the action</param>
-            <param name="action">Action to invoke after delay</param>
-            <param name="delay">Delay before action is invoked (in seconds)</param>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.SafeStartCoroutine(UnityEngine.MonoBehaviour,UnityEngine.Coroutine@,System.Collections.IEnumerator)">
-            <summary>
-            Safely (re)starts a coroutine by first stopping it if it's not null before starting it.
-            </summary>
-            <param name="mono">MonoBehaviour object to start the coroutine on</param>
-            <param name="coroutine">Coroutine object to reference</param>
-            <param name="enumerator">Enumerator to run</param>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.SafeStopCoroutine(UnityEngine.MonoBehaviour,UnityEngine.Coroutine@)">
-            <summary>
-            Safely stops a coroutine by checking if it's not null.
-            </summary>
-            <param name="mono">MonoBehaviour object to stop the coroutine on</param>
-            <param name="coroutine">Coroutine object to stop</param>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.StartDelayedCoroutine(UnityEngine.MonoBehaviour,System.Collections.IEnumerator,System.Single)">
-            <summary>
-            Start a coroutine with a delay of <paramref name="delay"/> <br/>
-            This will automatically wait for <paramref name="delay"/> (seconds) before starting the <paramref name="enumerator"/>
-            </summary>
-            <param name="mono">MonoBehaviour object to start the coroutine</param>
-            <param name="delay">Delay before starting the enumerator</param>
-            <param name="enumerator">Enumerator method to start</param>
-            <returns>Coroutine from starting the enumerator</returns>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.SafeStartDelayedCoroutine(UnityEngine.MonoBehaviour,UnityEngine.Coroutine@,System.Collections.IEnumerator,System.Single)">
-            <summary>
-            Safely start a coroutine with a delay of <paramref name="delay"/> <br/>
-            This will automatically stop the coroutine if it's not null and automatically wait for <paramref name="delay"/> (seconds) before starting the <paramref name="enumerator"/>
-            </summary>
-            <param name="mono">MonoBehaviour object to start the coroutine</param>
-            <param name="coroutine">Referenced coroutine to stop</param>
-            <param name="delay">Delay before starting the enumerator</param>
-            <param name="enumerator">Enumerator method to start</param>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.StartConditionalCoroutine(UnityEngine.MonoBehaviour,Cyggie.Plugins.Utils.Predicate,System.Collections.IEnumerator,System.Single)">
-            <summary>
-            Start a coroutine when a specified condition is satisfied <br/>
-            Set an optional max time to timeout and automatically proceed into the <paramref name="enumerator"/>
-            </summary>
-            <param name="mono">MonoBehaviour object to start the coroutine</param>
-            <param name="condition">Condition to satisfy</param>
-            <param name="enumerator">Enumerator method to start</param>
-            <param name="maxTime">Max time before timeout (defaults to -1, any negative value = infinite)</param>"
-            <returns>Coroutine from starting the enumerator</returns>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Extensions.MonoBehaviourExtensions.SafeStartConditionalCoroutine(UnityEngine.MonoBehaviour,UnityEngine.Coroutine@,Cyggie.Plugins.Utils.Predicate,System.Collections.IEnumerator,System.Single)">
-            <summary>
-            Safely start a coroutine when a specified condition is satisfied <br/>
-            Set an optional max time to timeout and automatically proceed into the <paramref name="enumerator"/>
-            </summary>
-            <param name="mono">MonoBehaviour object to start the coroutine</param>
-            <param name="coroutine">Referenced coroutine to stop</param>
-            <param name="condition">Condition to satisfy</param>
-            <param name="enumerator">Enumerator method to start</param>
-            <param name="maxTime">Max time before timeout (defaults to -1, any negative value = infinite)</param>"
-        </member>
-        <member name="T:Cyggie.Plugins.Utils.Extensions.RectTransformExtensions">
-            <summary>
-            Extension class to <see cref="T:UnityEngine.RectTransform"/>
-            </summary>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Extensions.RectTransformExtensions.SetAnchorType(UnityEngine.RectTransform,Cyggie.Plugins.Utils.Enums.RectTransformAnchorType)">
-            <summary>
-            Set anchor type of <paramref name="rectTransform"/> <br/>
-            Assign the right <see cref="P:UnityEngine.RectTransform.anchorMin"/> and <see cref="P:UnityEngine.RectTransform.anchorMin"/> based on <paramref name="anchorType"/>
-            </summary>
-            <param name="rectTransform">Rect transform to change</param>
-            <param name="anchorType">Anchor type to set</param>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Extensions.RectTransformExtensions.SetAnchorType(UnityEngine.RectTransform,Cyggie.Plugins.Utils.Enums.RectTransformAnchorType,System.Single,System.Single)">
-            <summary>
-            Set anchor type of <paramref name="rectTransform"/> <br/>
-            Assign the right <see cref="P:UnityEngine.RectTransform.anchorMin"/> and <see cref="P:UnityEngine.RectTransform.anchorMin"/> based on <paramref name="anchorType"/>
-            </summary>
-            <param name="rectTransform">Rect transform to change</param>
-            <param name="anchorType">Anchor type to set</param>
-            <param name="width">Width to assign to <paramref name="rectTransform"/></param>
-            <param name="height">Height to assign to <paramref name="rectTransform"/></param>
-        </member>
-        <member name="T:Cyggie.Plugins.Utils.Extensions.TextureExtensions">
-            <summary>
-            Extension class to <see cref="T:UnityEngine.Texture"/> and <see cref="T:UnityEngine.Texture2D"/>
-            </summary>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Extensions.TextureExtensions.ToSprite(UnityEngine.Texture2D)">
-            <summary>
-            
-            </summary>
-            <param name="texture"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Utils.Extensions.UnityObjectExtensions.AssignIfNull``1(``0,System.Func{``0})">
-            <summary>
-            Assign value if <paramref name="obj"/> is null, returning <paramref name="obj"/> or new value from <paramref name="func"/>. <br/>
-            The equivalent of the "??=" operator, but <see cref="T:UnityEngine.Object"/> null checks are different from <see cref="T:System.Object"/> so this step is necessary to achieve the same result.
-            </summary>
-            <typeparam name="T">Must derive from <see cref="T:UnityEngine.Object"/></typeparam>
-            <param name="obj">Object to check for null</param>
-            <param name="func">Func to create an object from</param>
-            <returns><paramref name="obj"/> or new value from <paramref name="func"/></returns>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Utils.Extensions.UnityObjectExtensions.AssignIfNull``1(``0,``0)">
-            <summary>
-            Assign value if <paramref name="obj"/> is null, returning <paramref name="obj"/> or <paramref name="newValue"/>. <br/>
-            The equivalent of the "??=" operator, but <see cref="T:UnityEngine.Object"/> null checks are different from <see cref="T:System.Object"/> so this step is necessary to achieve the same result.
-            </summary>
-            <typeparam name="T">Must derive from <see cref="T:UnityEngine.Object"/></typeparam>
-            <param name="obj">Object to check for null</param>
-            <param name="newValue">New value to assign</param>
-            <returns><paramref name="obj"/> or <paramref name="newValue"/></returns>
         </member>
         <member name="T:Cyggie.Plugins.Utils.Helpers.AspectRatioHelper">
             <summary>
@@ -590,22 +524,11 @@
             <param name="pred">Extra conditions that needs to be checked</param>
             <returns>Collection of types that are assignable</returns>
         </member>
-        <member name="T:Cyggie.Plugins.Utils.Helpers.UnityHelper">
+        <member name="M:Cyggie.Plugins.Utils.Helpers.TypeHelper.GetAllTypesInDomain">
             <summary>
-            Helper class for Unity-related stuff
+            Get all types in current domain
             </summary>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Helpers.UnityHelper.GetVector2ScreenSize">
-            <summary>
-            Get the screen size in <see cref="T:UnityEngine.Vector2"/>.
-            </summary>
-            <returns>Vector2 of <see cref="P:UnityEngine.Screen.width"/> x <see cref="P:UnityEngine.Screen.height"/></returns>
-        </member>
-        <member name="M:Cyggie.Plugins.Utils.Helpers.UnityHelper.GetVector2Resolution">
-            <summary>
-            Get the resolution in <see cref="T:UnityEngine.Vector2"/>.
-            </summary>
-            <returns>Vector2 of <see cref="P:UnityEngine.Resolution.width"/> x <see cref="P:UnityEngine.Resolution.height"/></returns>
+            <returns>Types in domain</returns>
         </member>
         <member name="T:Cyggie.Plugins.Editor.Helpers.GUIHelper">
             <summary>

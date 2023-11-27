@@ -160,19 +160,14 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// </summary>
         protected virtual void OnInitialized() { }
 
-        /// <summary>
-        /// Called when all services have been initialized (equivalent to subscribing to <see cref="ServiceManagerMono.OnServicesInitialized"/>)
-        /// </summary>
-        protected virtual void OnServicesInitialized() { }
-
         #endregion
 
+        /// <inheritdoc/>
         public void Initialize(IServiceManager manager)
         {
             ServiceManager = manager;
+            OnInitialized();
         }
-
-        #region Statics
 
         /// <summary>
         /// Manually create a service <br/>
@@ -185,11 +180,8 @@ namespace Cyggie.Main.Runtime.ServicesNS
         {
             T service = new T();
             service.OnInitialized();
-            service.OnServicesInitialized();
             return service;
         }
-
-        #endregion
     }
 
     #endregion
@@ -233,7 +225,6 @@ namespace Cyggie.Main.Runtime.ServicesNS
             }
 
             service.OnInitialized();
-            service.OnServicesInitialized();
             return service;
         }
     }

@@ -1,18 +1,18 @@
+using Cyggie.Main.Runtime.Attributes;
 using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.Utils.Helpers;
 using Cyggie.Plugins.Logs;
 using Cyggie.Plugins.Services.Interfaces;
 using Cyggie.Plugins.Services.Models;
 using Cyggie.Plugins.Utils.Extensions;
-using Cyggie.Plugins.Utils.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 
 namespace Cyggie.Main.Runtime.ServicesNS
 {
+
     /// <summary>
     /// Manager class for all services of type <see cref="ServiceMono"/> <br/> 
     /// Any subclass of type <see cref="ServiceMono"/> will automatically be created and initialized <br/>
@@ -57,13 +57,31 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// <inheritdoc/>
         public void Initialize(params Type[] serviceTypes)
         {
+            if (_initialized)
+            {
+                Log.Error("Initialize the service manager but it was already initialized!", nameof(ServiceManager));
+                return;
+            }
+
             Log.Debug($"Service Manager initializing {serviceTypes.Length} services.", nameof(ServiceManager));
             foreach (Type type in serviceTypes)
             {
-                Create(type, initialize: false);
+                IService service = Create(type, initialize: false);
+
+                if (service.CreateOnInitialize)
+                {
+                    _services.Add(service);
+                }
             }
 
-            Log.Debug($"Initialized services. Count: {_services.Count}.", nameof(ServiceManagerMono));
+            // Initialize all services in order of priority
+            foreach (IService service in _services.OrderBy(x => x.Priority))
+            {
+                service.Initialize(this);
+            }
+
+            _initialized = true;
+            Log.Debug($"Service Manager initialized all services: {_services.Count}.", nameof(ServiceManagerMono));
         }
 
         /// <inheritdoc/>
@@ -71,7 +89,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
         private static IService Create(Type serviceType, bool initialize)
         {
-            if (_instance == null || !_instance._initialized)
+            if (initialize && (_instance == null || !_instance._initialized))
             {
                 Log.Error($"Unable to create service of type {serviceType}, service manager was not initialized yet.", nameof(ServiceManagerMono));
                 return null;
@@ -92,7 +110,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             IService iService = (IService) Activator.CreateInstance(serviceType);
             if (iService != null)
             {
-                if (iService.GetType().IsSubclassOfGenericType(typeof(Service<>), out Type baseServiceType) && baseServiceType != null)
+                if (iService.GetType().IsSubclassOfGenericType(typeof(ServiceMono<>), out Type baseServiceType) && baseServiceType != null)
                 {
                     if (iService is not IServiceWithConfiguration serviceWithConfig)
                     {
@@ -132,9 +150,10 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// Called at the start of runtime before awake <br/>
         /// Create the <see cref="ServiceManagerMono"/> object prefab in the scene
         /// </summary>
-        [RuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.BeforeSceneLoad)]
+        [CustomRuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Initialize()
         {
+            Debug.Log("Initialize");
             if (Settings == null)
             {
                 Log.Error($"Unable to find Service Manager Settings in Resources.", nameof(ServiceManagerMono));
@@ -155,7 +174,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             GameObjectHelper.EmptyPrefab = Settings.EmptyPrefab;
 
             // Create service manager object
-            _instance = Instantiate(Settings.Prefab);
+            Instantiate(Settings.Prefab);
 
             // Initialize will be called in Awake
         }
@@ -212,8 +231,9 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
         private void Awake()
         {
-            if (_instance == null) return;
+            if (_instance != null) return;
 
+            _instance = this;
             DontDestroyOnLoad(_instance);
 
             IEnumerable<Type> types = Settings.ServiceIdentifiers.Select(x => Type.GetType(x.AssemblyName));

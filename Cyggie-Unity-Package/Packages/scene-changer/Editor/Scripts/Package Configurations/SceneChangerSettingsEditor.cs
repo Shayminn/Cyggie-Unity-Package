@@ -2,7 +2,9 @@
 using Cyggie.Plugins.Editor.Helpers;
 using Cyggie.Plugins.Utils.Extensions;
 using Cyggie.SceneChanger.Editor.Utils.Styles;
+using Cyggie.SceneChanger.Runtime;
 using Cyggie.SceneChanger.Runtime.Configurations;
+using Cyggie.SceneChanger.Runtime.Utils.Constants;
 using UnityEditor;
 using UnityEngine;
 using static UnityEngine.UI.Image;
@@ -59,6 +61,11 @@ namespace Cyggie.SceneChanger.Editor.Configurations
         private void OnEnable()
         {
             _config = target as SceneChangerServiceConfiguration;
+
+            if (_config.LoadingScreenPrefab == null)
+            {
+                _config.LoadingScreenPrefab = AssetDatabase.LoadAssetAtPath<LoadingScreen>(SceneChangerPaths.cLoadingScreenPrefab);
+            }
 
             _loadingScreenPrefab = serializedObject.FindProperty(nameof(SceneChangerServiceConfiguration.LoadingScreenPrefab));
 

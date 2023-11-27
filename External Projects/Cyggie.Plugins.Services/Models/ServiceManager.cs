@@ -71,7 +71,7 @@ namespace Cyggie.Plugins.Services.Models
         }
 
         /// <inheritdoc/>
-        public void Initialize(Type[] serviceTypes)
+        public void Initialize(params Type[] serviceTypes)
         {
             if (_initialized)
             {
@@ -114,7 +114,7 @@ namespace Cyggie.Plugins.Services.Models
             }
 
             _initialized = true;
-            Log.Debug($"Service Manager initialized all services.", nameof(ServiceManager));
+            Log.Debug($"Service Manager initialized all services: {_services.Count}.", nameof(ServiceManager));
         }
 
         /// <summary>
