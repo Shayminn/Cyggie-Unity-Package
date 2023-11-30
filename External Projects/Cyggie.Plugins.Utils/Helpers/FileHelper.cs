@@ -11,7 +11,6 @@ namespace Cyggie.Plugins.Utils.Helpers
         /// Generate an unique file path adding "(index)" if it exists
         /// </summary>
         /// <param name="originalPath">Original file path</param>
-        /// <param name="fileExtension">File extension to the generated path</param>
         /// <returns>Unique file path</returns>
         public static string GenerateUniquePath(string originalPath)
         {

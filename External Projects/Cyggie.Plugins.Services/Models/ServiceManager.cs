@@ -182,7 +182,10 @@ namespace Cyggie.Plugins.Services.Models
         public static T Get<T>() where T : IService
         {
             T service = (T) Instance._services.FirstOrDefault(x => x.GetType() == typeof(T)) ?? (T) Create(typeof(T));
+#pragma warning disable CS8603 // Possible null reference return.
+            // Not null is only supported in C# 9+ which is not supported in most Unity versions
             return service;
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         /// <summary>

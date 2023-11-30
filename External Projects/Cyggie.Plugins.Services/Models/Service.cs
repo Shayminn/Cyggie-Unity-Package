@@ -58,7 +58,10 @@ namespace Cyggie.Plugins.Services.Models
         /// <summary>
         /// Configuration associated to object
         /// </summary>
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        // Not null is only supported in C# 9+ which is not supported in most Unity versions
         public T Configuration { get; private set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         /// <inheritdoc/>
         public Type ConfigurationType => typeof(T);

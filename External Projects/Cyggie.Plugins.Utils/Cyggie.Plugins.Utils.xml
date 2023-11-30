@@ -9,9 +9,29 @@
             Struct that contains all constants related to file extensions
             </summary>
         </member>
-        <member name="T:Cyggie.Plugins.Utils.Constants.StringConstants">
+        <member name="F:Cyggie.Plugins.Utils.Constants.FileExtensionConstants.cAsset">
             <summary>
-            Struct that contains all constants related to strings
+            Asset file extension (.asset)
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Constants.FileExtensionConstants.cPrefab">
+            <summary>
+            Prefab file extension (.prefab)
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Constants.FileExtensionConstants.cTextFile">
+            <summary>
+            Text file extension (.txt)
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Constants.FileExtensionConstants.cJsonFile">
+            <summary>
+            Json file extension (.json)
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Utils.Constants.FileExtensionConstants.cXMLFile">
+            <summary>
+            XML file extension (.xml)
             </summary>
         </member>
         <member name="T:Cyggie.Plugins.Utils.Predicate">
@@ -22,7 +42,7 @@
         <member name="T:Cyggie.Plugins.Utils.Enums.AspectRatio">
             <summary>
             Enum that contains various of the existing aspect ratios <br/>
-            Use with <see cref="!:AspectRatioHelper"/> to retrieve an aspect ratio based on width and height
+            Use with <see cref="T:Cyggie.Plugins.Utils.Helpers.AspectRatioHelper"/> to retrieve an aspect ratio based on width and height
             </summary>
         </member>
         <member name="F:Cyggie.Plugins.Utils.Enums.AspectRatio._9x16">
@@ -457,7 +477,6 @@
             Generate an unique file path adding "(index)" if it exists
             </summary>
             <param name="originalPath">Original file path</param>
-            <param name="fileExtension">File extension to the generated path</param>
             <returns>Unique file path</returns>
         </member>
         <member name="T:Cyggie.Plugins.Utils.Helpers.ObjectHelper">

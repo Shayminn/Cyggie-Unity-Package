@@ -16,7 +16,7 @@
         int Priority => -1;
 
         /// <summary>
-        /// Whether this service should be created when <see cref="IServiceManager.Initialize(Type[])"/> is called
+        /// Whether this service should be created when <see cref="IServiceManager.Initialize(System.Type[])"/> is called
         /// </summary>
         bool CreateOnInitialize => true;
 

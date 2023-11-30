@@ -1,10 +1,9 @@
 ﻿using System;
-using UnityEngine;
 
 namespace Cyggie.Plugins.Logs
 {
     /// <summary>
-    /// The supported log types
+    /// Type of supported logs
     /// </summary>
     [Flags]
     public enum LogTypes
@@ -15,17 +14,17 @@ namespace Cyggie.Plugins.Logs
         None = 0,
 
         /// <summary>
-        /// <see cref="Debug.Log(object)"/> enabled
+        /// <see cref="Log.Debug(object, string, object[])"/> enabled
         /// </summary>
         Debug = 1 << 0,
 
         /// <summary>
-        /// <see cref="Debug.LogWarning(object)"/> enabled
+        /// <see cref="Log.Warning(object, string, object[])"/> enabled
         /// </summary>
         Warning = 1 << 1,
 
         /// <summary>
-        /// <see cref="Debug.LogError(object)"/> enabled
+        /// <see cref="Log.Error(object, string, object[])"/> enabled
         /// </summary>
         Error = 1 << 2
     }

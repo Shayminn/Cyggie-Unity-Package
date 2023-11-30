@@ -1,3 +1,5 @@
+using Cyggie.Plugins.Utils.Helpers;
+
 namespace Cyggie.Plugins.Utils.Enums
 {
     /// <summary>
