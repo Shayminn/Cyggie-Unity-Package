@@ -92,7 +92,8 @@ namespace Cyggie.Plugins.Logs
             if (!_enabledTypes.HasFlag(type)) return;
 
             ILog log = (ILog) Activator.CreateInstance(_logModel);
-            string stackTrace = log.Print(type, message.ToString(), tag, args);
+            log.Initialize(message.ToString(), tag, args);
+            string stackTrace = log.Print(type);
 
             LogEventArgs eventArgs = new LogEventArgs(type, log, stackTrace);
             OnLogEvent?.Invoke(eventArgs);

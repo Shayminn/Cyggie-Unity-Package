@@ -14,7 +14,7 @@ namespace Cyggie.SQLite.Editor.Configurations
     /// Inspector editor for <see cref="SQLiteSettings"/>
     /// </summary>
     [CustomEditor(typeof(SQLiteServiceConfiguration))]
-    internal class SQLiteSettingsEditor : UnityEditor.Editor
+    internal class SQLiteServiceConfigurationEditor : UnityEditor.Editor
     {
         private SQLiteServiceConfiguration _config = null;
         private SerializedProperty _openAllOnStart = null;

@@ -41,8 +41,6 @@ namespace Cyggie.SceneChanger.Runtime.ServicesNS
         /// <inheritdoc/>
         protected override void OnInitialized()
         {
-            Debug.Log("On initialized: " + Configuration);
-
             // Create game object from prefab
             _loadingScreen = Instantiate(Configuration.LoadingScreenPrefab);
 

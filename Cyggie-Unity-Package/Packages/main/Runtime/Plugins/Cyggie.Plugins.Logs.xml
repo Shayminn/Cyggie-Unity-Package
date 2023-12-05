@@ -4,28 +4,6 @@
         <name>Cyggie.Plugins.Logs</name>
     </assembly>
     <members>
-        <member name="T:Cyggie.Plugins.Logs.DebugLogEventArgs">
-            <summary>
-            Event arguments for a log of type <see cref="F:Cyggie.Plugins.Logs.LogTypes.Debug"/>
-            </summary>
-        </member>
-        <member name="P:Cyggie.Plugins.Logs.DebugLogEventArgs.Type">
-            <inheritdoc/>
-        </member>
-        <member name="M:Cyggie.Plugins.Logs.DebugLogEventArgs.Send">
-            <inheritdoc/>
-        </member>
-        <member name="T:Cyggie.Plugins.Logs.ErrorLogEventArgs">
-            <summary>
-            Event arguments for a log of type <see cref="F:Cyggie.Plugins.Logs.LogTypes.Error"/>
-            </summary>
-        </member>
-        <member name="P:Cyggie.Plugins.Logs.ErrorLogEventArgs.Type">
-            <inheritdoc/>
-        </member>
-        <member name="M:Cyggie.Plugins.Logs.ErrorLogEventArgs.Send">
-            <inheritdoc/>
-        </member>
         <member name="T:Cyggie.Plugins.Logs.LogEventArgs">
             <summary>
             Event arguments for a log
@@ -36,25 +14,9 @@
             Type of log
             </summary>
         </member>
-        <member name="P:Cyggie.Plugins.Logs.LogEventArgs.FullLog">
-            <summary>
-            The full log that's displayed in the console based on the <see cref="T:Cyggie.Plugins.Logs.LogProfile"/> that was set
-            </summary>
-        </member>
         <member name="P:Cyggie.Plugins.Logs.LogEventArgs.Log">
             <summary>
-            The log message that was inputted
-            </summary>
-        </member>
-        <member name="P:Cyggie.Plugins.Logs.LogEventArgs.Tag">
-            <summary>
-            Tag that was inputted with the log <br/>
-            This can be used for Class name, method name, etc.
-            </summary>
-        </member>
-        <member name="P:Cyggie.Plugins.Logs.LogEventArgs.Timestamp">
-            <summary>
-            The timestamp that the log was sent
+            
             </summary>
         </member>
         <member name="P:Cyggie.Plugins.Logs.LogEventArgs.StackTrace">
@@ -62,25 +24,80 @@
             The log's stack trace
             </summary>
         </member>
-        <member name="P:Cyggie.Plugins.Logs.LogEventArgs.Context">
+        <member name="T:Cyggie.Plugins.Logs.Models.Interfaces.ILog">
             <summary>
-            The object's context
+            Interface for a log model used by <see cref="T:Cyggie.Plugins.Logs.Log"/> when calling logs
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.Logs.LogEventArgs.Send">
+        <member name="F:Cyggie.Plugins.Logs.Models.Interfaces.ILog.cEmptyTag">
             <summary>
-            Send the log
+            Tag used in replacement when no tag is set in the log
             </summary>
         </member>
-        <member name="T:Cyggie.Plugins.Logs.WarningLogEventArgs">
+        <member name="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Message">
             <summary>
-            Event arguments for a log of type <see cref="F:Cyggie.Plugins.Logs.LogTypes.Warning"/>
+            Message to log
             </summary>
         </member>
-        <member name="P:Cyggie.Plugins.Logs.WarningLogEventArgs.Type">
+        <member name="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Tag">
+            <summary>
+            Tag associated to the message
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Args">
+            <summary>
+            Arguments with the log
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Timestamp">
+            <summary>
+            Timestamp of the log following the format (hour:minute:second:millisecond, eg. 14:53:24:460)
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.FullLog">
+            <summary>
+            The full log that is displayed (combination of <see cref="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Timestamp"/>, <see cref="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Tag"/> and <see cref="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Message"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Initialize(System.String,System.String,System.Object[])">
+            <summary>
+            Initialize the log's values
+            </summary>
+            <param name="message">Message to log</param>
+            <param name="tag">Tag of the log</param>
+            <param name="args">Arguments to the log</param>
+        </member>
+        <member name="M:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Print(Cyggie.Plugins.Logs.LogTypes)">
+            <summary>
+            Print the log to wherever
+            </summary>
+            <param name="type">Type of log</param>
+            <returns>Stacktrace of the log</returns>
+        </member>
+        <member name="T:Cyggie.Plugins.Logs.Models.LogConsole">
+            <summary>
+            Log model for logging into the console using <see cref="M:System.Console.WriteLine"/>
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.Logs.Models.LogConsole.Message">
             <inheritdoc/>
         </member>
-        <member name="M:Cyggie.Plugins.Logs.WarningLogEventArgs.Send">
+        <member name="P:Cyggie.Plugins.Logs.Models.LogConsole.Tag">
+            <inheritdoc/>
+        </member>
+        <member name="P:Cyggie.Plugins.Logs.Models.LogConsole.Args">
+            <inheritdoc/>
+        </member>
+        <member name="P:Cyggie.Plugins.Logs.Models.LogConsole.Timestamp">
+            <inheritdoc/>
+        </member>
+        <member name="P:Cyggie.Plugins.Logs.Models.LogConsole.FullLog">
+            <inheritdoc/>
+        </member>
+        <member name="M:Cyggie.Plugins.Logs.Models.LogConsole.Initialize(System.String,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Cyggie.Plugins.Logs.Models.LogConsole.Print(Cyggie.Plugins.Logs.LogTypes)">
             <inheritdoc/>
         </member>
         <member name="T:Cyggie.Plugins.Logs.Log">
@@ -99,40 +116,7 @@
             Event called when there's a new log
             </summary>
         </member>
-        <member name="T:Cyggie.Plugins.Logs.Log.DebugLogEvent">
-            <summary>
-            Event called when there's a new Debug log
-            </summary>
-            <param name="args">Event args object</param>
-        </member>
-        <member name="F:Cyggie.Plugins.Logs.Log.OnDebugEvent">
-            <summary>
-            Event called when there's a new Debug log
-            </summary>
-        </member>
-        <member name="T:Cyggie.Plugins.Logs.Log.WarningLogEvent">
-            <summary>
-            Event called when there's a new Warning log
-            </summary>
-            <param name="args">Event args object</param>
-        </member>
-        <member name="F:Cyggie.Plugins.Logs.Log.OnWarningEvent">
-            <summary>
-            Event called when there's a new Warning log
-            </summary>
-        </member>
-        <member name="T:Cyggie.Plugins.Logs.Log.ErrorLogEvent">
-            <summary>
-            Event called when there's a new Error log
-            </summary>
-            <param name="args">Event args object</param>
-        </member>
-        <member name="F:Cyggie.Plugins.Logs.Log.OnErrorEvent">
-            <summary>
-            Event called when there's a new Error log
-            </summary>
-        </member>
-        <member name="M:Cyggie.Plugins.Logs.Log.Debug(System.Object,System.String,UnityEngine.Object)">
+        <member name="M:Cyggie.Plugins.Logs.Log.Debug(System.Object,System.String,System.Object[])">
             <summary>
             Send a debug message <br/>
             If the current profile does not include Debugs, this will be ignored <br/>
@@ -141,9 +125,9 @@
             </summary>
             <param name="message">Message to log</param>
             <param name="tag">Tag to add</param>
-            <param name="context">The Object that this log is associated to, clicking on this log will select the Object</param>
+            <param name="args"></param>
         </member>
-        <member name="M:Cyggie.Plugins.Logs.Log.Warning(System.Object,System.String,UnityEngine.Object)">
+        <member name="M:Cyggie.Plugins.Logs.Log.Warning(System.Object,System.String,System.Object[])">
             <summary>
             Send a warning message <br/>
             If the current profile does not include Warnings, this will be ignored <br/>
@@ -152,9 +136,9 @@
             </summary>
             <param name="message">Message to log</param>
             <param name="tag">Tag to add</param>
-            <param name="context">The Object that this log is associated to, clicking on this log will select the Object</param>
+            <param name="args"></param>
         </member>
-        <member name="M:Cyggie.Plugins.Logs.Log.Error(System.Object,System.String,UnityEngine.Object)">
+        <member name="M:Cyggie.Plugins.Logs.Log.Error(System.Object,System.String,System.Object[])">
             <summary>
             Send a error message <br/>
             If the current profile does not include Errors, this will be ignored <br/>
@@ -163,53 +147,22 @@
             </summary>
             <param name="message">Message to log</param>
             <param name="tag">Tag to add</param>
-            <param name="context">The Object that this log is associated to, clicking on this log will select the Object</param>
+            <param name="args"></param>
         </member>
-        <member name="M:Cyggie.Plugins.Logs.Log.SetTypes(Cyggie.Plugins.Logs.LogTypes)">
+        <member name="M:Cyggie.Plugins.Logs.Log.ToggleLogs(Cyggie.Plugins.Logs.LogTypes)">
             <summary>
-            Set the profile's log types during runtime <br/>
-            This will not update the profile's Serialized Object (if any) <br/>
-            Changes only affect the current run
-            </summary>
-            <param name="types">Filter types (flags)</param>
-        </member>
-        <member name="M:Cyggie.Plugins.Logs.Log.Enable">
-            <summary>
-            Enable logs
+            Toggle the enabled log types
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.Logs.Log.Disable">
+        <member name="M:Cyggie.Plugins.Logs.Log.SetLogModel``1">
             <summary>
-            Disable logs
+            Set the log model to use
             </summary>
-        </member>
-        <member name="M:Cyggie.Plugins.Logs.Log.SetProfile(Cyggie.Plugins.Logs.LogProfile)">
-            <summary>
-            Set the current profile based on the <see cref="P:UnityEngine.Application.platform"/>
-            </summary>
-            <param name="profile">Platform's profile</param>
-        </member>
-        <member name="M:Cyggie.Plugins.Logs.Log.BuildLog(System.Object,System.String)">
-            <summary>
-            Build the complete log
-            </summary>
-            <param name="message">The origianl message</param>
-            <param name="tag">The input tag</param>
-            <returns></returns>
-        </member>
-        <member name="T:Cyggie.Plugins.Logs.LogProfile">
-            <summary>
-            Class that holds log settings for a <see cref="T:UnityEngine.RuntimePlatform"/>
-            </summary>
-        </member>
-        <member name="F:Cyggie.Plugins.Logs.LogProfile.Name">
-            <summary>
-            Array's display name in Inspector
-            </summary>
+            <typeparam name="T">Log model to use for any logs that are sent through</typeparam>
         </member>
         <member name="T:Cyggie.Plugins.Logs.LogTypes">
             <summary>
-            The supported log types
+            Type of supported logs
             </summary>
         </member>
         <member name="F:Cyggie.Plugins.Logs.LogTypes.None">
@@ -219,30 +172,18 @@
         </member>
         <member name="F:Cyggie.Plugins.Logs.LogTypes.Debug">
             <summary>
-            <see cref="M:UnityEngine.Debug.Log(System.Object)"/> enabled
+            <see cref="M:Cyggie.Plugins.Logs.Log.Debug(System.Object,System.String,System.Object[])"/> enabled
             </summary>
         </member>
         <member name="F:Cyggie.Plugins.Logs.LogTypes.Warning">
             <summary>
-            <see cref="M:UnityEngine.Debug.LogWarning(System.Object)"/> enabled
+            <see cref="M:Cyggie.Plugins.Logs.Log.Warning(System.Object,System.String,System.Object[])"/> enabled
             </summary>
         </member>
         <member name="F:Cyggie.Plugins.Logs.LogTypes.Error">
             <summary>
-            <see cref="M:UnityEngine.Debug.LogError(System.Object)"/> enabled
+            <see cref="M:Cyggie.Plugins.Logs.Log.Error(System.Object,System.String,System.Object[])"/> enabled
             </summary>
-        </member>
-        <member name="T:Cyggie.Plugins.Logs.Utils.LogTypesExtensions">
-            <summary>
-            Extension class for <see cref="T:Cyggie.Plugins.Logs.LogTypes"/>
-            </summary>
-        </member>
-        <member name="M:Cyggie.Plugins.Logs.Utils.LogTypesExtensions.ToUnityType(Cyggie.Plugins.Logs.LogTypes)">
-            <summary>
-            Convert <see cref="T:Cyggie.Plugins.Logs.LogTypes"/> to the Unity equivalent
-            </summary>
-            <param name="logTypes">Log type to convert</param>
-            <returns>Unity log type</returns>
         </member>
     </members>
 </doc>

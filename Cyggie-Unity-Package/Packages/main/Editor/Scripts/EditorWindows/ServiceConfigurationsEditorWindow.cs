@@ -10,6 +10,7 @@ using Cyggie.Plugins.Utils.Constants;
 using Cyggie.Plugins.Utils.Extensions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -227,11 +228,17 @@ namespace Cyggie.Main.Editor.Windows
             // Verify that all Package Service Configs have their associated service
             ServiceManagerSettings.ServiceConfigurations.RemoveAll((serviceConfig) =>
             {
-                bool toRemove = !serviceConfigTypes.Any(x => serviceConfig != null && x == serviceConfig.GetType());
+                if (serviceConfig == null) return true;
+
+                bool toRemove = !serviceConfigTypes.Any(x => x == serviceConfig.GetType());
                 if (toRemove)
                 {
                     string path = $"{FolderConstants.cAssets}{FolderConstants.cCyggieServiceConfigurations}";
-                    AssetDatabaseHelper.DeleteAsset($"{path}{serviceConfig.name}{FileExtensionConstants.cAsset}");
+                    string assetPath = $"{path}{serviceConfig.name}{FileExtensionConstants.cAsset}";
+                    if (File.Exists(path))
+                    {
+                        AssetDatabaseHelper.DeleteAsset(assetPath);
+                    }
                 }
 
                 return toRemove;

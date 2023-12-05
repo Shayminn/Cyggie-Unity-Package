@@ -27,17 +27,14 @@ namespace Cyggie.Main.Runtime.Configurations
         [SerializeField, Tooltip("Empty prefab for the ObjectHelper.")]
         internal GameObject EmptyPrefab = null;
 
-        [SerializeField, Tooltip("Whether logs using Cyggie's Logging system should be enabled.")]
-        internal bool EnableLog = true;
-
-        [SerializeField, Tooltip("")]
+        [SerializeField, Tooltip("The list of service identifiers to which services are created and initialized.")]
         internal List<ServiceIdentifier> ServiceIdentifiers = new List<ServiceIdentifier>();
 
         [SerializeField, Tooltip("List of service configurations. Automatically generated upon refresh.")]
         internal List<ServiceConfigurationSO> ServiceConfigurations = new List<ServiceConfigurationSO>();
 
-        [SerializeField, Tooltip("List of log profiles. Created in the Configuration window.")]
-        internal List<LogProfile> LogProfiles = new List<LogProfile>();
+        [SerializeField, Tooltip("The type of logs that are enabled when using the Log system.")]
+        internal LogTypes EnabledLogs = LogTypes.Debug | LogTypes.Warning | LogTypes.Error;
 
         /// <summary>
         /// Try get a service configuration from the list of assigned service configurations

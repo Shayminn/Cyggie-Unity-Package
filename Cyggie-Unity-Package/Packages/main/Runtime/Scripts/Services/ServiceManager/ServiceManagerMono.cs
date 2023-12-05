@@ -147,28 +147,30 @@ namespace Cyggie.Main.Runtime.ServicesNS
         #region Initialization
 
         /// <summary>
+        /// Static constructor to set up Log system
+        /// </summary>
+        static ServiceManagerMono()
+        {
+            Log.SetLogModel<LogUnity>();
+
+            // Any logs called in a static constructor will always be sent since the settings EnabledLogs has not been retrieved yet
+        }
+
+        /// <summary>
         /// Called at the start of runtime before awake <br/>
         /// Create the <see cref="ServiceManagerMono"/> object prefab in the scene
         /// </summary>
         [CustomRuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Initialize()
         {
-            Debug.Log("Initialize");
             if (Settings == null)
             {
                 Log.Error($"Unable to find Service Manager Settings in Resources.", nameof(ServiceManagerMono));
                 return;
             }
 
-            // Toggle logs
-            if (Settings.EnableLog)
-            {
-                Log.Enable();
-            }
-            else
-            {
-                Log.Disable();
-            }
+            // Enable/Disable logs
+            Log.ToggleLogs(Settings.EnabledLogs);
 
             // Set helpers
             GameObjectHelper.EmptyPrefab = Settings.EmptyPrefab;

@@ -15,7 +15,7 @@ namespace Cyggie.SceneChanger.Editor.Configurations
     /// Inspector editor for <see cref="SceneChangerServiceConfiguration"/>
     /// </summary>
     [CustomEditor(typeof(SceneChangerServiceConfiguration))]
-    internal class SceneChangerSettingsEditor : UnityEditor.Editor
+    internal class SceneChangerServiceConfigurationEditor : UnityEditor.Editor
     {
         // GUI Labels
         private const string cLoadingScreenLabel = "Loading Screen Settings";
@@ -65,6 +65,7 @@ namespace Cyggie.SceneChanger.Editor.Configurations
             if (_config.LoadingScreenPrefab == null)
             {
                 _config.LoadingScreenPrefab = AssetDatabase.LoadAssetAtPath<LoadingScreen>(SceneChangerPaths.cLoadingScreenPrefab);
+                EditorUtility.SetDirty(_config);
             }
 
             _loadingScreenPrefab = serializedObject.FindProperty(nameof(SceneChangerServiceConfiguration.LoadingScreenPrefab));

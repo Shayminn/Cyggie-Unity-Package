@@ -29,9 +29,19 @@
             Interface for a log model used by <see cref="T:Cyggie.Plugins.Logs.Log"/> when calling logs
             </summary>
         </member>
+        <member name="F:Cyggie.Plugins.Logs.Models.Interfaces.ILog.cEmptyTag">
+            <summary>
+            Tag used in replacement when no tag is set in the log
+            </summary>
+        </member>
         <member name="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Message">
             <summary>
             Message to log
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Tag">
+            <summary>
+            Tag associated to the message
             </summary>
         </member>
         <member name="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Args">
@@ -44,10 +54,24 @@
             Timestamp of the log following the format (hour:minute:second:millisecond, eg. 14:53:24:460)
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Print(Cyggie.Plugins.Logs.LogTypes,System.String,System.String,System.Object[])">
+        <member name="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.FullLog">
+            <summary>
+            The full log that is displayed (combination of <see cref="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Timestamp"/>, <see cref="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Tag"/> and <see cref="P:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Message"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Initialize(System.String,System.String,System.Object[])">
+            <summary>
+            Initialize the log's values
+            </summary>
+            <param name="message">Message to log</param>
+            <param name="tag">Tag of the log</param>
+            <param name="args">Arguments to the log</param>
+        </member>
+        <member name="M:Cyggie.Plugins.Logs.Models.Interfaces.ILog.Print(Cyggie.Plugins.Logs.LogTypes)">
             <summary>
             Print the log to wherever
             </summary>
+            <param name="type">Type of log</param>
             <returns>Stacktrace of the log</returns>
         </member>
         <member name="T:Cyggie.Plugins.Logs.Models.LogConsole">
@@ -58,13 +82,22 @@
         <member name="P:Cyggie.Plugins.Logs.Models.LogConsole.Message">
             <inheritdoc/>
         </member>
+        <member name="P:Cyggie.Plugins.Logs.Models.LogConsole.Tag">
+            <inheritdoc/>
+        </member>
         <member name="P:Cyggie.Plugins.Logs.Models.LogConsole.Args">
             <inheritdoc/>
         </member>
         <member name="P:Cyggie.Plugins.Logs.Models.LogConsole.Timestamp">
             <inheritdoc/>
         </member>
-        <member name="M:Cyggie.Plugins.Logs.Models.LogConsole.Print(Cyggie.Plugins.Logs.LogTypes,System.String,System.String,System.Object[])">
+        <member name="P:Cyggie.Plugins.Logs.Models.LogConsole.FullLog">
+            <inheritdoc/>
+        </member>
+        <member name="M:Cyggie.Plugins.Logs.Models.LogConsole.Initialize(System.String,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Cyggie.Plugins.Logs.Models.LogConsole.Print(Cyggie.Plugins.Logs.LogTypes)">
             <inheritdoc/>
         </member>
         <member name="T:Cyggie.Plugins.Logs.Log">

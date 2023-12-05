@@ -9,7 +9,7 @@ namespace Cyggie.FileManager.Editor.Configurations
     /// Inspector editor for <see cref="FileManagerServiceConfiguration"/>
     /// </summary>
     [CustomEditor(typeof(FileManagerServiceConfiguration))]
-    internal class FileManagerSettingsEditor : UnityEditor.Editor
+    internal class FileManagerServiceConfigurationEditor : UnityEditor.Editor
     {
         // GUI Labels
         private const string cSaveLocationLabel = "Save Location Settings";
