@@ -4,7 +4,6 @@ using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.Plugins.Logs;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Cyggie.Main.Runtime.Configurations
@@ -35,16 +34,5 @@ namespace Cyggie.Main.Runtime.Configurations
 
         [SerializeField, Tooltip("The type of logs that are enabled when using the Log system.")]
         internal LogTypes EnabledLogs = LogTypes.Debug | LogTypes.Warning | LogTypes.Error;
-
-        /// <summary>
-        /// Try get a service configuration from the list of assigned service configurations
-        /// </summary>
-        /// <param name="serviceConfiguration">Output service configuration (null if not found)</param>
-        /// <returns>Found?</returns>
-        internal bool TryGetServiceConfiguration<T>(out T serviceConfiguration) where T : ServiceConfigurationSO
-        {
-            serviceConfiguration = (T) ServiceConfigurations.FirstOrDefault(x => x.GetType() == typeof(T));
-            return serviceConfiguration != null;
-        }
     }
 }

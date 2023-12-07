@@ -1,6 +1,8 @@
 using Cyggie.Main.Editor.Utils.Helpers;
+using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.ServicesNS.ScriptableObjects;
 using Cyggie.Plugins.Editor.Helpers;
+using Cyggie.Plugins.Services.Interfaces;
 using Cyggie.Plugins.Utils.Constants;
 using Cyggie.Plugins.Utils.Helpers;
 using System;
@@ -29,7 +31,17 @@ namespace Cyggie.Main.Editor.Windows
 
         private void OnEnable()
         {
-            _serviceTypes = TypeHelper.GetAllIsAssignableFrom<ServiceConfigurationSO>().ToList();
+            _serviceTypes = TypeHelper.GetAllIsAssignableFrom<ServiceConfigurationSO>()
+                                        .Where(x =>
+                                        {
+                                            Type type = x.GetType();
+                                            
+                                            // Type must derive from both IServiceConfiguration and ScriptableObject to be created through the window
+                                            return type.IsAssignableFrom(typeof(IServiceConfiguration)) &&
+                                                   type.IsAssignableFrom(typeof(ScriptableObject)) &&
+                                                   type != typeof(ServiceManagerSettings); // Service manager settings are always auto-created
+                                        })
+                                        .ToList();
         }
 
         private void OnGUI()
