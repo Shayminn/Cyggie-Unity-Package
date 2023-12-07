@@ -32,13 +32,12 @@ namespace Cyggie.Main.Editor.Windows
         private void OnEnable()
         {
             _serviceTypes = TypeHelper.GetAllIsAssignableFrom<ServiceConfigurationSO>()
-                                        .Where(x =>
+                                        .Where(type =>
                                         {
-                                            Type type = x.GetType();
-                                            
                                             // Type must derive from both IServiceConfiguration and ScriptableObject to be created through the window
-                                            return type.IsAssignableFrom(typeof(IServiceConfiguration)) &&
-                                                   type.IsAssignableFrom(typeof(ScriptableObject)) &&
+                                            return typeof(IServiceConfiguration).IsAssignableFrom(type) &&
+                                                   typeof(ScriptableObject).IsAssignableFrom(type) &&
+                                                   !typeof(PackageServiceConfiguration).IsAssignableFrom(type) && // Configuration must not be part of PackageServiceConfiguration, those are automatically created
                                                    type != typeof(ServiceManagerSettings); // Service manager settings are always auto-created
                                         })
                                         .ToList();
