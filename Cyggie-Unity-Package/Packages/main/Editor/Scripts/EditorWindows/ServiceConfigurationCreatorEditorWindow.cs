@@ -148,7 +148,7 @@ namespace Cyggie.Main.Editor.Windows
 
                         if (GUILayout.Button("Create", GUILayout.Width(50)))
                         {
-                            ServiceConfigurationSO config = (ServiceConfigurationSO) ScriptableObject.CreateInstance(_selectedType);
+                            ScriptableObject config = ScriptableObject.CreateInstance(_selectedType);
                             config.name = _selectedType.Name;
 
                             AssetDatabaseHelper.CreateAsset(config, $"{path}{config.name}{FileExtensionConstants.cAsset}");
