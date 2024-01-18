@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cyggie.Plugins.UnityServices</name>
+    </assembly>
+    <members>
+        <member name="T:Cyggie.Plugins.UnityServices.Models.ServiceConfigurationSO">
+            <summary>
+            Abstract class used by the ServiceManagerMono in Unity
+            </summary>
+        </member>
+    </members>
+</doc>

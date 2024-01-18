@@ -35,7 +35,7 @@ namespace Cyggie.Main.Editor.Configurations
             if (_settings == null) return;
             serializedObject.Update();
 
-            EditorGUIHelper.DrawScriptReference(_settings);
+            EditorGUILayoutHelper.DrawScriptReference(_settings);
             EditorGUILayout.Space(2);
 
             GUIHelper.DrawAsReadOnly(gui: () =>

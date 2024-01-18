@@ -1,5 +1,4 @@
-﻿using Cyggie.Plugins.Services.Interfaces;
-using System;
+﻿using System;
 
 namespace Cyggie.Plugins.Services.Interfaces
 {

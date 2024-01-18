@@ -102,7 +102,7 @@ namespace Cyggie.SceneChanger.Editor.PropertyDrawers
 
                 // Manually draw label & field instead, for some reason this is printing in two lines
                 //EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), property.FindPropertyRelative(nameof(SceneChangeText.Position)));
-                EditorGUIHelper.DrawHorizontal(gui: () =>
+                EditorGUILayoutHelper.DrawHorizontal(gui: () =>
                 {
                     EditorGUI.LabelField(new Rect(position.x, position.y, 150, 20), GUIContents.cPosition);
                     position.x += 150;
@@ -115,7 +115,7 @@ namespace Cyggie.SceneChanger.Editor.PropertyDrawers
                 // Manually draw label & field instead, for some reason this is printing in two lines
                 //EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChangerSettings.LoadingBarSize)));
                 //EditorGUI.PropertyField(new Rect(position.x, position.y, 500, 20), property.FindPropertyRelative(nameof(SceneChangeText.ObjectSize)));
-                EditorGUIHelper.DrawHorizontal(gui: () =>
+                EditorGUILayoutHelper.DrawHorizontal(gui: () =>
                 {
                     EditorGUI.LabelField(new Rect(position.x, position.y, 120, 20), GUIContents.cObjectSize);
                     position.x += 150;

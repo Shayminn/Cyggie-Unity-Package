@@ -2,6 +2,7 @@
 using Cyggie.Main.Runtime.ServicesNS.ScriptableObjects;
 using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.Plugins.Logs;
+using Cyggie.Plugins.UnityServices.Models;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

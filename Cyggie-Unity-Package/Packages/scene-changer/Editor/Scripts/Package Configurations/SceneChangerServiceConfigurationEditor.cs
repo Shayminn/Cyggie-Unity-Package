@@ -146,7 +146,7 @@ namespace Cyggie.SceneChanger.Editor.Configurations
 
                 // Manually draw label & field instead, for some reason this is printing in two lines
                 //EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChanger_config.LoadingBarPosition)), GUILayout.MaxWidth(500));
-                EditorGUIHelper.DrawHorizontal(gui: () =>
+                EditorGUILayoutHelper.DrawHorizontal(gui: () =>
                 {
                     EditorGUILayout.LabelField(GUIContents.cLoadingBarPosition, GUILayout.Width(150));
                     _loadingBarPosition.vector3Value = EditorGUILayout.Vector3Field("", _loadingBarPosition.vector3Value);
@@ -154,7 +154,7 @@ namespace Cyggie.SceneChanger.Editor.Configurations
 
                 // Manually draw label & field instead, for some reason this is printing in two lines
                 //EditorGUILayout.PropertyField(_serializedObject.FindProperty(nameof(SceneChanger_config.LoadingBarSize)));
-                EditorGUIHelper.DrawHorizontal(gui: () =>
+                EditorGUILayoutHelper.DrawHorizontal(gui: () =>
                 {
                     EditorGUILayout.LabelField(GUIContents.cLoadingBarSize, GUILayout.Width(150));
                     _loadingBarSize.vector2Value = EditorGUILayout.Vector2Field("", _loadingBarSize.vector2Value);

@@ -1,3 +1,4 @@
+using Cyggie.Plugins.UnityServices.Models;
 using System;
 
 namespace Cyggie.Main.Runtime.ServicesNS.ScriptableObjects

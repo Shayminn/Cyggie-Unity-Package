@@ -12,6 +12,7 @@
         "Cyggie.Plugins.Encryption.dll",
         "Cyggie.Plugins.Logs.dll",
         "Cyggie.Plugins.Services.dll",
+        "Cyggie.Plugins.UnityServices.dll",
         "Newtonsoft.Json.dll"
     ],
     "autoReferenced": true,

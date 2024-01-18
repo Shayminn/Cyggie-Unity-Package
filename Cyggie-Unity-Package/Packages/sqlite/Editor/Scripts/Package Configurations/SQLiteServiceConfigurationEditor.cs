@@ -56,7 +56,7 @@ namespace Cyggie.SQLite.Editor.Configurations
 
             if (_service.DbConns.Count > 0)
             {
-                if (EditorGUIHelper.CheckChange(gui: () => _selectedDbIndex = GUILayout.SelectionGrid(_selectedDbIndex, _service.DbConns.Select(x => x.DatabaseName).ToArray(), 1, GUILayout.Width(250))))
+                if (EditorGUILayoutHelper.CheckChange(gui: () => _selectedDbIndex = GUILayout.SelectionGrid(_selectedDbIndex, _service.DbConns.Select(x => x.DatabaseName).ToArray(), 1, GUILayout.Width(250))))
                 {
                     if (_selectedDbIndex < 0 || _selectedDbIndex >= _service.DbConns.Count)
                     {
@@ -82,12 +82,12 @@ namespace Cyggie.SQLite.Editor.Configurations
 
             if (_selectedDb != null)
             {
-                EditorGUIHelper.DrawHorizontal(gui: () =>
+                EditorGUILayoutHelper.DrawHorizontal(gui: () =>
                 {
                     EditorGUILayout.LabelField($"Selected database: ", EditorStyles.boldLabel, GUILayout.Width(120));
 
                     string newName = "";
-                    if (EditorGUIHelper.CheckChange(gui:
+                    if (EditorGUILayoutHelper.CheckChange(gui:
                         () => newName = EditorGUILayout.DelayedTextField(_selectedDb.DatabaseName, GUILayout.Width(150))))
                     {
                         _selectedDb.ChangeDatabaseName(newName);
@@ -98,10 +98,10 @@ namespace Cyggie.SQLite.Editor.Configurations
 
                 // Draw encrypted field
                 bool isEncrypted = _selectedDb.IsEncrypted;
-                EditorGUIHelper.DrawHorizontal(gui: () =>
+                EditorGUILayoutHelper.DrawHorizontal(gui: () =>
                 {
                     EditorGUILayout.LabelField(GUIContents.cIsEncrypted, GUILayout.Width(85));
-                    if (EditorGUIHelper.CheckChange(gui:
+                    if (EditorGUILayoutHelper.CheckChange(gui:
                             () => isEncrypted = EditorGUILayout.Toggle(_selectedDb.IsEncrypted)))
                     {
                         _selectedDb.IsEncrypted = isEncrypted;
@@ -112,10 +112,10 @@ namespace Cyggie.SQLite.Editor.Configurations
                 GUIHelper.DrawAsReadOnly(_selectedDb.IsEncrypted, gui: () =>
                 {
                     bool isReadOnly = _selectedDb.IsReadOnly;
-                    EditorGUIHelper.DrawHorizontal(gui: () =>
+                    EditorGUILayoutHelper.DrawHorizontal(gui: () =>
                     {
                         EditorGUILayout.LabelField(GUIContents.cIsReadOnly, GUILayout.Width(85));
-                        if (EditorGUIHelper.CheckChange(gui:
+                        if (EditorGUILayoutHelper.CheckChange(gui:
                                 () => isReadOnly = EditorGUILayout.Toggle(_selectedDb.IsReadOnly)))
                         {
                             _selectedDb.IsReadOnly = isReadOnly;
@@ -125,7 +125,7 @@ namespace Cyggie.SQLite.Editor.Configurations
                 });
 
                 // Buttons
-                EditorGUIHelper.DrawWithConfirm(ref _deletingDatabase,
+                EditorGUILayoutHelper.DrawWithConfirm(ref _deletingDatabase,
                     confirmLabel: $"Delete database \"{_selectedDb.DatabaseName}\"?",
                     onConfirm: () =>
                     {
@@ -137,7 +137,7 @@ namespace Cyggie.SQLite.Editor.Configurations
                     },
                     onInactiveGUI: () =>
                     {
-                        EditorGUIHelper.DrawHorizontal(gui: () =>
+                        EditorGUILayoutHelper.DrawHorizontal(gui: () =>
                         {
                             if (_selectedDb.IsEncrypted)
                             {

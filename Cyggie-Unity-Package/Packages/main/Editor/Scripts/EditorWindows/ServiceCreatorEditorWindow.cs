@@ -49,10 +49,10 @@ namespace Cyggie.Main.Editor.Windows
 
             EditorGUILayout.Space(5);
 
-            EditorGUIHelper.DrawHorizontal(gui: () =>
+            EditorGUILayoutHelper.DrawHorizontal(gui: () =>
             {
                 EditorGUILayout.Space(2);
-                EditorGUIHelper.DrawVertical(gui: () =>
+                EditorGUILayoutHelper.DrawVertical(gui: () =>
                 {
                     // Instructions
                     EditorGUILayout.LabelField("Select a service type and create a new identifier that you can assign in the Service Configuration");
@@ -60,7 +60,7 @@ namespace Cyggie.Main.Editor.Windows
                     EditorGUILayout.Space(5);
 
                     // Search bar
-                    EditorGUIHelper.DrawHorizontal(gui: () =>
+                    EditorGUILayoutHelper.DrawHorizontal(gui: () =>
                     {
                         EditorGUILayout.LabelField("Search: ", GUILayout.Width(50));
                         _searchText = EditorGUILayout.TextField(_searchText);
@@ -68,7 +68,7 @@ namespace Cyggie.Main.Editor.Windows
                     EditorGUILayout.Space(2);
 
                     // Scroll view list
-                    EditorGUIHelper.DrawWithScrollview(
+                    EditorGUILayoutHelper.DrawWithScrollview(
                         ref _scrollbarPosition,
                         gui: () =>
                         {
@@ -81,7 +81,7 @@ namespace Cyggie.Main.Editor.Windows
                             }
                             else
                             {
-                                if (EditorGUIHelper.CheckChange(gui: () => _selectedTypeIndex = GUILayout.SelectionGrid(_selectedTypeIndex, filteredTypes.Select(x => new GUIContent(x.Name, x.FullName)).ToArray(), 1)))
+                                if (EditorGUILayoutHelper.CheckChange(gui: () => _selectedTypeIndex = GUILayout.SelectionGrid(_selectedTypeIndex, filteredTypes.Select(x => new GUIContent(x.Name, x.FullName)).ToArray(), 1)))
                                 {
                                     _selectedType = filteredTypes.ElementAt(_selectedTypeIndex);
 
@@ -131,7 +131,7 @@ namespace Cyggie.Main.Editor.Windows
                         {
                             selectedText = _selectedType.FullName;
 
-                            EditorGUIHelper.DrawHorizontal(gui: () =>
+                            EditorGUILayoutHelper.DrawHorizontal(gui: () =>
                             {
                                 EditorGUILayout.LabelField("Selected ", GUILayout.Width(53));
                                 GUIHelper.DrawWithColor(Color.green, gui: () =>
@@ -152,7 +152,7 @@ namespace Cyggie.Main.Editor.Windows
 
                         if (identifierExists)
                         {
-                            EditorGUIHelper.DrawWithConfirm(ref _confirmDelete,
+                            EditorGUILayoutHelper.DrawWithConfirm(ref _confirmDelete,
                                 onInactiveGUI: () =>
                                 {
                                     if (GUILayout.Button("Delete", GUILayout.Width(50)))

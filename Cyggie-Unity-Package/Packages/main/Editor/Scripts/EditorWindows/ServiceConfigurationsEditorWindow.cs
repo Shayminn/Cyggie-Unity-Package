@@ -6,6 +6,7 @@ using Cyggie.Main.Runtime.ServicesNS.ScriptableObjects;
 using Cyggie.Main.Runtime.Utils.Constants;
 using Cyggie.Plugins.Logs;
 using Cyggie.Plugins.Services.Interfaces;
+using Cyggie.Plugins.UnityServices.Models;
 using Cyggie.Plugins.Utils.Constants;
 using Cyggie.Plugins.Utils.Extensions;
 using System;
@@ -33,6 +34,8 @@ namespace Cyggie.Main.Editor.Windows
         private Vector2 _tabScrollViewPos = Vector2.zero;
         private int _numServiceConfigs = 0;
         private int _selectedTabIndex = 0;
+
+        internal static Rect WindowPosition { get; private set; }
 
         internal ServiceManagerSettings ServiceManagerSettings { get; set; } = null;
 
@@ -64,6 +67,7 @@ namespace Cyggie.Main.Editor.Windows
                 return;
             }
 
+            WindowPosition = position;
             if (_numServiceConfigs != ServiceManagerSettings.ServiceConfigurations.Count)
             {
                 // Update the configs based on the changes in Service configurations
@@ -72,17 +76,17 @@ namespace Cyggie.Main.Editor.Windows
             }
 
             // Draw the whole window with a vertical scroll view
-            EditorGUIHelper.DrawWithScrollview(ref _tabScrollViewPos, gui: () =>
+            EditorGUILayoutHelper.DrawWithScrollview(ref _tabScrollViewPos, gui: () =>
             {
                 EditorGUILayout.Space(5);
-                EditorGUIHelper.DrawHorizontal(gui: () =>
+                EditorGUILayoutHelper.DrawHorizontal(gui: () =>
                 {
                     if (_configs.Count > 1)
                     {
                         EditorGUILayout.LabelField("Select configuration: ", GUILayout.Width(140));
 
                         int newIndex = 0;
-                        if (EditorGUIHelper.CheckChange(gui: () => newIndex = EditorGUILayout.Popup(_selectedTabIndex, _configs.Select(x => x == null ? "Null" : x.GetType().Name.SplitCamelCase()).ToArray())))
+                        if (EditorGUILayoutHelper.CheckChange(gui: () => newIndex = EditorGUILayout.Popup(_selectedTabIndex, _configs.Select(x => x == null ? "Null" : x.GetType().Name.SplitCamelCase()).ToArray())))
                         {
                             SelectTab(newIndex);
                         }
@@ -241,6 +245,7 @@ namespace Cyggie.Main.Editor.Windows
             // Verify that all Package Service Configs have their associated service
             ServiceManagerSettings.ServiceConfigurations.RemoveAll((serviceConfig) =>
             {
+                // Don't auto-remove null refs, only auto-remove them upon opening the window
                 if (serviceConfig == null) return false;
 
                 bool toRemove = !serviceConfigTypes.Any(x => x == serviceConfig.GetType());
