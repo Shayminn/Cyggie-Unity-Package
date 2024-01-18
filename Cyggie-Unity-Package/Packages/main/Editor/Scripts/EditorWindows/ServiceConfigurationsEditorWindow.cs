@@ -247,6 +247,7 @@ namespace Cyggie.Main.Editor.Windows
             {
                 // Don't auto-remove null refs, only auto-remove them upon opening the window
                 if (serviceConfig == null) return false;
+                if (serviceConfig is not PackageServiceConfiguration) return false;
 
                 bool toRemove = !serviceConfigTypes.Any(x => x == serviceConfig.GetType());
                 if (toRemove)
