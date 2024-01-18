@@ -14,6 +14,11 @@ namespace Cyggie.Main.Runtime.Configurations
     [Serializable]
     internal class ServiceManagerSettings : PackageServiceConfiguration
     {
+#if UNITY_EDITOR
+        internal const string cPrefabPath = "Packages/cyggie.main/Runtime/Prefabs/Service Manager.prefab";
+        internal const string cEmptyPrefabPath = "Packages/cyggie.main/Runtime/Prefabs/Empty.prefab";
+#endif
+
         internal const string cResourcesPath = FolderConstants.cCyggie +
                                                nameof(ServiceManagerSettings);
 
@@ -29,7 +34,7 @@ namespace Cyggie.Main.Runtime.Configurations
         [SerializeField, Tooltip("The list of service identifiers to which services are created and initialized.")]
         internal List<ServiceIdentifier> ServiceIdentifiers = new List<ServiceIdentifier>();
 
-        [SerializeField, Tooltip("List of service configurations. Automatically generated upon refresh.")]
+        [SerializeField, Tooltip("List of service configurations. Automatically added upon opening the Service Configuration editor window.")]
         internal List<ServiceConfigurationSO> ServiceConfigurations = new List<ServiceConfigurationSO>();
 
         [SerializeField, Tooltip("The type of logs that are enabled when using the Log system.")]

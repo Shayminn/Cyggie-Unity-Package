@@ -182,6 +182,18 @@ namespace Cyggie.Main.Editor.Windows
                     Log.Error($"Unable to load service manager settings.", nameof(ServiceConfigurationsEditorWindow));
                 }
             }
+
+            if (ServiceManagerSettings.Prefab == null)
+            {
+                ServiceManagerSettings.Prefab = AssetDatabase.LoadAssetAtPath<ServiceManagerMono>(ServiceManagerSettings.cPrefabPath);
+                AssetDatabase.SaveAssets();
+            }
+
+            if (ServiceManagerSettings.EmptyPrefab == null)
+            {
+                ServiceManagerSettings.EmptyPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(ServiceManagerSettings.cEmptyPrefabPath);
+                AssetDatabase.SaveAssets();
+            }
         }
 
         private void SetConfigs(bool initialize)

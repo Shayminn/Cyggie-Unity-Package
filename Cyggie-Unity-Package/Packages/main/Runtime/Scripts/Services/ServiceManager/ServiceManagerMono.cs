@@ -169,6 +169,12 @@ namespace Cyggie.Main.Runtime.ServicesNS
                 return;
             }
 
+            if (Settings.Prefab == null || Settings.EmptyPrefab == null)
+            {
+                Log.Error($"Unable to find Settings' Prefab and/or Empty Prefab. Reopen the configuration window (Alt + C) and they will be auto-assigned.", nameof(ServiceManagerMono));
+                return;
+            }
+
             // Enable/Disable logs
             Log.ToggleLogs(Settings.EnabledLogs);
 
