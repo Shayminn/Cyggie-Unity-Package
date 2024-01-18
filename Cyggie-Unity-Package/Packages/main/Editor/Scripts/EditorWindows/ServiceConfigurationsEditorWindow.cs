@@ -199,6 +199,7 @@ namespace Cyggie.Main.Editor.Windows
         private void SetConfigs(bool initialize)
         {
             List<Type> serviceConfigTypes = new List<Type>();
+
             // Verify that all Package Service Configs exist
             foreach (ServiceIdentifier identifier in ServiceManagerSettings.ServiceIdentifiers)
             {
@@ -240,7 +241,7 @@ namespace Cyggie.Main.Editor.Windows
             // Verify that all Package Service Configs have their associated service
             ServiceManagerSettings.ServiceConfigurations.RemoveAll((serviceConfig) =>
             {
-                if (serviceConfig == null) return true;
+                if (serviceConfig == null) return false;
 
                 bool toRemove = !serviceConfigTypes.Any(x => x == serviceConfig.GetType());
                 if (toRemove)
