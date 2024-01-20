@@ -108,7 +108,7 @@ namespace Cyggie.Plugins.Services.Models
             }
 
             // Initialize all services in order of priority
-            foreach (IService service in _services.OrderBy(x => x.Priority))
+            foreach (IService service in _services.OrderByDescending(x => x.Priority))
             {
                 service.Initialize(this);
             }
@@ -151,7 +151,7 @@ namespace Cyggie.Plugins.Services.Models
                     IServiceConfiguration? serviceConfiguration = Instance._serviceConfigurations.FirstOrDefault(x =>
                     {
                         return serviceWithConfig.ConfigurationType == x.GetType();
-                    });
+                    }); 
 
                     if (serviceConfiguration != null)
                     {

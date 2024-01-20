@@ -75,7 +75,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             }
 
             // Initialize all services in order of priority
-            foreach (IService service in _services.OrderBy(x => x.Priority))
+            foreach (IService service in _services.OrderByDescending(x => x.Priority))
             {
                 service.Initialize(this);
             }
@@ -110,7 +110,9 @@ namespace Cyggie.Main.Runtime.ServicesNS
             IService iService = (IService) Activator.CreateInstance(serviceType);
             if (iService != null)
             {
-                if (iService.GetType().IsSubclassOfGenericType(typeof(ServiceMono<>), out Type baseServiceType) && baseServiceType != null)
+                bool serviceWithConfiguration = iService.GetType().IsSubclassOfGenericType(typeof(Service<>)) ||
+                                                iService.GetType().IsSubclassOfGenericType(typeof(ServiceMono<>));
+                if (serviceWithConfiguration)
                 {
                     if (iService is not IServiceWithConfiguration serviceWithConfig)
                     {
@@ -120,7 +122,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
                     IServiceConfiguration serviceConfiguration = _settings.ServiceConfigurations.FirstOrDefault(x =>
                     {
-                        return serviceWithConfig.ConfigurationType == x.GetType();
+                        return serviceWithConfig.ConfigurationType.IsAssignableFrom(x.GetType());
                     });
 
                     if (serviceConfiguration != null)
@@ -176,6 +178,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             }
 
             // Enable/Disable logs
+            Log.SetLogModel<LogUnity>(); // set it again just in case
             Log.ToggleLogs(Settings.EnabledLogs);
 
             // Set helpers

@@ -70,10 +70,18 @@
             <inheritdoc/>
         </member>
         <member name="P:Cyggie.Plugins.Services.Models.Service.Priority">
-            <inheritdoc/>
+            <summary>
+            The order of priority in which the service is initialized (by default 0) <br/>
+            Higher value means this service will be initialized before other services.
+            </summary>
         </member>
         <member name="P:Cyggie.Plugins.Services.Models.Service.CreateOnInitialize">
             <inheritdoc/>
+        </member>
+        <member name="F:Cyggie.Plugins.Services.Models.Service._initialized">
+            <summary>
+            Whether the service has been initialized or not yet
+            </summary>
         </member>
         <member name="M:Cyggie.Plugins.Services.Models.Service.Initialize(Cyggie.Plugins.Services.Interfaces.IServiceManager)">
             <inheritdoc/>
@@ -98,6 +106,9 @@
             <inheritdoc/>
         </member>
         <member name="M:Cyggie.Plugins.Services.Models.Service`1.SetConfiguration``1(``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Cyggie.Plugins.Services.Models.Service`1.Initialize(Cyggie.Plugins.Services.Interfaces.IServiceManager)">
             <inheritdoc/>
         </member>
         <member name="T:Cyggie.Plugins.Services.Models.ServiceConfiguration">

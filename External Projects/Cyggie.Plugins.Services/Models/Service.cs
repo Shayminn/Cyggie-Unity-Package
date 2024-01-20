@@ -14,16 +14,22 @@ namespace Cyggie.Plugins.Services.Models
         /// <inheritdoc/>
         public IServiceManager? ServiceManager { get; set; }
 
-        /// <inheritdoc/>
-        protected virtual int Priority => -1;
+        /// <summary>
+        /// The order of priority in which the service is initialized (by default 0) <br/>
+        /// Higher value means this service will be initialized before other services.
+        /// </summary>
+        protected virtual int Priority => 0;
 
         /// <inheritdoc/>
         protected virtual bool CreateOnInitialize => true;
 
-        private bool _initialized = false;
+        /// <summary>
+        /// Whether the service has been initialized or not yet
+        /// </summary>
+        protected internal bool _initialized = false;
 
         /// <inheritdoc/>
-        public void Initialize(IServiceManager manager)
+        public virtual void Initialize(IServiceManager manager)
         {
             if (_initialized)
             {
@@ -71,6 +77,22 @@ namespace Cyggie.Plugins.Services.Models
             where TConfig : IServiceConfiguration
         {
             Configuration = (T) (IServiceConfiguration) config;
+        }
+
+        /// <inheritdoc/>
+        public override void Initialize(IServiceManager manager)
+        {
+            if (_initialized)
+            {
+                Log.Error("Trying to initialize a service, but it's already initialized!", nameof(Service));
+                return;
+            }
+
+            ServiceManager = manager;
+            OnInitialized();
+
+            Log.Debug($"Service ({GetType()}) has been initialized with configuration ({Configuration}).", nameof(Service));    
+            _initialized = true;
         }
     }
 

@@ -1,4 +1,6 @@
-﻿using Cyggie.Plugins.Services.Interfaces;
+﻿using Cyggie.Plugins.Logs;
+using Cyggie.Plugins.Services.Interfaces;
+using Cyggie.Plugins.Services.Models;
 using System.Linq;
 using UnityEngine;
 
@@ -26,6 +28,11 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// The Service Manager game object's transform
         /// </summary>
         protected Transform Transform => GameObject.transform;
+
+        /// <summary>
+        /// Whether the service has been initialized or not yet
+        /// </summary>
+        protected internal bool _initialized = false;
 
         /// <summary>
         /// The order of priority in which the service is initialized (by default 0) <br/>
@@ -163,10 +170,19 @@ namespace Cyggie.Main.Runtime.ServicesNS
         #endregion
 
         /// <inheritdoc/>
-        public void Initialize(IServiceManager manager)
+        public virtual void Initialize(IServiceManager manager)
         {
+            if (_initialized)
+            {
+                Log.Error("Trying to initialize a service, but it's already initialized!", nameof(ServiceMono));
+                return;
+            }
+
             ServiceManager = manager;
             OnInitialized();
+
+            Log.Debug($"Service ({GetType()}) has been initialized with no configuration.", nameof(ServiceMono));
+            _initialized = true;
         }
 
         /// <summary>
@@ -204,6 +220,22 @@ namespace Cyggie.Main.Runtime.ServicesNS
         public void SetConfiguration<TConfig>(TConfig config) where TConfig : IServiceConfiguration
         {
             Configuration = (T) (IServiceConfiguration) config;
+        }
+
+        /// <inheritdoc/>
+        public override void Initialize(IServiceManager manager)
+        {
+            if (_initialized)
+            {
+                Log.Error("Trying to initialize a service, but it's already initialized!", nameof(ServiceMono));
+                return;
+            }
+
+            ServiceManager = manager;
+            OnInitialized();
+
+            Log.Debug($"Service ({GetType()}) has been initialized with configuration ({Configuration}).", nameof(ServiceMono));    
+            _initialized = true;
         }
 
         /// <summary>
