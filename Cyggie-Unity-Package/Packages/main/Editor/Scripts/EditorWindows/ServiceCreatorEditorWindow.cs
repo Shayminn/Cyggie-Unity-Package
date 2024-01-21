@@ -3,6 +3,7 @@ using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.ServicesNS.ScriptableObjects;
 using Cyggie.Plugins.Editor.Helpers;
 using Cyggie.Plugins.Services.Interfaces;
+using Cyggie.Plugins.UnityServices.Models;
 using Cyggie.Plugins.Utils.Constants;
 using Cyggie.Plugins.Utils.Extensions;
 using Cyggie.Plugins.Utils.Helpers;
@@ -20,21 +21,27 @@ namespace Cyggie.Main.Editor.Windows
     /// </summary>
     public class ServiceCreatorEditorWindow : EditorWindow
     {
+        private const string cServiceIdentifiersPath = Runtime.Utils.Constants.FolderConstants.cAssets + Runtime.Utils.Constants.FolderConstants.cCyggieServiceIdentifiers;
+
         private List<Type> _serviceTypes = null;
         private Type _selectedType = null;
         private int _selectedTypeIndex = -1;
-        private string _configFilePath = "";
+        private string _servicePath = "";
+        private ServiceIdentifier _foundObject = null;
 
         private string _searchText = "";
         private Vector2 _scrollbarPosition = Vector2.zero;
 
+        private bool _showCreated = false;
         private bool _confirmDelete = false;
+
+        private int _previousTypeCount = 0;
 
         private void OnEnable()
         {
             _serviceTypes = TypeHelper.GetAllIsAssignableFrom<IService>(
                 // Comment out to create PackageServiceMono
-                x =>!typeof(PackageServiceMono).IsAssignableFrom(x) && !x.IsSubclassOfGenericType(typeof(PackageServiceMono<>))
+                x => !typeof(PackageServiceMono).IsAssignableFrom(x) && !x.IsSubclassOfGenericType(typeof(PackageServiceMono<>))
             ).ToList();
         }
 
@@ -67,6 +74,13 @@ namespace Cyggie.Main.Editor.Windows
                     });
                     EditorGUILayout.Space(2);
 
+                    // Extra filters
+                    float oldWidth = EditorGUIUtility.labelWidth;
+                    EditorGUIUtility.labelWidth = 95;
+                    _showCreated = EditorGUILayout.Toggle("Display created", _showCreated, GUILayout.Width(50));
+                    EditorGUIUtility.labelWidth = oldWidth;
+                    EditorGUILayout.Space(2);
+
                     // Scroll view list
                     EditorGUILayoutHelper.DrawWithScrollview(
                         ref _scrollbarPosition,
@@ -74,8 +88,19 @@ namespace Cyggie.Main.Editor.Windows
                         {
                             // Filter types by search text
                             IEnumerable<Type> filteredTypes = _serviceTypes.Where(x => x.FullName.Contains(_searchText, StringComparison.InvariantCultureIgnoreCase));
+                            if (!_showCreated)
+                            {
+                                filteredTypes = filteredTypes.Where(x => !CheckTypeExists(x));
+                            }
 
-                            if (filteredTypes.Count() == 0)
+                            _previousTypeCount = filteredTypes.Count();
+                            if (_selectedTypeIndex >= _previousTypeCount)
+                            {
+                                _selectedTypeIndex = -1;
+                                _selectedType = null;
+                            }
+
+                            if (_previousTypeCount == 0)
                             {
                                 EditorGUILayout.LabelField("No services found.");
                             }
@@ -100,24 +125,8 @@ namespace Cyggie.Main.Editor.Windows
                     string selectedText = "";
                     if (_selectedType != null)
                     {
-                        string path = $"{Runtime.Utils.Constants.FolderConstants.cAssets}{Runtime.Utils.Constants.FolderConstants.cCyggieServiceIdentifiers}";
-
-                        // Make sure directory exists
-                        Directory.CreateDirectory(path);
-
-                        string[] files = Directory.GetFiles(path, $"*{FileExtensionConstants.cAsset}");
-                        bool identifierExists = false;
-                        foreach (string file in files)
-                        {
-                            ServiceIdentifier identifier = AssetDatabase.LoadAssetAtPath<ServiceIdentifier>(file);
-                            if (identifier == null) continue;
-                            if (identifier.AssemblyName == _selectedType.AssemblyQualifiedName)
-                            {
-                                _configFilePath = file;
-                                identifierExists = true;
-                                break;
-                            }
-                        }
+                        bool identifierExists = CheckTypeExists(_selectedType);
+                        Debug.Log("Exists: " + identifierExists);
 
                         // Check if it already exists at path
                         if (identifierExists)
@@ -126,6 +135,16 @@ namespace Cyggie.Main.Editor.Windows
                             {
                                 EditorGUILayout.LabelField(new GUIContent("Service identifier already exists! But no worries, I'm not stopping you =D"));
                             });
+
+                            // Draw reference to the scriptable object
+                            GUIHelper.DrawAsReadOnly(gui: () =>
+                            {
+                                float oldWidth = EditorGUIUtility.labelWidth;
+                                EditorGUIUtility.labelWidth = 100;
+                                EditorGUILayout.ObjectField("Scriptable Object", _foundObject, typeof(ServiceIdentifier), allowSceneObjects: false);
+                                EditorGUIUtility.labelWidth = oldWidth;
+                            });
+                            EditorGUILayout.Space(3);
                         }
                         else
                         {
@@ -147,7 +166,7 @@ namespace Cyggie.Main.Editor.Windows
                             identifier.AssemblyName = _selectedType.AssemblyQualifiedName;
                             identifier.name = $"{_selectedType.Name}Identifier";
 
-                            AssetDatabaseHelper.CreateAsset(identifier, $"{path}{identifier.name}{FileExtensionConstants.cAsset}");
+                            AssetDatabaseHelper.CreateAsset(identifier, $"{cServiceIdentifiersPath}{identifier.name}{FileExtensionConstants.cAsset}");
                         }
 
                         if (identifierExists)
@@ -163,7 +182,7 @@ namespace Cyggie.Main.Editor.Windows
                                 confirmLabel: "Are you sure you want to delete?",
                                 onConfirm: () =>
                                 {
-                                    AssetDatabaseHelper.DeleteAsset(_configFilePath);
+                                    AssetDatabaseHelper.DeleteAsset(_servicePath);
                                     _confirmDelete = false;
                                 }
                             );
@@ -172,6 +191,26 @@ namespace Cyggie.Main.Editor.Windows
                 });
                 EditorGUILayout.Space(2);
             });
+        }
+
+        private bool CheckTypeExists(Type type)
+        {
+            // Make sure directory exists
+            Directory.CreateDirectory(cServiceIdentifiersPath);
+
+            string[] files = Directory.GetFiles(cServiceIdentifiersPath, $"*{FileExtensionConstants.cAsset}");
+            foreach (string file in files)
+            {
+                _foundObject = AssetDatabase.LoadAssetAtPath<ServiceIdentifier>(file);
+                if (_foundObject == null) continue;
+                if (_foundObject.AssemblyName == type.AssemblyQualifiedName)
+                {
+                    _servicePath = file;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

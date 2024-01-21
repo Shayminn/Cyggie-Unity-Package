@@ -4,6 +4,7 @@ using Cyggie.Main.Runtime.Configurations;
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.ServicesNS.ScriptableObjects;
 using Cyggie.Main.Runtime.Utils.Constants;
+using Cyggie.Plugins.Editor.Helpers;
 using Cyggie.Plugins.Logs;
 using Cyggie.Plugins.Services.Interfaces;
 using Cyggie.Plugins.UnityServices.Models;
@@ -75,42 +76,59 @@ namespace Cyggie.Main.Editor.Windows
                 SetConfigs(initialize: false);
             }
 
-            // Draw the whole window with a vertical scroll view
-            EditorGUILayoutHelper.DrawWithScrollview(ref _tabScrollViewPos, gui: () =>
+            EditorGUILayoutHelper.DrawHorizontal(gui: () =>
             {
-                EditorGUILayout.Space(5);
-                EditorGUILayoutHelper.DrawHorizontal(gui: () =>
+                // Left padding
+                GUILayout.Space(5);
+
+                // Draw the whole window with a vertical scroll view
+                EditorGUILayoutHelper.DrawWithScrollview(ref _tabScrollViewPos, gui: () =>
                 {
-                    if (_configs.Count > 1)
+                    EditorGUILayout.Space(5);
+                    EditorGUILayoutHelper.DrawHorizontal(gui: () =>
                     {
-                        EditorGUILayout.LabelField("Select configuration: ", GUILayout.Width(140));
-
-                        int newIndex = 0;
-                        if (EditorGUILayoutHelper.CheckChange(gui: () => newIndex = EditorGUILayout.Popup(_selectedTabIndex, _configs.Select(x => x == null ? "Null" : x.GetType().Name.SplitCamelCase()).ToArray())))
+                        if (_configs.Count > 1)
                         {
-                            SelectTab(newIndex);
+                            EditorGUILayout.LabelField("Select configuration: ", GUILayout.Width(140));
+
+                            int newIndex = 0;
+                            string[] selectableConfigs = _configs.Where(x => x != null).Select(x => x.GetType().Name.SplitCamelCase()).ToArray();
+                            if (EditorGUILayoutHelper.CheckChange(gui: () => newIndex = EditorGUILayout.Popup(_selectedTabIndex, selectableConfigs)))
+                            {
+                                SelectTab(newIndex);
+                            }
                         }
+                    });
+                    EditorGUILayout.Space(10);
+
+                    EditorGUILayout.LabelField(_selectedConfig.name.SplitCamelCase(), EditorStyles.boldLabel);
+
+                    GUIHelper.DrawAsReadOnly(gui: () =>
+                    {
+                        EditorGUILayout.ObjectField("Scriptable Object", _selectedConfig, typeof(ServiceConfigurationSO), allowSceneObjects: false);
+                    });
+                    EditorGUILayout.Space(3);
+
+                    // Draw config editor GUI
+                    _selectedConfigEditor.OnInspectorGUI();
+
+                    // Check if there are any changes when editing the Service Manager Settings
+                    if (_selectedTabIndex == 0 && GUI.changed)
+                    {
+                        // Update the configs based on the changes in Service configurations
+                        // This will update the number of tabs as well
+                        SetConfigs(initialize: false);
                     }
-                });
-                EditorGUILayout.Space(10);
 
-                EditorGUILayout.LabelField(_selectedConfig.name.SplitCamelCase(), EditorStyles.boldLabel);
+                    EditorGUILayout.Space(5);
+                }, horizontalStyle: GUIStyle.none);
 
-                // Draw config editor GUI
-                _selectedConfigEditor.OnInspectorGUI();
+                // Right padding
+                GUILayout.Space(5);
+            });
 
-                // Check if there are any changes when editing the Service Manager Settings
-                if (_selectedTabIndex == 0 && GUI.changed)
-                {
-                    // Update the configs based on the changes in Service configurations
-                    // This will update the number of tabs as well
-                    SetConfigs(initialize: false);
-                }
-
-                EditorGUILayout.Space(5);
-            }, horizontalStyle: GUIStyle.none);
-
-            int newNumServiceConfigs = ServiceManagerSettings.ServiceConfigurations.Count;
+            // Bottom padding
+            EditorGUILayout.Space(5);
         }
 
         private bool HandleCloseWindowShortcut()

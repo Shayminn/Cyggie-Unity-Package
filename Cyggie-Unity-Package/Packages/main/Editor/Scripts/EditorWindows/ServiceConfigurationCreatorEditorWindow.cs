@@ -20,28 +20,32 @@ namespace Cyggie.Main.Editor.Windows
     /// </summary>
     public class ServiceConfigurationCreatorEditorWindow : EditorWindow
     {
+        private const string cServiceConfigurationsPath = Runtime.Utils.Constants.FolderConstants.cAssets + Runtime.Utils.Constants.FolderConstants.cCyggieServiceConfigurations;
+
         private List<Type> _serviceTypes = null;
         private Type _selectedType = null;
         private int _selectedTypeIndex = -1;
         private string _configFilePath = "";
+        private ServiceConfigurationSO _foundObject = null;
 
         private string _searchText = "";
         private Vector2 _scrollbarPosition = Vector2.zero;
 
+        private bool _showCreated = false;
         private bool _confirmDelete = false;
+
+        private int _previousTypeCount = 0;
 
         private void OnEnable()
         {
-            _serviceTypes = TypeHelper.GetAllIsAssignableFrom<IServiceConfiguration>()
-                                        .Where(type =>
-                                        {
-                                            // Type must derive from ScriptableObject to be created through the window
-                                            return typeof(ScriptableObject).IsAssignableFrom(type) &&
-                                                   !type.IsAbstract && // Configuration must not be abstract or it can't be created
-                                                   !typeof(PackageServiceConfiguration).IsAssignableFrom(type) && // Configuration must not be part of PackageServiceConfiguration, those are automatically created
-                                                   type != typeof(ServiceManagerSettings); // Service manager settings are always auto-created
-                                        })
-                                        .ToList();
+            _serviceTypes = TypeHelper.GetAllIsAssignableFrom<IServiceConfiguration>(type =>
+            {
+                // Type must derive from ScriptableObject to be created through the window
+                return typeof(ScriptableObject).IsAssignableFrom(type) &&
+                       !type.IsAbstract && // Configuration must not be abstract or it can't be created
+                       !typeof(PackageServiceConfiguration).IsAssignableFrom(type) && // Configuration must not be part of PackageServiceConfiguration, those are automatically created
+                       type != typeof(ServiceManagerSettings); // Service manager settings are always auto-created
+            }).ToList();
         }
 
         private void OnGUI()
@@ -73,6 +77,13 @@ namespace Cyggie.Main.Editor.Windows
                     });
                     EditorGUILayout.Space(2);
 
+                    // Extra filters
+                    float oldWidth = EditorGUIUtility.labelWidth;
+                    EditorGUIUtility.labelWidth = 95;
+                    _showCreated = EditorGUILayout.Toggle("Display created", _showCreated, GUILayout.Width(50));
+                    EditorGUIUtility.labelWidth = oldWidth;
+                    EditorGUILayout.Space(2);
+
                     // Scroll view list
                     EditorGUILayoutHelper.DrawWithScrollview(
                         ref _scrollbarPosition,
@@ -80,8 +91,19 @@ namespace Cyggie.Main.Editor.Windows
                         {
                             // Filter types by search text
                             IEnumerable<Type> filteredTypes = _serviceTypes.Where(x => x.FullName.Contains(_searchText, StringComparison.InvariantCultureIgnoreCase));
+                            if (!_showCreated)
+                            {
+                                filteredTypes = filteredTypes.Where(x => !CheckTypeExists(x));
+                            }
 
-                            if (filteredTypes.Count() == 0)
+                            _previousTypeCount = filteredTypes.Count();
+                            if (_selectedTypeIndex >= _previousTypeCount)
+                            {
+                                _selectedTypeIndex = -1;
+                                _selectedType = null;
+                            }
+
+                            if (_previousTypeCount == 0)
                             {
                                 EditorGUILayout.LabelField("No service configurations found.");
                             }
@@ -106,24 +128,7 @@ namespace Cyggie.Main.Editor.Windows
                     string selectedText = "";
                     if (_selectedType != null)
                     {
-                        string path = $"{Runtime.Utils.Constants.FolderConstants.cAssets}{Runtime.Utils.Constants.FolderConstants.cCyggieServiceConfigurations}";
-
-                        // Make sure directory exists
-                        Directory.CreateDirectory(path);
-
-                        string[] files = Directory.GetFiles(path, $"*{FileExtensionConstants.cAsset}");
-                        bool configExists = false;
-                        foreach (string file in files)
-                        {
-                            ServiceConfigurationSO config = AssetDatabase.LoadAssetAtPath<ServiceConfigurationSO>(file);
-                            if (config == null) continue;
-                            if (config.GetType() == _selectedType)
-                            {
-                                _configFilePath = file;
-                                configExists = true;
-                                break;
-                            }
-                        }
+                        bool configExists = CheckTypeExists(_selectedType);
 
                         // Check if it already exists at path
                         if (configExists)
@@ -132,6 +137,16 @@ namespace Cyggie.Main.Editor.Windows
                             {
                                 EditorGUILayout.LabelField(new GUIContent("Service Configuration already exists! But no worries, I'm not stopping you =D"));
                             });
+
+                            // Draw reference to the scriptable object
+                            GUIHelper.DrawAsReadOnly(gui: () =>
+                            {
+                                float oldWidth = EditorGUIUtility.labelWidth;
+                                EditorGUIUtility.labelWidth = 100;
+                                EditorGUILayout.ObjectField("Scriptable Object", _foundObject, typeof(ServiceConfigurationSO), allowSceneObjects: false);
+                                EditorGUIUtility.labelWidth = oldWidth;
+                            });
+                            EditorGUILayout.Space(3);
                         }
                         else
                         {
@@ -152,7 +167,7 @@ namespace Cyggie.Main.Editor.Windows
                             ScriptableObject config = ScriptableObject.CreateInstance(_selectedType);
                             config.name = _selectedType.Name;
 
-                            AssetDatabaseHelper.CreateAsset(config, $"{path}{config.name}{FileExtensionConstants.cAsset}");
+                            AssetDatabaseHelper.CreateAsset(config, $"{cServiceConfigurationsPath}{config.name}{FileExtensionConstants.cAsset}");
                         }
 
                         if (configExists)
@@ -177,6 +192,26 @@ namespace Cyggie.Main.Editor.Windows
                 }));
                 EditorGUILayout.Space(2);
             }));
+        }
+
+        private bool CheckTypeExists(Type type)
+        {
+            // Make sure directory exists
+            Directory.CreateDirectory(cServiceConfigurationsPath);
+
+            string[] files = Directory.GetFiles(cServiceConfigurationsPath, $"*{FileExtensionConstants.cAsset}");
+            foreach (string file in files)
+            {
+                _foundObject = AssetDatabase.LoadAssetAtPath<ServiceConfigurationSO>(file);
+                if (_foundObject == null) continue;
+                if (_foundObject.GetType() == type)
+                {
+                    _configFilePath = file;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
