@@ -26,21 +26,23 @@ namespace Cyggie.Main.Editor.Utils.Helpers
         /// <summary>
         /// Draw the editor script reference from a monobehaviour object
         /// </summary>
-        public static void DrawScriptReference(MonoBehaviour mono)
+        public static void DrawScriptReference(MonoBehaviour mono, string label = "Script", bool readOnly = true)
         {
-            GUI.enabled = false;
-            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour(mono), mono.GetType(), false);
-            GUI.enabled = true;
+            GUIHelper.DrawAsReadOnly(readOnly, gui: () =>
+            {
+                EditorGUILayout.ObjectField(label, MonoScript.FromMonoBehaviour(mono), mono.GetType(), false);
+            });
         }
 
         /// <summary>
         /// Draw the editor script reference from a scriptable object
         /// </summary>
-        public static void DrawScriptReference(ScriptableObject so)
+        public static void DrawScriptReference(ScriptableObject so, string label = "Script", bool readOnly = true)
         {
-            GUI.enabled = false;
-            EditorGUILayout.ObjectField("Script", MonoScript.FromScriptableObject(so), so.GetType(), false);
-            GUI.enabled = true;
+            GUIHelper.DrawAsReadOnly(readOnly, gui: () =>
+            {
+                EditorGUILayout.ObjectField(label, MonoScript.FromScriptableObject(so), so.GetType(), false);
+            });
         }
 
         /// <summary>
