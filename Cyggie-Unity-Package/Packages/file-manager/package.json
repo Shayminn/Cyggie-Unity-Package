@@ -1,6 +1,6 @@
 {
   "name": "cyggie.file-manager",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "displayName": "File Manager",
   "description": "This package derives from the Cyggie package. It contains relevant scripts and settings to save local files.",
   "unity": "2019.1",

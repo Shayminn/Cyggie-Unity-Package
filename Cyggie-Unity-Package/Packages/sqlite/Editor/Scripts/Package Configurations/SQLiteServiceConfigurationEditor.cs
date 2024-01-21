@@ -30,6 +30,8 @@ namespace Cyggie.SQLite.Editor.Configurations
             _config = target as SQLiteServiceConfiguration;
 
             _service = PackageServiceMono<SQLiteServiceConfiguration>.Create<SQLiteService>();
+
+            // Make sure all connections are open when managing databases
             if (!_config.OpenAllOnStart)
             {
                 _service.OpenAllConnections();
@@ -48,6 +50,7 @@ namespace Cyggie.SQLite.Editor.Configurations
             EditorGUILayout.Space(10);
 
             DrawDatabaseControls();
+            serializedObject.ApplyModifiedProperties();
         }
 
         private void DrawDatabaseList()

@@ -54,6 +54,7 @@ namespace Cyggie.FileManager.Editor.Configurations
             EditorGUILayout.Space(5);
 
             EditorGUILayout.PropertyField(_filesToIgnore, GUIContents.cFilesToIgnore);
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

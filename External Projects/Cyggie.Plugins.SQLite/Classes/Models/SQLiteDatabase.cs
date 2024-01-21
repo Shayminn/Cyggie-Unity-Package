@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using UnityEngine;
 
 namespace Cyggie.Plugins.SQLite
 {
@@ -71,9 +72,21 @@ namespace Cyggie.Plugins.SQLite
             DatabaseName = Path.GetFileNameWithoutExtension(path);
 
             CreatePathToDirectory(DatabasePath);
-            Log.Debug(File.Exists(path) ?
-                      $"Created database connection to path: {path} ({DatabaseName})." :
-                      $"Created a new database file at path: {path} ({DatabaseName}).", nameof(SQLiteDatabase));
+
+            // File already exists, opening existing database
+            if (File.Exists(path))
+            {
+                // Send log only while the application is running
+                if (Application.isPlaying)
+                {
+                    Log.Debug($"Created database connection to path: {path} ({DatabaseName}).", nameof(SQLiteDatabase));
+                }
+            }
+            // New db file
+            else
+            {
+                Log.Debug($"Created a new database file at path: {path} ({DatabaseName}).", nameof(SQLiteDatabase));
+            }
 
             try
             {

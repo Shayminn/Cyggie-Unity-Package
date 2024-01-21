@@ -225,7 +225,6 @@ namespace Cyggie.SceneChanger.Editor.Configurations
             }
 
             EditorGUILayout.Space(10);
-
             serializedObject.ApplyModifiedProperties();
         }
     }
