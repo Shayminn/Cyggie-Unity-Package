@@ -5,6 +5,8 @@ using Cyggie.Plugins.Utils.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Security;
 
 namespace Cyggie.Plugins.Services.Models
 {
@@ -83,7 +85,26 @@ namespace Cyggie.Plugins.Services.Models
             IEnumerable<Type> serviceConfigurationTypes = TypeHelper.GetAllIsAssignableFrom<IServiceConfiguration>();
 
             // Filter service configurations so only a single one is assigned to each service
-            IEnumerable<IServiceConfiguration?> serviceConfigs = serviceConfigurationTypes.Select(type => (IServiceConfiguration?) Activator.CreateInstance(type));
+            IEnumerable<IServiceConfiguration?> serviceConfigs = serviceConfigurationTypes.Select(type =>
+            {
+                IServiceConfiguration? config = null;
+                try
+                {
+                    config = (IServiceConfiguration?) Activator.CreateInstance(type);
+                }
+                catch (TargetInvocationException)
+                {
+                    // Do nothing
+                    // This can happen when creating a service configuration that inherits from ScriptableObject
+                    // The configuration will be null
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Unable to create service configuration of type {type}, exception ({ex.GetType()}): {ex}.", nameof(ServiceManager));
+                }
+
+                return config;
+            });
 
             foreach (IServiceConfiguration? config in serviceConfigs)
             {
@@ -92,6 +113,11 @@ namespace Cyggie.Plugins.Services.Models
             }
 
             Log.Debug($"Service Manager initializing {serviceTypes.Length} services.", nameof(ServiceManager));
+            if (serviceTypes.Length == 0)
+            {
+                _initialized = true;
+                return;
+            }
 
             // Create all services
             foreach (Type serviceType in serviceTypes)
@@ -151,7 +177,7 @@ namespace Cyggie.Plugins.Services.Models
                     IServiceConfiguration? serviceConfiguration = Instance._serviceConfigurations.FirstOrDefault(x =>
                     {
                         return serviceWithConfig.ConfigurationType == x.GetType();
-                    }); 
+                    });
 
                     if (serviceConfiguration != null)
                     {

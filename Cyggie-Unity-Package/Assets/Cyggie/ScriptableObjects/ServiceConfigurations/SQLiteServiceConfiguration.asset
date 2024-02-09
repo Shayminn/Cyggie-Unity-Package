@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 298458128a07d1c418925ecfd355d253, type: 3}
   m_Name: SQLiteServiceConfiguration
   m_EditorClassIdentifier: 
-  OpenAllOnStart: 0
+  OpenAllOnStart: 1

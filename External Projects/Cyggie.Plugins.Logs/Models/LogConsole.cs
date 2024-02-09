@@ -31,6 +31,7 @@ namespace Cyggie.Plugins.Logs.Models
         public void Initialize(string message, string tag, params object[] args)
         {
             _message = message;
+            _tag = tag;
             _args = args;
             _timestamp = DateTime.Now;
         }
