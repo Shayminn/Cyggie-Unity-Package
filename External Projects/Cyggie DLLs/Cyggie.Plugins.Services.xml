@@ -165,7 +165,8 @@
             Will automatically create it if not found
             </summary>
             <typeparam name="T">Service type</typeparam>
-            <returns>Service object (null if creation was unsuccessful)</returns>
+            <param name="isAssignableFrom">When true, it checks whether the service is assignable from <typeparamref name="T"/></param>
+            <returns>Service (null if not found)</returns>
         </member>
         <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.TryGet``1(``0@,System.Boolean)">
             <summary>
@@ -173,7 +174,7 @@
             </summary>
             <typeparam name="T">Service type</typeparam>
             <param name="service">Output service (null if not found)</param>
-            <param name="isAssignableFrom">When true, it checks whether <typeparamref name="T"/> is assignable from the service</param>
+            <param name="isAssignableFrom">When true, it checks whether the service is assignable from <typeparamref name="T"/></param>
             <returns>Found?</returns>
         </member>
         <member name="T:Cyggie.Plugins.Services.Utils.Extensions.ServiceExtensions">
