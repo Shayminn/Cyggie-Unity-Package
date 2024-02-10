@@ -242,10 +242,17 @@ namespace Cyggie.Plugins.Services.Models
         {
 #pragma warning disable CS8603 // Possible null reference return.
             // Not null is only supported in C# 9+ which is not supported in most Unity versions
-            IService? service = (T) Instance.Services.FirstOrDefault(x => isAssignableFrom ? x.GetType().IsAssignableFrom(typeof(T)) : x.GetType() == typeof(T));
-            if (service == null && autoCreate)
+            IService? service = (T) Instance.Services.FirstOrDefault(x => isAssignableFrom ? typeof(T).IsAssignableFrom(x.GetType()) : x.GetType() == typeof(T));
+            if (service == null)
             {
-                service = Create(typeof(T));
+                if (autoCreate)
+                {
+                    service = Create(typeof(T));
+                }
+                else
+                {
+                    Log.Error($"Unable to get service {typeof(T)}, make sure it is initialized with the service manager or use {nameof(autoCreate)}.", nameof(ServiceManager));
+                }
             }
 
             return (T) service;
