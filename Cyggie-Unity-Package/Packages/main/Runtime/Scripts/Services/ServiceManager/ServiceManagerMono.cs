@@ -107,7 +107,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             DontDestroyOnLoad(this);
 
             _serviceManager = new ServiceManager();
-            _serviceManager.GenericServiceType = typeof(ServiceMono<>);
+            _serviceManager.GenericServiceTypes.Add(typeof(ServiceMono<>));
 
             IEnumerable<Type> types = Settings.ServiceIdentifiers.Select(x => Type.GetType(x.AssemblyName));
             _serviceManager.Initialize(Settings.ServiceConfigurations, types.ToArray());

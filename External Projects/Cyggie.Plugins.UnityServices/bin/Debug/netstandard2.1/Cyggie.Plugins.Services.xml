@@ -144,9 +144,9 @@
             List of active services
             </summary>
         </member>
-        <member name="F:Cyggie.Plugins.Services.Models.ServiceManager.GenericServiceType">
+        <member name="F:Cyggie.Plugins.Services.Models.ServiceManager.GenericServiceTypes">
             <summary>
-            Generic <see cref="T:Cyggie.Plugins.Services.Interfaces.IService"/> type used by the Service Manager to assign configuration when creating services
+            Generic <see cref="T:Cyggie.Plugins.Services.Interfaces.IService"/> types used by the Service Manager to assign configuration when creating services
             </summary>
         </member>
         <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.#ctor(System.Boolean)">

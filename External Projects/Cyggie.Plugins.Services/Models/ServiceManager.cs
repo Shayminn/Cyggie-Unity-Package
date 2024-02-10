@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime;
 
 namespace Cyggie.Plugins.Services.Models
 {
@@ -38,9 +39,12 @@ namespace Cyggie.Plugins.Services.Models
         public readonly List<IService> Services = new List<IService>();
 
         /// <summary>
-        /// Generic <see cref="IService"/> type used by the Service Manager to assign configuration when creating services
+        /// Generic <see cref="IService"/> types used by the Service Manager to assign configuration when creating services
         /// </summary>
-        public Type GenericServiceType = typeof(Service<>);
+        public readonly List<Type> GenericServiceTypes = new List<Type>()
+        {
+            typeof(Service<>)
+        };
 
         private bool _initialized = false;
 
@@ -194,7 +198,7 @@ namespace Cyggie.Plugins.Services.Models
             IService? iService = (IService?) Activator.CreateInstance(serviceType);
             if (iService != null)
             {
-                if (iService.GetType().IsSubclassOfGenericType(Instance.GenericServiceType, out Type? baseServiceType) && baseServiceType != null)
+                if (Instance.GenericServiceTypes.Any(type => iService.GetType().IsSubclassOfGenericType(type)))
                 {
                     if (!(iService is IServiceWithConfiguration serviceWithConfig))
                     {
@@ -204,7 +208,7 @@ namespace Cyggie.Plugins.Services.Models
 
                     IServiceConfiguration? serviceConfiguration = Instance._serviceConfigurations.FirstOrDefault(x =>
                     {
-                        return serviceWithConfig.ConfigurationType == x.GetType();
+                        return serviceWithConfig.ConfigurationType.IsAssignableFrom(x.GetType());
                     });
 
                     if (serviceConfiguration != null)
