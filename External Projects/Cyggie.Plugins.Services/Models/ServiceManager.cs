@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security;
 
 namespace Cyggie.Plugins.Services.Models
 {
@@ -69,7 +68,6 @@ namespace Cyggie.Plugins.Services.Models
 
             IEnumerable<Type> serviceTypes = TypeHelper.GetAllIsAssignableFrom<IService>();
             Initialize(serviceTypes.ToArray());
-            _initialized = true;
         }
 
         /// <inheritdoc/>
@@ -141,6 +139,7 @@ namespace Cyggie.Plugins.Services.Models
 
             _initialized = true;
             Log.Debug($"Service Manager initialized all services: {_services.Count}.", nameof(ServiceManager));
+            IServiceManager.OnServicesInitialized?.Invoke();
         }
 
         /// <summary>

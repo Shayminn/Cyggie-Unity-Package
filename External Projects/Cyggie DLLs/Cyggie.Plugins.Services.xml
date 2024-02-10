@@ -40,6 +40,16 @@
             Interface of a service manager that initializes and manages all services
             </summary>
         </member>
+        <member name="T:Cyggie.Plugins.Services.Interfaces.IServiceManager.OnServicesInitializedEvent">
+            <summary>
+            Delegate event for all services being initialized
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Services.Interfaces.IServiceManager.OnServicesInitialized">
+            <summary>
+            Event called when all services have been initialized
+            </summary>
+        </member>
         <member name="M:Cyggie.Plugins.Services.Interfaces.IServiceManager.Initialize(System.Type[])">
             <summary>
             Create and initialize an array of services at the start of the application
