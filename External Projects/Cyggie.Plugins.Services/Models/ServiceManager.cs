@@ -204,12 +204,13 @@ namespace Cyggie.Plugins.Services.Models
         /// Will automatically create it if not found
         /// </summary>
         /// <typeparam name="T">Service type</typeparam>
-        /// <returns>Service object (null if creation was unsuccessful)</returns>
-        public static T Get<T>(bool isAssignableFrom = false) where T : IService
+        /// <param name="isAssignableFrom">When true, it checks whether the service is assignable from <typeparamref name="T"/></param>
+        /// <returns>Service (null if not found)</returns>
+        public static T Get<T>(bool isAssignableFrom = true) where T : IService
         {
 #pragma warning disable CS8603 // Possible null reference return.
             // Not null is only supported in C# 9+ which is not supported in most Unity versions
-            IService service = (T) Instance._services.FirstOrDefault(x => isAssignableFrom ? typeof(T).IsAssignableFrom(x.GetType()) : x.GetType() == typeof(T));
+            IService service = (T) Instance._services.FirstOrDefault(x => isAssignableFrom ? x.GetType().IsAssignableFrom(typeof(T)) : x.GetType() == typeof(T));
             return (T) service ?? (T) Create(typeof(T));
 #pragma warning restore CS8603 // Possible null reference return.
         }
@@ -219,7 +220,7 @@ namespace Cyggie.Plugins.Services.Models
         /// </summary>
         /// <typeparam name="T">Service type</typeparam>
         /// <param name="service">Output service (null if not found)</param>
-        /// <param name="isAssignableFrom">When true, it checks whether <typeparamref name="T"/> is assignable from the service</param>
+        /// <param name="isAssignableFrom">When true, it checks whether the service is assignable from <typeparamref name="T"/></param>
         /// <returns>Found?</returns>
         public static bool TryGet<T>(out T service, bool isAssignableFrom = false) where T : IService
         {

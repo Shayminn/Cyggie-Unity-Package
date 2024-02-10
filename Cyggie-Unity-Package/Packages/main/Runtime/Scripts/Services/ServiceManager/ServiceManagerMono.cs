@@ -198,6 +198,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// Get a service from the service manager
         /// </summary>
         /// <typeparam name="T">Service type</typeparam>
+        /// <param name="isAssignableFrom">When true, it checks whether the service is assignable from <typeparamref name="T"/></param>
         /// <returns>Service (null if not found)</returns>
         public static T Get<T>(bool isAssignableFrom = false) where T : IService
         {
@@ -211,6 +212,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// </summary>
         /// <typeparam name="T">Service type</typeparam>
         /// <param name="service">Output service (null if not found)</param>
+        /// <param name="isAssignableFrom">When true, it checks whether the service is assignable from <typeparamref name="T"/></param>
         /// <returns>Found?</returns>
         public static bool TryGet<T>(out T service, bool isAssignableFrom = false) where T : IService
         {
