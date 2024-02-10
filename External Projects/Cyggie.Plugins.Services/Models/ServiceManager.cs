@@ -205,12 +205,12 @@ namespace Cyggie.Plugins.Services.Models
         /// </summary>
         /// <typeparam name="T">Service type</typeparam>
         /// <returns>Service object (null if creation was unsuccessful)</returns>
-        public static T Get<T>() where T : IService
+        public static T Get<T>(bool isAssignableFrom = false) where T : IService
         {
-            T service = (T) Instance._services.FirstOrDefault(x => x.GetType() == typeof(T)) ?? (T) Create(typeof(T));
 #pragma warning disable CS8603 // Possible null reference return.
             // Not null is only supported in C# 9+ which is not supported in most Unity versions
-            return service;
+            IService service = (T) Instance._services.FirstOrDefault(x => isAssignableFrom ? typeof(T).IsAssignableFrom(x.GetType()) : x.GetType() == typeof(T));
+            return (T) service ?? (T) Create(typeof(T));
 #pragma warning restore CS8603 // Possible null reference return.
         }
 
@@ -219,10 +219,11 @@ namespace Cyggie.Plugins.Services.Models
         /// </summary>
         /// <typeparam name="T">Service type</typeparam>
         /// <param name="service">Output service (null if not found)</param>
+        /// <param name="isAssignableFrom">When true, it checks whether <typeparamref name="T"/> is assignable from the service</param>
         /// <returns>Found?</returns>
-        public static bool TryGet<T>(out T service) where T : IService
+        public static bool TryGet<T>(out T service, bool isAssignableFrom = false) where T : IService
         {
-            service = (T) Instance._services.FirstOrDefault(x => x.GetType() == typeof(T));
+            service = Get<T>(isAssignableFrom);
             return service != null;
         }
     }

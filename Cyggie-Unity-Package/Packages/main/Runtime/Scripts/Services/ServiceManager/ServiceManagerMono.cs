@@ -199,10 +199,11 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// </summary>
         /// <typeparam name="T">Service type</typeparam>
         /// <returns>Service (null if not found)</returns>
-        public static T Get<T>() where T : IService
+        public static T Get<T>(bool isAssignableFrom = false) where T : IService
         {
-            if (!TryGetInstance(out IServiceManager instance) || _instance == null) return default;
-            return (T) _instance._services.FirstOrDefault(x => x.GetType() == typeof(T));
+            if (!VerifyInstance()) return default;
+            IService service = (T) _instance._services.FirstOrDefault(x => isAssignableFrom ? typeof(T).IsAssignableFrom(x.GetType()) : x.GetType() == typeof(T));
+            return (T) service ?? (T) Create(typeof(T));
         }
 
         /// <summary>
@@ -211,16 +212,15 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// <typeparam name="T">Service type</typeparam>
         /// <param name="service">Output service (null if not found)</param>
         /// <returns>Found?</returns>
-        public static bool TryGet<T>(out T service) where T : IService
+        public static bool TryGet<T>(out T service, bool isAssignableFrom = false) where T : IService
         {
-            service = Get<T>();
+            service = Get<T>(isAssignableFrom);
             return service != null;
         }
 
-        private static bool TryGetInstance(out IServiceManager instance)
+        private static bool VerifyInstance()
         {
-            instance = _instance;
-            if (instance == null)
+            if (_instance == null)
             {
                 Log.Error("Trying to access Service Manager instance but it has not been created yet.", nameof(ServiceManagerMono));
                 return false;
