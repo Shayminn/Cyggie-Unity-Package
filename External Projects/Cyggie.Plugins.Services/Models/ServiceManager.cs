@@ -31,7 +31,16 @@ namespace Cyggie.Plugins.Services.Models
         }
 
         private readonly List<IServiceConfiguration> _serviceConfigurations = new List<IServiceConfiguration>();
-        private readonly List<IService> _services = new List<IService>();
+
+        /// <summary>
+        /// List of active services
+        /// </summary>
+        public readonly List<IService> Services = new List<IService>();
+
+        /// <summary>
+        /// Generic <see cref="IService"/> type used by the Service Manager to assign configuration when creating services
+        /// </summary>
+        public Type GenericServiceType = typeof(Service<>);
 
         private bool _initialized = false;
 
@@ -56,13 +65,13 @@ namespace Cyggie.Plugins.Services.Models
         }
 
         /// <summary>
-        /// Initialize the service manager with all services in the assembly
+        /// Initialize the service manager with all services and service configurations in the assembly
         /// </summary>
         public void Initialize()
         {
             if (_initialized)
             {
-                Log.Error("Initialize the service manager but it was already initialized!", nameof(ServiceManager));
+                Log.Error("Trying to initialize service manager, but it is already initialized. Use Create to create new services after initialization.", nameof(ServiceManager));
                 return;
             }
 
@@ -70,7 +79,10 @@ namespace Cyggie.Plugins.Services.Models
             Initialize(serviceTypes.ToArray());
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Initialize the service manager with all service configurations and specific list of services
+        /// </summary>
+        /// <param name="serviceTypes"></param>
         public void Initialize(params Type[] serviceTypes)
         {
             if (_initialized)
@@ -104,7 +116,23 @@ namespace Cyggie.Plugins.Services.Models
                 return config;
             });
 
-            foreach (IServiceConfiguration? config in serviceConfigs)
+            Initialize(serviceConfigs, serviceTypes);
+        }
+
+        /// <summary>
+        /// Initialize the service manager with a specific list of services and service configurations
+        /// </summary>
+        /// <param name="configs">List of configurations to use</param>
+        /// <param name="serviceTypes">List of services to create</param>
+        public void Initialize(IEnumerable<IServiceConfiguration?> configs, params Type[] serviceTypes)
+        {
+            if (_initialized)
+            {
+                Log.Error("Trying to initialize service manager, but it is already initialized. Use Create to create new services after initialization.", nameof(ServiceManager));
+                return;
+            }
+
+            foreach (IServiceConfiguration? config in configs)
             {
                 if (config == null) continue;
                 _serviceConfigurations.Add(config);
@@ -127,20 +155,20 @@ namespace Cyggie.Plugins.Services.Models
                 // Check if the service needs to be initialized (or will it be created/initialized later on)
                 if (service.CreateOnInitialize)
                 {
-                    _services.Add(service);
+                    Services.Add(service);
                 }
             }
 
             // Initialize all services in order of priority
-            foreach (IService service in _services.OrderByDescending(x => x.Priority))
+            foreach (IService service in Services.OrderByDescending(x => x.Priority))
             {
                 service.Initialize(this);
             }
 
             _initialized = true;
-            Log.Debug($"Service Manager initialized all services: {_services.Count}.", nameof(ServiceManager));
+            Log.Debug($"Service Manager initialized all services: {Services.Count}.", nameof(ServiceManager));
 
-            _services.ForEach(x => x.OnAllServicesInitialized());
+            Services.ForEach(x => x.OnAllServicesInitialized());
         }
 
         /// <summary>
@@ -157,7 +185,7 @@ namespace Cyggie.Plugins.Services.Models
                 return null;
             }
 
-            if (Instance._services.Any(x => x.GetType() == serviceType))
+            if (Instance.Services.Any(x => x.GetType() == serviceType))
             {
                 Log.Error($"Unable to create service of type {serviceType}, service already exists within the list!", nameof(ServiceManager));
                 return null;
@@ -166,7 +194,7 @@ namespace Cyggie.Plugins.Services.Models
             IService? iService = (IService?) Activator.CreateInstance(serviceType);
             if (iService != null)
             {
-                if (iService.GetType().IsSubclassOfGenericType(typeof(Service<>), out Type? baseServiceType) && baseServiceType != null)
+                if (iService.GetType().IsSubclassOfGenericType(Instance.GenericServiceType, out Type? baseServiceType) && baseServiceType != null)
                 {
                     if (!(iService is IServiceWithConfiguration serviceWithConfig))
                     {
@@ -188,7 +216,7 @@ namespace Cyggie.Plugins.Services.Models
                 if (initialize)
                 {
                     iService.Initialize(Instance);
-                    Instance._services.Add(iService);
+                    Instance.Services.Add(iService);
                 }
 
                 return iService;
@@ -210,7 +238,7 @@ namespace Cyggie.Plugins.Services.Models
         {
 #pragma warning disable CS8603 // Possible null reference return.
             // Not null is only supported in C# 9+ which is not supported in most Unity versions
-            IService service = (T) Instance._services.FirstOrDefault(x => isAssignableFrom ? x.GetType().IsAssignableFrom(typeof(T)) : x.GetType() == typeof(T));
+            IService service = (T) Instance.Services.FirstOrDefault(x => isAssignableFrom ? x.GetType().IsAssignableFrom(typeof(T)) : x.GetType() == typeof(T));
             return (T) service ?? (T) Create(typeof(T));
 #pragma warning restore CS8603 // Possible null reference return.
         }

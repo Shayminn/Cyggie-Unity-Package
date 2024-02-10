@@ -139,6 +139,16 @@
             Service manager class (singleton for all singletons)
             </summary>
         </member>
+        <member name="F:Cyggie.Plugins.Services.Models.ServiceManager.Services">
+            <summary>
+            List of active services
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.Services.Models.ServiceManager.GenericServiceType">
+            <summary>
+            Generic <see cref="T:Cyggie.Plugins.Services.Interfaces.IService"/> type used by the Service Manager to assign configuration when creating services
+            </summary>
+        </member>
         <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.#ctor(System.Boolean)">
             <summary>
             Create a new service manager object
@@ -147,11 +157,21 @@
         </member>
         <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.Initialize">
             <summary>
-            Initialize the service manager with all services in the assembly
+            Initialize the service manager with all services and service configurations in the assembly
             </summary>
         </member>
         <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.Initialize(System.Type[])">
-            <inheritdoc/>
+            <summary>
+            Initialize the service manager with all service configurations and specific list of services
+            </summary>
+            <param name="serviceTypes"></param>
+        </member>
+        <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.Initialize(System.Collections.Generic.IEnumerable{Cyggie.Plugins.Services.Interfaces.IServiceConfiguration},System.Type[])">
+            <summary>
+            Initialize the service manager with a specific list of services and service configurations
+            </summary>
+            <param name="configs">List of configurations to use</param>
+            <param name="serviceTypes">List of services to create</param>
         </member>
         <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.Create(System.Type)">
             <summary>

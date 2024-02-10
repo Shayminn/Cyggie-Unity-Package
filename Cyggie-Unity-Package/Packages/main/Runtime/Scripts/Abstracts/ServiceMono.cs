@@ -17,7 +17,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// The monobehaviour that holds this Service <br/>
         /// This can be used for MonoBehaviour actions (i.e. StartCoroutine)
         /// </summary>
-        protected MonoBehaviour Monobehaviour => ServiceManager as ServiceManagerMono;
+        protected MonoBehaviour Monobehaviour => ServiceManagerMono.Instance;
 
         /// <summary>
         /// The Service Manager game object that holds this Service
@@ -178,10 +178,11 @@ namespace Cyggie.Main.Runtime.ServicesNS
                 return;
             }
 
+            Log.Debug($"Service ({GetType()}) initialized with no configuration.", nameof(ServiceMono));
+
             ServiceManager = manager;
             OnInitialized();
 
-            Log.Debug($"Service ({GetType()}) has been initialized with no configuration.", nameof(ServiceMono));
             _initialized = true;
         }
 
@@ -234,10 +235,11 @@ namespace Cyggie.Main.Runtime.ServicesNS
                 return;
             }
 
+            Log.Debug($"Service ({GetType()}) initialized with configuration ({(Configuration == null ? "none" : Configuration.GetType().ToString())}).", nameof(ServiceMono));
+
             ServiceManager = manager;
             OnInitialized();
 
-            Log.Debug($"Service ({GetType()}) has been initialized with configuration ({Configuration}).", nameof(ServiceMono));    
             _initialized = true;
         }
 

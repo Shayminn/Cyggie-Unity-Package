@@ -1,6 +1,6 @@
 using Cyggie.FileManager.Runtime.ServicesNS;
-using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Plugins.Logs;
+using Cyggie.Plugins.Services.Models;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,7 +8,7 @@ using UnityEngine;
 public class FileManagerTest : MonoBehaviour
 {
     private FileManagerService _fileManagerService = null;
-    private FileManagerService Service => _fileManagerService ??= ServiceManagerMono.Get<FileManagerService>();
+    private FileManagerService Service => _fileManagerService ??= ServiceManager.Get<FileManagerService>();
 
     // Start is called before the first frame update
     void Start()

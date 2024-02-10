@@ -1,4 +1,4 @@
-using Cyggie.Main.Runtime.ServicesNS;
+using Cyggie.Plugins.Services.Models;
 using Cyggie.SceneChanger.Runtime.ServicesNS;
 using Cyggie.SceneChanger.Runtime.Settings;
 using UnityEngine;
@@ -12,7 +12,7 @@ public class SceneChangerTest : MonoBehaviour
     private SceneChangerControls _controls;
 
     private SceneChangerService _sceneChangerService = null;
-    private SceneChangerService SceneChangerService => _sceneChangerService ??= ServiceManagerMono.Get<SceneChangerService>();
+    private SceneChangerService SceneChangerService => _sceneChangerService ??= ServiceManager.Get<SceneChangerService>();
 
     // Start is called before the first frame update
     private void Awake()

@@ -1,5 +1,5 @@
 using Cyggie.FileManager.Runtime.ServicesNS;
-using Cyggie.Main.Runtime.ServicesNS;
+using Cyggie.Plugins.Services.Models;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -14,7 +14,7 @@ namespace Cyggie.FileManager.Runtime.Data
     public abstract class SaveableObject
     {
         private static FileManagerService _fileManagerService = null;
-        internal static FileManagerService FileManagerService => _fileManagerService ??= ServiceManagerMono.Get<FileManagerService>();
+        internal static FileManagerService FileManagerService => _fileManagerService ??= ServiceManager.Get<FileManagerService>();
 
         /// <summary>
         /// This object's save file name

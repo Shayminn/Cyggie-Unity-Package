@@ -1,5 +1,5 @@
-using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.ServicesNS.ReferencePool;
+using Cyggie.Plugins.Services.Models;
 
 namespace Cyggie.Main.Runtime.Utils.Helpers
 {
@@ -9,6 +9,6 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
     public static class MainServices
     {
         private static ReferencePoolService _referencePoolService = null;
-        public static ReferencePoolService ReferencePool => _referencePoolService ??= ServiceManagerMono.Get<ReferencePoolService>();
+        public static ReferencePoolService ReferencePool => _referencePoolService ??= ServiceManager.Get<ReferencePoolService>();
     }
 }

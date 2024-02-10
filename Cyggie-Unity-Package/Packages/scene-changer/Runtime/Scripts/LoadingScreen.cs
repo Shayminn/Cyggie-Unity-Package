@@ -1,7 +1,7 @@
-using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Main.Runtime.Utils.Extensions;
 using Cyggie.Main.Runtime.Utils.Helpers;
 using Cyggie.Plugins.Logs;
+using Cyggie.Plugins.Services.Models;
 using Cyggie.Plugins.Utils.Enums;
 using Cyggie.Plugins.Utils.Extensions;
 using Cyggie.Plugins.Utils.Helpers;
@@ -62,7 +62,7 @@ namespace Cyggie.SceneChanger.Runtime
         private int _previousRandomIndex = -1; // Used with RandomType.ResetAfterEachNoPreviousRepeat
 
         private SceneChangerService _sceneChangerService = null;
-        private SceneChangerService SceneChangerService => _sceneChangerService ??= ServiceManagerMono.Get<SceneChangerService>();
+        private SceneChangerService SceneChangerService => _sceneChangerService ??= ServiceManager.Get<SceneChangerService>();
 
         /// <summary>
         /// MonoBehaviour awake called on start up

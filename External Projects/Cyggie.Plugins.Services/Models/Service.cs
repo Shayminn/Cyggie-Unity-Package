@@ -37,10 +37,11 @@ namespace Cyggie.Plugins.Services.Models
                 return;
             }
 
+            Log.Debug($"Service ({GetType()}) initialized with no configuration.", nameof(Service));
+
             ServiceManager = manager;
             OnInitialized();
 
-            Log.Debug($"Service ({GetType()}) has been initialized with no configuration.", nameof(Service));
             _initialized = true;
         }
 
@@ -91,10 +92,11 @@ namespace Cyggie.Plugins.Services.Models
                 return;
             }
 
+            Log.Debug($"Service ({GetType()}) initialized with configuration ({(Configuration == null ? "none" : Configuration.GetType().ToString())}).", nameof(Service));
+
             ServiceManager = manager;
             OnInitialized();
 
-            Log.Debug($"Service ({GetType()}) has been initialized with configuration ({(Configuration == null ? "none" : Configuration.GetType().ToString())}).", nameof(Service));    
             _initialized = true;
         }
     }
