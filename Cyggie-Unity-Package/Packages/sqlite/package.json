@@ -1,6 +1,6 @@
 {
   "name": "cyggie.sqlite",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "displayName": "SQLite",
   "description": "This package derives from the Cyggie package. It contains relevant scripts and settings to manage an SQLite database.",
   "unity": "2019.1",
