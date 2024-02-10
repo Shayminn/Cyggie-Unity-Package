@@ -179,12 +179,13 @@
             </summary>
             <param name="serviceType">Type that implements <see cref="T:Cyggie.Plugins.Services.Interfaces.IService"/></param>
         </member>
-        <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.Get``1(System.Boolean)">
+        <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.Get``1(System.Boolean,System.Boolean)">
             <summary>
             Get a service from the service manager <br/>
             Will automatically create it if not found
             </summary>
             <typeparam name="T">Service type</typeparam>
+            <param name="autoCreate">Auto create the service when it is not found</param>
             <param name="isAssignableFrom">When true, it checks whether the service is assignable from <typeparamref name="T"/></param>
             <returns>Service (null if not found)</returns>
         </member>

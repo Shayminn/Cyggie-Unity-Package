@@ -232,14 +232,20 @@ namespace Cyggie.Plugins.Services.Models
         /// Will automatically create it if not found
         /// </summary>
         /// <typeparam name="T">Service type</typeparam>
+        /// <param name="autoCreate">Auto create the service when it is not found</param>
         /// <param name="isAssignableFrom">When true, it checks whether the service is assignable from <typeparamref name="T"/></param>
         /// <returns>Service (null if not found)</returns>
-        public static T Get<T>(bool isAssignableFrom = true) where T : IService
+        public static T Get<T>(bool autoCreate = true, bool isAssignableFrom = true) where T : IService
         {
 #pragma warning disable CS8603 // Possible null reference return.
             // Not null is only supported in C# 9+ which is not supported in most Unity versions
-            IService service = (T) Instance.Services.FirstOrDefault(x => isAssignableFrom ? x.GetType().IsAssignableFrom(typeof(T)) : x.GetType() == typeof(T));
-            return (T) service ?? (T) Create(typeof(T));
+            IService? service = (T) Instance.Services.FirstOrDefault(x => isAssignableFrom ? typeof(T).IsAssignableFrom(x.GetType()) : x.GetType() == typeof(T));
+            if (service == null && autoCreate)
+            {
+                service = Create(typeof(T));
+            }
+
+            return (T) service;
 #pragma warning restore CS8603 // Possible null reference return.
         }
 
