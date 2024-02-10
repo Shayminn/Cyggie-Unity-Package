@@ -1,0 +1,51 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.1/",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.1": {},
+    ".NETStandard,Version=v2.1/": {
+      "Cyggie.Plugins.Utils/1.0.0": {
+        "dependencies": {
+          "Cyggie.Plugins.Logs": "1.0.0",
+          "UnityEngine": "0.0.0.0"
+        },
+        "runtime": {
+          "Cyggie.Plugins.Utils.dll": {}
+        }
+      },
+      "Cyggie.Plugins.Logs/1.0.0": {
+        "runtime": {
+          "Cyggie.Plugins.Logs.dll": {}
+        }
+      },
+      "UnityEngine/0.0.0.0": {
+        "runtime": {
+          "UnityEngine.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Cyggie.Plugins.Utils/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cyggie.Plugins.Logs/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "UnityEngine/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

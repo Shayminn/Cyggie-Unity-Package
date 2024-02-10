@@ -48,6 +48,9 @@ namespace Cyggie.Plugins.Services.Models
         /// Called right after the service is initialized
         /// </summary>
         protected virtual void OnInitialized() { }
+
+        /// <inheritdoc/>
+        public virtual void OnAllServicesInitialized() { }
     }
 
     #endregion

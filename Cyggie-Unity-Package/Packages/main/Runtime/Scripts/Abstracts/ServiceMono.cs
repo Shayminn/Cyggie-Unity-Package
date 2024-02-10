@@ -185,6 +185,9 @@ namespace Cyggie.Main.Runtime.ServicesNS
             _initialized = true;
         }
 
+        /// <inheritdoc/>
+        public virtual void OnAllServicesInitialized() { }
+
         /// <summary>
         /// Manually create a service <br/>
         /// This can be useful when using a Service within an Editor window <br/>

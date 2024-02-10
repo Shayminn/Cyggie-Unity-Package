@@ -30,6 +30,11 @@
             </summary>
             <param name="manager">Reference to the service manager that initializes and creates this service</param>
         </member>
+        <member name="M:Cyggie.Plugins.Services.Interfaces.IService.OnAllServicesInitialized">
+            <summary>
+            Called when all services have been initialized
+            </summary>
+        </member>
         <member name="T:Cyggie.Plugins.Services.Interfaces.IServiceConfiguration">
             <summary>
             Interface for a service configuration to a service
@@ -100,6 +105,9 @@
             <summary>
             Called right after the service is initialized
             </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.Services.Models.Service.OnAllServicesInitialized">
+            <inheritdoc/>
         </member>
         <member name="T:Cyggie.Plugins.Services.Models.Service`1">
             <summary>

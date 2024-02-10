@@ -82,8 +82,8 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
             _initialized = true;
             Log.Debug($"Service Manager initialized all services: {_services.Count}.", nameof(ServiceManagerMono));
-        
-            IServiceManager.OnServicesInitialized?.Invoke();
+
+            _services.ForEach(x => x.OnAllServicesInitialized());
         }
 
         /// <inheritdoc/>

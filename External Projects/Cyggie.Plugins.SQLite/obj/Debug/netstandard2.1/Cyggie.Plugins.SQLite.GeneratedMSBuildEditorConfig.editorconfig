@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = Cyggie.Plugins.SQLite
+build_property.ProjectDir = C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.SQLite\

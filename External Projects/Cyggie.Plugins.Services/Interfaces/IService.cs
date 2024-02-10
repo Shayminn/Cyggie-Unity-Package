@@ -25,5 +25,10 @@
         /// </summary>
         /// <param name="manager">Reference to the service manager that initializes and creates this service</param>
         void Initialize(IServiceManager manager);
+
+        /// <summary>
+        /// Called when all services have been initialized
+        /// </summary>
+        void OnAllServicesInitialized();
     }
 }
