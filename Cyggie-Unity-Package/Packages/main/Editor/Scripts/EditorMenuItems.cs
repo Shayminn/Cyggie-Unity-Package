@@ -19,7 +19,7 @@ namespace Cyggie.Main.Editor
         /// <summary>
         /// Menu Item for managing Package Configurations
         /// </summary>
-        [MenuItem(itemName: "Cyggie/Package Configurations &c")]
+        [MenuItem(itemName: "Cyggie/Package Configurations #&c")]
         private static void OpenPackageConfigurations()
         {
             if (ExpectPackageConfigurationsShortcut)
