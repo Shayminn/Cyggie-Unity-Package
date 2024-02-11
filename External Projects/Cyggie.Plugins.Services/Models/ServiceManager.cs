@@ -180,6 +180,14 @@ namespace Cyggie.Plugins.Services.Models
         /// <param name="serviceType">Type that implements <see cref="IService"/></param>
         public static IService? Create(Type serviceType) => Create(serviceType, initialize: true);
 
+        /// <summary>
+        /// Create a service of type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Type of IService to create</typeparam>
+#pragma warning disable CS8603 // Possible null reference return.
+        public static T Create<T>() where T : IService => (T) Create(typeof(T), initialize: true);
+#pragma warning restore CS8603 // Possible null reference return.
+
         private static IService? Create(Type serviceType, bool initialize)
         {
             if (serviceType.IsAssignableFrom(typeof(IService)) && !serviceType.IsAbstract)

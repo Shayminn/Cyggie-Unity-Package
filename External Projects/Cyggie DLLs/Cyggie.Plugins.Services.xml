@@ -179,6 +179,12 @@
             </summary>
             <param name="serviceType">Type that implements <see cref="T:Cyggie.Plugins.Services.Interfaces.IService"/></param>
         </member>
+        <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.Create``1">
+            <summary>
+            Create a service of type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">Type of IService to create</typeparam>
+        </member>
         <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.Get``1(System.Boolean,System.Boolean)">
             <summary>
             Get a service from the service manager <br/>
