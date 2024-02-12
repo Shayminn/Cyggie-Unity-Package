@@ -10,7 +10,6 @@ using UnityEngine;
 
 namespace Cyggie.Main.Runtime.ServicesNS
 {
-
     /// <summary>
     /// Manager class for all services of type <see cref="ServiceMono"/> <br/> 
     /// Any subclass of type <see cref="ServiceMono"/> will automatically be created and initialized <br/>

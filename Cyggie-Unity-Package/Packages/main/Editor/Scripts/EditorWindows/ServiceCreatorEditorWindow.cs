@@ -126,7 +126,6 @@ namespace Cyggie.Main.Editor.Windows
                     if (_selectedType != null)
                     {
                         bool identifierExists = CheckTypeExists(_selectedType);
-                        Debug.Log("Exists: " + identifierExists);
 
                         // Check if it already exists at path
                         if (identifierExists)
