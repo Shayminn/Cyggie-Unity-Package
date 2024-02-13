@@ -18,7 +18,7 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
         {
             foreach (object obj in objs)
             {
-                if (obj.GetType().IsSerializable)
+                if (!obj.GetType().IsSerializable)
                 {
                     Log.Error($"Trying to check for Inspector reference for object {obj}, but it is not serializable.", nameof(SerializationHelper));
                     return false;
