@@ -13,25 +13,25 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
         /// Objects must be <see cref="SerializableAttribute"/>
         /// </summary>
         /// <param name="objs">Array of objects to check</param>
-        /// <returns>True if all <paramref name="objs"/> pass the null reference check</returns>
-        public static bool CheckInspectorReference(params object[] objs)
+        /// <returns>True if any <paramref name="objs"/> has a null reference</returns>
+        public static bool HasMissingReference(params object[] objs)
         {
             foreach (object obj in objs)
             {
                 if (!obj.GetType().IsSerializable)
                 {
                     Log.Error($"Trying to check for Inspector reference for object {obj}, but it is not serializable.", nameof(SerializationHelper));
-                    return false;
+                    return true;
                 }
 
                 if (obj == null)
                 {
                     Log.Error($"Object {obj} has a missing reference, assign it in the Inspector.", nameof(SerializationHelper));
-                    return false;
+                    return true;
                 }
             }
 
-            return true;
+            return false;
         }
     }
 }
