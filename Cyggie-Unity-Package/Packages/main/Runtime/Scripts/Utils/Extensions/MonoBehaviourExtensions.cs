@@ -78,7 +78,8 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
         {
             foreach (KeyValuePair<TKey, TValue> kv in dict)
             {
-                if (mono.HasMissingReference(kv.Value)) return true;
+                if (kv.Value is UnityEngine.Object unityObj && mono.HasMissingReference(unityObj)) return true;
+                else if (mono.HasMissingReference(kv.Value)) return true;
             }
 
             return false;
