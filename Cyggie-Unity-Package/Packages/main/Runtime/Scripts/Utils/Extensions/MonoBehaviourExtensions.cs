@@ -40,7 +40,7 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
             {
                 if (obj == null)
                 {
-                    Log.Error($"Object {obj.name} in {mono.name} has a missing reference, assign it in the Inspector.", nameof(MonoBehaviourExtensions), mono);
+                    Log.Error($"Object {obj.GetType()} in {mono.name} has a missing reference, assign it in the Inspector.", nameof(MonoBehaviourExtensions), mono);
                     return true;
                 }
             }
@@ -60,7 +60,7 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
             {
                 if (obj == null)
                 {
-                    Log.Error($"Object in {mono.name} has a missing reference, assign it in the Inspector.", nameof(MonoBehaviourExtensions), mono);
+                    Log.Error($"Object {obj.GetType()} in {mono.name} has a missing reference, assign it in the Inspector.", nameof(MonoBehaviourExtensions), mono);
                     return true;
                 }
             }
