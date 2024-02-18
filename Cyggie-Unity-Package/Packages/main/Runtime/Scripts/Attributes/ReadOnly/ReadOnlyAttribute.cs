@@ -28,6 +28,12 @@ namespace Cyggie.Main.Runtime.Attributes
     internal class ReadOnlyAttributeDrawer : PropertyDrawer
     {
         /// <inheritdoc/>
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            return EditorGUI.GetPropertyHeight(property, label, true);
+        }
+
+        /// <inheritdoc/>
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             GUI.enabled = false;
