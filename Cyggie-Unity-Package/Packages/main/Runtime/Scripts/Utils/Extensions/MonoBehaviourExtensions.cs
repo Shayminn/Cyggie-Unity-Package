@@ -36,11 +36,11 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
         /// <returns>True if any <paramref name="objs"/> has a null reference</returns>
         public static bool HasMissingReference(this MonoBehaviour mono, params UnityEngine.Object[] objs)
         {
-            foreach (UnityEngine.Object obj in objs)
+            for (int i = 0; i < objs.Length; i++)
             {
-                if (obj == null)
+                if (objs[i] == null)
                 {
-                    Log.Error($"Object ({obj.GetType()}) in {mono.name} has a missing reference, assign it in the Inspector.", nameof(MonoBehaviourExtensions), mono);
+                    Log.Error($"Object ({i}) in {mono.name} has a missing reference, assign it in the Inspector.", nameof(MonoBehaviourExtensions), mono);
                     return true;
                 }
             }
@@ -56,11 +56,11 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
         /// <returns>True if any <paramref name="objs"/> has a null reference</returns>
         public static bool HasMissingReference(this MonoBehaviour mono, params object[] objs)
         {
-            foreach (object obj in objs)
+            for (int i = 0; i < objs.Length; i++)
             {
-                if (obj == null)
+                if (objs[i] == null)
                 {
-                    Log.Error($"Object ({obj.GetType()}) in {mono.name} has a missing reference, assign it in the Inspector.", nameof(MonoBehaviourExtensions), mono);
+                    Log.Error($"Object {i} in {mono.name} has a missing reference, assign it in the Inspector.", nameof(MonoBehaviourExtensions), mono);
                     return true;
                 }
             }
