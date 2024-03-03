@@ -101,13 +101,18 @@
         <member name="M:Cyggie.Plugins.Services.Models.Service.Initialize(Cyggie.Plugins.Services.Interfaces.IServiceManager)">
             <inheritdoc/>
         </member>
+        <member name="M:Cyggie.Plugins.Services.Models.Service.OnAllServicesInitialized">
+            <inheritdoc/>
+        </member>
+        <member name="M:Cyggie.Plugins.Services.Models.Service.Dispose">
+            <summary>
+            Called when the object is disposed by <see cref="T:System.IDisposable"/>
+            </summary>
+        </member>
         <member name="M:Cyggie.Plugins.Services.Models.Service.OnInitialized">
             <summary>
             Called right after the service is initialized
             </summary>
-        </member>
-        <member name="M:Cyggie.Plugins.Services.Models.Service.OnAllServicesInitialized">
-            <inheritdoc/>
         </member>
         <member name="T:Cyggie.Plugins.Services.Models.Service`1">
             <summary>

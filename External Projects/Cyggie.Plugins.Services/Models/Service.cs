@@ -9,7 +9,7 @@ namespace Cyggie.Plugins.Services.Models
     /// <summary>
     /// Service (singleton) without a configuration
     /// </summary>
-    public abstract class Service : IService
+    public abstract class Service : IService, IDisposable
     {
         /// <inheritdoc/>
         public IServiceManager? ServiceManager { get; set; }
@@ -45,13 +45,18 @@ namespace Cyggie.Plugins.Services.Models
             _initialized = true;
         }
 
+        /// <inheritdoc/>
+        public virtual void OnAllServicesInitialized() { }
+
+        /// <summary>
+        /// Called when the object is disposed by <see cref="IDisposable"/>
+        /// </summary>
+        public virtual void Dispose() { }
+
         /// <summary>
         /// Called right after the service is initialized
         /// </summary>
         protected virtual void OnInitialized() { }
-
-        /// <inheritdoc/>
-        public virtual void OnAllServicesInitialized() { }
     }
 
     #endregion
