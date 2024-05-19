@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cyggie.Plugins.MySQL</name>
+    </assembly>
+    <members>
+        <member name="T:Cyggie.Plugins.MySQL.Abstract.MySQLTableObject">
+            <summary>
+            Class for a MySQL table's object model <br/>
+            The fields are assigned automatically based on the field/property names and table columns (using JSON conversion with the Newtonsoft Json library)<br/>
+            <br/>
+            <code>
+            Example table
+            field1 | field2
+               1      test
+               
+            Example class fields/properties
+            public int Field1;
+            public string Field2 { get; set; }
+            </code>
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.MySQL.Abstract.MySQLTableObject.TableName">
+            <summary>
+            Table name that this class model represents <br/>
+            Defaults to the type's name
+            </summary>
+        </member>
+        <member name="T:Cyggie.Plugins.MySQL.Attributes.MySQLTablePreloadAttribute">
+            <summary>
+            Attribute to preload a <see cref="T:Cyggie.Plugins.MySQL.Abstract.MySQLTableObject"/> when the database is connected <br/>
+            Preloaded tables are added to the pool, when reading from them, it won't query the database and simply retrieve <br/>
+            By this nature, they should be read-only and not be written to. <br/>
+            If the data somehow changes, it won't be reflected in the pool and the pool can't be updated unless the database connection is re-established
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.MySQL.Attributes.MySQLTablePreloadAttribute.DatabaseName">
+            <summary>
+            Filter to only preload this object for a specific database name
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Attributes.MySQLTablePreloadAttribute.#ctor(System.String)">
+            <summary>
+            Attribute to preload all the table data when the database is connected
+            </summary>
+            <param name="databaseName">Filter to only preload this object for a specific database name</param>
+        </member>
+        <member name="T:Cyggie.Plugins.MySQL.Services.MySQLService">
+            <summary>
+            Service for anything related to MySQL
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.MySQL.Services.MySQLService._pool">
+            <summary>
+            Pool created from <see cref="T:Cyggie.Plugins.MySQL.Attributes.MySQLTablePreloadAttribute"/>s only
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.MySQL.Services.MySQLService.OnConnected">
+            <summary>
+            Action called when a databse connection is established
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.MySQL.Services.MySQLService.IsReady">
+            <summary>
+            Whether a connection is established and ready for queries
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Connect(System.String,System.String,System.String,System.String)">
+            <summary>
+            Connect to the database constructing the connection string using the provided arguments
+            </summary>
+            <param name="server">Server address</param>
+            <param name="username">Username</param>
+            <param name="password">Password</param>
+            <param name="database">Database to connect to</param>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Connect(MySqlConnector.MySqlConnectionStringBuilder)">
+            <summary>
+            Connect to the database using the provided string builder <paramref name="builder"/>
+            </summary>
+            <param name="builder">Connection string builder</param>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Disconnect">
+            <summary>
+            Disconnect from the currently connected database
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.CreateCommand(System.String,MySqlConnector.MySqlParameter[])">
+            <summary>
+            Create a MySQL Command with <paramref name="parameters"/>
+            </summary>
+            <param name="commandText">The command's query text</param>
+            <param name="parameters">Parameters to be added to the command</param>
+            <returns>MySqlCommand object (null if connection is not established)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Execute(System.String,MySqlConnector.MySqlParameter[])">
+            <summary>
+            Execute an sql query (such as UPDATE, INSERT, DELETE, etc.)
+            </summary>
+            <param name="commandText">The command's query text</param>
+            <param name="parameters">Parameters to be added to the command</param>
+            <returns>Number of rows affected</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Execute(MySqlConnector.MySqlCommand)">
+            <summary>
+            Execute a <paramref name="command"/> (such as UPDATE, INSERT, DELETE, etc.)
+            </summary>
+            <param name="command">Command to execute</param>
+            <returns>Number of rows affected</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Read``1(System.String,MySqlConnector.MySqlParameter[])">
+            <summary>
+            Read a table with an sql query 
+            </summary>
+            <typeparam name="T">Object type to read</typeparam>
+            <param name="commandText">The command's query text</param>
+            <param name="parameters">Parameters to be added to the command</param>
+            <returns>IEnumerable of objects</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Read``1(MySqlConnector.MySqlCommand)">
+            <summary>
+            Read a table with <paramref name="command"/>
+            </summary>
+            <typeparam name="T">Object type to read</typeparam>
+            <param name="command">Command to execute a read (SELECT)</param>
+            <returns>IEnumerable of object of type <typeparamref name="T"/></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Read(System.Type,System.String,MySqlConnector.MySqlParameter[])">
+            <summary>
+            Read a table with an sql query 
+            </summary>
+            <param name="type">Object type to read (must inherit from <see cref="T:Cyggie.Plugins.MySQL.Abstract.MySQLTableObject"/> and not be abstract</param>
+            <param name="commandText">The command's query text</param>
+            <param name="parameters">Parameters to be added to the command</param>
+            <returns>IEnumerable of objects</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Read(System.Type,MySqlConnector.MySqlCommand)">
+            <summary>
+            Read a table with <paramref name="command"/>
+            </summary>
+            <param name="type">Object type to read (must inherit from <see cref="T:Cyggie.Plugins.MySQL.Abstract.MySQLTableObject"/> and not be abstract</param>
+            <param name="command">Command to execute a read (SELECT)</param>
+            <returns>IEnumerable of object of <paramref name="type"/></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.ConnectAsync(System.String,System.String,System.String,System.String)">
+            <summary>
+            Connect asynchronously to the database constructing the connection string using the provided arguments
+            </summary>
+            <param name="server">Server address</param>
+            <param name="username">Username</param>
+            <param name="password">Password</param>
+            <param name="database">Database to connect to</param>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.ConnectAsync(MySqlConnector.MySqlConnectionStringBuilder)">
+            <summary>
+            Connect asynchronously to the database using the provided string builder <paramref name="builder"/>
+            </summary>
+            <param name="builder">Connection string builder</param>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.DisconnectAsync">
+            <summary>
+            Disconnect asynchronously from the currently connected database
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.ExecuteAsync(System.String,MySqlConnector.MySqlParameter[])">
+            <summary>
+            Execute asynchronously an sql query (such as UPDATE, INSERT, DELETE, etc.)
+            </summary>
+            <param name="commandText">The command's query text</param>
+            <param name="parameters">Parameters to be added to the command</param>
+            <returns>Number of rows affected</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.ExecuteAsync(MySqlConnector.MySqlCommand)">
+            <summary>
+            Execute asynchronously a <paramref name="command"/> (such as UPDATE, INSERT, DELETE, etc.)
+            </summary>
+            <param name="command">Command to execute</param>
+            <returns>Number of rows affected</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.ReadAsync``1(System.String,MySqlConnector.MySqlParameter[])">
+            <summary>
+            Read asynchronously a table with an sql query 
+            </summary>
+            <typeparam name="T">Object type to read</typeparam>
+            <param name="commandText">The command's query text</param>
+            <param name="parameters">Parameters to be added to the command</param>
+            <returns>IEnumerable of objects</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.ReadAsync``1(MySqlConnector.MySqlCommand)">
+            <summary>
+            Read asynchronously a table with <paramref name="command"/>
+            </summary>
+            <typeparam name="T">Object type to read</typeparam>
+            <param name="command">Command to execute a read (SELECT)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.ReadAsync(System.Type,System.String,MySqlConnector.MySqlParameter[])">
+            <summary>
+            Read asynchronously a table with an sql query 
+            </summary>
+            <param name="type">Object type to read (must inherit from <see cref="T:Cyggie.Plugins.MySQL.Abstract.MySQLTableObject"/> and not be abstract</param>
+            <param name="commandText">The command's query text</param>
+            <param name="parameters">Parameters to be added to the command</param>
+            <returns>IEnumerable of objects</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.ReadAsync(System.Type,MySqlConnector.MySqlCommand)">
+            <summary>
+            Read asynchronously a table with <paramref name="command"/>
+            </summary>
+            <param name="type">Object type to read (must inherit from <see cref="T:Cyggie.Plugins.MySQL.Abstract.MySQLTableObject"/> and not be abstract</param>
+            <param name="command">Command to execute a read (SELECT)</param>
+            <returns>IEnumerable of object of <paramref name="type"/></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Dispose">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>
