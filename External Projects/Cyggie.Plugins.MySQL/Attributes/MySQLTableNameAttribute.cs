@@ -10,27 +10,21 @@ namespace Cyggie.Plugins.MySQL.Attributes
     /// If the data somehow changes, it won't be reflected in the pool and the pool can't be updated unless the database connection is re-established
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class MySQLTablePreloadAttribute : Attribute
+    public class MySQLTableNameAttribute : Attribute
     {
         /// <summary>
-        /// Order of priority, higher priority will be read and initialized first
+        /// MySQL table name <br/>
+        /// Defaults to the class name
         /// </summary>
-        public int Priority { get; private set; } = 0;
-
-        /// <summary>
-        /// Filter to only preload this object for a specific database name
-        /// </summary>
-        public string DatabaseName { get; private set; } = string.Empty;
+        public string TableName { get; private set; } = string.Empty;
 
         /// <summary>
         /// Attribute to preload all the table data when the database is connected
         /// </summary>
-        /// <param name="priority">Order of priority, higher priority will be read and initialized first</param>
-        /// <param name="databaseName">Filter to only preload this object for a specific database name</param>
-        public MySQLTablePreloadAttribute(int priority = 0, string databaseName = "")
+        /// <param name="tableName"></param>
+        public MySQLTableNameAttribute(string tableName)
         {
-            Priority = priority;
-            DatabaseName = databaseName;
+            TableName = tableName;
         }
     }
 }

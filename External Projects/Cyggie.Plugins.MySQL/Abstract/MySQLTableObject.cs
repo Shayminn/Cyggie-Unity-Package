@@ -1,4 +1,7 @@
-﻿namespace Cyggie.Plugins.MySQL.Abstract
+﻿using Cyggie.Plugins.MySQL.Attributes;
+using Cyggie.Plugins.MySQL.Utils.Helpers;
+
+namespace Cyggie.Plugins.MySQL.Abstract
 {
     /// <summary>
     /// Class for a MySQL table's object model <br/>
@@ -17,9 +20,9 @@
     public abstract class MySQLTableObject
     {
         /// <summary>
-        /// Table name that this class model represents <br/>
-        /// Defaults to the type's name
+        /// Table name for this type <br/>
+        /// Use <see cref="MySQLTableNameAttribute"/> to assign this value
         /// </summary>
-        public virtual string TableName => GetType().Name;
+        public string TableName => MySQLTableHelper.GetTableName(GetType());
     }
 }

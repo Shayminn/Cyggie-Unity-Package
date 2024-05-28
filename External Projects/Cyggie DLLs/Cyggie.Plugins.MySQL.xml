@@ -22,9 +22,29 @@
         </member>
         <member name="P:Cyggie.Plugins.MySQL.Abstract.MySQLTableObject.TableName">
             <summary>
-            Table name that this class model represents <br/>
-            Defaults to the type's name
+            Table name for this type <br/>
+            Use <see cref="T:Cyggie.Plugins.MySQL.Attributes.MySQLTableNameAttribute"/> to assign this value
             </summary>
+        </member>
+        <member name="T:Cyggie.Plugins.MySQL.Attributes.MySQLTableNameAttribute">
+            <summary>
+            Attribute to preload a <see cref="T:Cyggie.Plugins.MySQL.Abstract.MySQLTableObject"/> when the database is connected <br/>
+            Preloaded tables are added to the pool, when reading from them, it won't query the database and simply retrieve <br/>
+            By this nature, they should be read-only and not be written to. <br/>
+            If the data somehow changes, it won't be reflected in the pool and the pool can't be updated unless the database connection is re-established
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.MySQL.Attributes.MySQLTableNameAttribute.TableName">
+            <summary>
+            MySQL table name <br/>
+            Defaults to the class name
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Attributes.MySQLTableNameAttribute.#ctor(System.String)">
+            <summary>
+            Attribute to preload all the table data when the database is connected
+            </summary>
+            <param name="tableName"></param>
         </member>
         <member name="T:Cyggie.Plugins.MySQL.Attributes.MySQLTablePreloadAttribute">
             <summary>
@@ -34,15 +54,21 @@
             If the data somehow changes, it won't be reflected in the pool and the pool can't be updated unless the database connection is re-established
             </summary>
         </member>
+        <member name="P:Cyggie.Plugins.MySQL.Attributes.MySQLTablePreloadAttribute.Priority">
+            <summary>
+            Order of priority, higher priority will be read and initialized first
+            </summary>
+        </member>
         <member name="P:Cyggie.Plugins.MySQL.Attributes.MySQLTablePreloadAttribute.DatabaseName">
             <summary>
             Filter to only preload this object for a specific database name
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.MySQL.Attributes.MySQLTablePreloadAttribute.#ctor(System.String)">
+        <member name="M:Cyggie.Plugins.MySQL.Attributes.MySQLTablePreloadAttribute.#ctor(System.Int32,System.String)">
             <summary>
             Attribute to preload all the table data when the database is connected
             </summary>
+            <param name="priority">Order of priority, higher priority will be read and initialized first</param>
             <param name="databaseName">Filter to only preload this object for a specific database name</param>
         </member>
         <member name="T:Cyggie.Plugins.MySQL.Services.MySQLService">
@@ -64,6 +90,9 @@
             <summary>
             Whether a connection is established and ready for queries
             </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Initialize(Cyggie.Plugins.Services.Interfaces.IServiceManager)">
+            <inheritdoc/>
         </member>
         <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Connect(System.String,System.String,System.String,System.String)">
             <summary>
@@ -107,6 +136,20 @@
             </summary>
             <param name="command">Command to execute</param>
             <returns>Number of rows affected</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Read``1">
+            <summary>
+            Read from the pool all objects of type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">Type of objects to retrieve</typeparam>
+            <returns>IEnumerable of objects</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Read(System.Type)">
+            <summary>
+            Read from the pool all objects of type <paramref name="type"/>
+            </summary>
+            <param name="type">Type of objects to retrieve</param>
+            <returns>IEnumerable of objects</returns>
         </member>
         <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Read``1(System.String,MySqlConnector.MySqlParameter[])">
             <summary>
@@ -213,6 +256,25 @@
         </member>
         <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Dispose">
             <inheritdoc/>
+        </member>
+        <member name="T:Cyggie.Plugins.MySQL.Utils.Helpers.MySQLTableHelper">
+            <summary>
+            Helper class to manage MySQLTable
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Utils.Helpers.MySQLTableHelper.GetTableName``1">
+            <summary>
+            Get the table name for type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">Type to get the table name for</typeparam>
+            <returns>Table name (type name if not found)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.MySQL.Utils.Helpers.MySQLTableHelper.GetTableName(System.Type)">
+            <summary>
+            Get the table name for <paramref name="type"/>
+            </summary>
+            <param name="type">Type to get the table name for</param>
+            <returns>Table name (type name if not found)</returns>
         </member>
     </members>
 </doc>

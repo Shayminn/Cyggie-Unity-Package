@@ -1,6 +1,8 @@
 ﻿using Cyggie.Plugins.Logs;
 using Cyggie.Plugins.MySQL.Abstract;
 using Cyggie.Plugins.MySQL.Attributes;
+using Cyggie.Plugins.MySQL.Utils.Helpers;
+using Cyggie.Plugins.Services.Interfaces;
 using Cyggie.Plugins.Services.Models;
 using Cyggie.Plugins.Utils.Helpers;
 using MySqlConnector;
@@ -36,6 +38,19 @@ namespace Cyggie.Plugins.MySQL.Services
         /// Whether a connection is established and ready for queries
         /// </summary>
         public bool IsReady => _conn != null && _conn.State == ConnectionState.Open;
+
+        /// <inheritdoc/>
+        public override void Initialize(IServiceManager manager)
+        {
+            IEnumerable<Type> sqlObjectTypes = TypeHelper.GetAllIsAssignableFrom<MySQLTableObject>()
+                                                     .Where(x => x.GetCustomAttribute<MySQLTableNameAttribute>() != null);
+
+            foreach (Type type in sqlObjectTypes)
+            {
+                MySQLTableNameAttribute tableNameAttr = type.GetCustomAttribute<MySQLTableNameAttribute>();
+                MySQLTableHelper.AddMapping(type, tableNameAttr.TableName);
+            }
+        }
 
         #region Public API
 
@@ -123,7 +138,48 @@ namespace Cyggie.Plugins.MySQL.Services
         {
             if (!ValidateConnection()) return 0;
 
-            return command.ExecuteNonQuery();
+            int rowsAffected = 0;
+            try
+            {
+                rowsAffected = command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Failed to execute command: {command.CommandText}, exception: {ex}.", nameof(MySQLService));
+            }
+            finally
+            {
+                command.DisposeAsync();
+            }
+
+            return rowsAffected;
+        }
+
+        /// <summary>
+        /// Read from the pool all objects of type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Type of objects to retrieve</typeparam>
+        /// <returns>IEnumerable of objects</returns>
+        public IEnumerable<T> Read<T>() where T : MySQLTableObject
+        {
+            return Read(typeof(T)).Cast<T>();
+        }
+
+        /// <summary>
+        /// Read from the pool all objects of type <paramref name="type"/>
+        /// </summary>
+        /// <param name="type">Type of objects to retrieve</param>
+        /// <returns>IEnumerable of objects</returns>
+        public IEnumerable<MySQLTableObject> Read(Type type)
+        {
+            // Check if pool contains type already (preloaded types)
+            if (_pool.ContainsKey(type))
+            {
+                return _pool[type];
+            }
+
+            Log.Error($"Failed to read, type {type} is not pooled. Use the [MySQLTablePreload] attribute or add a command text to the Read method.", nameof(MySQLService));
+            return Array.Empty<MySQLTableObject>();
         }
 
         /// <summary>
@@ -177,12 +233,6 @@ namespace Cyggie.Plugins.MySQL.Services
         {
             if (!ValidateConnection()) return Array.Empty<MySQLTableObject>();
 
-            // Check if pool contains type already (preloaded types)
-            if (_pool.ContainsKey(type))
-            {
-                return _pool[type];
-            }
-
             if (!typeof(MySQLTableObject).IsAssignableFrom(type))
             {
                 Log.Error($"Failed to read from type {type}, {typeof(MySQLTableObject)} is not assignable from {type}.", nameof(MySQLService));
@@ -196,10 +246,11 @@ namespace Cyggie.Plugins.MySQL.Services
             }
 
             List<MySQLTableObject> objects = new List<MySQLTableObject>();
+            MySqlDataReader? reader = null;
 
             try
             {
-                MySqlDataReader reader = command.ExecuteReader();
+                reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     if (!TryCreateTableObject(reader, type, out object? tableObj) || tableObj == null) continue;
@@ -210,6 +261,10 @@ namespace Cyggie.Plugins.MySQL.Services
             catch (Exception ex)
             {
                 Log.Error($"Failed to execute read command. Exception: {ex}", nameof(MySQLService));
+            }
+            finally
+            {
+                reader?.DisposeAsync();
             }
 
             return objects;
@@ -287,7 +342,21 @@ namespace Cyggie.Plugins.MySQL.Services
         {
             if (!ValidateConnection()) return 0;
 
-            return await command.ExecuteNonQueryAsync();
+            int rowsAffected = 0;
+            try
+            {
+                rowsAffected = await command.ExecuteNonQueryAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Failed to execute command: {command.CommandText}, exception: {ex}.", nameof(MySQLService));
+            }
+            finally
+            {
+                await command.DisposeAsync();
+            }
+
+            return rowsAffected;
         }
 
         /// <summary>
@@ -342,12 +411,6 @@ namespace Cyggie.Plugins.MySQL.Services
         {
             if (!ValidateConnection()) return Array.Empty<MySQLTableObject>();
 
-            // Check if pool contains type already (preloaded types)
-            if (_pool.ContainsKey(type))
-            {
-                return _pool[type];
-            }
-
             if (!typeof(MySQLTableObject).IsAssignableFrom(type))
             {
                 Log.Error($"Failed to read from type {type}, {typeof(MySQLTableObject)} is not assignable from {type}.", nameof(MySQLService));
@@ -361,10 +424,11 @@ namespace Cyggie.Plugins.MySQL.Services
             }
 
             List<MySQLTableObject> objects = new List<MySQLTableObject>();
+            MySqlDataReader? reader = null;
 
             try
             {
-                MySqlDataReader reader = await command.ExecuteReaderAsync();
+                reader = await command.ExecuteReaderAsync();
                 while (reader.Read())
                 {
                     if (!TryCreateTableObject(reader, type, out object? tableObj) || tableObj == null) continue;
@@ -375,6 +439,13 @@ namespace Cyggie.Plugins.MySQL.Services
             catch (Exception ex)
             {
                 Log.Error($"Failed to execute read command. Exception: {ex}", nameof(MySQLService));
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    await reader.DisposeAsync();
+                }
             }
 
             return objects;
@@ -404,19 +475,13 @@ namespace Cyggie.Plugins.MySQL.Services
                 values.Add(reader.GetName(i), reader.GetValue(i));
             }
 
-            if (!TryCreateActivatorObject(type, out object? obj) || obj == null)
-            {
-                tableObj = null;
-                return false;
-            }
-
             StringBuilder builder = new StringBuilder();
 
             // Construct JSON
             builder.Append("{");
             foreach (KeyValuePair<string, object> kv in values)
             {
-                string value = kv.Value is string ? $"\"{kv.Value}\"" : $"{kv.Value}";
+                string value = kv.Value is string ? $"\"{((string) kv.Value).Replace("\"", "\\\"")}\"" : $"{kv.Value}";
                 builder.Append($"\"{kv.Key}\": {value},");
             }
 
@@ -432,21 +497,6 @@ namespace Cyggie.Plugins.MySQL.Services
             }
 
             return true;
-        }
-
-        private bool TryCreateActivatorObject(Type type, out object? obj)
-        {
-            try
-            {
-                obj = Activator.CreateInstance(type);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Failed to create object of type {type}, exception: {ex}.", nameof(MySQLService));
-                obj = null;
-                return false;
-            }
         }
 
         #endregion
@@ -469,8 +519,8 @@ namespace Cyggie.Plugins.MySQL.Services
             {
                 string databaseName = _conn.Database;
 
-                IEnumerable<Type> preloadSQLObjects = TypeHelper.GetAllIsAssignableFrom<MySQLTableObject>()
-                                                                .Where(x =>
+                List<Type> preloadSQLObjectTypes = TypeHelper.GetAllIsAssignableFrom<MySQLTableObject>()
+                                                             .Where(x =>
                                                                 {
                                                                     MySQLTablePreloadAttribute preloadAttr = x.GetCustomAttribute<MySQLTablePreloadAttribute>();
                                                                     if (preloadAttr == null) return false;
@@ -480,15 +530,17 @@ namespace Cyggie.Plugins.MySQL.Services
                                                                     if (!rightDb) return false;
 
                                                                     return true;
-                                                                });
+                                                                })
+                                                             .OrderByDescending(x =>
+                                                                {
+                                                                    MySQLTablePreloadAttribute preloadAttr = x.GetCustomAttribute<MySQLTablePreloadAttribute>();
+                                                                    return preloadAttr.Priority;
+                                                                })
+                                                             .ToList();
 
-                foreach (Type type in preloadSQLObjects)
+                foreach (Type type in preloadSQLObjectTypes)
                 {
-                    if (!TryCreateActivatorObject(type, out object? obj) || obj == null) continue;
-
-                    MySQLTableObject tableObject = (MySQLTableObject) obj;
-                    MySQLTablePreloadAttribute preloadAttr = type.GetCustomAttribute<MySQLTablePreloadAttribute>();
-                    IEnumerable<MySQLTableObject> objects = Read(type, $"SELECT * FROM {tableObject.TableName}");
+                    IEnumerable<MySQLTableObject> objects = Read(type, $"SELECT * FROM {MySQLTableHelper.GetTableName(type)}");
 
                     _pool.Add(type, objects);
                 }
