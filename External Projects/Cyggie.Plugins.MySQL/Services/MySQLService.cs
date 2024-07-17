@@ -80,7 +80,15 @@ namespace Cyggie.Plugins.MySQL.Services
         {
             _conn = new MySqlConnection(builder.ConnectionString);
             _conn.StateChange += OnConnectionStatChange;
-            _conn.Open();
+
+            try
+            {
+                _conn.Open();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Failed to open MySQL connection to {builder.ConnectionString}, exception: {ex}.", nameof(MySQLService));
+            }
         }
 
         /// <summary>
@@ -155,6 +163,38 @@ namespace Cyggie.Plugins.MySQL.Services
             return rowsAffected;
         }
 
+        #region Read
+
+        /// <summary>
+        /// Read the first element from the objects found in the pool
+        /// </summary>
+        /// <typeparam name="T">Type of objects to retrieve</typeparam>
+        /// <param name="predicate">Predicate applied to the read</param>
+        /// <returns>First element of query</returns>
+        public T ReadFirst<T>(Func<T, bool>? predicate = null) where T : MySQLTableObject
+            => predicate == null ? Read<T>().FirstOrDefault() : Read<T>().FirstOrDefault(predicate);
+
+        /// <summary>
+        /// Read the first element from the objects found
+        /// </summary>
+        /// <typeparam name="T">Type of objects to retrieve</typeparam>
+        /// <param name="commandText">The command's query text</param>
+        /// <param name="predicate">Predicate applied to the read</param>
+        /// <param name="parameters">Parameters to be added to the command</param>
+        /// <returns>First element of query</returns>
+        public T ReadFirst<T>(string commandText, Func<T, bool>? predicate = null, params MySqlParameter[] parameters) where T : MySQLTableObject
+            => predicate == null ? Read<T>(commandText, parameters).FirstOrDefault() : Read<T>(commandText, parameters).FirstOrDefault(predicate);
+
+        /// <summary>
+        /// Read the first element from the objects found
+        /// </summary>
+        /// <typeparam name="T">Type of objects to retrieve</typeparam>
+        /// <param name="command">Command to execute a read (SELECT)</param>
+        /// <param name="predicate">Predicate applied to the read</param>
+        /// <returns>First element of query</returns>
+        public T? ReadFirst<T>(MySqlCommand command, Func<T, bool>? predicate = null) where T : MySQLTableObject
+            => predicate == null ? Read<T>(command).FirstOrDefault() : Read<T>(command).FirstOrDefault(predicate);
+
         /// <summary>
         /// Read from the pool all objects of type <typeparamref name="T"/>
         /// </summary>
@@ -163,23 +203,6 @@ namespace Cyggie.Plugins.MySQL.Services
         public IEnumerable<T> Read<T>() where T : MySQLTableObject
         {
             return Read(typeof(T)).Cast<T>();
-        }
-
-        /// <summary>
-        /// Read from the pool all objects of type <paramref name="type"/>
-        /// </summary>
-        /// <param name="type">Type of objects to retrieve</param>
-        /// <returns>IEnumerable of objects</returns>
-        public IEnumerable<MySQLTableObject> Read(Type type)
-        {
-            // Check if pool contains type already (preloaded types)
-            if (_pool.ContainsKey(type))
-            {
-                return _pool[type];
-            }
-
-            Log.Error($"Failed to read, type {type} is not pooled. Use the [MySQLTablePreload] attribute or add a command text to the Read method.", nameof(MySQLService));
-            return Array.Empty<MySQLTableObject>();
         }
 
         /// <summary>
@@ -206,6 +229,50 @@ namespace Cyggie.Plugins.MySQL.Services
         public IEnumerable<T> Read<T>(MySqlCommand command) where T : MySQLTableObject
         {
             return Read(typeof(T), command).Cast<T>();
+        }
+
+        /// <summary>
+        /// Read the first element from the objects found in the pool
+        /// </summary>
+        /// <param name="type">Type of objects to retrieve</param>
+        /// <returns>First element of query</returns>
+        public MySQLTableObject? ReadFirst(Type type) 
+            => Read(type).FirstOrDefault();
+
+        /// <summary>
+        /// Read the first element from the objects found
+        /// </summary>
+        /// <param name="type">Type of objects to retrieve</param>
+        /// <param name="commandText">The command's query text</param>
+        /// <param name="parameters">Parameters to be added to the command</param>
+        /// <returns>First element of query</returns>
+        public MySQLTableObject? ReadFirst(Type type, string commandText, params MySqlParameter[] parameters)
+            => Read(type, commandText, parameters).FirstOrDefault();
+
+        /// <summary>
+        /// Read the first element from the objects found
+        /// </summary>
+        /// <param name="type">Type of objects to retrieve</param>
+        /// <param name="command">Command to execute a read (SELECT)</param>
+        /// <returns>First element of query</returns>
+        public MySQLTableObject? ReadFirst(Type type, MySqlCommand command)
+            => Read(type, command).FirstOrDefault();
+
+        /// <summary>
+        /// Read from the pool all objects of type <paramref name="type"/>
+        /// </summary>
+        /// <param name="type">Type of objects to retrieve</param>
+        /// <returns>IEnumerable of objects</returns>
+        public IEnumerable<MySQLTableObject> Read(Type type)
+        {
+            // Check if pool contains type already (preloaded types)
+            if (_pool.ContainsKey(type))
+            {
+                return _pool[type];
+            }
+
+            Log.Error($"Failed to read, type {type} is not pooled. Use the [MySQLTablePreload] attribute or add a command text to the Read method.", nameof(MySQLService));
+            return Array.Empty<MySQLTableObject>();
         }
 
         /// <summary>
@@ -269,6 +336,8 @@ namespace Cyggie.Plugins.MySQL.Services
 
             return objects;
         }
+
+        #endregion
 
         #endregion
 
@@ -359,6 +428,29 @@ namespace Cyggie.Plugins.MySQL.Services
             return rowsAffected;
         }
 
+        #region Read
+
+        /// <summary>
+        /// Read the first element from the objects found
+        /// </summary>
+        /// <typeparam name="T">Type of objects to retrieve</typeparam>
+        /// <param name="commandText">The command's query text</param>
+        /// <param name="predicate">Predicate applied to the read</param>
+        /// <param name="parameters">Parameters to be added to the command</param>
+        /// <returns>First element of query</returns>
+        public async Task<T> ReadFirstAsync<T>(string commandText, Func<T, bool>? predicate = null, params MySqlParameter[] parameters) where T : MySQLTableObject
+            => predicate == null ? (await ReadAsync<T>(commandText, parameters)).FirstOrDefault() : (await ReadAsync<T>(commandText, parameters)).FirstOrDefault(predicate);
+
+        /// <summary>
+        /// Read the first element from the objects found
+        /// </summary>
+        /// <typeparam name="T">Type of objects to retrieve</typeparam>
+        /// <param name="command">Command to execute a read (SELECT)</param>
+        /// <param name="predicate">Predicate applied to the read</param>
+        /// <returns>First element of query</returns>
+        public async Task<T?> ReadFirstAsync<T>(MySqlCommand command, Func<T, bool>? predicate = null) where T : MySQLTableObject
+            => predicate == null ? (await ReadAsync<T>(command)).FirstOrDefault() : (await ReadAsync<T>(command)).FirstOrDefault(predicate);
+
         /// <summary>
         /// Read asynchronously a table with an sql query 
         /// </summary>
@@ -385,6 +477,25 @@ namespace Cyggie.Plugins.MySQL.Services
             IEnumerable<MySQLTableObject> tableObjects = await ReadAsync(typeof(T), command);
             return tableObjects.Cast<T>();
         }
+
+        /// <summary>
+        /// Read the first element from the objects found
+        /// </summary>
+        /// <param name="type">Type of objects to retrieve</param>
+        /// <param name="commandText">The command's query text</param>
+        /// <param name="parameters">Parameters to be added to the command</param>
+        /// <returns>First element of query</returns>
+        public async Task<MySQLTableObject?> ReadFirstAsync(Type type, string commandText, params MySqlParameter[] parameters)
+            => (await ReadAsync(type, commandText, parameters)).FirstOrDefault();
+
+        /// <summary>
+        /// Read the first element from the objects found
+        /// </summary>
+        /// <param name="type">Type of objects to retrieve</param>
+        /// <param name="command">Command to execute a read (SELECT)</param>
+        /// <returns>First element of query</returns>
+        public async Task<MySQLTableObject?> ReadFirstAsync(Type type, MySqlCommand command)
+            => (await ReadAsync(type, command)).FirstOrDefault();
 
         /// <summary>
         /// Read asynchronously a table with an sql query 
@@ -453,6 +564,8 @@ namespace Cyggie.Plugins.MySQL.Services
 
         #endregion
 
+        #endregion
+
         #region Utils
 
         private bool ValidateConnection()
@@ -496,6 +609,7 @@ namespace Cyggie.Plugins.MySQL.Services
                 return false;
             }
 
+            ((MySQLTableObject) tableObj).OnObjectCreated_Internal();
             return true;
         }
 

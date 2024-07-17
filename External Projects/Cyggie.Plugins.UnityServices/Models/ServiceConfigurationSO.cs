@@ -9,7 +9,7 @@ namespace Cyggie.Plugins.UnityServices.Models
     /// Abstract class used by the ServiceManagerMono in Unity <br/>
     /// 
     /// Note: <br/>
-    /// If you inherit this with a custom ServiceConfiguration and use this with <see cref="ServiceManager"/> <br/>
+    /// If you inherit this with a custom <see cref="ServiceConfiguration"/> and use this with <see cref="ServiceManager"/> <br/>
     /// Your configuration will be NULL <br/>
     /// Since it is impossible to create a ScriptableObject from an external project outside of Unity <br/>
     /// However, you can still use const variables within it if you wish to

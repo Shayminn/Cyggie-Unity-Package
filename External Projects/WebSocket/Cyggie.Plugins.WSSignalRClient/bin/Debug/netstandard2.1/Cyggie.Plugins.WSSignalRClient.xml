@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cyggie.Plugins.WSSignalRClient</name>
+    </assembly>
+    <members>
+        <member name="T:Cyggie.Plugins.WebSocket.Models.WSClientMethod">
+            <summary>
+            Base Model for a WS Client method
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.WebSocket.Models.WSClientMethod.MethodName">
+            <summary>
+            Method name that is registered
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.WebSocket.Models.WSClientMethod.ParameterTypes">
+            <summary>
+            Array of type parameters for arguments
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.WebSocket.Models.WSClientMethod.Callback">
+            <summary>
+            Callback called when the method is called
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod.#ctor(System.Action)">
+            <summary>
+            Create a WS Client method with no parameters
+            </summary>
+            <param name="callback">Callback invoked when received from the server</param>
+        </member>
+        <member name="T:Cyggie.Plugins.WebSocket.Models.WSClientMethod`1">
+            <summary>
+            Model for a WS Client method with 1 parameter
+            </summary>
+            <typeparam name="T1">Parameter 1 of method</typeparam>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod`1.#ctor(System.Action{`0})">
+            <summary>
+            Create a WS Client method with 1 parameter callback
+            </summary>
+            <param name="callback">Callback invoked when received from the server</param>
+        </member>
+        <member name="T:Cyggie.Plugins.WebSocket.Models.WSClientMethod`2">
+            <summary>
+            Model for a WS Client method with 2 parameters
+            </summary>
+            <typeparam name="T1">Parameter 1 of method</typeparam>
+            <typeparam name="T2">Parameter 2 of method</typeparam>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod`2.#ctor(System.Action{`0,`1})">
+            <summary>
+            Create a WS Client method with 2 parameters callback
+            </summary>
+            <param name="callback">Callback invoked when received from the server</param>
+        </member>
+        <member name="T:Cyggie.Plugins.WebSocket.Models.WSClientMethod`3">
+            <summary>
+            Model for a WS Client method with 2 parameters
+            </summary>
+            <typeparam name="T1">Parameter 1 of method</typeparam>
+            <typeparam name="T2">Parameter 2 of method</typeparam>
+            <typeparam name="T3">Parameter 3 of method</typeparam>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod`3.#ctor(System.Action{`0,`1,`2})">
+            <summary>
+            Create a WS Client method with 3 parameters callback
+            </summary>
+            <param name="callback">Callback invoked when received from the server</param>
+        </member>
+        <member name="T:Cyggie.Plugins.WebSocket.Models.WSClientMethod`4">
+            <summary>
+            Model for a WS Client method with 4 parameters
+            </summary>
+            <typeparam name="T1">Parameter 1 of method</typeparam>
+            <typeparam name="T2">Parameter 2 of method</typeparam>
+            <typeparam name="T3">Parameter 3 of method</typeparam>
+            <typeparam name="T4">Parameter 4 of method</typeparam>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod`4.#ctor(System.Action{`0,`1,`2,`3})">
+            <summary>
+            Create a WS Client method with 4 parameters callback
+            </summary>
+            <param name="callback">Callback invoked when received from the server</param>
+        </member>
+        <member name="T:Cyggie.Plugins.WebSocket.Models.WSClientMethod`5">
+            <summary>
+            Model for a WS Client method with 5 parameters
+            </summary>
+            <typeparam name="T1">Parameter 1 of method</typeparam>
+            <typeparam name="T2">Parameter 2 of method</typeparam>
+            <typeparam name="T3">Parameter 3 of method</typeparam>
+            <typeparam name="T4">Parameter 4 of method</typeparam>
+            <typeparam name="T5">Parameter 5 of method</typeparam>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod`5.#ctor(System.Action{`0,`1,`2,`3,`4})">
+            <summary>
+            Create a WS Client method with 5 parameters callback
+            </summary>
+            <param name="callback">Callback invoked when received from the server</param>
+        </member>
+        <member name="T:Cyggie.Plugins.WebSocket.Models.WSClientMethod`6">
+            <summary>
+            Model for a WS Client method with 6 parameters
+            </summary>
+            <typeparam name="T1">Parameter 1 of method</typeparam>
+            <typeparam name="T2">Parameter 2 of method</typeparam>
+            <typeparam name="T3">Parameter 3 of method</typeparam>
+            <typeparam name="T4">Parameter 4 of method</typeparam>
+            <typeparam name="T5">Parameter 5 of method</typeparam>
+            <typeparam name="T6">Parameter 6 of method</typeparam>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod`6.#ctor(System.Action{`0,`1,`2,`3,`4,`5})">
+            <summary>
+            Create a WS Client method with 6 parameters callback
+            </summary>
+            <param name="callback">Callback invoked when received from the server</param>
+        </member>
+        <member name="T:Cyggie.Plugins.WebSocket.Models.WSClientMethod`7">
+            <summary>
+            Model for a WS Client method with 7 parameters
+            </summary>
+            <typeparam name="T1">Parameter 1 of method</typeparam>
+            <typeparam name="T2">Parameter 2 of method</typeparam>
+            <typeparam name="T3">Parameter 3 of method</typeparam>
+            <typeparam name="T4">Parameter 4 of method</typeparam>
+            <typeparam name="T5">Parameter 5 of method</typeparam>
+            <typeparam name="T6">Parameter 6 of method</typeparam>
+            <typeparam name="T7">Parameter 7 of method</typeparam>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod`7.#ctor(System.Action{`0,`1,`2,`3,`4,`5,`6})">
+            <summary>
+            Create a WS Client method with 7 parameters callback
+            </summary>
+            <param name="callback">Callback invoked when received from the server</param>
+        </member>
+        <member name="T:Cyggie.Plugins.WebSocket.Models.WSClientMethod`8">
+            <summary>
+            Model for a WS Client method with 8 parameters
+            </summary>
+            <typeparam name="T1">Parameter 1 of method</typeparam>
+            <typeparam name="T2">Parameter 2 of method</typeparam>
+            <typeparam name="T3">Parameter 3 of method</typeparam>
+            <typeparam name="T4">Parameter 4 of method</typeparam>
+            <typeparam name="T5">Parameter 5 of method</typeparam>
+            <typeparam name="T6">Parameter 6 of method</typeparam>
+            <typeparam name="T7">Parameter 7 of method</typeparam>
+            <typeparam name="T8">Parameter 8 of method</typeparam>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod`8.#ctor(System.Action{`0,`1,`2,`3,`4,`5,`6,`7})">
+            <summary>
+            Create a WS Client method with 8 parameters callback
+            </summary>
+            <param name="callback">Callback invoked when received from the server</param>
+        </member>
+        <member name="T:Cyggie.Plugins.WebSocket.Services.WSClientService">
+            <summary>
+            Service for connecting to a WebSocket server using SignalR
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.WebSocket.Services.WSClientService.OnClosed">
+            <summary>
+            Called when the connection is closed
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.WebSocket.Services.WSClientService.ReconnectionDelays">
+            <summary>
+            Array of reconnection delays based on the number of attempts (usually incrementing on each new attempt) <br/>
+            By default; 15s, 60s, 150s, 300s, 600s
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Services.WSClientService.BuildConnection(System.String)">
+            <summary>
+            Build a new connection to a hub <paramref name="url"/>
+            </summary>
+            <param name="url">Hub URL to connect to</param>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Services.WSClientService.RegisterReceivingMethods(Cyggie.Plugins.WebSocket.Models.WSClientMethod[])">
+            <summary>
+            Register methods/callbacks to the hub connection
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Services.WSClientService.Connect">
+            <summary>
+            Establish connection to the hub to start sending/receiving <br/>
+            Make sure you register receiving methods (using <see cref="M:Cyggie.Plugins.WebSocket.Services.WSClientService.RegisterReceivingMethods(Cyggie.Plugins.WebSocket.Models.WSClientMethod[])"/> before connecting
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Services.WSClientService.Disconnect">
+            <summary>
+            Disconnect from the established connection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Services.WSClientService.Call(System.String,System.Object[])">
+            <summary>
+            Call a method on the connection to the server
+            </summary>
+            <param name="methodName">Method name to call</param>
+            <param name="args">Arguments to pass to the method</param>
+            <returns></returns>
+        </member>
+        <member name="T:Cyggie.Plugins.WebSocket.Utils.Helpers.HubConnectionExtensions">
+            <summary>
+            Extensions for <see cref="T:Microsoft.AspNetCore.SignalR.Client.HubConnection"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Utils.Helpers.HubConnectionExtensions.On(Microsoft.AspNetCore.SignalR.Client.HubConnection,System.String,System.Type[],System.Action{System.Object[]})">
+            <summary>
+            Registers a handler that will be invoked when the hub method with the specified method name is invoked
+            </summary>
+            <param name="hubConnection">Hub connection to register a handler for</param>
+            <param name="methodName">Method name to register</param>
+            <param name="parameterTypes">Array of type arguments that the method has</param>
+            <param name="handler">Handler/callback when the method is called</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

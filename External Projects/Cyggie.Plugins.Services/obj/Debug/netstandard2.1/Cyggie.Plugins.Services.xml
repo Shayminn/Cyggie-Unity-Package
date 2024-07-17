@@ -9,7 +9,7 @@
             Interface for a singular service (singleton instance)
             </summary>
         </member>
-        <member name="P:Cyggie.Plugins.Services.Interfaces.IService.ServiceManager">
+        <member name="P:Cyggie.Plugins.Services.Interfaces.IService.Manager">
             <summary>
             Reference to the service manager that manages all services
             </summary>
@@ -81,7 +81,7 @@
             Service (singleton) without a configuration
             </summary>
         </member>
-        <member name="P:Cyggie.Plugins.Services.Models.Service.ServiceManager">
+        <member name="P:Cyggie.Plugins.Services.Models.Service.Manager">
             <inheritdoc/>
         </member>
         <member name="P:Cyggie.Plugins.Services.Models.Service.Priority">

@@ -12,7 +12,7 @@ namespace Cyggie.Plugins.Services.Models
     public abstract class Service : IService, IDisposable
     {
         /// <inheritdoc/>
-        public IServiceManager? ServiceManager { get; set; }
+        public IServiceManager? Manager { get; set; }
 
         /// <summary>
         /// The order of priority in which the service is initialized (by default 0) <br/>
@@ -39,7 +39,7 @@ namespace Cyggie.Plugins.Services.Models
 
             Log.Debug($"Service ({GetType()}) initialized with no configuration.", nameof(Service));
 
-            ServiceManager = manager;
+            Manager = manager;
             OnInitialized();
 
             _initialized = true;
@@ -99,7 +99,7 @@ namespace Cyggie.Plugins.Services.Models
 
             Log.Debug($"Service ({GetType()}) initialized with configuration ({(Configuration == null ? "none" : Configuration.GetType().ToString())}).", nameof(Service));
 
-            ServiceManager = manager;
+            Manager = manager;
             OnInitialized();
 
             _initialized = true;

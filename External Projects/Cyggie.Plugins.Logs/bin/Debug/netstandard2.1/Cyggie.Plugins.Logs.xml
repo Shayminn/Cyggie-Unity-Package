@@ -125,7 +125,7 @@
             </summary>
             <param name="message">Message to log</param>
             <param name="tag">Tag to add</param>
-            <param name="args"></param>
+            <param name="args">Arguments to the log</param>
         </member>
         <member name="M:Cyggie.Plugins.Logs.Log.Warning(System.Object,System.String,System.Object[])">
             <summary>
@@ -136,7 +136,7 @@
             </summary>
             <param name="message">Message to log</param>
             <param name="tag">Tag to add</param>
-            <param name="args"></param>
+            <param name="args">Arguments to the log</param>
         </member>
         <member name="M:Cyggie.Plugins.Logs.Log.Error(System.Object,System.String,System.Object[])">
             <summary>
@@ -147,7 +147,7 @@
             </summary>
             <param name="message">Message to log</param>
             <param name="tag">Tag to add</param>
-            <param name="args"></param>
+            <param name="args">Arguments to the log</param>
         </member>
         <member name="M:Cyggie.Plugins.Logs.Log.ToggleLogs(Cyggie.Plugins.Logs.LogTypes)">
             <summary>

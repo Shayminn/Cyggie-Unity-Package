@@ -37,7 +37,7 @@ namespace Cyggie.Plugins.Logs
         /// </summary>
         /// <param name="message">Message to log</param>
         /// <param name="tag">Tag to add</param>
-        /// <param name="args"></param>
+        /// <param name="args">Arguments to the log</param>
         public static void Debug(object message, string tag = "", params object[] args) => SendLog(LogTypes.Debug, message, tag, args);
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Cyggie.Plugins.Logs
         /// </summary>
         /// <param name="message">Message to log</param>
         /// <param name="tag">Tag to add</param>
-        /// <param name="args"></param>
+        /// <param name="args">Arguments to the log</param>
         public static void Warning(object message, string tag = "", params object[] args) => SendLog(LogTypes.Warning, message, tag, args);
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Cyggie.Plugins.Logs
         /// </summary>
         /// <param name="message">Message to log</param>
         /// <param name="tag">Tag to add</param>
-        /// <param name="args"></param>
+        /// <param name="args">Arguments to the log</param>
         public static void Error(object message, string tag = "", params object[] args) => SendLog(LogTypes.Error, message, tag, args);
 
         /// <summary>

@@ -1,0 +1,77 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Cyggie.Plugins.WSSignalRServer/1.0.0": {
+        "dependencies": {
+          "Cyggie.Plugins.Logs": "1.0.0",
+          "Cyggie.Plugins.Services": "1.0.0"
+        },
+        "runtime": {
+          "Cyggie.Plugins.WSSignalRServer.dll": {}
+        }
+      },
+      "Cyggie.Plugins.Logs/1.0.0": {
+        "runtime": {
+          "Cyggie.Plugins.Logs.dll": {}
+        }
+      },
+      "Cyggie.Plugins.Services/1.0.0": {
+        "dependencies": {
+          "Cyggie.Plugins.Logs": "1.0.0",
+          "Cyggie.Plugins.Utils": "1.0.0"
+        },
+        "runtime": {
+          "Cyggie.Plugins.Services.dll": {}
+        }
+      },
+      "Cyggie.Plugins.Utils/1.0.0": {
+        "dependencies": {
+          "Cyggie.Plugins.Logs": "1.0.0"
+        },
+        "runtime": {
+          "Cyggie.Plugins.Utils.dll": {}
+        }
+      },
+      "UnityEngine/0.0.0.0": {
+        "runtime": {
+          "UnityEngine.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Cyggie.Plugins.WSSignalRServer/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cyggie.Plugins.Logs/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cyggie.Plugins.Services/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cyggie.Plugins.Utils/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "UnityEngine/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

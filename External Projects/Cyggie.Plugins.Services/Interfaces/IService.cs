@@ -8,7 +8,7 @@
         /// <summary>
         /// Reference to the service manager that manages all services
         /// </summary>
-        IServiceManager? ServiceManager { get; set; }
+        IServiceManager? Manager { get; set; }
 
         /// <summary>
         /// Priority of initialization (1 being higher than 0)

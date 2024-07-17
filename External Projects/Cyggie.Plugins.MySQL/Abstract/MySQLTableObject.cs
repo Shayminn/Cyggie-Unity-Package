@@ -24,5 +24,15 @@ namespace Cyggie.Plugins.MySQL.Abstract
         /// Use <see cref="MySQLTableNameAttribute"/> to assign this value
         /// </summary>
         public string TableName => MySQLTableHelper.GetTableName(GetType());
+
+        internal void OnObjectCreated_Internal() => OnObjectCreated();
+
+        /// <summary>
+        /// Called when the object is created
+        /// </summary>
+        protected virtual void OnObjectCreated()
+        {
+
+        }
     }
 }
