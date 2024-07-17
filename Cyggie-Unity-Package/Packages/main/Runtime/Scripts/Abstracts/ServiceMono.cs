@@ -41,7 +41,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
         protected virtual int Priority { get; } = 0;
 
         /// <inheritdoc/>
-        public IServiceManager ServiceManager { get; set; }
+        public IServiceManager Manager { get; set; }
 
         private Transform _instantiateParent = null;
         private Transform InstantiateParent
@@ -180,7 +180,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
             Log.Debug($"Service ({GetType()}) initialized with no configuration.", nameof(ServiceMono));
 
-            ServiceManager = manager;
+            Manager = manager;
             OnInitialized();
 
             _initialized = true;
@@ -237,7 +237,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
             Log.Debug($"Service ({GetType()}) initialized with configuration ({(Configuration == null ? "none" : Configuration.GetType().ToString())}).", nameof(ServiceMono));
 
-            ServiceManager = manager;
+            Manager = manager;
             OnInitialized();
 
             _initialized = true;
