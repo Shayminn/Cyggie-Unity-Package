@@ -266,6 +266,14 @@
         "cyggie.main": "3.0.3"
       }
     },
+    "cyggie.websocket-client": {
+      "version": "file:websocket-client",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cyggie.main": "3.0.3"
+      }
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
