@@ -29,6 +29,11 @@ namespace Cyggie.Plugins.WebSocket.Services
         private int _reconnectionAttempts = 0;
 
         /// <summary>
+        /// Whether a connection has been established
+        /// </summary>
+        public bool IsConnected => _conn != null && !string.IsNullOrEmpty(_conn.ConnectionId);
+
+        /// <summary>
         /// Build a new connection to a hub <paramref name="url"/>
         /// </summary>
         /// <param name="url">Hub URL to connect to</param>
@@ -161,6 +166,7 @@ namespace Cyggie.Plugins.WebSocket.Services
         private async Task OnConnectionClosed(Exception? ex)
         {
             if (_conn == null) return;
+
             if (_expectDisconnection)
             {
                 _expectDisconnection = false;

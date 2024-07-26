@@ -84,12 +84,6 @@
         <member name="P:Cyggie.Plugins.Services.Models.Service.Manager">
             <inheritdoc/>
         </member>
-        <member name="P:Cyggie.Plugins.Services.Models.Service.Priority">
-            <summary>
-            The order of priority in which the service is initialized (by default 0) <br/>
-            Higher value means this service will be initialized before other services.
-            </summary>
-        </member>
         <member name="P:Cyggie.Plugins.Services.Models.Service.CreateOnInitialize">
             <inheritdoc/>
         </member>

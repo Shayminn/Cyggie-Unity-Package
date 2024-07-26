@@ -14,12 +14,6 @@ namespace Cyggie.Plugins.Services.Models
         /// <inheritdoc/>
         public IServiceManager? Manager { get; set; }
 
-        /// <summary>
-        /// The order of priority in which the service is initialized (by default 0) <br/>
-        /// Higher value means this service will be initialized before other services.
-        /// </summary>
-        protected virtual int Priority => 0;
-
         /// <inheritdoc/>
         protected virtual bool CreateOnInitialize => true;
 

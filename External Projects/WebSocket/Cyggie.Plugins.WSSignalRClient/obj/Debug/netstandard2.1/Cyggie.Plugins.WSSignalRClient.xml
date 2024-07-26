@@ -170,6 +170,11 @@
             By default; 15s, 60s, 150s, 300s, 600s
             </summary>
         </member>
+        <member name="P:Cyggie.Plugins.WebSocket.Services.WSClientService.IsConnected">
+            <summary>
+            Whether a connection has been established
+            </summary>
+        </member>
         <member name="M:Cyggie.Plugins.WebSocket.Services.WSClientService.BuildConnection(System.String)">
             <summary>
             Build a new connection to a hub <paramref name="url"/>
