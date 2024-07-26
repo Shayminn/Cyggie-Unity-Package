@@ -102,6 +102,8 @@ namespace Cyggie.Plugins.WebSocket.Services
             catch (Exception ex)
             {
                 Log.Error($"Failed to start connection, exception: {ex}.", nameof(WSClientService));
+                Log.Debug($"Failed to connect, trying again...", nameof(WSClientService));
+                await Reconnect();
             }
         }
 
@@ -176,30 +178,35 @@ namespace Cyggie.Plugins.WebSocket.Services
             if (ex != null)
             {
                 Log.Debug($"Connection was unexpectedly closed due to an exception: {ex}.", nameof(WSClientService));
-                return;
             }
 
-            bool connected = false;
-            while (!connected)
+            await Reconnect();
+        }
+
+        private async Task Reconnect()
+        {
+            if (_conn == null) return;
+
+            await Connect();
+
+            if (IsConnected) return;
+
+            int delay = ReconnectionDelays[_reconnectionAttempts];
+            Log.Error($"Failed to reconnect, retrying in {delay/1000}s...", nameof(WSClientService));
+            
+            while (delay > 0)
             {
-                await _conn.StartAsync();
+                await Task.Delay(1000);
 
-                int delay = ReconnectionDelays[_reconnectionAttempts];
-                while (delay > 0)
+                if (_conn.State == HubConnectionState.Connected)
                 {
-                    await Task.Delay(1000);
-
-                    if (_conn.State == HubConnectionState.Connected)
-                    {
-                        connected = true;
-                        _reconnectionAttempts = 0;
-                        break;
-                    }
-                    else
-                    {
-                        _reconnectionAttempts++;
-                        delay--;
-                    }
+                    _reconnectionAttempts = 0;
+                    break;
+                }
+                else
+                {
+                    _reconnectionAttempts++;
+                    delay--;
                 }
             }
         }
