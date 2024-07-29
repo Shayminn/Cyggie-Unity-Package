@@ -91,7 +91,7 @@ namespace Cyggie.Plugins.Services.Models
                 return;
             }
 
-            Log.Debug($"Service ({GetType()}) initialized with configuration ({(Configuration == null ? "none" : Configuration.GetType().ToString())}).", nameof(Service));
+            Log.Debug($"Service ({GetType()}) initialized with configuration ({(Configuration == null ? "none" : Configuration.GetType().Name)}).", nameof(Service));
 
             Manager = manager;
             OnInitialized();
