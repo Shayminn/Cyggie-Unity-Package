@@ -159,6 +159,11 @@
             Service for connecting to a WebSocket server using SignalR
             </summary>
         </member>
+        <member name="F:Cyggie.Plugins.WebSocket.Services.WSClientService.OnConnected">
+            <summary>
+            Called when the connection is established
+            </summary>
+        </member>
         <member name="F:Cyggie.Plugins.WebSocket.Services.WSClientService.OnClosed">
             <summary>
             Called when the connection is closed

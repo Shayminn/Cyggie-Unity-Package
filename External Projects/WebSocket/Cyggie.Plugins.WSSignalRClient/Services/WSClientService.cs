@@ -14,6 +14,11 @@ namespace Cyggie.Plugins.WebSocket.Services
     public class WSClientService : Service
     {
         /// <summary>
+        /// Called when the connection is established
+        /// </summary>
+        public Action? OnConnected = null;
+
+        /// <summary>
         /// Called when the connection is closed
         /// </summary>
         public Action<Exception?>? OnClosed = null;
@@ -96,6 +101,7 @@ namespace Cyggie.Plugins.WebSocket.Services
                 Log.Debug($"Connecting to websocket server.", nameof(WSClientService));
 
                 await _conn.StartAsync();
+                OnConnected?.Invoke();
 
                 Log.Debug($"Connection successfully established.", nameof(WSClientService));
             }
