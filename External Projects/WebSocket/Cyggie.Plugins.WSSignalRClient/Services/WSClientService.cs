@@ -27,7 +27,7 @@ namespace Cyggie.Plugins.WebSocket.Services
         /// Array of reconnection delays based on the number of attempts (usually incrementing on each new attempt) <br/>
         /// By default; 15s, 60s, 150s, 300s, 600s
         /// </summary>
-        public int[] ReconnectionDelays { private get; set; } = { 15, 60, 150, 300, 600 };
+        public int[] ReconnectionDelays { private get; set; } = { 0, 15, 60, 150, 300, 600 };
 
         private HubConnection? _conn = null;
         private bool _expectDisconnection = false;
@@ -101,6 +101,8 @@ namespace Cyggie.Plugins.WebSocket.Services
                 Log.Debug($"Connecting to websocket server.", nameof(WSClientService));
 
                 await _conn.StartAsync();
+
+                _reconnectionAttempts = 0;
                 OnConnected?.Invoke();
 
                 Log.Debug($"Connection successfully established.", nameof(WSClientService));
@@ -108,7 +110,6 @@ namespace Cyggie.Plugins.WebSocket.Services
             catch (Exception ex)
             {
                 Log.Error($"Failed to start connection, exception: {ex}.", nameof(WSClientService));
-                Log.Debug($"Failed to connect, trying again...", nameof(WSClientService));
                 await Reconnect();
             }
         }
@@ -191,30 +192,28 @@ namespace Cyggie.Plugins.WebSocket.Services
 
         private async Task Reconnect()
         {
-            if (_conn == null) return;
-
-            await Connect();
-
-            if (IsConnected) return;
+            if (_conn == null || IsConnected) return;
 
             int delay = ReconnectionDelays[_reconnectionAttempts];
-            Log.Error($"Failed to reconnect, retrying in {delay/1000}s...", nameof(WSClientService));
-            
+            Log.Error($"Failed to connect, retrying in {delay}s...", nameof(WSClientService));
+
             while (delay > 0)
             {
                 await Task.Delay(1000);
 
-                if (_conn.State == HubConnectionState.Connected)
+                if (IsConnected)
                 {
                     _reconnectionAttempts = 0;
-                    break;
+                    return;
                 }
                 else
                 {
-                    _reconnectionAttempts++;
                     delay--;
                 }
             }
+
+            _reconnectionAttempts++;
+            await Connect();
         }
     }
 }
