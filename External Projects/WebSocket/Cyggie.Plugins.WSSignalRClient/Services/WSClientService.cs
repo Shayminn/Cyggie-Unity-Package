@@ -27,7 +27,7 @@ namespace Cyggie.Plugins.WebSocket.Services
         /// Array of reconnection delays based on the number of attempts (usually incrementing on each new attempt) <br/>
         /// By default; 15s, 60s, 150s, 300s, 600s
         /// </summary>
-        public int[] ReconnectionDelays { private get; set; } = { 0, 15, 60, 150, 300, 600 };
+        public int[] ReconnectionDelays { private get; set; } = { 5, 20, 60, 150, 300 };
 
         private HubConnection? _conn = null;
         private bool _expectDisconnection = false;
