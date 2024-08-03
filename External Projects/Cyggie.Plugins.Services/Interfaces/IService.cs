@@ -1,9 +1,11 @@
-﻿namespace Cyggie.Plugins.Services.Interfaces
+﻿using System;
+
+namespace Cyggie.Plugins.Services.Interfaces
 {
     /// <summary>
     /// Interface for a singular service (singleton instance)
     /// </summary>
-    public interface IService
+    public interface IService : IDisposable
     {
         /// <summary>
         /// Reference to the service manager that manages all services

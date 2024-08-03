@@ -259,7 +259,7 @@ namespace Cyggie.Plugins.Services.Models
                 }
                 else
                 {
-                    Log.Error($"Unable to get service {typeof(T)}, make sure it is initialized with the service manager or use {nameof(autoCreate)}.", nameof(ServiceManager));
+                    Log.Error($"Unable to get service {typeof(T).Name}, make sure it is initialized with the service manager or use {nameof(autoCreate)}.", nameof(ServiceManager));
                 }
             }
 
@@ -278,6 +278,17 @@ namespace Cyggie.Plugins.Services.Models
         {
             service = Get<T>(isAssignableFrom);
             return service != null;
+        }
+
+        /// <summary>
+        /// Dispose all services and configurations
+        /// </summary>
+        public static void Dispose()
+        {
+            Instance.Services.ForEach(x => x.Dispose());
+            Instance.Services.Clear();
+
+            Instance._serviceConfigurations.Clear();
         }
     }
 }

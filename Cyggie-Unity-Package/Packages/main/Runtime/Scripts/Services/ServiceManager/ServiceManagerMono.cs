@@ -184,6 +184,8 @@ namespace Cyggie.Main.Runtime.ServicesNS
                     service.OnDestroyInternal();
                 }
             });
+
+            ServiceManager.Dispose();
         }
 
         #endregion

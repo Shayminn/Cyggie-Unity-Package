@@ -31,6 +31,7 @@ namespace Cyggie.Plugins.WebSocket.Services
 
         private HubConnection? _conn = null;
         private bool _expectDisconnection = false;
+        private bool _dispose = false;
         private int _reconnectionAttempts = 0;
 
         /// <summary>
@@ -172,6 +173,12 @@ namespace Cyggie.Plugins.WebSocket.Services
             }
         }
 
+        /// <inheritdoc/>
+        public override void Dispose()
+        {
+            _dispose = true;
+        }
+
         private async Task OnConnectionClosed(Exception? ex)
         {
             if (_conn == null) return;
@@ -192,7 +199,7 @@ namespace Cyggie.Plugins.WebSocket.Services
 
         private async Task Reconnect()
         {
-            if (_conn == null || IsConnected) return;
+            if (_conn == null || IsConnected || _dispose) return;
 
             int delay = ReconnectionDelays[_reconnectionAttempts];
             Log.Error($"Failed to connect, retrying in {delay}s...", nameof(WSClientService));

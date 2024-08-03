@@ -211,6 +211,9 @@
             <param name="args">Arguments to pass to the method</param>
             <returns></returns>
         </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Services.WSClientService.Dispose">
+            <inheritdoc/>
+        </member>
         <member name="T:Cyggie.Plugins.WebSocket.Utils.Helpers.HubConnectionExtensions">
             <summary>
             Extensions for <see cref="T:Microsoft.AspNetCore.SignalR.Client.HubConnection"/>

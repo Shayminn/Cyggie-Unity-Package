@@ -9,7 +9,7 @@ namespace Cyggie.Plugins.Services.Models
     /// <summary>
     /// Service (singleton) without a configuration
     /// </summary>
-    public abstract class Service : IService, IDisposable
+    public abstract class Service : IService
     {
         /// <inheritdoc/>
         public IServiceManager? Manager { get; set; }
@@ -23,7 +23,7 @@ namespace Cyggie.Plugins.Services.Models
         protected internal bool _initialized = false;
 
         /// <inheritdoc/>
-        public virtual void Initialize(IServiceManager manager)
+        public void Initialize(IServiceManager manager)
         {
             if (_initialized)
             {
@@ -31,7 +31,7 @@ namespace Cyggie.Plugins.Services.Models
                 return;
             }
 
-            Log.Debug($"Service ({GetType()}) initialized with no configuration.", nameof(Service));
+            Log.Debug($"Service ({GetType().Name}) initialized with no configuration.", nameof(Service));
 
             Manager = manager;
             OnInitialized();
@@ -83,7 +83,7 @@ namespace Cyggie.Plugins.Services.Models
         }
 
         /// <inheritdoc/>
-        public override void Initialize(IServiceManager manager)
+        public new void Initialize(IServiceManager manager)
         {
             if (_initialized)
             {
@@ -91,7 +91,7 @@ namespace Cyggie.Plugins.Services.Models
                 return;
             }
 
-            Log.Debug($"Service ({GetType()}) initialized with configuration ({(Configuration == null ? "none" : Configuration.GetType().Name)}).", nameof(Service));
+            Log.Debug($"Service ({GetType().Name}) initialized with configuration ({(Configuration == null ? "none" : Configuration.GetType().Name)}).", nameof(Service));
 
             Manager = manager;
             OnInitialized();

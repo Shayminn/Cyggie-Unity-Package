@@ -9,9 +9,6 @@
             Service for hosting a WebSocket server using SignalR
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.WebSocket.Services.WSSignalRServerService.Initialize(Cyggie.Plugins.Services.Interfaces.IServiceManager)">
-            <inheritdoc/>
-        </member>
         <member name="M:Cyggie.Plugins.WebSocket.Services.WSSignalRServerService.BuildWithUrls(System.String[])">
             <summary>
             Set origins url and port for the server

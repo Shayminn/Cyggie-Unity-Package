@@ -19,12 +19,6 @@ namespace Cyggie.Plugins.WebSocket.Services
 
         private List<string> _routes = new List<string>();
 
-        /// <inheritdoc/>
-        public override void Initialize(IServiceManager manager)
-        {
-            base.Initialize(manager);
-        }
-
         /// <summary>
         /// Set origins url and port for the server
         /// </summary>

@@ -96,7 +96,7 @@
             Whether a connection is established and ready for queries
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Initialize(Cyggie.Plugins.Services.Interfaces.IServiceManager)">
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.OnInitialized">
             <inheritdoc/>
         </member>
         <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.Connect(System.String,System.String,System.String,System.String)">

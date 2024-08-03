@@ -203,6 +203,11 @@
             <param name="isAssignableFrom">When true, it checks whether the service is assignable from <typeparamref name="T"/></param>
             <returns>Found?</returns>
         </member>
+        <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.Dispose">
+            <summary>
+            Dispose all services and configurations
+            </summary>
+        </member>
         <member name="T:Cyggie.Plugins.Services.Utils.Extensions.ServiceExtensions">
             <summary>
             Class for extension methods related to Services

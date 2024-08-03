@@ -40,7 +40,7 @@ namespace Cyggie.Plugins.MySQL.Services
         public bool IsReady => _conn != null && _conn.State == ConnectionState.Open;
 
         /// <inheritdoc/>
-        public override void Initialize(IServiceManager manager)
+        protected override void OnInitialized()
         {
             IEnumerable<Type> sqlObjectTypes = TypeHelper.GetAllIsAssignableFrom<MySQLTableObject>()
                                                      .Where(x => x.GetCustomAttribute<MySQLTableNameAttribute>() != null);

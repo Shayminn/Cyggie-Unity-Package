@@ -189,6 +189,9 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// <inheritdoc/>
         public virtual void OnAllServicesInitialized() { }
 
+        /// <inheritdoc/>
+        public virtual void Dispose() { }
+
         /// <summary>
         /// Manually create a service <br/>
         /// This can be useful when using a Service within an Editor window <br/>
