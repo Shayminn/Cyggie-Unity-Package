@@ -23,6 +23,11 @@ namespace Cyggie.Plugins.Utils.Extensions
             return collection.OrderBy(x => _rand.Next());
         }
 
+        public static IEnumerable<TResult> ExplicitCast<TResult, TColl>(this IEnumerable<TColl> collection)
+        {
+            return collection.Select(x => (TResult) Convert.ChangeType(x, typeof(TResult)));
+        }
+
         #region Move methods
 
         /// <summary>
