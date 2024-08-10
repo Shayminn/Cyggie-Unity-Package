@@ -1,5 +1,6 @@
 ﻿using Cyggie.Plugins.Logs;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,9 +24,20 @@ namespace Cyggie.Plugins.Utils.Extensions
             return collection.OrderBy(x => _rand.Next());
         }
 
-        public static IEnumerable<TResult> ExplicitCast<TResult, TColl>(this IEnumerable<TColl> collection)
+        /// <summary>
+        /// Cast a collection explicitly to <typeparamref name="TResult"/>
+        /// </summary>
+        /// <typeparam name="TResult">Result type of collection</typeparam>
+        /// <typeparam name="T">Type of IEnumerable</typeparam>
+        /// <param name="collection">Collection to cast</param>
+        /// <returns>Collection casted to IEnumerable of type <typeparamref name="TResult"/></returns>
+        public static IEnumerable<TResult> ExplicitCast<TResult, T>(this IEnumerable<T> collection)
         {
-            return collection.Select(x => (TResult) Convert.ChangeType(x, typeof(TResult)));
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+            return collection.Select(x => (TResult) (object) x);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
         }
 
         #region Move methods

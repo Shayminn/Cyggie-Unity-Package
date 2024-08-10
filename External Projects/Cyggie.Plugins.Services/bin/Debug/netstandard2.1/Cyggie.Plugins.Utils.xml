@@ -188,6 +188,15 @@
             <param name="collection">IEnumerable to shuffle</param>
             <returns>Randomly shuffled IEnumerable</returns>
         </member>
+        <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.ExplicitCast``2(System.Collections.Generic.IEnumerable{``1})">
+            <summary>
+            Cast a collection explicitly to <typeparamref name="TResult"/>
+            </summary>
+            <typeparam name="TResult">Result type of collection</typeparam>
+            <typeparam name="T">Type of IEnumerable</typeparam>
+            <param name="collection">Collection to cast</param>
+            <returns>Collection casted to IEnumerable of type <typeparamref name="TResult"/></returns>
+        </member>
         <member name="M:Cyggie.Plugins.Utils.Extensions.CollectionExtensions.Move``1(System.Collections.Generic.IEnumerable{``0},System.UInt32,System.UInt32)">
             <summary>
             Move the element T <paramref name="fromIndex"/> to <paramref name="toIndex"/> affecting all the other elements' indexes
