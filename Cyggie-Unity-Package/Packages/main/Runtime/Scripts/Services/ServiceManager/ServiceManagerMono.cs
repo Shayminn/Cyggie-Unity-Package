@@ -108,18 +108,21 @@ namespace Cyggie.Main.Runtime.ServicesNS
             _serviceManager = new ServiceManager();
             _serviceManager.GenericServiceTypes.Add(typeof(ServiceMono<>));
 
-            IEnumerable<Type> types = Settings.ServiceIdentifiers.Select(x => Type.GetType(x.AssemblyName));
+            List<ServiceIdentifier> erroredIdentifiers = new List<ServiceIdentifier>();
+            List<Type> types = new List<Type>();
 
-            // Check for null types if any and log them
-            IEnumerable<Type> nullTypes = types.Where(x => x == null);
-            if (nullTypes.Count() > 0)
+            foreach (ServiceIdentifier serviceIdentifier in Settings.ServiceIdentifiers)
             {
-                foreach (Type type in nullTypes)
+                Type type = Type.GetType(serviceIdentifier.AssemblyName);
+
+                // Check for null types (happens if the service identifier's assembly name has changed but the identifier has not been recreated)
+                if (type == null)
                 {
-                    Log.Error($"Unable to find type ({type.FullName}), is null, skipping...");
+                    Log.Error($"Unable to find type ({serviceIdentifier.AssemblyName}), is null, skipping...");
+                    continue;
                 }
 
-                types.ToList().RemoveAll(x => x == null);
+                types.Add(type);
             }
 
             _serviceManager.Initialize(Settings.ServiceConfigurations, types.ToArray());
