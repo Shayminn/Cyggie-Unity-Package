@@ -58,6 +58,36 @@ namespace Cyggie.Plugins.WebSocket.Models
 
             return builder.ToString();
         }
+
+        /// <summary>
+        /// Filter the type to string if it is not a primitive type (in order to use JSON serialization
+        /// </summary>
+        /// <typeparam name="T">Type param</typeparam>
+        /// <returns>Filtered type</returns>
+        protected Type FilterType<T>()
+        {
+            return typeof(T).IsPrimitive ? typeof(T) : typeof(string);
+        }
+
+        /// <summary>
+        /// Filter object to type <typeparamref name="T"/> <br/>
+        /// Auto converts it through JSON serialization if is not primitive
+        /// </summary>
+        /// <typeparam name="T">Type param</typeparam>
+        /// <param name="obj">Object to filter</param>
+        /// <returns>Filtered object</returns>
+        protected T FilterObject<T>(object obj)
+        {
+#pragma warning disable CS8603 // Possible null reference return.
+            if (obj == null) return default;
+#pragma warning restore CS8603 // Possible null reference return.
+
+#pragma warning disable CS8603 // Possible null reference return.
+            return typeof(T).IsPrimitive ?
+                   (T) obj :
+                   JsonConvert.DeserializeObject<T>(obj.ToString());
+#pragma warning restore CS8603 // Possible null reference return.
+        }
     }
 
     /// <summary>
@@ -74,9 +104,7 @@ namespace Cyggie.Plugins.WebSocket.Models
         {
             MethodName = callback.Method.Name;
 
-            ParameterTypes = typeof(T1).IsPrimitive ?
-                             new Type[] { typeof(T1) } :
-                             new Type[] { typeof(T1) };
+            ParameterTypes = new Type[] { FilterType<T1>() };
 
             Callback = (object?[] objs) =>
             {
@@ -87,19 +115,7 @@ namespace Cyggie.Plugins.WebSocket.Models
                 }
 
 #pragma warning disable CS8604 // Possible null reference argument.
-                // Suppressed cause sometimes we might want null values to be passed
-                if (objs[0] == null)
-                {
-                    callback?.Invoke((T1) objs[0]);
-                }
-                else
-                {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                    T1 t = JsonConvert.DeserializeObject<T1>(objs[0].ToString());
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-
-                    callback?.Invoke(t);
-                }
+                callback?.Invoke(FilterObject<T1>(objs[0]));
 #pragma warning restore CS8604 // Possible null reference argument.
             };
         }
@@ -122,8 +138,8 @@ namespace Cyggie.Plugins.WebSocket.Models
 
             ParameterTypes = new Type[]
             {
-                typeof(T1),
-                typeof(T2)
+                FilterType<T1>(),
+                FilterType<T2>()
             };
 
             Callback = (object?[] objs) =>
@@ -135,10 +151,9 @@ namespace Cyggie.Plugins.WebSocket.Models
                 }
 
 #pragma warning disable CS8604 // Possible null reference argument.
-                // Suppressed cause sometimes we might want null values to be passed
                 callback?.Invoke(
-                    (T1) objs[0],
-                    (T2) objs[1]
+                    FilterObject<T1>(objs[0]),
+                    FilterObject<T2>(objs[1])
                 );
 #pragma warning restore CS8604 // Possible null reference argument.
             };
@@ -163,9 +178,9 @@ namespace Cyggie.Plugins.WebSocket.Models
 
             ParameterTypes = new Type[]
             {
-                typeof(T1),
-                typeof(T2),
-                typeof(T3)
+                FilterType<T1>(),
+                FilterType<T2>(),
+                FilterType<T3>()
             };
 
             Callback = (object?[] objs) =>
@@ -179,9 +194,9 @@ namespace Cyggie.Plugins.WebSocket.Models
 #pragma warning disable CS8604 // Possible null reference argument.
                 // Suppressed cause sometimes we might want null values to be passed
                 callback?.Invoke(
-                    (T1) objs[0],
-                    (T2) objs[1],
-                    (T3) objs[2]
+                    FilterObject<T1>(objs[0]),
+                    FilterObject<T2>(objs[1]),
+                    FilterObject<T3>(objs[2])
                 );
 #pragma warning restore CS8604 // Possible null reference argument.
             };
@@ -207,10 +222,10 @@ namespace Cyggie.Plugins.WebSocket.Models
 
             ParameterTypes = new Type[]
             {
-                typeof(T1),
-                typeof(T2),
-                typeof(T3),
-                typeof(T4)
+                FilterType<T1>(),
+                FilterType<T2>(),
+                FilterType<T3>(),
+                FilterType<T4>()
             };
 
             Callback = (object?[] objs) =>
@@ -224,10 +239,10 @@ namespace Cyggie.Plugins.WebSocket.Models
 #pragma warning disable CS8604 // Possible null reference argument.
                 // Suppressed cause sometimes we might want null values to be passed
                 callback?.Invoke(
-                    (T1) objs[0],
-                    (T2) objs[1],
-                    (T3) objs[2],
-                    (T4) objs[3]
+                    FilterObject<T1>(objs[0]),
+                    FilterObject<T2>(objs[1]),
+                    FilterObject<T3>(objs[2]),
+                    FilterObject<T4>(objs[3])
                 );
 #pragma warning restore CS8604 // Possible null reference argument.
             };
@@ -254,11 +269,11 @@ namespace Cyggie.Plugins.WebSocket.Models
 
             ParameterTypes = new Type[]
             {
-                typeof(T1),
-                typeof(T2),
-                typeof(T3),
-                typeof(T4),
-                typeof(T5)
+                FilterType<T1>(),
+                FilterType<T2>(),
+                FilterType<T3>(),
+                FilterType<T4>(),
+                FilterType<T5>()
             };
 
             Callback = (object?[] objs) =>
@@ -272,11 +287,11 @@ namespace Cyggie.Plugins.WebSocket.Models
 #pragma warning disable CS8604 // Possible null reference argument.
                 // Suppressed cause sometimes we might want null values to be passed
                 callback?.Invoke(
-                    (T1) objs[0],
-                    (T2) objs[1],
-                    (T3) objs[2],
-                    (T4) objs[3],
-                    (T5) objs[4]
+                    FilterObject<T1>(objs[0]),
+                    FilterObject<T2>(objs[1]),
+                    FilterObject<T3>(objs[2]),
+                    FilterObject<T4>(objs[3]),
+                    FilterObject<T5>(objs[4])
                 );
 #pragma warning restore CS8604 // Possible null reference argument.
             };
@@ -304,12 +319,12 @@ namespace Cyggie.Plugins.WebSocket.Models
 
             ParameterTypes = new Type[]
             {
-                typeof(T1),
-                typeof(T2),
-                typeof(T3),
-                typeof(T4),
-                typeof(T5),
-                typeof(T6)
+                FilterType<T1>(),
+                FilterType<T2>(),
+                FilterType<T3>(),
+                FilterType<T4>(),
+                FilterType<T5>(),
+                FilterType<T6>()
             };
 
             Callback = (object?[] objs) =>
@@ -323,12 +338,12 @@ namespace Cyggie.Plugins.WebSocket.Models
 #pragma warning disable CS8604 // Possible null reference argument.
                 // Suppressed cause sometimes we might want null values to be passed
                 callback?.Invoke(
-                    (T1) objs[0],
-                    (T2) objs[1],
-                    (T3) objs[2],
-                    (T4) objs[3],
-                    (T5) objs[4],
-                    (T6) objs[5]
+                    FilterObject<T1>(objs[0]),
+                    FilterObject<T2>(objs[1]),
+                    FilterObject<T3>(objs[2]),
+                    FilterObject<T4>(objs[3]),
+                    FilterObject<T5>(objs[4]),
+                    FilterObject<T6>(objs[5])
                 );
 #pragma warning restore CS8604 // Possible null reference argument.
             };
@@ -357,13 +372,13 @@ namespace Cyggie.Plugins.WebSocket.Models
 
             ParameterTypes = new Type[]
             {
-                typeof(T1),
-                typeof(T2),
-                typeof(T3),
-                typeof(T4),
-                typeof(T5),
-                typeof(T6),
-                typeof(T7)
+                FilterType<T1>(),
+                FilterType<T2>(),
+                FilterType<T3>(),
+                FilterType<T4>(),
+                FilterType<T5>(),
+                FilterType<T6>(),
+                FilterType<T7>()
             };
 
             Callback = (object?[] objs) =>
@@ -377,13 +392,13 @@ namespace Cyggie.Plugins.WebSocket.Models
 #pragma warning disable CS8604 // Possible null reference argument.
                 // Suppressed cause sometimes we might want null values to be passed
                 callback?.Invoke(
-                    (T1) objs[0],
-                    (T2) objs[1],
-                    (T3) objs[2],
-                    (T4) objs[3],
-                    (T5) objs[4],
-                    (T6) objs[5],
-                    (T7) objs[6]
+                    FilterObject<T1>(objs[0]),
+                    FilterObject<T2>(objs[1]),
+                    FilterObject<T3>(objs[2]),
+                    FilterObject<T4>(objs[3]),
+                    FilterObject<T5>(objs[4]),
+                    FilterObject<T6>(objs[5]),
+                    FilterObject<T7>(objs[6])
                 );
 #pragma warning restore CS8604 // Possible null reference argument.
             };
@@ -413,14 +428,14 @@ namespace Cyggie.Plugins.WebSocket.Models
 
             ParameterTypes = new Type[]
             {
-                typeof(T1),
-                typeof(T2),
-                typeof(T3),
-                typeof(T4),
-                typeof(T5),
-                typeof(T6),
-                typeof(T7),
-                typeof(T8)
+                FilterType<T1>(),
+                FilterType<T2>(),
+                FilterType<T3>(),
+                FilterType<T4>(),
+                FilterType<T5>(),
+                FilterType<T6>(),
+                FilterType<T7>(),
+                FilterType<T8>()
             };
 
             Callback = (object?[] objs) =>
@@ -434,14 +449,14 @@ namespace Cyggie.Plugins.WebSocket.Models
 #pragma warning disable CS8604 // Possible null reference argument.
                 // Suppressed cause sometimes we might want null values to be passed
                 callback?.Invoke(
-                    (T1) objs[0],
-                    (T2) objs[1],
-                    (T3) objs[2],
-                    (T4) objs[3],
-                    (T5) objs[4],
-                    (T6) objs[5],
-                    (T7) objs[6],
-                    (T8) objs[7]
+                    FilterObject<T1>(objs[0]),
+                    FilterObject<T2>(objs[1]),
+                    FilterObject<T3>(objs[2]),
+                    FilterObject<T4>(objs[3]),
+                    FilterObject<T5>(objs[4]),
+                    FilterObject<T6>(objs[5]),
+                    FilterObject<T7>(objs[6]),
+                    FilterObject<T8>(objs[7])
                 );
 #pragma warning restore CS8604 // Possible null reference argument.
             };

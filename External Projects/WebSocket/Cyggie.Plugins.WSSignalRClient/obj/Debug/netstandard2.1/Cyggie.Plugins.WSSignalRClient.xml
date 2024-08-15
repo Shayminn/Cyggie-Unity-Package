@@ -30,6 +30,22 @@
             </summary>
             <param name="callback">Callback invoked when received from the server</param>
         </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod.FilterType``1">
+            <summary>
+            Filter the type to string if it is not a primitive type (in order to use JSON serialization
+            </summary>
+            <typeparam name="T">Type param</typeparam>
+            <returns>Filtered type</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod.FilterObject``1(System.Object)">
+            <summary>
+            Filter object to type <typeparamref name="T"/> <br/>
+            Auto converts it through JSON serialization if is not primitive
+            </summary>
+            <typeparam name="T">Type param</typeparam>
+            <param name="obj">Object to filter</param>
+            <returns>Filtered object</returns>
+        </member>
         <member name="T:Cyggie.Plugins.WebSocket.Models.WSClientMethod`1">
             <summary>
             Model for a WS Client method with 1 parameter
