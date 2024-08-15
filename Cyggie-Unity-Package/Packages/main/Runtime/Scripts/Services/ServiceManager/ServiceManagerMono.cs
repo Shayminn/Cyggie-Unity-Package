@@ -118,7 +118,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
                 // Check for null types (happens if the service identifier's assembly name has changed but the identifier has not been recreated)
                 if (type == null)
                 {
-                    Log.Error($"Unable to find type ({serviceIdentifier.AssemblyName}), is null, skipping...");
+                    Log.Error($"Unable to find type ({serviceIdentifier.AssemblyName}), is null, skipping...", nameof(ServiceManagerMono));
                     continue;
                 }
 
