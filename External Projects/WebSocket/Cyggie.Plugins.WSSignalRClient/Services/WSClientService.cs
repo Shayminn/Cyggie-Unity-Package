@@ -4,6 +4,7 @@ using Cyggie.Plugins.WebSocket.Models;
 using Cyggie.Plugins.WebSocket.Utils.Helpers;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Cyggie.Plugins.WebSocket.Services
@@ -71,7 +72,7 @@ namespace Cyggie.Plugins.WebSocket.Services
 
             foreach (WSClientMethod method in methods)
             {
-                Log.Debug($"Registering method to WebSocket client: {method.MethodName}.", nameof(WSClientService));
+                Log.Debug($"Registering method to WebSocket client: {method.MethodName} ({(method.ParameterTypes.Any() ? method.PrintParams() : "parameterless")}).", nameof(WSClientService));
 
                 Action<object?[]>? callback = method.Callback;
                 callback ??= (object?[] objs) =>

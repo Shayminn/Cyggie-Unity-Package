@@ -1,6 +1,7 @@
 ﻿using Cyggie.Plugins.Logs;
 using Newtonsoft.Json;
 using System;
+using System.Text;
 
 namespace Cyggie.Plugins.WebSocket.Models
 {
@@ -39,6 +40,23 @@ namespace Cyggie.Plugins.WebSocket.Models
 
         internal WSClientMethod()
         {
+        }
+
+        internal string PrintParams()
+        {
+            StringBuilder builder = new StringBuilder();
+
+            foreach (Type type in ParameterTypes)
+            {
+                if (!string.IsNullOrEmpty(builder.ToString()))
+                {
+                    builder.Append(", ");
+                }
+
+                builder.Append(type.Name);
+            }
+
+            return builder.ToString();
         }
     }
 
