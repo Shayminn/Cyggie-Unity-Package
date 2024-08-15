@@ -104,9 +104,9 @@ namespace Cyggie.Plugins.WebSocket.Services
                 await _conn.StartAsync();
 
                 _reconnectionAttempts = 0;
-                OnConnected?.Invoke();
 
                 Log.Debug($"Connection successfully established.", nameof(WSClientService));
+                OnConnected?.Invoke();
             }
             catch (Exception ex)
             {

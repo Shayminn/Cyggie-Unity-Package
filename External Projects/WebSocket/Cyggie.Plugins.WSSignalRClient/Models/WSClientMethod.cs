@@ -1,4 +1,5 @@
 ﻿using Cyggie.Plugins.Logs;
+using Newtonsoft.Json;
 using System;
 
 namespace Cyggie.Plugins.WebSocket.Models
@@ -55,7 +56,9 @@ namespace Cyggie.Plugins.WebSocket.Models
         {
             MethodName = callback.Method.Name;
 
-            ParameterTypes = new Type[] { typeof(T1) };
+            ParameterTypes = typeof(T1).IsPrimitive ?
+                             new Type[] { typeof(T1) } :
+                             new Type[] { typeof(T1) };
 
             Callback = (object?[] objs) =>
             {
@@ -67,7 +70,18 @@ namespace Cyggie.Plugins.WebSocket.Models
 
 #pragma warning disable CS8604 // Possible null reference argument.
                 // Suppressed cause sometimes we might want null values to be passed
-                callback?.Invoke((T1) objs[0]);
+                if (objs[0] == null)
+                {
+                    callback?.Invoke((T1) objs[0]);
+                }
+                else
+                {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    T1 t = JsonConvert.DeserializeObject<T1>(objs[0].ToString());
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+                    callback?.Invoke(t);
+                }
 #pragma warning restore CS8604 // Possible null reference argument.
             };
         }
@@ -87,8 +101,8 @@ namespace Cyggie.Plugins.WebSocket.Models
         public WSClientMethod(Action<T1, T2> callback)
         {
             MethodName = callback.Method.Name;
-            
-            ParameterTypes = new Type[] 
+
+            ParameterTypes = new Type[]
             {
                 typeof(T1),
                 typeof(T2)
@@ -313,7 +327,7 @@ namespace Cyggie.Plugins.WebSocket.Models
     /// <typeparam name="T5">Parameter 5 of method</typeparam>
     /// <typeparam name="T6">Parameter 6 of method</typeparam>
     /// <typeparam name="T7">Parameter 7 of method</typeparam>
-    public class WSClientMethod<T1, T2, T3, T4, T5, T6,  T7> : WSClientMethod
+    public class WSClientMethod<T1, T2, T3, T4, T5, T6, T7> : WSClientMethod
     {
         /// <summary>
         /// Create a WS Client method with 7 parameters callback
@@ -369,7 +383,7 @@ namespace Cyggie.Plugins.WebSocket.Models
     /// <typeparam name="T6">Parameter 6 of method</typeparam>
     /// <typeparam name="T7">Parameter 7 of method</typeparam>
     /// <typeparam name="T8">Parameter 8 of method</typeparam>
-    public class WSClientMethod<T1, T2, T3, T4, T5, T6,  T7, T8> : WSClientMethod
+    public class WSClientMethod<T1, T2, T3, T4, T5, T6, T7, T8> : WSClientMethod
     {
         /// <summary>
         /// Create a WS Client method with 8 parameters callback

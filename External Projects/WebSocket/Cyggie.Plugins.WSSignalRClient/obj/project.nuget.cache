@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "dc7XkzUMbRBwA+jXBDe/cBXWVAZJ82Qqa1r2bFGWuL0LthDo2dFTk+0AgjHF05Q4MPnEyI0LT1ZK4edsbVEOig==",
+  "dgSpecHash": "4YAy5OBwGtDsDmJUQAXEi+aqpJx8Ah6iMcxS2WRkytG2BD/MwW+5VrKiFM+Lae3DnqXOaoVqUkKKe7IFSVtBiQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Ryan\\Documents\\Git\\Cyggie-Unity-Package\\External Projects\\WebSocket\\Cyggie.Plugins.WSSignalRClient\\Cyggie.Plugins.WSSignalRClient.csproj",
   "expectedPackageFiles": [
@@ -20,6 +20,7 @@
     "C:\\Users\\Ryan\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.1\\microsoft.extensions.logging.abstractions.8.0.1.nupkg.sha512",
     "C:\\Users\\Ryan\\.nuget\\packages\\microsoft.extensions.options\\8.0.2\\microsoft.extensions.options.8.0.2.nupkg.sha512",
     "C:\\Users\\Ryan\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "C:\\Users\\Ryan\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\Ryan\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\Ryan\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "C:\\Users\\Ryan\\.nuget\\packages\\system.diagnostics.diagnosticsource\\8.0.0\\system.diagnostics.diagnosticsource.8.0.0.nupkg.sha512",
