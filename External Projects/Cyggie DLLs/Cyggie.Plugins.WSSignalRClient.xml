@@ -14,14 +14,14 @@
             Method name that is registered
             </summary>
         </member>
-        <member name="P:Cyggie.Plugins.WebSocket.Models.WSClientMethod.ParameterTypes">
-            <summary>
-            Array of type parameters for arguments
-            </summary>
-        </member>
         <member name="P:Cyggie.Plugins.WebSocket.Models.WSClientMethod.Callback">
             <summary>
             Callback called when the method is called
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.WebSocket.Models.WSClientMethod.ParameterTypes">
+            <summary>
+            Array of type parameters for arguments
             </summary>
         </member>
         <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod.#ctor(System.Action)">
@@ -29,13 +29,6 @@
             Create a WS Client method with no parameters
             </summary>
             <param name="callback">Callback invoked when received from the server</param>
-        </member>
-        <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod.FilterType``1">
-            <summary>
-            Filter the type to string if it is not a primitive type (in order to use JSON serialization
-            </summary>
-            <typeparam name="T">Type param</typeparam>
-            <returns>Filtered type</returns>
         </member>
         <member name="M:Cyggie.Plugins.WebSocket.Models.WSClientMethod.FilterObject``1(System.Object)">
             <summary>

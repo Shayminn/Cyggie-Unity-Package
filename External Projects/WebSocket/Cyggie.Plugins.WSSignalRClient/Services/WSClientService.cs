@@ -4,6 +4,7 @@ using Cyggie.Plugins.WebSocket.Models;
 using Cyggie.Plugins.WebSocket.Utils.Helpers;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -40,6 +41,8 @@ namespace Cyggie.Plugins.WebSocket.Services
         /// </summary>
         public bool IsConnected => _conn != null && !string.IsNullOrEmpty(_conn.ConnectionId);
 
+        private readonly List<WSClientMethod> _methods = new List<WSClientMethod>();
+
         /// <summary>
         /// Build a new connection to a hub <paramref name="url"/>
         /// </summary>
@@ -72,18 +75,25 @@ namespace Cyggie.Plugins.WebSocket.Services
 
             foreach (WSClientMethod method in methods)
             {
-                Log.Debug($"Registering method to WebSocket client: {method.MethodName} ({(method.ParameterTypes.Any() ? method.PrintParams() : "parameterless")}).", nameof(WSClientService));
+                Log.Debug($"Registering method to WebSocket client: {method.MethodName} ({method.PrintParams()}).", nameof(WSClientService));
 
+                if (_methods.Any(x => x.MethodName == method.MethodName))
+                {
+                    Log.Error($"Method overloading on the client-side is not allowed: {method.MethodName}", nameof(WSClientService));
+                    continue;
+                }
+
+                _methods.Add(method);
                 Action<object?[]>? callback = method.Callback;
                 callback ??= (object?[] objs) =>
                 {
-                    Log.Error($"WS Client method callback is null for {method.MethodName}.");
+                    Log.Error($"WS Client method callback is null for {method.MethodName}.", nameof(WSClientService));
                 };
 
-                _conn.On(method.MethodName, method.ParameterTypes, callback);
+                _conn.On(method.MethodName, method.FilteredTypes, callback);
             }
 
-            Log.Debug($"Registered {methods.Length} callback.", nameof(WSClientService));
+            Log.Debug($"Registered {methods.Length} callback(s).", nameof(WSClientService));
         }
 
         /// <summary>
@@ -139,6 +149,7 @@ namespace Cyggie.Plugins.WebSocket.Services
             _expectDisconnection = true;
             await _conn.StopAsync();
 
+            _methods.Clear();
             Log.Debug($"Connection disconnected successfully.", nameof(WSClientService));
         }
 

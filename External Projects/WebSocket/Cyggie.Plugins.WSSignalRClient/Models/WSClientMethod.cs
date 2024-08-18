@@ -1,6 +1,7 @@
 ﻿using Cyggie.Plugins.Logs;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Text;
 
 namespace Cyggie.Plugins.WebSocket.Models
@@ -10,20 +11,25 @@ namespace Cyggie.Plugins.WebSocket.Models
     /// </summary>
     public class WSClientMethod
     {
+        private const string cParameterless = "parameterless";
+        private const string cStringType = " | string";
+
         /// <summary>
         /// Method name that is registered
         /// </summary>
         public string MethodName { get; protected set; } = string.Empty;
 
         /// <summary>
-        /// Array of type parameters for arguments
-        /// </summary>
-        public Type[] ParameterTypes { get; protected set; } = Array.Empty<Type>();
-
-        /// <summary>
         /// Callback called when the method is called
         /// </summary>
         public Action<object?[]>? Callback { get; protected set; } = null;
+
+        /// <summary>
+        /// Array of type parameters for arguments
+        /// </summary>
+        protected Type[] ParameterTypes { get; set; } = Array.Empty<Type>();
+
+        internal Type[] FilteredTypes => ParameterTypes.Select(x => FilterType(x)).ToArray();
 
         /// <summary>
         /// Create a WS Client method with no parameters
@@ -34,18 +40,26 @@ namespace Cyggie.Plugins.WebSocket.Models
             MethodName = callback.Method.Name;
             Callback = (object?[] objs) =>
             {
+                if (objs.Length != 0)
+                {
+                    Log.Error($"Provided number of arguments not the same as required. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod));
+                    return;
+                }
+
                 callback?.Invoke();
             };
         }
 
         internal WSClientMethod()
         {
+
         }
 
         internal string PrintParams()
         {
-            StringBuilder builder = new StringBuilder();
+            if (!ParameterTypes.Any()) return cParameterless;
 
+            StringBuilder builder = new StringBuilder();
             foreach (Type type in ParameterTypes)
             {
                 if (!string.IsNullOrEmpty(builder.ToString()))
@@ -53,20 +67,10 @@ namespace Cyggie.Plugins.WebSocket.Models
                     builder.Append(", ");
                 }
 
-                builder.Append(type.Name);
+                builder.Append(ConvertToJSONString(type) ? $"{type.Name}{cStringType}" : type.Name);
             }
 
             return builder.ToString();
-        }
-
-        /// <summary>
-        /// Filter the type to string if it is not a primitive type (in order to use JSON serialization
-        /// </summary>
-        /// <typeparam name="T">Type param</typeparam>
-        /// <returns>Filtered type</returns>
-        protected Type FilterType<T>()
-        {
-            return typeof(T).IsPrimitive ? typeof(T) : typeof(string);
         }
 
         /// <summary>
@@ -83,10 +87,20 @@ namespace Cyggie.Plugins.WebSocket.Models
 #pragma warning restore CS8603 // Possible null reference return.
 
 #pragma warning disable CS8603 // Possible null reference return.
-            return typeof(T).IsPrimitive ?
-                   (T) obj :
-                   JsonConvert.DeserializeObject<T>(obj.ToString());
+            return ConvertToJSONString(typeof(T)) ?
+                   JsonConvert.DeserializeObject<T>(obj.ToString()) :
+                   (T) obj;
 #pragma warning restore CS8603 // Possible null reference return.
+        }
+
+        private Type FilterType(Type type)
+        {
+            return ConvertToJSONString(type) ? typeof(string) : type;
+        }
+
+        private bool ConvertToJSONString(Type type)
+        {
+            return !type.IsPrimitive && type != typeof(string);
         }
     }
 
@@ -103,14 +117,12 @@ namespace Cyggie.Plugins.WebSocket.Models
         public WSClientMethod(Action<T1> callback)
         {
             MethodName = callback.Method.Name;
-
-            ParameterTypes = new Type[] { FilterType<T1>() };
-
+            ParameterTypes = new Type[] { typeof(T1) };
             Callback = (object?[] objs) =>
             {
                 if (objs.Length != ParameterTypes.Length)
                 {
-                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1>));
+                    Log.Error($"Provided number of arguments not the same as required. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1>));
                     return;
                 }
 
@@ -135,18 +147,16 @@ namespace Cyggie.Plugins.WebSocket.Models
         public WSClientMethod(Action<T1, T2> callback)
         {
             MethodName = callback.Method.Name;
-
             ParameterTypes = new Type[]
             {
-                FilterType<T1>(),
-                FilterType<T2>()
+                typeof(T1),
+                typeof(T2)
             };
-
             Callback = (object?[] objs) =>
             {
                 if (objs.Length != ParameterTypes.Length)
                 {
-                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1>));
+                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1, T2>));
                     return;
                 }
 
@@ -175,19 +185,17 @@ namespace Cyggie.Plugins.WebSocket.Models
         public WSClientMethod(Action<T1, T2, T3> callback)
         {
             MethodName = callback.Method.Name;
-
             ParameterTypes = new Type[]
             {
-                FilterType<T1>(),
-                FilterType<T2>(),
-                FilterType<T3>()
+                typeof(T1),
+                typeof(T2),
+                typeof(T3)
             };
-
             Callback = (object?[] objs) =>
             {
                 if (objs.Length != ParameterTypes.Length)
                 {
-                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1>));
+                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1, T2, T3>));
                     return;
                 }
 
@@ -219,20 +227,18 @@ namespace Cyggie.Plugins.WebSocket.Models
         public WSClientMethod(Action<T1, T2, T3, T4> callback)
         {
             MethodName = callback.Method.Name;
-
             ParameterTypes = new Type[]
             {
-                FilterType<T1>(),
-                FilterType<T2>(),
-                FilterType<T3>(),
-                FilterType<T4>()
+                typeof(T1),
+                typeof(T2),
+                typeof(T3),
+                typeof(T4)
             };
-
             Callback = (object?[] objs) =>
             {
                 if (objs.Length != ParameterTypes.Length)
                 {
-                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1>));
+                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1, T2, T3, T4>));
                     return;
                 }
 
@@ -266,21 +272,19 @@ namespace Cyggie.Plugins.WebSocket.Models
         public WSClientMethod(Action<T1, T2, T3, T4, T5> callback)
         {
             MethodName = callback.Method.Name;
-
             ParameterTypes = new Type[]
             {
-                FilterType<T1>(),
-                FilterType<T2>(),
-                FilterType<T3>(),
-                FilterType<T4>(),
-                FilterType<T5>()
+                typeof(T1),
+                typeof(T2),
+                typeof(T3),
+                typeof(T4),
+                typeof(T5)
             };
-
             Callback = (object?[] objs) =>
             {
                 if (objs.Length != ParameterTypes.Length)
                 {
-                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1>));
+                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1, T2, T3, T4, T5>));
                     return;
                 }
 
@@ -316,22 +320,20 @@ namespace Cyggie.Plugins.WebSocket.Models
         public WSClientMethod(Action<T1, T2, T3, T4, T5, T6> callback)
         {
             MethodName = callback.Method.Name;
-
             ParameterTypes = new Type[]
             {
-                FilterType<T1>(),
-                FilterType<T2>(),
-                FilterType<T3>(),
-                FilterType<T4>(),
-                FilterType<T5>(),
-                FilterType<T6>()
+                typeof(T1),
+                typeof(T2),
+                typeof(T3),
+                typeof(T4),
+                typeof(T5),
+                typeof(T6)
             };
-
             Callback = (object?[] objs) =>
             {
                 if (objs.Length != ParameterTypes.Length)
                 {
-                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1>));
+                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1, T2, T3, T4, T5, T6>));
                     return;
                 }
 
@@ -369,23 +371,21 @@ namespace Cyggie.Plugins.WebSocket.Models
         public WSClientMethod(Action<T1, T2, T3, T4, T5, T6, T7> callback)
         {
             MethodName = callback.Method.Name;
-
             ParameterTypes = new Type[]
             {
-                FilterType<T1>(),
-                FilterType<T2>(),
-                FilterType<T3>(),
-                FilterType<T4>(),
-                FilterType<T5>(),
-                FilterType<T6>(),
-                FilterType<T7>()
+                typeof(T1),
+                typeof(T2),
+                typeof(T3),
+                typeof(T4),
+                typeof(T5),
+                typeof(T6),
+                typeof(T7)
             };
-
             Callback = (object?[] objs) =>
             {
                 if (objs.Length != ParameterTypes.Length)
                 {
-                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1>));
+                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1, T2, T3, T4, T5, T6, T7>));
                     return;
                 }
 
@@ -425,24 +425,22 @@ namespace Cyggie.Plugins.WebSocket.Models
         public WSClientMethod(Action<T1, T2, T3, T4, T5, T6, T7, T8> callback)
         {
             MethodName = callback.Method.Name;
-
             ParameterTypes = new Type[]
             {
-                FilterType<T1>(),
-                FilterType<T2>(),
-                FilterType<T3>(),
-                FilterType<T4>(),
-                FilterType<T5>(),
-                FilterType<T6>(),
-                FilterType<T7>(),
-                FilterType<T8>()
+                typeof(T1),
+                typeof(T2),
+                typeof(T3),
+                typeof(T4),
+                typeof(T5),
+                typeof(T6),
+                typeof(T7),
+                typeof(T8)
             };
-
             Callback = (object?[] objs) =>
             {
                 if (objs.Length != ParameterTypes.Length)
                 {
-                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1>));
+                    Log.Error($"Found more arguments than supported length. Received {objs.Length}, expected {ParameterTypes.Length}", nameof(WSClientMethod<T1, T2, T3, T4, T5, T6, T7, T8>));
                     return;
                 }
 
