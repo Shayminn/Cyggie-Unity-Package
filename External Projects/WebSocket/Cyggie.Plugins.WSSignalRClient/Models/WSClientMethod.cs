@@ -86,11 +86,29 @@ namespace Cyggie.Plugins.WebSocket.Models
             if (obj == null) return default;
 #pragma warning restore CS8603 // Possible null reference return.
 
+            if (ConvertToJSONString(typeof(T)))
+            {
+                try
+                {
+                    T deserializedT = JsonConvert.DeserializeObject<T>(obj.ToString());
+
 #pragma warning disable CS8603 // Possible null reference return.
-            return ConvertToJSONString(typeof(T)) ?
-                   JsonConvert.DeserializeObject<T>(obj.ToString()) :
-                   (T) obj;
+                    return deserializedT;
 #pragma warning restore CS8603 // Possible null reference return.
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Failed to deserialize object from json to type ({typeof(T)}): {obj}.\nException: {ex}", nameof(WSClientMethod));
+
+#pragma warning disable CS8603 // Possible null reference return.
+                    return default;
+#pragma warning restore CS8603 // Possible null reference return.
+                }
+            }
+            else
+            {
+                return (T) obj;
+            }
         }
 
         private Type FilterType(Type type)
