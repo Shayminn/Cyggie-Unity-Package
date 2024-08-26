@@ -173,6 +173,11 @@
             Called when the connection is established
             </summary>
         </member>
+        <member name="F:Cyggie.Plugins.WebSocket.Services.WSClientService.OnDisconnected">
+            <summary>
+            Called when the connection is disconnected
+            </summary>
+        </member>
         <member name="F:Cyggie.Plugins.WebSocket.Services.WSClientService.OnClosed">
             <summary>
             Called when the connection is closed

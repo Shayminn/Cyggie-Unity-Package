@@ -21,6 +21,11 @@ namespace Cyggie.Plugins.WebSocket.Services
         public Action? OnConnected = null;
 
         /// <summary>
+        /// Called when the connection is disconnected
+        /// </summary>
+        public Action? OnDisconnected = null;
+
+        /// <summary>
         /// Called when the connection is closed
         /// </summary>
         public Action<Exception?>? OnClosed = null;
@@ -110,7 +115,7 @@ namespace Cyggie.Plugins.WebSocket.Services
 
             try
             {
-                Log.Debug($"Connecting to websocket server.", nameof(WSClientService));
+                Log.Debug($"Connecting to websocket server...", nameof(WSClientService));
 
                 await _conn.StartAsync();
 
@@ -195,15 +200,18 @@ namespace Cyggie.Plugins.WebSocket.Services
         {
             if (_conn == null) return;
 
+            if (ex != null)
+            {
+                Log.Error($"Connection was unexpectedly closed due to an exception: {ex}.", nameof(WSClientService));
+            }
+
+            OnClosed?.Invoke(ex);
+
+            // Disconnection was expected, don't try to reconnect (called from Disconnect)
             if (_expectDisconnection)
             {
                 _expectDisconnection = false;
                 return;
-            }
-
-            if (ex != null)
-            {
-                Log.Debug($"Connection was unexpectedly closed due to an exception: {ex}.", nameof(WSClientService));
             }
 
             await Reconnect();

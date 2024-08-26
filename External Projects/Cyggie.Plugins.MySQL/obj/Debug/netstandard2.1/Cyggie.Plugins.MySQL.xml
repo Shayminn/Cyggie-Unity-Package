@@ -96,6 +96,11 @@
             Whether a connection is established and ready for queries
             </summary>
         </member>
+        <member name="P:Cyggie.Plugins.MySQL.Services.MySQLService.State">
+            <summary>
+            The current connection state established by the MySQL connection
+            </summary>
+        </member>
         <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.OnInitialized">
             <inheritdoc/>
         </member>
@@ -119,10 +124,11 @@
             Disconnect from the currently connected database
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.CreateCommand(System.String,MySqlConnector.MySqlParameter[])">
+        <member name="M:Cyggie.Plugins.MySQL.Services.MySQLService.CreateCommand(MySqlConnector.MySqlConnection,System.String,MySqlConnector.MySqlParameter[])">
             <summary>
             Create a MySQL Command with <paramref name="parameters"/>
             </summary>
+            <param name="conn">SQL connection</param>
             <param name="commandText">The command's query text</param>
             <param name="parameters">Parameters to be added to the command</param>
             <returns>MySqlCommand object (null if connection is not established)</returns>

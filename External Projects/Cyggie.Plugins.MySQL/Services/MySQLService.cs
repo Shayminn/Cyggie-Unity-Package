@@ -2,7 +2,6 @@
 using Cyggie.Plugins.MySQL.Abstract;
 using Cyggie.Plugins.MySQL.Attributes;
 using Cyggie.Plugins.MySQL.Utils.Helpers;
-using Cyggie.Plugins.Services.Interfaces;
 using Cyggie.Plugins.Services.Models;
 using Cyggie.Plugins.Utils.Helpers;
 using MySqlConnector;
@@ -27,8 +26,6 @@ namespace Cyggie.Plugins.MySQL.Services
         /// </summary>
         private readonly Dictionary<Type, IEnumerable<MySQLTableObject>> _pool = new Dictionary<Type, IEnumerable<MySQLTableObject>>();
 
-        private MySqlConnection? _conn = null;
-
         /// <summary>
         /// Action called when a databse connection is established
         /// </summary>
@@ -38,6 +35,14 @@ namespace Cyggie.Plugins.MySQL.Services
         /// Whether a connection is established and ready for queries
         /// </summary>
         public bool IsReady => _conn != null && _conn.State == ConnectionState.Open;
+
+        /// <summary>
+        /// The current connection state established by the MySQL connection
+        /// </summary>
+        public ConnectionState? State => _conn == null ? null : (ConnectionState?) _conn.State;
+
+        private MySqlConnection? _conn = null;
+        private MySqlConnectionStringBuilder _connBuilder = new MySqlConnectionStringBuilder();
 
         /// <inheritdoc/>
         protected override void OnInitialized()
@@ -62,15 +67,13 @@ namespace Cyggie.Plugins.MySQL.Services
         /// <param name="password">Password</param>
         /// <param name="database">Database to connect to</param>
         public void Connect(string server, string username, string password, string database)
-        {
-            Connect(new MySqlConnectionStringBuilder()
+            => Connect(new MySqlConnectionStringBuilder()
             {
                 Server = server,
                 UserID = username,
                 Password = password,
                 Database = database
             });
-        }
 
         /// <summary>
         /// Connect to the database using the provided string builder <paramref name="builder"/>
@@ -78,12 +81,14 @@ namespace Cyggie.Plugins.MySQL.Services
         /// <param name="builder">Connection string builder</param>
         public void Connect(MySqlConnectionStringBuilder builder)
         {
-            _conn = new MySqlConnection(builder.ConnectionString);
-            _conn.StateChange += OnConnectionStatChange;
+            _connBuilder = builder;
+            _conn = new MySqlConnection(_connBuilder.ConnectionString);
+            _conn.StateChange += OnConnectionStateChange;
 
             try
             {
                 _conn.Open();
+                PreloadTables();
             }
             catch (Exception ex)
             {
@@ -109,14 +114,15 @@ namespace Cyggie.Plugins.MySQL.Services
         /// <summary>
         /// Create a MySQL Command with <paramref name="parameters"/>
         /// </summary>
+        /// <param name="conn">SQL connection</param>
         /// <param name="commandText">The command's query text</param>
         /// <param name="parameters">Parameters to be added to the command</param>
         /// <returns>MySqlCommand object (null if connection is not established)</returns>
-        public MySqlCommand? CreateCommand(string commandText = "", params MySqlParameter[] parameters)
+        public MySqlCommand? CreateCommand(MySqlConnection conn, string commandText = "", params MySqlParameter[] parameters)
         {
-            if (!ValidateConnection() || _conn == null) return null;
+            if (conn == null) return null;
 
-            MySqlCommand command = _conn.CreateCommand();
+            MySqlCommand command = conn.CreateCommand();
             command.CommandText = commandText;
             command.Parameters.AddRange(parameters);
 
@@ -131,10 +137,15 @@ namespace Cyggie.Plugins.MySQL.Services
         /// <returns>Number of rows affected</returns>
         public int Execute(string commandText, params MySqlParameter[] parameters)
         {
-            MySqlCommand? command = CreateCommand(commandText, parameters);
+            MySqlConnection conn = new MySqlConnection(_connBuilder.ConnectionString);
+            conn.Open();
+
+            MySqlCommand? command = CreateCommand(conn, commandText, parameters);
             if (command == null) return 0;
 
-            return Execute(command);
+            int rowChanged = Execute(command);
+            conn.Close();
+            return rowChanged;
         }
 
         /// <summary>
@@ -214,7 +225,10 @@ namespace Cyggie.Plugins.MySQL.Services
         /// <returns>IEnumerable of objects</returns>
         public IEnumerable<T> Read<T>(string commandText, params MySqlParameter[] parameters) where T : MySQLTableObject
         {
-            MySqlCommand? command = CreateCommand(commandText, parameters);
+            MySqlConnection conn = new MySqlConnection(_connBuilder.ConnectionString);
+            conn.Open();
+
+            MySqlCommand? command = CreateCommand(conn, commandText, parameters);
             if (command == null) return Array.Empty<T>();
 
             return Read<T>(command);
@@ -236,7 +250,7 @@ namespace Cyggie.Plugins.MySQL.Services
         /// </summary>
         /// <param name="type">Type of objects to retrieve</param>
         /// <returns>First element of query</returns>
-        public MySQLTableObject? ReadFirst(Type type) 
+        public MySQLTableObject? ReadFirst(Type type)
             => Read(type).FirstOrDefault();
 
         /// <summary>
@@ -284,7 +298,10 @@ namespace Cyggie.Plugins.MySQL.Services
         /// <returns>IEnumerable of objects</returns>
         public IEnumerable<MySQLTableObject> Read(Type type, string commandText, params MySqlParameter[] parameters)
         {
-            MySqlCommand? command = CreateCommand(commandText, parameters);
+            MySqlConnection conn = new MySqlConnection(_connBuilder.ConnectionString);
+            conn.Open();
+
+            MySqlCommand? command = CreateCommand(conn, commandText, parameters);
             if (command == null) return Array.Empty<MySQLTableObject>();
 
             return Read(type, command);
@@ -327,7 +344,7 @@ namespace Cyggie.Plugins.MySQL.Services
             }
             catch (Exception ex)
             {
-                Log.Error($"Failed to execute read command. Exception: {ex}", nameof(MySQLService));
+                Log.Error($"Failed to execute read command for type: {type}. Exception: {ex}", nameof(MySQLService));
             }
             finally
             {
@@ -351,15 +368,13 @@ namespace Cyggie.Plugins.MySQL.Services
         /// <param name="password">Password</param>
         /// <param name="database">Database to connect to</param>
         public async Task ConnectAsync(string server, string username, string password, string database)
-        {
-            await ConnectAsync(new MySqlConnectionStringBuilder()
+            => await ConnectAsync(new MySqlConnectionStringBuilder()
             {
                 Server = server,
                 UserID = username,
                 Password = password,
                 Database = database
             });
-        }
 
         /// <summary>
         /// Connect asynchronously to the database using the provided string builder <paramref name="builder"/>
@@ -367,9 +382,19 @@ namespace Cyggie.Plugins.MySQL.Services
         /// <param name="builder">Connection string builder</param>
         public async Task ConnectAsync(MySqlConnectionStringBuilder builder)
         {
-            _conn = new MySqlConnection(builder.ConnectionString);
-            _conn.StateChange += OnConnectionStatChange;
-            await _conn.OpenAsync();
+            _connBuilder = builder;
+            _conn = new MySqlConnection(_connBuilder.ConnectionString);
+            _conn.StateChange += OnConnectionStateChange;
+
+            try
+            {
+                await _conn.OpenAsync();
+                await PreloadTablesAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Failed to open MySQL connection to {builder.ConnectionString}, exception: {ex}.", nameof(MySQLService));
+            }
         }
 
         /// <summary>
@@ -396,7 +421,9 @@ namespace Cyggie.Plugins.MySQL.Services
         /// <returns>Number of rows affected</returns>
         public async Task<int> ExecuteAsync(string commandText, params MySqlParameter[] parameters)
         {
-            MySqlCommand? command = CreateCommand(commandText, parameters);
+            if (!ValidateConnection() || _conn == null) return 0;
+
+            MySqlCommand? command = CreateCommand(_conn, commandText, parameters);
             if (command == null) return 0;
 
             return await ExecuteAsync(command);
@@ -460,7 +487,9 @@ namespace Cyggie.Plugins.MySQL.Services
         /// <returns>IEnumerable of objects</returns>
         public async Task<IEnumerable<T>> ReadAsync<T>(string commandText, params MySqlParameter[] parameters) where T : MySQLTableObject
         {
-            MySqlCommand? command = CreateCommand(commandText, parameters);
+            if (!ValidateConnection() || _conn == null) return Array.Empty<T>();
+
+            MySqlCommand? command = CreateCommand(_conn, commandText, parameters);
             if (command == null) return Array.Empty<T>();
 
             return await ReadAsync<T>(command);
@@ -506,7 +535,9 @@ namespace Cyggie.Plugins.MySQL.Services
         /// <returns>IEnumerable of objects</returns>
         public async Task<IEnumerable<MySQLTableObject>> ReadAsync(Type type, string commandText, params MySqlParameter[] parameters)
         {
-            MySqlCommand? command = CreateCommand(commandText, parameters);
+            if (!ValidateConnection() || _conn == null) return Array.Empty<MySQLTableObject>();
+
+            MySqlCommand? command = CreateCommand(_conn, commandText, parameters);
             if (command == null) return Array.Empty<MySQLTableObject>();
 
             return await ReadAsync(type, command);
@@ -540,7 +571,7 @@ namespace Cyggie.Plugins.MySQL.Services
             try
             {
                 reader = await command.ExecuteReaderAsync();
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     if (!TryCreateTableObject(reader, type, out object? tableObj) || tableObj == null) continue;
 
@@ -549,7 +580,7 @@ namespace Cyggie.Plugins.MySQL.Services
             }
             catch (Exception ex)
             {
-                Log.Error($"Failed to execute read command. Exception: {ex}", nameof(MySQLService));
+                Log.Error($"Failed to execute read command for type: {type}. Exception: {ex}", nameof(MySQLService));
             }
             finally
             {
@@ -620,46 +651,86 @@ namespace Cyggie.Plugins.MySQL.Services
         {
             if (_conn != null)
             {
-                _conn.StateChange += OnConnectionStatChange;
+                _conn.StateChange += OnConnectionStateChange;
                 _conn = null;
             }
         }
 
-        private void OnConnectionStatChange(object sender, StateChangeEventArgs args)
+        private void PreloadTables()
         {
-            if (_conn == null) return;
 
-            if (args.CurrentState == ConnectionState.Open)
+            try
             {
-                string databaseName = _conn.Database;
+                using MySqlConnection conn = new MySqlConnection(_connBuilder.ConnectionString);
+                conn.Open();
 
-                List<Type> preloadSQLObjectTypes = TypeHelper.GetAllIsAssignableFrom<MySQLTableObject>()
-                                                             .Where(x =>
-                                                                {
-                                                                    MySQLTablePreloadAttribute preloadAttr = x.GetCustomAttribute<MySQLTablePreloadAttribute>();
-                                                                    if (preloadAttr == null) return false;
-
-                                                                    bool rightDb = string.IsNullOrEmpty(preloadAttr.DatabaseName) ||
-                                                                                   preloadAttr.DatabaseName.Equals(databaseName, StringComparison.OrdinalIgnoreCase);
-                                                                    if (!rightDb) return false;
-
-                                                                    return true;
-                                                                })
-                                                             .OrderByDescending(x =>
-                                                                {
-                                                                    MySQLTablePreloadAttribute preloadAttr = x.GetCustomAttribute<MySQLTablePreloadAttribute>();
-                                                                    return preloadAttr.Priority;
-                                                                })
-                                                             .ToList();
-
+                _pool.Clear();
+                List<Type> preloadSQLObjectTypes = GetAllPreloadTypes(conn.Database);
                 foreach (Type type in preloadSQLObjectTypes)
                 {
                     IEnumerable<MySQLTableObject> objects = Read(type, $"SELECT * FROM {MySQLTableHelper.GetTableName(type)}");
+                    _pool.Add(type, objects);
+                }
+
+                Log.Debug($"Preloaded {_pool.Count} MySQL table(s)", nameof(MySQLService));
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Failed to preload tables, exception: {ex}", nameof(MySQLService));
+            }
+        }
+
+        private async Task PreloadTablesAsync()
+        {
+            try
+            {
+                using MySqlConnection conn = new MySqlConnection(_connBuilder.ConnectionString);
+                await conn.OpenAsync();
+
+                _pool.Clear();
+                List<Type> preloadSQLObjectTypes = GetAllPreloadTypes(conn.Database);
+                foreach (Type type in preloadSQLObjectTypes)
+                {
+                    IEnumerable<MySQLTableObject> objects = await ReadAsync(type, $"SELECT * FROM {MySQLTableHelper.GetTableName(type)}");
 
                     _pool.Add(type, objects);
                 }
 
                 Log.Debug($"Preloaded {_pool.Count} MySQL table(s)", nameof(MySQLService));
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Failed to preload tables, exception: {ex}", nameof(MySQLService));
+            }
+        }
+
+        private List<Type> GetAllPreloadTypes(string databaseName)
+        {
+            return TypeHelper.GetAllIsAssignableFrom<MySQLTableObject>()
+                                                             .Where(x =>
+                                                             {
+                                                                 MySQLTablePreloadAttribute preloadAttr = x.GetCustomAttribute<MySQLTablePreloadAttribute>();
+                                                                 if (preloadAttr == null) return false;
+
+                                                                 bool rightDb = string.IsNullOrEmpty(preloadAttr.DatabaseName) ||
+                                                                                    preloadAttr.DatabaseName.Equals(databaseName, StringComparison.OrdinalIgnoreCase);
+                                                                 if (!rightDb) return false;
+
+                                                                 return true;
+                                                             })
+                                                             .OrderByDescending(x =>
+                                                             {
+                                                                 MySQLTablePreloadAttribute preloadAttr = x.GetCustomAttribute<MySQLTablePreloadAttribute>();
+                                                                 return preloadAttr.Priority;
+                                                             })
+                                                             .ToList();
+        }
+
+        private void OnConnectionStateChange(object sender, StateChangeEventArgs args)
+        {
+            if (_conn == null) return;
+            if (args.CurrentState == ConnectionState.Open)
+            {
                 OnConnected?.Invoke();
             }
         }
