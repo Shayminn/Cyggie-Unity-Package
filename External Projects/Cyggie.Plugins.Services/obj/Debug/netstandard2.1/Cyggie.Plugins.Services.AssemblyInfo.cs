@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cyggie.Plugins.Services")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b680b5ee7c85bc985c09738645c82cfc1630ed0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cyggie.Plugins.Services")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cyggie.Plugins.Services")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

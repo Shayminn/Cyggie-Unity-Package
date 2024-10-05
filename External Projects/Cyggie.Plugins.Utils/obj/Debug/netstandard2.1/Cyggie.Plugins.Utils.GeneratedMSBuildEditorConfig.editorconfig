@@ -1,3 +1,5 @@
 is_global = true
 build_property.RootNamespace = Cyggie.Plugins.Utils
 build_property.ProjectDir = C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Utils\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 

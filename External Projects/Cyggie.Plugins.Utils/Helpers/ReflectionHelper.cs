@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Cyggie.Plugins.Utils.Helpers
 {
     /// <summary>
     /// Helper class that includes methods related to Types
     /// </summary>
-    public static class TypeHelper
+    public static class ReflectionHelper
     {
         /// <summary>
         /// Get all subclass types that inherits from type <typeparamref name="T"/> in the current domain
@@ -53,6 +54,16 @@ namespace Cyggie.Plugins.Utils.Helpers
         public static IEnumerable<Type> GetAllIsAssignableFrom<T>(Predicate<Type> pred, bool checkAbstract = true)
         {
             return GetAllTypesInDomain().Where(t => typeof(T).IsAssignableFrom(t) && pred.Invoke(t) && (!checkAbstract || !t.IsAbstract));
+        }
+
+        /// <summary>
+        /// Get all types that has the attribute of type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Attribute type</typeparam>
+        /// <returns>Collection of types that have the attribute</returns>
+        public static IEnumerable<Type> GetAllTypesWithAttribute<T>() where T : Attribute
+        {
+            return GetAllTypesInDomain().Where(t => typeof(T).GetCustomAttribute<T>() != null);
         }
 
         /// <summary>

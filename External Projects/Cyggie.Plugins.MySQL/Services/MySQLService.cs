@@ -47,7 +47,7 @@ namespace Cyggie.Plugins.MySQL.Services
         /// <inheritdoc/>
         protected override void OnInitialized()
         {
-            IEnumerable<Type> sqlObjectTypes = TypeHelper.GetAllIsAssignableFrom<MySQLTableObject>()
+            IEnumerable<Type> sqlObjectTypes = ReflectionHelper.GetAllIsAssignableFrom<MySQLTableObject>()
                                                      .Where(x => x.GetCustomAttribute<MySQLTableNameAttribute>() != null);
 
             foreach (Type type in sqlObjectTypes)
@@ -706,7 +706,7 @@ namespace Cyggie.Plugins.MySQL.Services
 
         private List<Type> GetAllPreloadTypes(string databaseName)
         {
-            return TypeHelper.GetAllIsAssignableFrom<MySQLTableObject>()
+            return ReflectionHelper.GetAllIsAssignableFrom<MySQLTableObject>()
                                                              .Where(x =>
                                                              {
                                                                  MySQLTablePreloadAttribute preloadAttr = x.GetCustomAttribute<MySQLTablePreloadAttribute>();

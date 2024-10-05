@@ -78,7 +78,7 @@ namespace Cyggie.Plugins.Services.Models
                 return;
             }
 
-            IEnumerable<Type> serviceTypes = TypeHelper.GetAllIsAssignableFrom<IService>();
+            IEnumerable<Type> serviceTypes = ReflectionHelper.GetAllIsAssignableFrom<IService>();
             Initialize(serviceTypes.ToArray());
         }
 
@@ -95,7 +95,7 @@ namespace Cyggie.Plugins.Services.Models
             }
 
             // Create all service configuration objects
-            IEnumerable<Type> serviceConfigurationTypes = TypeHelper.GetAllIsAssignableFrom<IServiceConfiguration>();
+            IEnumerable<Type> serviceConfigurationTypes = ReflectionHelper.GetAllIsAssignableFrom<IServiceConfiguration>();
 
             // Filter service configurations so only a single one is assigned to each service
             IEnumerable<IServiceConfiguration?> serviceConfigs = serviceConfigurationTypes.Select(type =>

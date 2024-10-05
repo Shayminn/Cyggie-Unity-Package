@@ -12,7 +12,6 @@ namespace Cyggie.Plugins.WebSocket.Models
     public class WSClientMethod
     {
         private const string cParameterless = "parameterless";
-        private const string cStringType = " | string";
 
         /// <summary>
         /// Method name that is registered
@@ -67,7 +66,7 @@ namespace Cyggie.Plugins.WebSocket.Models
                     builder.Append(", ");
                 }
 
-                builder.Append(ConvertToJSONString(type) ? $"{type.Name}{cStringType}" : type.Name);
+                builder.Append(ConvertToJSONString(type) ? $"{type.Name}" : type.Name);
             }
 
             return builder.ToString();
