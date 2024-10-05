@@ -63,7 +63,7 @@ namespace Cyggie.Plugins.Utils.Helpers
         /// <returns>Collection of types that have the attribute</returns>
         public static IEnumerable<Type> GetAllTypesWithAttribute<T>() where T : Attribute
         {
-            return GetAllTypesInDomain().Where(t => typeof(T).GetCustomAttribute<T>() != null);
+            return GetAllTypesInDomain().Where(t => t.GetCustomAttribute<T>() != null);
         }
 
         /// <summary>
