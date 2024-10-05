@@ -23,4 +23,5 @@ C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\WebSocket\Cyg
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\WebSocket\Cyggie.Plugins.WSSignalRServer\bin\Debug\net6.0\Cyggie.Plugins.Utils.pdb
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\WebSocket\Cyggie.Plugins.WSSignalRServer\bin\Debug\net6.0\Cyggie.Plugins.Utils.xml
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\WebSocket\Cyggie.Plugins.WSSignalRServer\bin\Debug\net6.0\UnityEngine.xml
-C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\WebSocket\Cyggie.Plugins.WSSignalRServer\obj\Debug\net6.0\Cyggie.Plugins.WSSignalRServer.csproj.CopyComplete
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\WebSocket\Cyggie.Plugins.WSSignalRServer\obj\Debug\net6.0\Cyggie.Plugins.WSSignalRServer.sourcelink.json
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\WebSocket\Cyggie.Plugins.WSSignalRServer\obj\Debug\net6.0\Cyggie.P.92A1E104.Up2Date

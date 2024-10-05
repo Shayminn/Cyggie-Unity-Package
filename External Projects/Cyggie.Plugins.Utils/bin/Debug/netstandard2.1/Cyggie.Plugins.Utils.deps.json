@@ -18,7 +18,10 @@
       },
       "Cyggie.Plugins.Logs/1.0.0": {
         "runtime": {
-          "Cyggie.Plugins.Logs.dll": {}
+          "Cyggie.Plugins.Logs.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "UnityEngine/0.0.0.0": {

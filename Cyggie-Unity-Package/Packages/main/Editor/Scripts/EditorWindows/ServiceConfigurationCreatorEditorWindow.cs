@@ -38,7 +38,7 @@ namespace Cyggie.Main.Editor.Windows
 
         private void OnEnable()
         {
-            _serviceTypes = TypeHelper.GetAllIsAssignableFrom<IServiceConfiguration>(type =>
+            _serviceTypes = ReflectionHelper.GetAllIsAssignableFrom<IServiceConfiguration>(type =>
             {
                 // Type must derive from ScriptableObject to be created through the window
                 return typeof(ScriptableObject).IsAssignableFrom(type) &&

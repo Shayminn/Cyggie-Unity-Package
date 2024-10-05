@@ -2,7 +2,6 @@ C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugin
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Logs\bin\Debug\netstandard2.1\Cyggie.Plugins.Logs.dll
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Logs\bin\Debug\netstandard2.1\Cyggie.Plugins.Logs.pdb
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Logs\bin\Debug\netstandard2.1\Cyggie.Plugins.Logs.xml
-C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Logs\obj\Debug\netstandard2.1\Cyggie.Plugins.Logs.csproj.AssemblyReference.cache
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Logs\obj\Debug\netstandard2.1\Cyggie.Plugins.Logs.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Logs\obj\Debug\netstandard2.1\Cyggie.Plugins.Logs.AssemblyInfoInputs.cache
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Logs\obj\Debug\netstandard2.1\Cyggie.Plugins.Logs.AssemblyInfo.cs
@@ -10,3 +9,4 @@ C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugin
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Logs\obj\Debug\netstandard2.1\Cyggie.Plugins.Logs.dll
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Logs\obj\Debug\netstandard2.1\Cyggie.Plugins.Logs.xml
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Logs\obj\Debug\netstandard2.1\Cyggie.Plugins.Logs.pdb
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Logs\obj\Debug\netstandard2.1\Cyggie.Plugins.Logs.sourcelink.json

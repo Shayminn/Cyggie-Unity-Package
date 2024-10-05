@@ -31,12 +31,18 @@
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
-          "Cyggie.Plugins.Encryption.dll": {}
+          "Cyggie.Plugins.Encryption.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "Cyggie.Plugins.Logs/1.0.0": {
         "runtime": {
-          "Cyggie.Plugins.Logs.dll": {}
+          "Cyggie.Plugins.Logs.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "Mono.Data.Sqlite/4.0.0.0": {

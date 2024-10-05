@@ -513,12 +513,12 @@
             <param name="newValue">New value to assign</param>
             <returns><paramref name="obj"/> or <paramref name="newValue"/></returns>
         </member>
-        <member name="T:Cyggie.Plugins.Utils.Helpers.TypeHelper">
+        <member name="T:Cyggie.Plugins.Utils.Helpers.ReflectionHelper">
             <summary>
             Helper class that includes methods related to Types
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.Utils.Helpers.TypeHelper.GetAllSubclassTypes``1(System.Boolean)">
+        <member name="M:Cyggie.Plugins.Utils.Helpers.ReflectionHelper.GetAllSubclassTypes``1(System.Boolean)">
             <summary>
             Get all subclass types that inherits from type <typeparamref name="T"/> in the current domain
             </summary>
@@ -526,7 +526,7 @@
             <param name="checkAbstract">If true, don't include types that are abstract</param>
             <returns>Collection of subclass types</returns>
         </member>
-        <member name="M:Cyggie.Plugins.Utils.Helpers.TypeHelper.GetAllSubclassTypes``1(System.Predicate{System.Type},System.Boolean)">
+        <member name="M:Cyggie.Plugins.Utils.Helpers.ReflectionHelper.GetAllSubclassTypes``1(System.Predicate{System.Type},System.Boolean)">
             <summary>
             Get all subclass types that inherits from type <typeparamref name="T"/> in the current domain
             </summary>
@@ -535,7 +535,7 @@
             <param name="pred">Extra conditions that needs to be checked</param>
             <returns>Collection of subclass types</returns>
         </member>
-        <member name="M:Cyggie.Plugins.Utils.Helpers.TypeHelper.GetAllIsAssignableFrom``1(System.Boolean)">
+        <member name="M:Cyggie.Plugins.Utils.Helpers.ReflectionHelper.GetAllIsAssignableFrom``1(System.Boolean)">
             <summary>
             Get all subclass types that are assignable from <typeparamref name="T"/> in the current domain
             </summary>
@@ -543,7 +543,7 @@
             <param name="checkAbstract">If true, don't include types that are abstract</param>
             <returns>Collection of types that are assignable</returns>
         </member>
-        <member name="M:Cyggie.Plugins.Utils.Helpers.TypeHelper.GetAllIsAssignableFrom``1(System.Predicate{System.Type},System.Boolean)">
+        <member name="M:Cyggie.Plugins.Utils.Helpers.ReflectionHelper.GetAllIsAssignableFrom``1(System.Predicate{System.Type},System.Boolean)">
             <summary>
             Get all subclass types that are assignable from <typeparamref name="T"/> in the current domain
             </summary>
@@ -552,7 +552,14 @@
             <param name="pred">Extra conditions that needs to be checked</param>
             <returns>Collection of types that are assignable</returns>
         </member>
-        <member name="M:Cyggie.Plugins.Utils.Helpers.TypeHelper.GetAllTypesInDomain">
+        <member name="M:Cyggie.Plugins.Utils.Helpers.ReflectionHelper.GetAllTypesWithAttribute``1">
+            <summary>
+            Get all types that has the attribute of type <typeparamref name="T"/>
+            </summary>
+            <typeparam name="T">Attribute type</typeparam>
+            <returns>Collection of types that have the attribute</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.Utils.Helpers.ReflectionHelper.GetAllTypesInDomain">
             <summary>
             Get all types in current domain
             </summary>

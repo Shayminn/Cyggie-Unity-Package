@@ -19,7 +19,7 @@ namespace Cyggie.Main.Runtime.Attributes
         /// </summary>
         static CustomRuntimeInitializeOnLoadHandler()
         {
-            IEnumerable<MethodInfo> methodInfos = TypeHelper.GetAllTypesInDomain()
+            IEnumerable<MethodInfo> methodInfos = ReflectionHelper.GetAllTypesInDomain()
                                                         .SelectMany(type => type.GetMethods(BindingFlags.NonPublic | BindingFlags.Static))
                                                         .Where(method => method.GetCustomAttributes(typeof(CustomRuntimeInitializeOnLoadMethodAttribute), false).Length > 0);
 

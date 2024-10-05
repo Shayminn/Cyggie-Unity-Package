@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cyggie.Plugins.Logs")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b680b5ee7c85bc985c09738645c82cfc1630ed0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+da811dc2ad7181e74fd0253dbb3506a44894dc6e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cyggie.Plugins.Logs")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cyggie.Plugins.Logs")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

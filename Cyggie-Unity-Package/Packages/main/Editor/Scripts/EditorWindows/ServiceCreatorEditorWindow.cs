@@ -39,7 +39,7 @@ namespace Cyggie.Main.Editor.Windows
 
         private void OnEnable()
         {
-            _serviceTypes = TypeHelper.GetAllIsAssignableFrom<IService>(
+            _serviceTypes = ReflectionHelper.GetAllIsAssignableFrom<IService>(
                 // Comment out to create PackageServiceMono
                 x => !typeof(PackageServiceMono).IsAssignableFrom(x) && !x.IsSubclassOfGenericType(typeof(PackageServiceMono<>))
             ).ToList();

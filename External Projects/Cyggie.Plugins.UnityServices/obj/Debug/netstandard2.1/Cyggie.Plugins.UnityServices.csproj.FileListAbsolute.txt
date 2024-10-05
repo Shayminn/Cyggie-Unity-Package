@@ -18,7 +18,8 @@ C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugin
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.UnityServices\obj\Debug\netstandard2.1\Cyggie.Plugins.UnityServices.AssemblyInfoInputs.cache
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.UnityServices\obj\Debug\netstandard2.1\Cyggie.Plugins.UnityServices.AssemblyInfo.cs
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.UnityServices\obj\Debug\netstandard2.1\Cyggie.Plugins.UnityServices.csproj.CoreCompileInputs.cache
-C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.UnityServices\obj\Debug\netstandard2.1\Cyggie.Plugins.UnityServices.csproj.CopyComplete
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.UnityServices\obj\Debug\netstandard2.1\Cyggie.Plugins.UnityServices.dll
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.UnityServices\obj\Debug\netstandard2.1\Cyggie.Plugins.UnityServices.xml
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.UnityServices\obj\Debug\netstandard2.1\Cyggie.Plugins.UnityServices.pdb
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.UnityServices\obj\Debug\netstandard2.1\Cyggie.Plugins.UnityServices.sourcelink.json
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.UnityServices\obj\Debug\netstandard2.1\Cyggie.P.2046171D.Up2Date

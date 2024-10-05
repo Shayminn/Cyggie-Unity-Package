@@ -10,3 +10,4 @@ C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugin
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Encryption\obj\Debug\netstandard2.1\Cyggie.Plugins.Encryption.dll
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Encryption\obj\Debug\netstandard2.1\Cyggie.Plugins.Encryption.xml
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Encryption\obj\Debug\netstandard2.1\Cyggie.Plugins.Encryption.pdb
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.Encryption\obj\Debug\netstandard2.1\Cyggie.Plugins.Encryption.sourcelink.json

@@ -18,7 +18,8 @@ C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugin
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.MySQL\bin\Debug\netstandard2.1\Cyggie.Plugins.Utils.pdb
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.MySQL\bin\Debug\netstandard2.1\Cyggie.Plugins.Utils.xml
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.MySQL\bin\Debug\netstandard2.1\UnityEngine.xml
-C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.MySQL\obj\Debug\netstandard2.1\Cyggie.Plugins.MySQL.csproj.CopyComplete
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.MySQL\obj\Debug\netstandard2.1\Cyggie.Plugins.MySQL.dll
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.MySQL\obj\Debug\netstandard2.1\Cyggie.Plugins.MySQL.xml
 C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.MySQL\obj\Debug\netstandard2.1\Cyggie.Plugins.MySQL.pdb
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.MySQL\obj\Debug\netstandard2.1\Cyggie.Plugins.MySQL.sourcelink.json
+C:\Users\Ryan\Documents\Git\Cyggie-Unity-Package\External Projects\Cyggie.Plugins.MySQL\obj\Debug\netstandard2.1\Cyggie.P.7C9D54C9.Up2Date
