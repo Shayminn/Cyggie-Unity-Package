@@ -1,11 +1,6 @@
-﻿using Cyggie.Main.Editor.Configurations;
-using Cyggie.Main.Editor.Utils.Constants;
+﻿using Cyggie.Main.Editor.Utils.Constants;
 using Cyggie.Main.Editor.Windows;
-using Cyggie.Main.Runtime.ServicesNS;
-using Cyggie.Main.Runtime.ServicesNS.ScriptableObjects;
-using Cyggie.Plugins.Services.Models;
 using UnityEditor;
-using UnityEngine;
 
 namespace Cyggie.Main.Editor
 {
@@ -17,9 +12,9 @@ namespace Cyggie.Main.Editor
         internal static bool ExpectPackageConfigurationsShortcut = false;
 
         /// <summary>
-        /// Menu Item for managing Package Configurations
+        /// Menu Item for managing Service Configurations
         /// </summary>
-        [MenuItem(itemName: "Cyggie/Package Configurations &#c")]
+        [MenuItem(itemName: EditorMenuItemConstants.cServiceConfigurations + " &#c")]
         private static void OpenPackageConfigurations()
         {
             if (ExpectPackageConfigurationsShortcut)
@@ -39,7 +34,7 @@ namespace Cyggie.Main.Editor
         /// <summary>
         /// Menu item for opening a window for creating service identifiers scriptable objects
         /// </summary>
-        [MenuItem(itemName: "Cyggie/Create/Service Identifier")]
+        [MenuItem(itemName: EditorMenuItemConstants.cCreateServiceIdentifier)]
         private static void CreateServiceIdentifier()
         {
             // Create window
@@ -52,9 +47,9 @@ namespace Cyggie.Main.Editor
         }
 
         /// <summary>
-        /// Menu i tem for opening a window for creating service configurations scriptable objects
+        /// Menu item for opening a window for creating service configurations scriptable objects
         /// </summary>
-        [MenuItem(itemName: "Cyggie/Create/Service Configuration")]
+        [MenuItem(itemName: EditorMenuItemConstants.cCreateServiceConfiguration)]
         private static void CreateServiceConfiguration()
         {
             // Create window
@@ -62,6 +57,20 @@ namespace Cyggie.Main.Editor
             window.titleContent = EditorWindowConstants.cServiceConfigurationCreatorWindowTitle;
             window.minSize = EditorWindowConstants.cServiceConfigurationCreatorWindowMinSize;
             window.maxSize = EditorWindowConstants.cServiceConfigurationCreatorWindowMaxSize;
+
+            window.Show();
+        }
+
+        /// <summary>
+        /// Menu item for opening a window for managing configurations
+        /// </summary>
+        [MenuItem(itemName: EditorMenuItemConstants.cEditorConfigurations)]
+        private static void OpenEditorConfigurations()
+        {
+            // Create window
+            EditorConfigurationsEditorWindow window = EditorWindow.GetWindow<EditorConfigurationsEditorWindow>();
+            window.titleContent = EditorWindowConstants.cEditorConfigurationsWindowTitle;
+            window.minSize = EditorWindowConstants.cEditorConfigurationsWindowMinSize;
 
             window.Show();
         }

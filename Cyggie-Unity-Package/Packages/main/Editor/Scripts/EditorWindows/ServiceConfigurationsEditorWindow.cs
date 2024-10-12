@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using FolderConstants = Cyggie.Main.Runtime.Utils.Constants.FolderConstants;
 
 namespace Cyggie.Main.Editor.Windows
 {
@@ -194,9 +195,9 @@ namespace Cyggie.Main.Editor.Windows
                 ServiceManagerSettings = (ServiceManagerSettings) ScriptableObject.CreateInstance(typeof(ServiceManagerSettings));
 
                 string cSettingsAssetPath = FolderConstants.cAssets +
-                                                   FolderConstants.cCyggieResources +
-                                                   FolderConstants.cCyggie +
-                                                   nameof(ServiceManagerSettings) + FileExtensionConstants.cAsset;
+                                            FolderConstants.cCyggieResources +
+                                            FolderConstants.cCyggie +
+                                            nameof(ServiceManagerSettings) + FileExtensionConstants.cAsset;
 
                 // Create asset
                 if (!AssetDatabaseHelper.CreateAsset(ServiceManagerSettings, cSettingsAssetPath))

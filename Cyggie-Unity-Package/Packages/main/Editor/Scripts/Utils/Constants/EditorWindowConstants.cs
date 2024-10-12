@@ -7,6 +7,12 @@ namespace Cyggie.Main.Editor.Utils.Constants
     /// </summary>
     internal struct EditorWindowConstants
     {
+        //
+        // Editor configurations Editor window
+        //
+        internal static readonly GUIContent cEditorConfigurationsWindowTitle = new GUIContent("Editor Configurations");
+        internal static readonly Vector2 cEditorConfigurationsWindowMinSize = new Vector2(500, 250);
+
         // 
         // Service Configurations Editor Window
         //
