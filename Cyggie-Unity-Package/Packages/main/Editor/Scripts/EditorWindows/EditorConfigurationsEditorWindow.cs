@@ -2,6 +2,7 @@ using Cyggie.Main.Editor.Utils.Constants;
 using Cyggie.Main.Editor.Utils.Helpers;
 using Cyggie.Plugins.Logs;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -18,6 +19,8 @@ namespace Cyggie.Main.Editor.Windows
 
         private SerializedProperty _forcePlayScene = null;
         private SerializedProperty _forcePlayScenePath = null;
+        private SerializedProperty _forcePlaySceneName = null;
+        private SerializedProperty _clearLogs = null;
         private SceneAsset _sceneAsset = null;
 
         private void OnEnable()
@@ -43,6 +46,8 @@ namespace Cyggie.Main.Editor.Windows
             _serializedConfigurations = new SerializedObject(_configurations);
             _forcePlayScene = _serializedConfigurations.FindProperty(nameof(EditorConfigurations.ForcePlayScene));
             _forcePlayScenePath = _serializedConfigurations.FindProperty(nameof(EditorConfigurations.ForcePlayScenePath));
+            _forcePlaySceneName = _serializedConfigurations.FindProperty(nameof(EditorConfigurations.ForcePlaySceneName));
+            _clearLogs = _serializedConfigurations.FindProperty(nameof(EditorConfigurations.ClearLogs));
 
             if (!string.IsNullOrEmpty(_forcePlayScenePath.stringValue))
             {
@@ -70,8 +75,19 @@ namespace Cyggie.Main.Editor.Windows
                     EditorGUILayout.PropertyField(_forcePlayScene);
                     if (_forcePlayScene.boolValue)
                     {
-                        _sceneAsset = (SceneAsset) EditorGUILayout.ObjectField("Scene to Play: ", _sceneAsset, typeof(SceneAsset), false);
-                        CheckForceScenePath(_forcePlayScenePath);
+                        EditorGUILayoutHelper.DrawHorizontal(gui: () =>
+                        {
+                            GUILayout.Space(10);
+                            EditorGUILayoutHelper.DrawVertical(gui: () =>
+                            {
+                                _sceneAsset = (SceneAsset) EditorGUILayout.ObjectField("Scene to Play: ", _sceneAsset, typeof(SceneAsset), false);
+                                CheckForceScenePath(_forcePlayScenePath);
+
+                                EditorGUILayout.PropertyField(_clearLogs);
+                            });
+
+                            EditorGUILayout.Space(2);
+                        });
                     }
                 });
             });
@@ -102,6 +118,7 @@ namespace Cyggie.Main.Editor.Windows
             if (forceScenePathProperty != null)
             {
                 forceScenePathProperty.stringValue = scenePath;
+                _forcePlaySceneName.stringValue = Path.GetFileNameWithoutExtension(scenePath);
             }
         }
     }

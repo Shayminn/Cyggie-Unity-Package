@@ -15,6 +15,7 @@ namespace Cyggie.Main.Editor.Configurations
     {
         private static string _sceneBeforePlay = string.Empty;
         private static string _sceneToPlayPath = string.Empty;
+        private static bool _clearLogs = false;
 
         /// <summary>
         /// Called when editor enters play mode
@@ -35,7 +36,7 @@ namespace Cyggie.Main.Editor.Configurations
             }
 
             // Check if current scene is not already the scene to play
-            if (SceneManager.GetActiveScene().name == _sceneToPlayPath) return;
+            if (SceneManager.GetActiveScene().name == configurations.ForcePlaySceneName) return;
 
             // Check if build settings scenes have the currently selected force scene
             List<EditorBuildSettingsScene> buildScenes = EditorBuildSettings.scenes.ToList();
@@ -77,7 +78,11 @@ namespace Cyggie.Main.Editor.Configurations
                     // We're in playmode, right after having pressed Play
                     _sceneBeforePlay = SceneManager.GetActiveScene().name;
 
-                    ClearLog();
+                    if (_clearLogs)
+                    {
+                        ClearLog();
+                    }
+
                     SceneManager.LoadScene(_sceneToPlayPath);
                 }
             }

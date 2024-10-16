@@ -16,7 +16,13 @@ namespace Cyggie.Main.Editor
         [Tooltip("Whether the editor should force play a specific scene every time play mode is started, returning to the original scene when play is stopped.")]
         public bool ForcePlayScene = false;
 
-        [Tooltip("The scene name the editor should force start on.")]
+        [Tooltip("The path to the scene the editor should force start on.")]
         public string ForcePlayScenePath = string.Empty;
+
+        [Tooltip("The scene name the editor should force start on.")]
+        public string ForcePlaySceneName = string.Empty;
+
+        [Tooltip("Whether the logs should be cleared before forcing another scene.")]
+        public bool ClearLogs = false;
     }
 }

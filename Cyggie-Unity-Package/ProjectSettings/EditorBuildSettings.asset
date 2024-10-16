@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Package Test/SQLiteTest/SQLite.unity
     guid: 838a0887666568d4092b2431640f8698
+  - enabled: 1
+    path: Assets/Test/Test.unity
+    guid: 65245c495cc90164faeaaed4a24b2e4a
   m_configObjects: {}
