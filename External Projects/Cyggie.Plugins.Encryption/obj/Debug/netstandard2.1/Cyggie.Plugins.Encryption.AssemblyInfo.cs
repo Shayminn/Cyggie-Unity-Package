@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cyggie.Plugins.Encryption")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+da811dc2ad7181e74fd0253dbb3506a44894dc6e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+29b0749d5eac2db91fe5d4f6ff16052def74fd63")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cyggie.Plugins.Encryption")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cyggie.Plugins.Encryption")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

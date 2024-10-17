@@ -1,0 +1,18 @@
+{
+    "name": "Cyggie.WebSocket.Editor",
+    "rootNamespace": "Cyggie.WebSocket.Editor",
+    "references": [
+        "GUID:e589b28c6ea56f44fb968baf23a7d969"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
