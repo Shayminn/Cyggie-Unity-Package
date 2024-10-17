@@ -47,6 +47,12 @@ namespace Cyggie.Main.Editor.Windows
 
         private void OnGUI()
         {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                Close();
+                return;
+            }
+
             // Reset values when it's null
             if (_selectedType == null)
             {
