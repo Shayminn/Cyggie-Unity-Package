@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace Cyggie.Plugins.WebSocket.Models
+namespace Cyggie.Plugins.WebSocket
 {
     /// <summary>
     /// Base Model for a WS Client method

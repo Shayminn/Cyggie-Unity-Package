@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cyggie.Plugins.UnityServices</name>
+    </assembly>
+    <members>
+        <member name="T:Cyggie.Plugins.UnityServices.Models.ServiceConfigurationSO">
+            <summary>
+            Abstract class used by the ServiceManagerMono in Unity <br/>
+            
+            Note: <br/>
+            If you inherit this with a custom <see cref="T:Cyggie.Plugins.Services.Models.ServiceConfiguration"/> and use this with <see cref="T:Cyggie.Plugins.Services.Models.ServiceManager"/> <br/>
+            Your configuration will be NULL <br/>
+            Since it is impossible to create a ScriptableObject from an external project outside of Unity <br/>
+            However, you can still use const variables within it if you wish to
+            </summary>
+        </member>
+    </members>
+</doc>

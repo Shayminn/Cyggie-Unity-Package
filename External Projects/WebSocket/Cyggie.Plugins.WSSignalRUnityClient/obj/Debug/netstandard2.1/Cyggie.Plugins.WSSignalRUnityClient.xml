@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cyggie.Plugins.WSSignalRUnityClient</name>
+    </assembly>
+    <members>
+        <member name="T:Cyggie.Plugins.WebSocket.WSUnityClientService">
+            <summary>
+            Service for connecting to a WebSocket server using SignalR
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.WebSocket.WSUnityClientService.OnConnected">
+            <summary>
+            Called when the connection is established
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.WebSocket.WSUnityClientService.OnDisconnected">
+            <summary>
+            Called when the connection is disconnected
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.WebSocket.WSUnityClientService.OnClosed">
+            <summary>
+            Called when the connection is closed
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.WebSocket.WSUnityClientService.IsConnected">
+            <summary>
+            Whether a connection has been established
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.BuildConnection(System.String)">
+            <summary>
+            Build a new connection to a hub <paramref name="url"/>
+            </summary>
+            <param name="url">Hub URL to connect to</param>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.RegisterReceivingMethods(Cyggie.Plugins.WebSocket.WSClientMethod[])">
+            <summary>
+            Register methods/callbacks to the hub connection
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.Connect">
+            <summary>
+            Establish connection to the hub to start sending/receiving <br/>
+            Make sure you register receiving methods (using <see cref="M:Cyggie.Plugins.WebSocket.WSUnityClientService.RegisterReceivingMethods(Cyggie.Plugins.WebSocket.WSClientMethod[])"/> before connecting
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.Disconnect">
+            <summary>
+            Disconnect from the established connection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.Call(System.String,System.Object[])">
+            <summary>
+            Call a method on the connection to the server
+            </summary>
+            <param name="methodName">Method name to call</param>
+            <param name="args">Arguments to pass to the method</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:Cyggie.Plugins.WebSocket.WSUnityClientServiceConfiguration">
+            <summary>
+            Service configuration for <see cref="T:Cyggie.Plugins.WebSocket.WSUnityClientService"/>
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.WebSocket.WSUnityClientServiceConfiguration.ReconnectionType">
+            <summary>
+            Reconnection type applied to the WS client service
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.WebSocket.WSUnityClientServiceConfiguration.ReconnectionDelay">
+            <summary>
+            Delay for reconnection (in ms)<br/>
+            When type is <see cref="F:Cyggie.Plugins.WebSocket.Models.Enums.WSReconnectionType.ReconnectConsistentDelay"/>, this value is applied at each attempt <br/>
+            When type is <see cref="F:Cyggie.Plugins.WebSocket.Models.Enums.WSReconnectionType.ReconnectIncrementalDelay"/>, this value is incremented after every attempt
+            </summary>
+        </member>
+    </members>
+</doc>

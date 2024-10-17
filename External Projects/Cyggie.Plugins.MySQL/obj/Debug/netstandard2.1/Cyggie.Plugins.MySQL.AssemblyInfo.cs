@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cyggie.Plugins.MySQL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5ddb3a0f8433b14475f427152865edb100bdce49")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8eb934ff36afcacadc1699862040cf737788f6f1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cyggie.Plugins.MySQL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cyggie.Plugins.MySQL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

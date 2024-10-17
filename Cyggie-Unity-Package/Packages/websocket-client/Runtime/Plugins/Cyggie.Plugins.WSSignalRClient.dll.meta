@@ -7,8 +7,8 @@ PluginImporter:
   executionOrder: {}
   defineConstraints: []
   isPreloaded: 0
-  isOverridable: 0
-  isExplicitlyReferenced: 1
+  isOverridable: 1
+  isExplicitlyReferenced: 0
   validateReferences: 1
   platformData:
   - first:
@@ -20,15 +20,14 @@ PluginImporter:
         Exclude Editor: 0
         Exclude Linux64: 0
         Exclude OSXUniversal: 0
-        Exclude WebGL: 0
         Exclude Win: 0
         Exclude Win64: 0
+        Exclude iOS: 0
   - first:
       Android: Android
     second:
       enabled: 1
       settings:
-        AndroidSharedLibraryType: Executable
         CPU: ARMv7
   - first:
       Any: 
@@ -54,30 +53,34 @@ PluginImporter:
     second:
       enabled: 1
       settings:
-        CPU: AnyCPU
+        CPU: None
   - first:
       Standalone: Win
     second:
       enabled: 1
       settings:
-        CPU: AnyCPU
+        CPU: x86
   - first:
       Standalone: Win64
     second:
       enabled: 1
       settings:
-        CPU: AnyCPU
-  - first:
-      WebGL: WebGL
-    second:
-      enabled: 1
-      settings: {}
+        CPU: x86_64
   - first:
       Windows Store Apps: WindowsStoreApps
     second:
       enabled: 0
       settings:
         CPU: AnyCPU
+  - first:
+      iPhone: iOS
+    second:
+      enabled: 1
+      settings:
+        AddToEmbeddedBinaries: false
+        CPU: AnyCPU
+        CompileFlags: 
+        FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

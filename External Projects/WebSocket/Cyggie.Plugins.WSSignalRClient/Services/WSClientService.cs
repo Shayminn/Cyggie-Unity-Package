@@ -1,6 +1,6 @@
 ﻿using Cyggie.Plugins.Logs;
 using Cyggie.Plugins.Services.Models;
-using Cyggie.Plugins.WebSocket.Models;
+using Cyggie.Plugins.WebSocket.Models.Enums;
 using Cyggie.Plugins.WebSocket.Utils.Helpers;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
@@ -8,12 +8,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Cyggie.Plugins.WebSocket.Services
+namespace Cyggie.Plugins.WebSocket
 {
     /// <summary>
     /// Service for connecting to a WebSocket server using SignalR
     /// </summary>
-    public class WSClientService : Service
+    public class WSClientService : Service<WSClientServiceConfiguration>
     {
         /// <summary>
         /// Called when the connection is established
@@ -29,12 +29,6 @@ namespace Cyggie.Plugins.WebSocket.Services
         /// Called when the connection is closed
         /// </summary>
         public Action<Exception?>? OnClosed = null;
-
-        /// <summary>
-        /// Array of reconnection delays based on the number of attempts (usually incrementing on each new attempt) <br/>
-        /// By default; 15s, 60s, 150s, 300s, 600s
-        /// </summary>
-        public int[] ReconnectionDelays { private get; set; } = { 5, 20, 60, 150, 300 };
 
         private HubConnection? _conn = null;
         private bool _expectDisconnection = false;
@@ -127,7 +121,8 @@ namespace Cyggie.Plugins.WebSocket.Services
             catch (Exception ex)
             {
                 Log.Error($"Failed to start connection, exception: {ex}.", nameof(WSClientService));
-                await Reconnect();
+
+                await CheckForReconnection();
             }
         }
 
@@ -214,28 +209,68 @@ namespace Cyggie.Plugins.WebSocket.Services
                 return;
             }
 
-            await Reconnect();
+            await CheckForReconnection();
         }
 
-        private async Task Reconnect()
+        private async Task CheckForReconnection()
         {
             if (_conn == null || IsConnected || _dispose) return;
 
-            int delay = ReconnectionDelays[_reconnectionAttempts];
-            Log.Error($"Failed to connect, retrying in {delay}s...", nameof(WSClientService));
-
-            while (delay > 0)
+            bool shouldReconnect = false;
+            double delayInMs = 0;
+            switch (Configuration.ReconnectionType)
             {
-                await Task.Delay(1000);
+                case WSReconnectionType.NoReconnect:
+                    break;
 
-                if (IsConnected)
+                case WSReconnectionType.ReconnectOnce:
+                    shouldReconnect = _reconnectionAttempts == 0;
+                    delayInMs = Configuration.ReconnectionDelay;
+                    break;
+
+                case WSReconnectionType.ReconnectConsistentDelay:
+                    shouldReconnect = true;
+                    delayInMs = Configuration.ReconnectionDelay;
+                    break;
+
+                case WSReconnectionType.ReconnectIncrementalDelay:
+                    shouldReconnect = true;
+                    delayInMs = Configuration.ReconnectionDelay * Math.Pow(_reconnectionAttempts + 1, 2);
+                    break;
+
+                default:
+                    Log.Error($"Unhandled switch-case type of {typeof(WSReconnectionType)}: {Configuration.ReconnectionType}.", nameof(WSClientService));
+                    break;
+            }
+
+            if (shouldReconnect)
+            {
+                await Reconnect(delayInMs);
+            }
+        }
+
+        private async Task Reconnect(double delayInMs = 0)
+        {
+            if (_conn == null || IsConnected || _dispose) return;
+
+            if (delayInMs > 0)
+            {
+                Log.Error($"Failed to connect, retrying in {delayInMs}ms...", nameof(WSClientService));
+
+                const int checkIntervalInMs = 250;
+                while (delayInMs > 0)
                 {
-                    _reconnectionAttempts = 0;
-                    return;
-                }
-                else
-                {
-                    delay--;
+                    await Task.Delay(checkIntervalInMs);
+
+                    if (IsConnected)
+                    {
+                        _reconnectionAttempts = 0;
+                        return;
+                    }
+                    else
+                    {
+                        delayInMs -= checkIntervalInMs;
+                    }
                 }
             }
 
