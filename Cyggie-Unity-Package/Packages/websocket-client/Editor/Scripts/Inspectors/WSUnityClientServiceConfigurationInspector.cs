@@ -27,6 +27,8 @@ namespace Cyggie.WebSocket.Editor
         /// <inheritdoc/>
         public override void OnInspectorGUI()
         {
+            serializedObject.Update();
+
             EditorGUILayoutHelper.DrawScriptReference(_config);
 
             EditorGUILayout.PropertyField(_reconnectionType);
@@ -42,6 +44,8 @@ namespace Cyggie.WebSocket.Editor
                     EditorGUILayout.PropertyField(_reconnectionDelay);
                     break;
             }
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
