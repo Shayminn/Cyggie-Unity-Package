@@ -14,7 +14,7 @@ namespace Cyggie.Plugins.WebSocket
         private WSReconnectionType _reconnectionType = WSReconnectionType.ReconnectConsistentDelay;
 
         [SerializeField, Tooltip("Delay for reconnection (in ms).")]
-        private int _reconnectionDelay = 5;
+        private int _reconnectionDelay = 5000;
 
         /// <summary>
         /// Reconnection type applied to the WS client service

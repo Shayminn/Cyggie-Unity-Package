@@ -18,7 +18,7 @@ namespace Cyggie.Plugins.WebSocket
         /// When type is <see cref="WSReconnectionType.ReconnectConsistentDelay"/>, this value is applied at each attempt <br/>
         /// When type is <see cref="WSReconnectionType.ReconnectIncrementalDelay"/>, this value is incremented after every attempt
         /// </summary>
-        public int ReconnectionDelay { get; private set; } = 5;
+        public int ReconnectionDelay { get; private set; } = 5000;
 
         /// <summary>
         /// Create new service configuration for <see cref="WSClientService"/>
