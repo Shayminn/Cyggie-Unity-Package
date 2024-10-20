@@ -43,7 +43,7 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
 
             while (Mathf.Abs(targetValue - currentValue) > 0.1f)
             {
-                currentValue += multiplier * Time.fixedDeltaTime * speed;
+                currentValue += multiplier * Time.deltaTime * speed;
                 onValueChanged?.Invoke(currentValue);
 
                 yield return null;
