@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cyggie.Plugins.SQLite")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+29b0749d5eac2db91fe5d4f6ff16052def74fd63")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+422d7c73cde104160a367fcef108f29a7adabd1e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cyggie.Plugins.SQLite")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cyggie.Plugins.SQLite")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

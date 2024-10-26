@@ -29,11 +29,12 @@
             Whether a connection has been established
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.BuildConnection(System.String)">
+        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.BuildConnection(System.String,System.String)">
             <summary>
             Build a new connection to a hub <paramref name="url"/>
             </summary>
             <param name="url">Hub URL to connect to</param>
+            <param name="authToken">Bearer token authentication</param>
         </member>
         <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.RegisterReceivingMethods(Cyggie.Plugins.WebSocket.WSClientMethod[])">
             <summary>
