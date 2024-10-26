@@ -7,7 +7,6 @@ namespace Cyggie.Main.Editor
     /// <summary>
     /// Scriptable object that contains editor related configurations
     /// </summary>
-    [CreateAssetMenu(menuName = "Cyggie/Test")]
     internal class EditorConfigurations : ScriptableObject
     {
         public const string cFileName = "EditorConfigurations";
