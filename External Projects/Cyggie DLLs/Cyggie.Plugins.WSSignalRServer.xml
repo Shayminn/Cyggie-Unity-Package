@@ -4,18 +4,18 @@
         <name>Cyggie.Plugins.WSSignalRServer</name>
     </assembly>
     <members>
-        <member name="T:Cyggie.Plugins.WebSocket.Services.WSSignalRServerService">
+        <member name="T:Cyggie.Plugins.SignalR.Services.WSSignalRServerService">
             <summary>
             Service for hosting a WebSocket server using SignalR
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.WebSocket.Services.WSSignalRServerService.BuildWithUrls(System.String[])">
+        <member name="M:Cyggie.Plugins.SignalR.Services.WSSignalRServerService.BuildWithUrls(System.String[])">
             <summary>
             Set origins url and port for the server
             </summary>
             <param name="urls">Array of urls for webhost</param>
         </member>
-        <member name="M:Cyggie.Plugins.WebSocket.Services.WSSignalRServerService.RegisterHub``1(System.String)">
+        <member name="M:Cyggie.Plugins.SignalR.Services.WSSignalRServerService.RegisterHub``1(System.String)">
             <summary>
             Register a hub type to the server <br/>
             The path is 
@@ -23,7 +23,7 @@
             <typeparam name="T">Hub type</typeparam>
             <param name="path">Hub route path (Type name if empty)</param>
         </member>
-        <member name="M:Cyggie.Plugins.WebSocket.Services.WSSignalRServerService.StartServer">
+        <member name="M:Cyggie.Plugins.SignalR.Services.WSSignalRServerService.StartServer">
             <summary>
             Start the websocket server, it will then start accepting clients, and block the thread until host shutdown
             </summary>

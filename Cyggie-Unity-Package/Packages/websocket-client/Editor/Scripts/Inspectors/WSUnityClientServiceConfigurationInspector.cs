@@ -1,6 +1,6 @@
 using Cyggie.Main.Editor.Utils.Helpers;
-using Cyggie.Plugins.WebSocket;
-using Cyggie.Plugins.WebSocket.Models.Enums;
+using Cyggie.Plugins.SignalR.Models.Enums;
+using Cyggie.Plugins.SignalR.Services;
 using UnityEditor;
 
 namespace Cyggie.WebSocket.Editor
@@ -8,17 +8,17 @@ namespace Cyggie.WebSocket.Editor
     /// <summary>
     /// Inspector for <see cref="WSUnityClientServiceConfiguration"/>
     /// </summary>
-    [CustomEditor(typeof(WSUnityClientServiceConfiguration))]
+    [CustomEditor(typeof(SignalRUnityClientServiceConfiguration))]
     public class WSUnityClientServiceConfigurationInspector : UnityEditor.Editor
     {
         private SerializedProperty _reconnectionType = null;
         private SerializedProperty _reconnectionDelay = null;
 
-        private WSUnityClientServiceConfiguration _config = null;
+        private SignalRUnityClientServiceConfiguration _config = null;
 
         private void OnEnable()
         {
-            _config = target as WSUnityClientServiceConfiguration;
+            _config = target as SignalRUnityClientServiceConfiguration;
 
             _reconnectionType = serializedObject.FindProperty("_reconnectionType");
             _reconnectionDelay = serializedObject.FindProperty("_reconnectionDelay");
@@ -33,14 +33,14 @@ namespace Cyggie.WebSocket.Editor
 
             EditorGUILayout.PropertyField(_reconnectionType);
 
-            WSReconnectionType reconnectionType = (WSReconnectionType) _reconnectionType.intValue;
+            SignalRReconnectionType reconnectionType = (SignalRReconnectionType) _reconnectionType.intValue;
             switch (reconnectionType)
             {
-                case WSReconnectionType.NoReconnect:
+                case SignalRReconnectionType.NoReconnect:
                     break;
-                case WSReconnectionType.ReconnectOnce:
-                case WSReconnectionType.ReconnectConsistentDelay:
-                case WSReconnectionType.ReconnectIncrementalDelay:
+                case SignalRReconnectionType.ReconnectOnce:
+                case SignalRReconnectionType.ReconnectConsistentDelay:
+                case SignalRReconnectionType.ReconnectIncrementalDelay:
                     EditorGUILayout.PropertyField(_reconnectionDelay);
                     break;
             }

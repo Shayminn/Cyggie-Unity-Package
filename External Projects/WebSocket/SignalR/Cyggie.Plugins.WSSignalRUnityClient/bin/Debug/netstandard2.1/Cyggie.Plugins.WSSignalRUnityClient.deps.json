@@ -9,12 +9,12 @@
     ".NETStandard,Version=v2.1/": {
       "Cyggie.Plugins.WSSignalRUnityClient/1.0.0": {
         "dependencies": {
-          "Cyggie.Plugins.Logs": "1.0.0",
-          "Cyggie.Plugins.Services": "1.0.0",
-          "Cyggie.Plugins.UnityServices": "1.0.0",
           "Cyggie.Plugins.WSSignalRClient": "1.0.0",
           "Microsoft.AspNetCore.SignalR.Client": "8.0.6",
           "Newtonsoft.Json": "13.0.3",
+          "Cyggie.Plugins.Logs": "1.0.0.0",
+          "Cyggie.Plugins.Services": "1.0.0.0",
+          "Cyggie.Plugins.UnityServices": "1.0.0.0",
           "UnityEngine": "0.0.0.0"
         },
         "runtime": {
@@ -335,58 +335,38 @@
           }
         }
       },
-      "Cyggie.Plugins.Logs/1.0.0": {
-        "runtime": {
-          "Cyggie.Plugins.Logs.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "Cyggie.Plugins.Services/1.0.0": {
-        "dependencies": {
-          "Cyggie.Plugins.Logs": "1.0.0",
-          "Cyggie.Plugins.Utils": "1.0.0"
-        },
-        "runtime": {
-          "Cyggie.Plugins.Services.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "Cyggie.Plugins.UnityServices/1.0.0": {
-        "dependencies": {
-          "Cyggie.Plugins.Services": "1.0.0"
-        },
-        "runtime": {
-          "Cyggie.Plugins.UnityServices.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "Cyggie.Plugins.Utils/1.0.0": {
-        "dependencies": {
-          "Cyggie.Plugins.Logs": "1.0.0"
-        },
-        "runtime": {
-          "Cyggie.Plugins.Utils.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "Cyggie.Plugins.WSSignalRClient/1.0.0": {
         "dependencies": {
-          "Cyggie.Plugins.Logs": "1.0.0",
-          "Cyggie.Plugins.Services": "1.0.0",
           "Microsoft.AspNetCore.SignalR.Client": "8.0.6",
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
           "Cyggie.Plugins.WSSignalRClient.dll": {
             "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Cyggie.Plugins.Logs/1.0.0.0": {
+        "runtime": {
+          "Cyggie.Plugins.Logs.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Cyggie.Plugins.Services/1.0.0.0": {
+        "runtime": {
+          "Cyggie.Plugins.Services.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Cyggie.Plugins.UnityServices/1.0.0.0": {
+        "runtime": {
+          "Cyggie.Plugins.UnityServices.dll": {
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -603,28 +583,23 @@
       "path": "system.threading.tasks.extensions/4.5.4",
       "hashPath": "system.threading.tasks.extensions.4.5.4.nupkg.sha512"
     },
-    "Cyggie.Plugins.Logs/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Cyggie.Plugins.Services/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Cyggie.Plugins.UnityServices/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Cyggie.Plugins.Utils/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "Cyggie.Plugins.WSSignalRClient/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cyggie.Plugins.Logs/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cyggie.Plugins.Services/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cyggie.Plugins.UnityServices/1.0.0.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     },

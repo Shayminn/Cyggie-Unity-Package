@@ -4,56 +4,56 @@
         <name>Cyggie.Plugins.WSSignalRUnityClient</name>
     </assembly>
     <members>
-        <member name="T:Cyggie.Plugins.WebSocket.WSUnityClientService">
+        <member name="T:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService">
             <summary>
             Service for connecting to a WebSocket server using SignalR
             </summary>
         </member>
-        <member name="F:Cyggie.Plugins.WebSocket.WSUnityClientService.OnConnected">
+        <member name="F:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService.OnConnected">
             <summary>
             Called when the connection is established
             </summary>
         </member>
-        <member name="F:Cyggie.Plugins.WebSocket.WSUnityClientService.OnDisconnected">
+        <member name="F:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService.OnDisconnected">
             <summary>
             Called when the connection is disconnected
             </summary>
         </member>
-        <member name="F:Cyggie.Plugins.WebSocket.WSUnityClientService.OnClosed">
+        <member name="F:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService.OnClosed">
             <summary>
             Called when the connection is closed
             </summary>
         </member>
-        <member name="P:Cyggie.Plugins.WebSocket.WSUnityClientService.IsConnected">
+        <member name="P:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService.IsConnected">
             <summary>
             Whether a connection has been established
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.BuildConnection(System.String,System.String)">
+        <member name="M:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService.BuildConnection(System.String,System.String)">
             <summary>
             Build a new connection to a hub <paramref name="url"/>
             </summary>
             <param name="url">Hub URL to connect to</param>
             <param name="authToken">Bearer token authentication</param>
         </member>
-        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.RegisterReceivingMethods(Cyggie.Plugins.WebSocket.WSClientMethod[])">
+        <member name="M:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService.RegisterReceivingMethods(Cyggie.Plugins.SignalR.SignalRClientMethod[])">
             <summary>
             Register methods/callbacks to the hub connection
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.Connect">
+        <member name="M:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService.Connect">
             <summary>
             Establish connection to the hub to start sending/receiving <br/>
-            Make sure you register receiving methods (using <see cref="M:Cyggie.Plugins.WebSocket.WSUnityClientService.RegisterReceivingMethods(Cyggie.Plugins.WebSocket.WSClientMethod[])"/> before connecting
+            Make sure you register receiving methods (using <see cref="M:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService.RegisterReceivingMethods(Cyggie.Plugins.SignalR.SignalRClientMethod[])"/> before connecting
             </summary>
         </member>
-        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.Disconnect">
+        <member name="M:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService.Disconnect">
             <summary>
             Disconnect from the established connection
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.Call(System.String,System.Object[])">
+        <member name="M:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService.Call(System.String,System.Object[])">
             <summary>
             Call a method on the connection to the server
             </summary>
@@ -61,24 +61,24 @@
             <param name="args">Arguments to pass to the method</param>
             <returns></returns>
         </member>
-        <member name="M:Cyggie.Plugins.WebSocket.WSUnityClientService.Dispose">
+        <member name="M:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService.Dispose">
             <inheritdoc/>
         </member>
-        <member name="T:Cyggie.Plugins.WebSocket.WSUnityClientServiceConfiguration">
+        <member name="T:Cyggie.Plugins.SignalR.Services.SignalRUnityClientServiceConfiguration">
             <summary>
-            Service configuration for <see cref="T:Cyggie.Plugins.WebSocket.WSUnityClientService"/>
+            Service configuration for <see cref="T:Cyggie.Plugins.SignalR.Services.SignalRUnityClientService"/>
             </summary>
         </member>
-        <member name="P:Cyggie.Plugins.WebSocket.WSUnityClientServiceConfiguration.ReconnectionType">
+        <member name="P:Cyggie.Plugins.SignalR.Services.SignalRUnityClientServiceConfiguration.ReconnectionType">
             <summary>
             Reconnection type applied to the WS client service
             </summary>
         </member>
-        <member name="P:Cyggie.Plugins.WebSocket.WSUnityClientServiceConfiguration.ReconnectionDelay">
+        <member name="P:Cyggie.Plugins.SignalR.Services.SignalRUnityClientServiceConfiguration.ReconnectionDelay">
             <summary>
             Delay for reconnection (in ms)<br/>
-            When type is <see cref="F:Cyggie.Plugins.WebSocket.Models.Enums.WSReconnectionType.ReconnectConsistentDelay"/>, this value is applied at each attempt <br/>
-            When type is <see cref="F:Cyggie.Plugins.WebSocket.Models.Enums.WSReconnectionType.ReconnectIncrementalDelay"/>, this value is incremented after every attempt
+            When type is <see cref="F:Cyggie.Plugins.SignalR.Models.Enums.SignalRReconnectionType.ReconnectConsistentDelay"/>, this value is applied at each attempt <br/>
+            When type is <see cref="F:Cyggie.Plugins.SignalR.Models.Enums.SignalRReconnectionType.ReconnectIncrementalDelay"/>, this value is incremented after every attempt
             </summary>
         </member>
     </members>
