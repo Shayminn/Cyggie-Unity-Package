@@ -1,0 +1,54 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.1/",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.1": {},
+    ".NETStandard,Version=v2.1/": {
+      "Cyggie.Plugins.NativeWSClient/1.0.0": {
+        "dependencies": {
+          "Cyggie.Plugins.Logs": "1.0.0.0",
+          "Cyggie.Plugins.Services": "1.0.0.0"
+        },
+        "runtime": {
+          "Cyggie.Plugins.NativeWSClient.dll": {}
+        }
+      },
+      "Cyggie.Plugins.Logs/1.0.0.0": {
+        "runtime": {
+          "Cyggie.Plugins.Logs.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Cyggie.Plugins.Services/1.0.0.0": {
+        "runtime": {
+          "Cyggie.Plugins.Services.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Cyggie.Plugins.NativeWSClient/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cyggie.Plugins.Logs/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cyggie.Plugins.Services/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

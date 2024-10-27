@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cyggie.Plugins.WSSignalRClient")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c021ec7f00769182dc5fc1d432831dc7dd3ef47")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+30b870f2afeb094358923b594642ab65e09abad3")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cyggie.Plugins.WSSignalRClient")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cyggie.Plugins.WSSignalRClient")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

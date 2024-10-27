@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cyggie.Plugins.NativeWSClient</name>
+    </assembly>
+    <members>
+        <member name="T:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService">
+            <summary>
+            Service that manages the Native WS client
+            </summary>
+        </member>
+        <member name="P:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.IsConnected">
+            <summary>
+            Whether the WS connection is currently connected
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.OnInitialized">
+            <inheritdoc/>
+        </member>
+        <member name="M:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.SetBuffers(System.Int32,System.Int32)">
+            <summary>
+            Set the receive and send buffer sizes in bytes
+            </summary>
+            <param name="receiveSize">Receive buffer size in bytes</param>
+            <param name="sendSize">Send buffer size in bytes</param>
+        </member>
+        <member name="M:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.SetRequestHeaders(System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            Set the request headers for the client
+            </summary>
+            <param name="headers">Collection of all headers to set</param>
+        </member>
+        <member name="M:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.Connect(System.String)">
+            <summary>
+            Connect to the WS server
+            </summary>
+            <param name="url">Url of the WS server</param>
+        </member>
+        <member name="M:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.Send(System.String)">
+            <summary>
+            Send a message to the WS server
+            </summary>
+            <param name="message">Message to send</param>
+        </member>
+        <member name="M:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.StartListening(System.Action{System.String},System.Action,System.Action{System.Exception})">
+            <summary>
+            Start listening to messages from the WS server
+            </summary>
+            <param name="onMessageReceived">Called when a new message is received</param>
+            <param name="onListeningStopped"></param>
+            <param name="onError"></param>
+        </member>
+        <member name="M:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.StopListening">
+            <summary>
+            Stop listening to messages from the server
+            </summary>
+        </member>
+    </members>
+</doc>

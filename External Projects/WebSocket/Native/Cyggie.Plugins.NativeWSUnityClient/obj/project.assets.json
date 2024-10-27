@@ -14,9 +14,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ryan\\Documents\\Git\\Cyggie-Unity-Package\\External Projects\\WebSocket\\Native\\Cyggie.Plugins.NativeWSUnityClient\\Cyggie.Plugins.NativeWSUnityClient.csproj",
-      "projectName": "Cyggie.Plugins.NativeWSUnityClient",
-      "projectPath": "C:\\Users\\Ryan\\Documents\\Git\\Cyggie-Unity-Package\\External Projects\\WebSocket\\Native\\Cyggie.Plugins.NativeWSUnityClient\\Cyggie.Plugins.NativeWSUnityClient.csproj",
+      "projectUniqueName": "C:\\Users\\Ryan\\Documents\\Git\\Cyggie-Unity-Package\\External Projects\\WebSocket\\Native\\Cyggie.Plugins.NativeWSUnityClient\\Cyggie.Plugins.NativeWSClient.csproj",
+      "projectName": "Cyggie.Plugins.NativeWSClient",
+      "projectPath": "C:\\Users\\Ryan\\Documents\\Git\\Cyggie-Unity-Package\\External Projects\\WebSocket\\Native\\Cyggie.Plugins.NativeWSUnityClient\\Cyggie.Plugins.NativeWSClient.csproj",
       "packagesPath": "C:\\Users\\Ryan\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Ryan\\Documents\\Git\\Cyggie-Unity-Package\\External Projects\\WebSocket\\Native\\Cyggie.Plugins.NativeWSUnityClient\\obj\\",
       "projectStyle": "PackageReference",

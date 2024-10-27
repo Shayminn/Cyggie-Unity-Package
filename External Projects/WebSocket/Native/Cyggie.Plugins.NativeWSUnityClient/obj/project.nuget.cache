@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FJBBvXHRKio=",
+  "dgSpecHash": "qd2lp/vw6xw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Ryan\\Documents\\Git\\Cyggie-Unity-Package\\External Projects\\WebSocket\\Native\\Cyggie.Plugins.NativeWSUnityClient\\Cyggie.Plugins.NativeWSUnityClient.csproj",
+  "projectFilePath": "C:\\Users\\Ryan\\Documents\\Git\\Cyggie-Unity-Package\\External Projects\\WebSocket\\Native\\Cyggie.Plugins.NativeWSUnityClient\\Cyggie.Plugins.NativeWSClient.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
