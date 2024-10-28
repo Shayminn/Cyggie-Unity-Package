@@ -57,13 +57,13 @@ namespace Cyggie.Plugins.NativeWSClient.Services
             {
                 if (string.IsNullOrEmpty(header.Key))
                 {
-                    Log.Error($"Header is null or empty, skipping...", nameof(NativeWSClientService));
+                    Log.Error($"Header key is null or empty, skipping...", nameof(NativeWSClientService));
                     continue;
                 }
 
                 if (string.IsNullOrEmpty(header.Value))
                 {
-                    Log.Error($"Header's value for key {header.Key} is null or empty, skipping...", nameof(NativeWSClientService));
+                    Log.Error($"Header value for key {header.Key} is null or empty, skipping...", nameof(NativeWSClientService));
                     continue;
                 }
 

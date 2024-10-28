@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cyggie.Plugins.HTTP</name>
+    </assembly>
+    <members>
+        <member name="T:Cyggie.Plugins.HTTP.Services.HTTPService">
+            <summary>
+            Service that simplifies sending Http requests
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.HTTP.Services.HTTPService.SetDefaultHeaders(System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            Set the default request headers for the client
+            </summary>
+            <param name="headers">Collection of all headers to set</param>
+        </member>
+        <member name="M:Cyggie.Plugins.HTTP.Services.HTTPService.ClearDefaultHeaders">
+            <summary>
+            Clear the default request headers for the client
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.HTTP.Services.HTTPService.Get(System.String,System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            Send a GET request to <paramref name="url"/> with <paramref name="headers"/>
+            </summary>
+            <param name="url">Url to send request to</param>
+            <param name="headers">Headers added on top of the default headers to the request</param>
+            <returns>Response message (empty if failed)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.HTTP.Services.HTTPService.Post(System.String,System.String,System.Text.Encoding,System.String,System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            Send a POST request to <paramref name="url"/> with <paramref name="headers"/>
+            </summary>
+            <param name="url">Url to send request to</param>
+            <param name="text">Text to send</param>
+            <param name="encoding">Text encoding</param>
+            <param name="mediaType">Text media type</param>
+            <param name="headers">Headers added on top of the default headers to the request</param>
+            <returns>Response message (empty if failed)</returns>
+        </member>
+        <member name="M:Cyggie.Plugins.HTTP.Services.HTTPService.Put(System.String,System.String,System.Text.Encoding,System.String,System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            Send a PUT request to <paramref name="url"/> with <paramref name="headers"/>
+            </summary>
+            <param name="url">Url to send request to</param>
+            <param name="text">Text to send</param>
+            <param name="encoding">Text encoding</param>
+            <param name="mediaType">Text media type</param>
+            <param name="headers">Headers added on top of the default headers to the request</param>
+        </member>
+        <member name="T:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes">
+            <summary>
+            Const of HTTP media types
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cFormData">
+            <summary>
+            Form submissions with data encoded as key-value pairs
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cMultipartFormData">
+            <summary>
+            Form submissions with file uploads
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cJSON">
+            <summary>
+            Data sent as JSON objects
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cApplicationXML">
+            <summary>
+            Data sent as XML
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cTextXML">
+            <summary>
+            XML in a text format
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cText">
+            <summary>
+            Plain text data
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cBinary">
+            <summary>
+            Binary data
+            </summary>
+        </member>
+    </members>
+</doc>
