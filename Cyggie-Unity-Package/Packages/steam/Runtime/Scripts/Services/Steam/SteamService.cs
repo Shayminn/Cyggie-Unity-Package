@@ -10,7 +10,7 @@ using Cyggie.Plugins.Logs;
 using Steamworks;
 #endif
 
-namespace Cyggie.Plugins.Runtime.Services
+namespace Cyggie.Steam.Runtime.Services
 {
     /// <summary>
     /// Service that manages the Steam API <br/>
