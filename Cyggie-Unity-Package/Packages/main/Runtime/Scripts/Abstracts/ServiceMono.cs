@@ -238,7 +238,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
                 return;
             }
 
-            Log.Debug($"Service ({GetType()}) initialized with configuration ({(Configuration == null ? "none" : Configuration.GetType().ToString())}).", nameof(ServiceMono));
+            Log.Debug($"Service ({GetType().Name}) initialized with configuration ({(Configuration == null ? "none" : Configuration.GetType().ToString())}).", nameof(ServiceMono));
 
             Manager = manager;
             OnInitialized();

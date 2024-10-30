@@ -2,8 +2,7 @@
     "name": "Cyggie.Steam.Runtime",
     "rootNamespace": "Cyggie.Steam.Runtime",
     "references": [
-        "GUID:26cad73ee07989f449c8b98b2838b82f",
-        "GUID:68bd7fdb68ef2684e982e8a9825b18a5"
+        "GUID:26cad73ee07989f449c8b98b2838b82f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

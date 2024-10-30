@@ -1,25 +1,18 @@
-#if !(UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || STEAMWORKS_WIN || STEAMWORKS_LIN_OSX)
-#define DISABLESTEAMWORKS
-#endif
-
-using UnityEngine;
-
-#if !DISABLESTEAMWORKS
 using Cyggie.Main.Runtime.ServicesNS;
 using Cyggie.Plugins.Logs;
 using Steamworks;
-#endif
+using System;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Cyggie.Steam.Runtime.Services
 {
     /// <summary>
-    /// Service that manages the Steam API <br/>
-    /// Based on https://raw.githubusercontent.com/rlabrecque/SteamManager/master/SteamManager.cs
+    /// Service that manages the Steam API
     /// </summary>
-    public partial class SteamService : ServiceMono
+    public partial class SteamService : ServiceMono<SteamServiceConfiguration>
     {
-#if !DISABELSTEAMWORKS
-        private bool _steamInitialized = false;
+        #region Mono implementations
 
         /// <inheritdoc/>
         protected override void OnInitialized()
@@ -28,55 +21,37 @@ namespace Cyggie.Steam.Runtime.Services
 
             try
             {
-                // If Steam is not running or the game wasn't started through Steam, SteamAPI_RestartAppIfNecessary starts the
-                // Steam client and also launches this game again if the User owns it. This can act as a rudimentary form of DRM.
-
-                // Once you get a Steam AppID assigned by Valve, you need to replace AppId_t.Invalid with it and
-                // remove steam_appid.txt from the game depot. eg: "(AppId_t)480" or "new AppId_t(480)".
-                // See the Valve documentation for more information: https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown
-                if (SteamAPI.RestartAppIfNecessary(AppId_t.Invalid))
-                {
-                    Application.Quit();
-                    return;
-                }
+                SteamClient.Init(480);
             }
-            catch (System.DllNotFoundException)
+            catch (Exception ex)
             {
-                // We catch this exception here, as it will be the first occurrence of it.
-                Log.Error($"Could not load [lib]steam_api.dll/so/dylib. It's likely not in the correct location. Refer to the README for more details.\\n\"", nameof(SteamService));
-
-                Application.Quit();
-                return;
+                Log.Error($"Failed to initialize steam client, exception: {ex}.", nameof(SteamService));
             }
-
-            Log.Debug($"Initializing steam API...", nameof(SteamService));
-
-            // Initializes the Steamworks API.
-            // If this returns false then this indicates one of the following conditions:
-            // [*] The Steam client isn't running. A running Steam client is required to provide implementations of the various Steamworks interfaces.
-            // [*] The Steam client couldn't determine the App ID of game. If you're running your application from the executable or debugger directly then you must have a [code-inline]steam_appid.txt[/code-inline] in your game directory next to the executable, with your app ID in it and nothing else. Steam will look for this file in the current working directory. If you are running your executable from a different directory you may need to relocate the [code-inline]steam_appid.txt[/code-inline] file.
-            // [*] Your application is not running under the same OS user context as the Steam client, such as a different user or administration access level.
-            // [*] Ensure that you own a license for the App ID on the currently active Steam account. Your game must show up in your Steam library.
-            // [*] Your App ID is not completely set up, i.e. in Release State: Unavailable, or it's missing default packages.
-            // Valve's documentation for this is located here:
-            // https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown
-            _steamInitialized = SteamAPI.Init();
-            if (!_steamInitialized)
-            {
-                Log.Error("[Steamworks.NET] SteamAPI_Init() failed. Refer to Valve's documentation or the comment above this line for more information.", nameof(SteamService));
-
-                return;
-            }
-
-            Log.Debug($"Steam API initialized.", nameof(SteamService));
         }
 
         /// <inheritdoc/>
-        protected override void OnDestroy()
+        protected override void OnEnable()
         {
-            base.OnDestroy();
+            base.OnEnable();
 
-            SteamAPI.Shutdown();
+            if (Configuration.EnableDebugCallbacks)
+            {
+                Steamworks.Dispatch.OnDebugCallback += OnDebugCallback;
+            }
+
+            Steamworks.Dispatch.OnException += OnException;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            if (Configuration.EnableDebugCallbacks)
+            {
+                Steamworks.Dispatch.OnDebugCallback -= OnDebugCallback;
+            }
+
+            Steamworks.Dispatch.OnException -= OnException;
         }
 
         /// <inheritdoc/>
@@ -84,10 +59,76 @@ namespace Cyggie.Steam.Runtime.Services
         {
             base.Update();
 
-            // Run Steam client callbacks
-            SteamAPI.RunCallbacks();
+            // Run any pending Steam callbacks
+            SteamClient.RunCallbacks();
         }
 
-#endif
+        /// <inheritdoc/>
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            AuthSessionTicket.Cancel();
+            SteamClient.Shutdown();
+        }
+
+        #endregion
+
+        #region Public API
+
+        /// <summary>
+        /// Get the currently connected steam user's avatar
+        /// </summary>
+        /// <returns>Steam avatar in Texture 2D</returns>
+        public async Task<Texture2D> GetAvatar()
+        {
+            try
+            {
+                // Get Avatar using await
+                Steamworks.Data.Image? avatar = await SteamFriends.GetLargeAvatarAsync(SteamClient.SteamId);
+                if (avatar == null)
+                {
+                    Log.Error($"Failed to get avatar, object was null.", nameof(SteamService));
+                    return null;
+                }
+
+                Texture2D texture = new Texture2D((int) avatar.Value.Width, (int) avatar.Value.Height, TextureFormat.ARGB32, false);
+                texture.filterMode = FilterMode.Trilinear;
+
+                // Flip image
+                for (int x = 0; x < avatar.Value.Width; x++)
+                {
+                    for (int y = 0; y < avatar.Value.Height; y++)
+                    {
+                        var p = avatar.Value.GetPixel(x, y);
+                        texture.SetPixel(x, (int) avatar.Value.Height - y, new UnityEngine.Color(p.r / 255.0f, p.g / 255.0f, p.b / 255.0f, p.a / 255.0f));
+                    }
+                }
+
+                texture.Apply();
+                return texture;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Failed to get avatar, unhandled exception: {ex}.", nameof(SteamService));
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Event handlers
+
+        private void OnDebugCallback(CallbackType type, string message, bool b)
+        {
+            Log.Debug($"[Steam Debug Callback]: {message} ({type} | {b}).", nameof(SteamService));
+        }
+
+        private void OnException(Exception ex)
+        {
+            Log.Error($"[Steam Exception]: {ex}.", nameof(SteamService));
+        }
+
+        #endregion
     }
 }

@@ -1,5 +1,4 @@
 using Steamworks;
-using System.Linq;
 using System;
 
 namespace Cyggie.Steam.Runtime.Services
@@ -9,36 +8,19 @@ namespace Cyggie.Steam.Runtime.Services
     /// </summary>
     public partial class SteamService
     {
-#if !DISABELSTEAMWORKS
         private const int cAuthSessionTicketMaxSize = 1024;
+        private AuthTicket _ticket = null;
 
         /// <summary>
         /// Get the connected steam's user ID
         /// </summary>
-        public CSteamID UserID => SteamUser.GetSteamID();
+        public ulong UserID => SteamClient.SteamId.Value;
 
         /// <summary>
         /// Get the current authentication session ticket
         /// </summary>
-        public byte[] AuthSessionTicket
-        {
-            get
-            {
-                SteamNetworkingIdentity identity = new SteamNetworkingIdentity();
+        public string AuthSessionTicketData => AuthSessionTicket == null ? string.Empty : Convert.ToBase64String(AuthSessionTicket.Data);
 
-                byte[] ticketData = new byte[cAuthSessionTicketMaxSize];
-                HAuthTicket ticket = SteamUser.GetAuthSessionTicket(ticketData, cAuthSessionTicketMaxSize, out uint ticketSize, ref identity);
-
-                if (ticket != HAuthTicket.Invalid && ticketSize > 0)
-                {
-                    return ticketData.Take((int) ticketSize).ToArray();
-                }
-                else
-                {
-                    return Array.Empty<byte>();
-                }
-            }
-        }
-#endif
+        private AuthTicket AuthSessionTicket => _ticket ??= SteamUser.GetAuthSessionTicket();
     }
 }
