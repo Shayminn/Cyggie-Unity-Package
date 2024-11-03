@@ -12,6 +12,11 @@ namespace Cyggie.Steam.Runtime.Services
         private AuthTicket _ticket = null;
 
         /// <summary>
+        /// Whether the steam client is connected to the Steam servers
+        /// </summary>
+        public bool IsConnected => SteamClient.IsLoggedOn;
+
+        /// <summary>
         /// Get the connected steam's user ID
         /// </summary>
         public ulong UserID => SteamClient.SteamId.Value;

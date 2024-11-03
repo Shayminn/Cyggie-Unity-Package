@@ -34,6 +34,16 @@ namespace Cyggie.Plugins.NativeWSClient.Services
             SetBuffers(8192, 8192);
         }
 
+        /// <inheritdoc/>
+        public override async void Dispose()
+        {
+            base.Dispose();
+            if (IsConnected)
+            {
+                await Disconnect();
+            }
+        }
+
         /// <summary>
         /// Set the receive and send buffer sizes in bytes
         /// </summary>
@@ -68,7 +78,7 @@ namespace Cyggie.Plugins.NativeWSClient.Services
                 }
 
                 _client.Options.SetRequestHeader(header.Key, header.Value);
-                Log.Debug($"Set header to WS client: {header.Key} {header.Value}", nameof(NativeWSClientService));
+                Log.Debug($"Set header to WS client: {header.Key} {header.Value}.", nameof(NativeWSClientService));
             }
         }
 
@@ -87,7 +97,26 @@ namespace Cyggie.Plugins.NativeWSClient.Services
             }
             catch (Exception ex)
             {
-                Log.Error($"Failed to connect to WS server, exception: {ex}", nameof(NativeWSClientService));
+                Log.Error($"Failed to connect to WS server, exception: {ex}.", nameof(NativeWSClientService));
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task Disconnect()
+        {
+            Log.Debug($"Closing connection...", nameof(NativeWSClientService));
+
+            try
+            {
+                await _client.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
+                Log.Debug($"Connection closed.", nameof(NativeWSClientService));
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Failed to close the WS server, exception: {ex}.", nameof(NativeWSClientService));
             }
         }
 
@@ -118,7 +147,7 @@ namespace Cyggie.Plugins.NativeWSClient.Services
         {
             if (!IsConnected)
             {
-                Log.Error($"Failed to send message, server connection is not established.", nameof(NativeWSClientService));
+                Log.Error($"Failed to start listening, server connection is not established.", nameof(NativeWSClientService));
                 return;
             }
 
@@ -135,6 +164,10 @@ namespace Cyggie.Plugins.NativeWSClient.Services
                     ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[_readBufferSize]);
                     WebSocketReceiveResult result = await _client.ReceiveAsync(buffer, cancellationToken);
 
+                    // Check if connection is still open
+                    if (_client.State != WebSocketState.Open) break;
+
+                    // Check if we received a close socket message
                     if (result.MessageType == WebSocketMessageType.Close)
                     {
                         await _client.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
@@ -144,7 +177,6 @@ namespace Cyggie.Plugins.NativeWSClient.Services
                     // Convert received message into string
                     string receivedMessage = Encoding.UTF8.GetString(buffer.Array, 0, result.Count);
                     Log.Debug($"Received message: {receivedMessage}.", nameof(NativeWSClientService));
-
 
                     errorStack = 0;
                     onMessageReceived.Invoke(receivedMessage);
@@ -176,7 +208,7 @@ namespace Cyggie.Plugins.NativeWSClient.Services
         {
             if (!IsConnected)
             {
-                Log.Error($"Failed to send message, server connection is not established.", nameof(NativeWSClientService));
+                Log.Error($"Failed to stop listening, server connection is not established.", nameof(NativeWSClientService));
                 return;
             }
 

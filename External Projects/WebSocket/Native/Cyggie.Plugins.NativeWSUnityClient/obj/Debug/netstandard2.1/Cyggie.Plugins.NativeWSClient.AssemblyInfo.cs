@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cyggie.Plugins.NativeWSClient")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9976c5f919d78dfa367f6dad37d48f981e54db17")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f3b0065934437bca98be3137948190518804e7be")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cyggie.Plugins.NativeWSClient")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cyggie.Plugins.NativeWSClient")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

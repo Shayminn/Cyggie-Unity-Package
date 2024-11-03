@@ -17,6 +17,9 @@
         <member name="M:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.OnInitialized">
             <inheritdoc/>
         </member>
+        <member name="M:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.Dispose">
+            <inheritdoc/>
+        </member>
         <member name="M:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.SetBuffers(System.Int32,System.Int32)">
             <summary>
             Set the receive and send buffer sizes in bytes
@@ -35,6 +38,12 @@
             Connect to the WS server
             </summary>
             <param name="url">Url of the WS server</param>
+        </member>
+        <member name="M:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.Disconnect">
+            <summary>
+            
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:Cyggie.Plugins.NativeWSClient.Services.NativeWSClientService.Send(System.String)">
             <summary>

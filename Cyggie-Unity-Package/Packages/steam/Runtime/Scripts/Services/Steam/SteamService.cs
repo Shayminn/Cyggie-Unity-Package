@@ -19,9 +19,15 @@ namespace Cyggie.Steam.Runtime.Services
         {
             base.OnInitialized();
 
+            if (Configuration == null)
+            {
+                Log.Error($"Failed to initialize {typeof(SteamService).Name}, configuration is null.", nameof(SteamService));
+                return;
+            }
+
             try
             {
-                SteamClient.Init(480);
+                SteamClient.Init(Configuration.AppID);
             }
             catch (Exception ex)
             {

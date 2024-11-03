@@ -109,7 +109,7 @@ namespace Cyggie.Plugins.HTTP.Services
                 HttpResponseMessage response = await _client.SendAsync(request);
 
                 // Check response from server
-                if (response.StatusCode == HttpStatusCode.OK)
+                if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.Accepted)
                 {
                     string responseMessage = await response.Content.ReadAsStringAsync();
                     Log.Debug($"Received {request.Method.Method} response: {responseMessage}", nameof(HTTPService));
