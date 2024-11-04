@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cyggie.Plugins.UnityServices")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9976c5f919d78dfa367f6dad37d48f981e54db17")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0292a9f463a9b06b333539623fac5230a868f354")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cyggie.Plugins.UnityServices")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cyggie.Plugins.UnityServices")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

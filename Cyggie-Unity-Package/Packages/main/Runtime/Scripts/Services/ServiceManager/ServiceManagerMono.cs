@@ -4,6 +4,7 @@ using Cyggie.Main.Runtime.ServicesNS.ScriptableObjects;
 using Cyggie.Main.Runtime.Utils.Helpers;
 using Cyggie.Plugins.Logs;
 using Cyggie.Plugins.Services.Models;
+using Cyggie.Plugins.UnityServices.Models;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -129,9 +130,20 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
             _serviceManager.Services.ForEach(x =>
             {
-                if (x is ServiceMono service)
+                switch (x)
                 {
-                    service.AwakeInternal();
+                    case Service service:
+                        // Assign this mono to all services that requires it
+                        if (typeof(IServiceMono).IsAssignableFrom(service.GetType()))
+                        {
+                            ((IServiceMono) service).OnMonoBehaviourAssigned(this);
+                        }
+                        break;
+
+                    case ServiceMono serviceMono:
+                        // Call awakes on all services
+                        serviceMono.AwakeInternal();
+                        break;
                 }
             });
         }

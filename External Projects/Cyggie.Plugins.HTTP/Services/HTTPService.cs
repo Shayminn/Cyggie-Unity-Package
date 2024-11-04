@@ -63,7 +63,7 @@ namespace Cyggie.Plugins.HTTP.Services
         /// <param name="mediaType">Text media type</param>
         /// <param name="headers">Headers added on top of the default headers to the request</param>
         /// <returns>Response message (empty if failed)</returns>
-        public async Task<string> Post(string url, string text, Encoding? encoding = null, string mediaType = HTTPMediaTypes.cText, params KeyValuePair<string, string>[] headers)
+        public async Task<string> Post(string url, string text = "", Encoding? encoding = null, string mediaType = HTTPMediaTypes.cText, params KeyValuePair<string, string>[] headers)
         {
             // Create request
             HttpRequestMessage request = new HttpRequestMessage()
@@ -72,6 +72,11 @@ namespace Cyggie.Plugins.HTTP.Services
                 RequestUri = new Uri(url),
                 Content = new StringContent(text, encoding ?? Encoding.UTF8, mediaType)
             };
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                request.Content = new StringContent(text, encoding ?? Encoding.UTF8, mediaType);
+            }
 
             AddRequestHeaders(request.Headers, headers);
             return await Send(request);
