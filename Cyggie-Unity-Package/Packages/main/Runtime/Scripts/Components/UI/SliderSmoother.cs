@@ -75,14 +75,7 @@ namespace Cyggie.Main.Runtime.Components.UI
 
         private void OnSliderValueChanged(float value)
         {
-            if (_slider.value != value)
-            {
-                _slider.value = value;
-            }
-            else
-            {
-                _slider.onValueChanged.Invoke(value);
-            }
+            _slider.value = value;
         }
     }
 }
