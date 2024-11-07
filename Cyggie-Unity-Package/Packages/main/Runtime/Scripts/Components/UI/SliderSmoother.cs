@@ -79,8 +79,10 @@ namespace Cyggie.Main.Runtime.Components.UI
             {
                 _slider.value = value;
             }
-         
-            _slider.onValueChanged.Invoke(value);
+            else
+            {
+                _slider.onValueChanged.Invoke(value);
+            }
         }
     }
 }
