@@ -64,6 +64,15 @@ namespace Cyggie.Main.Runtime.Components.UI
             });
         }
 
+        /// <summary>
+        /// Sets the value of the slider without a smooth transition
+        /// </summary>
+        /// <param name="targetValue">Target value to set</param>
+        public void SetValueWithoutSmoothing(float targetValue)
+        {
+            _slider.value = targetValue;
+        }
+
         private void OnSliderValueChanged(float value)
         {
             _slider.value = value;
