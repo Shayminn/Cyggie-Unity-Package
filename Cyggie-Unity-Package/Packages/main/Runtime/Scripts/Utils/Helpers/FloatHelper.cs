@@ -18,11 +18,12 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
         /// <param name="currentValue">Current float value</param>
         /// <param name="targetValue">Target float value</param>
         /// <param name="speed">Transition speed</param>
+        /// <param name="valueDifference">Estimated value to surpass in order to stop the transition (<paramref name="targetValue"/> - <paramref name="currentValue"/> > <paramref name="valueDifference"/>)</param>
         /// <param name="onValueChanged">Callback every time current value is changed</param>
         /// <param name="onTransitionCompleted">Callback when the transition is completed</param>
-        public static void SmoothTransition(MonoBehaviour mono, float currentValue, float targetValue, float speed = 1, Action<float> onValueChanged = null, Action onTransitionCompleted = null)
+        public static void SmoothTransition(MonoBehaviour mono, float currentValue, float targetValue, float speed = 1, float valueDifference = 0.1f, Action<float> onValueChanged = null, Action onTransitionCompleted = null)
         {
-            _smoothingCoroutine = mono.StartCoroutine(Smoothing(currentValue, targetValue, speed, onValueChanged, onTransitionCompleted));
+            _smoothingCoroutine = mono.StartCoroutine(Smoothing(currentValue, targetValue, speed, valueDifference, onValueChanged, onTransitionCompleted));
         }
 
         /// <summary>
@@ -37,11 +38,11 @@ namespace Cyggie.Main.Runtime.Utils.Helpers
             }
         }
 
-        private static IEnumerator Smoothing(float currentValue, float targetValue, float speed, Action<float> onValueChanged, Action onTransitionCompleted)
+        private static IEnumerator Smoothing(float currentValue, float targetValue, float speed, float valueDifference, Action<float> onValueChanged, Action onTransitionCompleted)
         {
             int multiplier = targetValue > currentValue ? 1 : -1;
 
-            while (Mathf.Abs(targetValue - currentValue) > 0.1f)
+            while (Mathf.Abs(targetValue - currentValue) > valueDifference)
             {
                 currentValue += multiplier * Time.deltaTime * speed;
                 onValueChanged?.Invoke(currentValue);

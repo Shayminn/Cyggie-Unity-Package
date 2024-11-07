@@ -16,6 +16,9 @@ namespace Cyggie.Main.Runtime.Components.UI
         [SerializeField, Tooltip("Smoothing speed multiplier.")]
         private float _smoothSpeed = 1f;
 
+        [SerializeField, Tooltip("Value difference between start and target value to be considered having reached the target value.")]
+        private float _valueDifference = 0.1f;
+
         private float _oldValue = 0;
         private bool _transitioning = false;
 
@@ -39,7 +42,7 @@ namespace Cyggie.Main.Runtime.Components.UI
             }
 
             _transitioning = true;
-            FloatHelper.SmoothTransition(this, _oldValue, value, _smoothSpeed, OnValueChanged, OnTransitionCompleted);
+            FloatHelper.SmoothTransition(this, _oldValue, value, _smoothSpeed, _valueDifference, OnValueChanged, OnTransitionCompleted);
         }
 
         private void OnValueChanged(float newValue)
