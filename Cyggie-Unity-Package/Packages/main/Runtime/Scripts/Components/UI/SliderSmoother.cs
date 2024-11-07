@@ -29,7 +29,7 @@ namespace Cyggie.Main.Runtime.Components.UI
         /// Property for setting the value of the slider <br/>
         /// Use <see cref="SetValue(float, Action{float}, Action)"/> to register to transition actions
         /// </summary>
-        public float Value { set => SetValue(value); }
+        public float Value { get => _slider.value; set => SetValue(value); }
 
         private bool _transitioning = false;
 
