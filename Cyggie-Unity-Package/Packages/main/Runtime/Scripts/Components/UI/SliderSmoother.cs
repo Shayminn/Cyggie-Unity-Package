@@ -1,4 +1,5 @@
 using Cyggie.Main.Runtime.Utils.Helpers;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +20,17 @@ namespace Cyggie.Main.Runtime.Components.UI
         [SerializeField, Tooltip("Value difference between start and target value to be considered having reached the target value.")]
         private float _valueDifference = 0.1f;
 
-        private float _oldValue = 0;
+        /// <summary>
+        /// Reference to the slider that this smoother affects
+        /// </summary>
+        public Slider Slider => _slider;
+
+        /// <summary>
+        /// Property for setting the value of the slider <br/>
+        /// Use <see cref="SetValue(float, Action{float}, Action)"/> to register to transition actions
+        /// </summary>
+        public float Value { set => SetValue(value); }
+
         private bool _transitioning = false;
 
         private void Awake()
@@ -28,32 +39,33 @@ namespace Cyggie.Main.Runtime.Components.UI
             {
                 _slider = GetComponent<Slider>();
             }
+        }
 
-            _oldValue = _slider.value;
-            _slider.onValueChanged.AddListener(OnSliderValueChanged);
+        /// <summary>
+        /// Sets the value of the slider for a smooth transition
+        /// </summary>
+        /// <param name="targetValue">Target value to transition to</param>
+        /// <param name="onValueChanged">Called whenever the value is changed</param>
+        /// <param name="onTransitionCompleted">Called when the transition is completed</param>
+        public void SetValue(float targetValue, Action<float> onValueChanged = null, Action onTransitionCompleted = null)
+        {
+            if (_transitioning)
+            {
+                FloatHelper.CancelSmoothTransition(this);
+            }
+
+            onValueChanged += OnSliderValueChanged;
+            FloatHelper.SmoothTransition(this, _slider.value, targetValue, _smoothSpeed, _valueDifference, onValueChanged, () =>
+            {
+                _transitioning = true;
+                onValueChanged -= OnSliderValueChanged;
+                onTransitionCompleted?.Invoke();
+            });
         }
 
         private void OnSliderValueChanged(float value)
         {
-            if (_transitioning)
-            {
-                if (value == _oldValue) return;
-                FloatHelper.CancelSmoothTransition(this);
-            }
-
-            _transitioning = true;
-            FloatHelper.SmoothTransition(this, _oldValue, value, _smoothSpeed, _valueDifference, OnValueChanged, OnTransitionCompleted);
-        }
-
-        private void OnValueChanged(float newValue)
-        {
-            _oldValue = newValue;
-            _slider.value = newValue;
-        }
-
-        private void OnTransitionCompleted()
-        {
-            _transitioning = false;
+            _slider.value = value;
         }
     }
 }
