@@ -55,9 +55,10 @@ namespace Cyggie.Main.Runtime.Components.UI
             }
 
             onValueChanged += OnSliderValueChanged;
+            _transitioning = true;
             FloatHelper.SmoothTransition(this, _slider.value, targetValue, _smoothSpeed, _valueDifference, onValueChanged, () =>
             {
-                _transitioning = true;
+                _transitioning = false;
                 onValueChanged -= OnSliderValueChanged;
                 onTransitionCompleted?.Invoke();
             });
