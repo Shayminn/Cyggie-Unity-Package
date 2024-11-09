@@ -43,8 +43,11 @@ namespace Cyggie.Main.Runtime.ServicesNS
         /// <inheritdoc/>
         public IServiceManager Manager { get; set; }
 
-        private Transform _instantiateParent = null;
-        private Transform InstantiateParent
+        /// <summary>
+        /// This service's transform parent assigned to <see cref="Instantiate"/> <br/>
+        /// Child of <see cref="Transform"/>
+        /// </summary>
+        public Transform InstantiateParent
         {
             get
             {
@@ -60,6 +63,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
                 return _instantiateParent;
             }
         }
+        private Transform _instantiateParent = null;
 
         #region MonoBehaviour virtuals
 
