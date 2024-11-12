@@ -4,6 +4,36 @@
         <name>Cyggie.Plugins.UnityHTTP</name>
     </assembly>
     <members>
+        <member name="T:Cyggie.Plugins.UnityHTTP.Services.Models.UnityHTTPMethod">
+            <summary>
+            Constants of Unity HTTP method types
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.UnityHTTP.Services.Models.UnityHTTPMethod.cDELETE">
+            <summary>
+            HTTP Delete method
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.UnityHTTP.Services.Models.UnityHTTPMethod.cGET">
+            <summary>
+            HTTP Get method
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.UnityHTTP.Services.Models.UnityHTTPMethod.cPATCH">
+            <summary>
+            HTTP Patch method
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.UnityHTTP.Services.Models.UnityHTTPMethod.cPOST">
+            <summary>
+            HTTP Post method
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.UnityHTTP.Services.Models.UnityHTTPMethod.cPUT">
+            <summary>
+            HTTP Put method
+            </summary>
+        </member>
         <member name="T:Cyggie.Plugins.UnityHTTP.Services.UnityHTTPService">
             <summary>
             Service that simplifies sending <see cref="T:UnityEngine.Networking.UnityWebRequest"/>

@@ -141,6 +141,7 @@ namespace Cyggie.Plugins.UnityHTTP.Services
                     yield break;
                 }
 
+                Log.Debug($"Received response: {response}", nameof(UnityHTTPService));
                 callback?.Invoke(response);
             }
             else
