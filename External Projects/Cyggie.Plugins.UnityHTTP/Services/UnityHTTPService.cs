@@ -117,7 +117,7 @@ namespace Cyggie.Plugins.UnityHTTP.Services
             UnityWebRequest? request = CreateRequest(url, method, data, encoding, contentType, headers);
             if (request == null) yield break;
 
-            yield return SendRequestCoroutine(request);
+            yield return SendRequestCoroutine(request, callback);
         }
 
         /// <summary>
