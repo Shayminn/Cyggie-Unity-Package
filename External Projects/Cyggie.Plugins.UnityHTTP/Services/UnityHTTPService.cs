@@ -176,14 +176,13 @@ namespace Cyggie.Plugins.UnityHTTP.Services
                     request.uploadHandler.contentType = contentType;
                 }
 
-                // Add default headers to request
-                if (_defaultHeaders.Any())
-                {
-                    headers = (KeyValuePair<string, string>[]) _defaultHeaders.Concat(headers);
-                }
+                // Add default headers to request if any
+                Dictionary<string, string> headersDict = _defaultHeaders.Any() ?
+                                                         _defaultHeaders.Concat(headers).ToDictionary(x => x.Key, y => y.Value) :
+                                                         headers.ToDictionary(x => x.Key, y => y.Value);
 
                 // Add headers to request
-                foreach (KeyValuePair<string, string> header in headers)
+                foreach (KeyValuePair<string, string> header in headersDict)
                 {
                     if (string.IsNullOrEmpty(header.Key))
                     {
