@@ -1,4 +1,4 @@
-﻿using Cyggie.Plugins.HTTP.Utils;
+﻿using Cyggie.Plugins.HTTP.Models;
 using Cyggie.Plugins.Logs;
 using Cyggie.Plugins.Services.Models;
 using System;

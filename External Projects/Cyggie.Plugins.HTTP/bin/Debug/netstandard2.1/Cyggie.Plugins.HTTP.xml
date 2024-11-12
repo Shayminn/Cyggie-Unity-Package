@@ -4,6 +4,46 @@
         <name>Cyggie.Plugins.HTTP</name>
     </assembly>
     <members>
+        <member name="T:Cyggie.Plugins.HTTP.Models.HTTPMediaTypes">
+            <summary>
+            Const of HTTP media types
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Models.HTTPMediaTypes.cFormData">
+            <summary>
+            Form submissions with data encoded as key-value pairs
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Models.HTTPMediaTypes.cMultipartFormData">
+            <summary>
+            Form submissions with file uploads
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Models.HTTPMediaTypes.cJSON">
+            <summary>
+            Data sent as JSON objects
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Models.HTTPMediaTypes.cApplicationXML">
+            <summary>
+            Data sent as XML
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Models.HTTPMediaTypes.cTextXML">
+            <summary>
+            XML in a text format
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Models.HTTPMediaTypes.cText">
+            <summary>
+            Plain text data
+            </summary>
+        </member>
+        <member name="F:Cyggie.Plugins.HTTP.Models.HTTPMediaTypes.cBinary">
+            <summary>
+            Binary data
+            </summary>
+        </member>
         <member name="T:Cyggie.Plugins.HTTP.Services.HTTPService">
             <summary>
             Service that simplifies sending Http requests
@@ -61,46 +101,6 @@
             <param name="mediaType">Text media type</param>
             <param name="headers">Headers added on top of the default headers to the request</param>
             <returns>Response message</returns>
-        </member>
-        <member name="T:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes">
-            <summary>
-            Const of HTTP media types
-            </summary>
-        </member>
-        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cFormData">
-            <summary>
-            Form submissions with data encoded as key-value pairs
-            </summary>
-        </member>
-        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cMultipartFormData">
-            <summary>
-            Form submissions with file uploads
-            </summary>
-        </member>
-        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cJSON">
-            <summary>
-            Data sent as JSON objects
-            </summary>
-        </member>
-        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cApplicationXML">
-            <summary>
-            Data sent as XML
-            </summary>
-        </member>
-        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cTextXML">
-            <summary>
-            XML in a text format
-            </summary>
-        </member>
-        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cText">
-            <summary>
-            Plain text data
-            </summary>
-        </member>
-        <member name="F:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes.cBinary">
-            <summary>
-            Binary data
-            </summary>
         </member>
     </members>
 </doc>

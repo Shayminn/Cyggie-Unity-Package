@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cyggie.Plugins.UnityHTTP</name>
+    </assembly>
+    <members>
+        <member name="T:Cyggie.Plugins.UnityHTTP.Services.UnityHTTPService">
+            <summary>
+            Service that simplifies sending <see cref="T:UnityEngine.Networking.UnityWebRequest"/>
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.UnityHTTP.Services.UnityHTTPService.OnMonoBehaviourAssigned(UnityEngine.MonoBehaviour)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Cyggie.Plugins.UnityHTTP.Services.UnityHTTPService.AddDefaultHeaders(System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            Add default headers to all requests <br/>
+            This does not include requests created outside of the service
+            </summary>
+            <param name="headers">Headers to always include in future requests</param>
+        </member>
+        <member name="M:Cyggie.Plugins.UnityHTTP.Services.UnityHTTPService.ClearDefaultHeaders">
+            <summary>
+            Clear default headers that were previously added
+            </summary>
+        </member>
+        <member name="M:Cyggie.Plugins.UnityHTTP.Services.UnityHTTPService.SendRequest(System.String,System.String,System.String,System.Text.Encoding,System.String,System.Action{System.String},System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            Send a <paramref name="method"/> web request to <paramref name="url"/>
+            </summary>
+            <param name="url">Url address</param>
+            <param name="method">HTTP method (i.e. Get, Post, Put...)</param>
+            <param name="data">Optional data to add to the request</param>
+            <param name="encoding">Data encoding to use (defaults to <see cref="P:System.Text.Encoding.UTF8"/></param>
+            <param name="contentType">Data's content type</param>
+            <param name="callback">Called when there's a successful response from the request</param>
+            <param name="headers">Headers to include the request (on top of defaults)</param>
+        </member>
+        <member name="M:Cyggie.Plugins.UnityHTTP.Services.UnityHTTPService.SendRequest(UnityEngine.Networking.UnityWebRequest,System.Action{System.String})">
+            <summary>
+            Send an unity web request
+            </summary>
+            <param name="request">Request to send</param>
+            <param name="callback">Called when there's a successful response from the request</param>
+        </member>
+        <member name="M:Cyggie.Plugins.UnityHTTP.Services.UnityHTTPService.SendRequestCoroutine(System.String,System.String,System.String,System.Text.Encoding,System.String,System.Action{System.String},System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            Send a <paramref name="method"/> web request to <paramref name="url"/>
+            </summary>
+            <param name="url">Url address</param>
+            <param name="method">HTTP method (i.e. Get, Post, Put...)</param>
+            <param name="data">Optional data to add to the request</param>
+            <param name="encoding">Data encoding to use (defaults to <see cref="P:System.Text.Encoding.UTF8"/></param>
+            <param name="contentType">Data's content type</param>
+            <param name="callback">Called when there's a successful response from the request</param>
+            <param name="headers">Headers to include the request (on top of defaults)</param>
+        </member>
+        <member name="M:Cyggie.Plugins.UnityHTTP.Services.UnityHTTPService.SendRequestCoroutine(UnityEngine.Networking.UnityWebRequest,System.Action{System.String})">
+            <summary>
+            Send an unity web request
+            </summary>
+            <param name="request">Request to send</param>
+            <param name="callback">Called when there's a successful response from the request</param>
+        </member>
+    </members>
+</doc>
