@@ -28,6 +28,18 @@
             <param name="headers">Headers added on top of the default headers to the request</param>
             <returns>Response message (empty if failed)</returns>
         </member>
+        <member name="M:Cyggie.Plugins.HTTP.Services.HTTPService.Patch(System.String,System.String,System.Text.Encoding,System.String,System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
+            <summary>
+            Send a PATCH request to <paramref name="url"/> with <paramref name="headers"/> <br/>
+            PATCH w/ HttpClient is not supported in certain platforms like Unity
+            </summary>
+            <param name="url">Url to send request to</param>
+            <param name="text">Text to send</param>
+            <param name="encoding">Text encoding</param>
+            <param name="mediaType">Text media type</param>
+            <param name="headers">Headers added on top of the default headers to the request</param>
+            <returns>Response message</returns>
+        </member>
         <member name="M:Cyggie.Plugins.HTTP.Services.HTTPService.Post(System.String,System.String,System.Text.Encoding,System.String,System.Collections.Generic.KeyValuePair{System.String,System.String}[])">
             <summary>
             Send a POST request to <paramref name="url"/> with <paramref name="headers"/>
@@ -48,6 +60,7 @@
             <param name="encoding">Text encoding</param>
             <param name="mediaType">Text media type</param>
             <param name="headers">Headers added on top of the default headers to the request</param>
+            <returns>Response message</returns>
         </member>
         <member name="T:Cyggie.Plugins.HTTP.Utils.HTTPMediaTypes">
             <summary>

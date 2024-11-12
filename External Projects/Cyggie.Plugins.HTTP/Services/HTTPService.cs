@@ -18,6 +18,8 @@ namespace Cyggie.Plugins.HTTP.Services
     {
         private HttpClient _client = new HttpClient();
 
+        #region Headers
+
         /// <summary>
         /// Set the default request headers for the client
         /// </summary>
@@ -35,6 +37,10 @@ namespace Cyggie.Plugins.HTTP.Services
             _client.DefaultRequestHeaders.Clear();
         }
 
+        #endregion
+
+        #region HTTP API
+
         /// <summary>
         /// Send a GET request to <paramref name="url"/> with <paramref name="headers"/>
         /// </summary>
@@ -44,11 +50,30 @@ namespace Cyggie.Plugins.HTTP.Services
         public async Task<string> Get(string url, params KeyValuePair<string, string>[] headers)
         {
             // Create request
-            HttpRequestMessage request = new HttpRequestMessage()
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            HttpRequestMessage? request = CreateRequest(HttpMethod.Get, url);
+            if (request == null) return string.Empty;
+
+            AddRequestHeaders(request.Headers, headers);
+            return await Send(request);
+        }
+
+        /// <summary>
+        /// Send a PATCH request to <paramref name="url"/> with <paramref name="headers"/> <br/>
+        /// PATCH w/ HttpClient is not supported in certain platforms like Unity
+        /// </summary>
+        /// <param name="url">Url to send request to</param>
+        /// <param name="text">Text to send</param>
+        /// <param name="encoding">Text encoding</param>
+        /// <param name="mediaType">Text media type</param>
+        /// <param name="headers">Headers added on top of the default headers to the request</param>
+        /// <returns>Response message</returns>
+        public async Task<string> Patch(string url, string text = "", Encoding? encoding = null, string mediaType = HTTPMediaTypes.cText, params KeyValuePair<string, string>[] headers)
+        {
+            // Create request
+            HttpRequestMessage? request = CreateRequest(HttpMethod.Patch, url);
+            if (request == null) return string.Empty;
+
+            // Add content if any
 
             AddRequestHeaders(request.Headers, headers);
             return await Send(request);
@@ -66,13 +91,10 @@ namespace Cyggie.Plugins.HTTP.Services
         public async Task<string> Post(string url, string text = "", Encoding? encoding = null, string mediaType = HTTPMediaTypes.cText, params KeyValuePair<string, string>[] headers)
         {
             // Create request
-            HttpRequestMessage request = new HttpRequestMessage()
-            {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri(url),
-                Content = new StringContent(text, encoding ?? Encoding.UTF8, mediaType)
-            };
+            HttpRequestMessage? request = CreateRequest(HttpMethod.Post, url);
+            if (request == null) return string.Empty;
 
+            // Add content if any
             if (!string.IsNullOrEmpty(text))
             {
                 request.Content = new StringContent(text, encoding ?? Encoding.UTF8, mediaType);
@@ -90,19 +112,25 @@ namespace Cyggie.Plugins.HTTP.Services
         /// <param name="encoding">Text encoding</param>
         /// <param name="mediaType">Text media type</param>
         /// <param name="headers">Headers added on top of the default headers to the request</param>
-        public async Task Put(string url, string text, Encoding? encoding = null, string mediaType = HTTPMediaTypes.cText, params KeyValuePair<string, string>[] headers)
+        /// <returns>Response message</returns>
+        public async Task<string> Put(string url, string text = "", Encoding? encoding = null, string mediaType = HTTPMediaTypes.cText, params KeyValuePair<string, string>[] headers)
         {
             // Create request
-            HttpRequestMessage request = new HttpRequestMessage()
+            HttpRequestMessage? request = CreateRequest(HttpMethod.Put, url);
+            if (request == null) return string.Empty;
+
+            // Add content if any
+
+            if (!string.IsNullOrEmpty(text))
             {
-                Method = HttpMethod.Put,
-                RequestUri = new Uri(url),
-                Content = new StringContent(text, encoding ?? Encoding.UTF8, mediaType)
-            };
+                request.Content = new StringContent(text, encoding ?? Encoding.UTF8, mediaType);
+            }
 
             AddRequestHeaders(request.Headers, headers);
-            await Send(request);
+            return await Send(request);
         }
+
+        #endregion
 
         private async Task<string> Send(HttpRequestMessage request)
         {
@@ -133,6 +161,23 @@ namespace Cyggie.Plugins.HTTP.Services
             }
 
             return string.Empty;
+        }
+
+        private HttpRequestMessage? CreateRequest(HttpMethod method, string url)
+        {
+            try
+            {
+                return new HttpRequestMessage()
+                {
+                    Method = method,
+                    RequestUri = new Uri(url),
+                };
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Failed to create HTTP {method} request. Exception: {ex}", nameof(HTTPService));
+                return null;
+            }
         }
 
         private void AddRequestHeaders(HttpRequestHeaders requestHeaders, params KeyValuePair<string, string>[] headers)
