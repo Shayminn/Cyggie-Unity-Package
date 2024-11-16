@@ -1,5 +1,6 @@
 ﻿using Cyggie.Plugins.Logs;
 using Cyggie.Plugins.Services.Models;
+using Cyggie.Plugins.UnityHTTP.Services.Models;
 using Cyggie.Plugins.UnityServices.Models;
 using System;
 using System.Collections;
@@ -137,6 +138,14 @@ namespace Cyggie.Plugins.UnityHTTP.Services
                 string response = request.downloadHandler.text;
                 if (string.IsNullOrEmpty(response))
                 {
+                    if (request.method == UnityHTTPMethod.cPATCH)
+                    {
+                        // PATCH does not expect a response so it's normal to have an empty string
+                        Log.Debug($"Received response from {request.url} (empty string for PATCH requests).", nameof(UnityHTTPService));
+                        callback?.Invoke(string.Empty);
+                        yield break;
+                    }
+
                     Log.Warning($"{request.method} response from \"{request.uri}\" is null or empty.", nameof(UnityHTTPService));
                     yield break;
                 }
