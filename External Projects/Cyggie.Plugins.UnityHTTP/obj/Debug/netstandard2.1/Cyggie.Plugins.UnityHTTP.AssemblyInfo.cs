@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cyggie.Plugins.UnityHTTP")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71c0af344c1363d6f61a066c535f0ae07bd76c94")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f950fd50abc136677b6897dafe06248a378b108")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cyggie.Plugins.UnityHTTP")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cyggie.Plugins.UnityHTTP")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -141,12 +141,12 @@ namespace Cyggie.Plugins.UnityHTTP.Services
                     yield break;
                 }
 
-                Log.Debug($"Received response: {response}", nameof(UnityHTTPService));
+                Log.Debug($"Received response from {request.url}: {response}", nameof(UnityHTTPService));
                 callback?.Invoke(response);
             }
             else
             {
-                Log.Error($"Failed to send {request.method} request, received {request.result} ({request.responseCode}).", nameof(UnityHTTPService));
+                Log.Error($"Failed to send {request.method} request to {request.url}, received {request.result} ({request.responseCode}).", nameof(UnityHTTPService));
             }
         }
 
