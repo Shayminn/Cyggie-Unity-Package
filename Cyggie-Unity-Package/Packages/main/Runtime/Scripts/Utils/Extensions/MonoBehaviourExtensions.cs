@@ -29,6 +29,19 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
         }
 
         /// <summary>
+        /// Starta an <paramref name="action"/> after <paramref name="condition"/> evaluates to false <br/>
+        /// Set an optional max time to timeout and automatically proceed into the <paramref name="enumerator"/>
+        /// </summary>
+        /// <param name="mono">MonoBehaviour object to start the coroutine</param>
+        /// <param name="condition">Condition to satisfy</param>
+        /// <param name="action">Action to start</param>
+        /// <param name="maxTime">Max time before timeout (defaults to -1, any negative value = infinite)</param>"
+        public static void ConditionalAction(this MonoBehaviour mono, Predicate condition, UnityAction action, float maxTime = -1)
+        {
+            mono.StartCoroutine(ConditionalCoroutine(condition, action, maxTime));
+        }
+
+        /// <summary>
         /// Verify the Inspector Reference of one or many <paramref name="objs"/> <br/>
         /// </summary>
         /// <param name="mono">Mono object that holds the reference</param>
@@ -199,7 +212,6 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
 
         private static IEnumerator ConditionalCoroutine(Predicate condition, IEnumerator enumerator, float maxTime)
         {
-
             while (condition.Invoke())
             {
                 if (maxTime > 0)
@@ -212,6 +224,22 @@ namespace Cyggie.Main.Runtime.Utils.Extensions
             }
 
             yield return enumerator;
+        }
+
+        private static IEnumerator ConditionalCoroutine(Predicate condition, UnityAction action, float maxTime)
+        {
+            while (condition.Invoke())
+            {
+                if (maxTime > 0)
+                {
+                    maxTime -= Time.deltaTime;
+                    if (maxTime < 0) break;
+                }
+
+                yield return null;
+            }
+
+            action?.Invoke();
         }
 
         #endregion
