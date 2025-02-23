@@ -119,15 +119,16 @@ namespace Cyggie.Plugins.Services.Models
                 return config;
             });
 
-            Initialize(serviceConfigs, serviceTypes);
+            Initialize(serviceConfigs, serviceTypes: serviceTypes);
         }
 
         /// <summary>
         /// Initialize the service manager with a specific list of services and service configurations
         /// </summary>
         /// <param name="configs">List of configurations to use</param>
+        /// <param name="onInitialized">Called when the service manager is initialized before calling <see cref="Service.OnAllServicesInitialized"/></param>
         /// <param name="serviceTypes">List of services to create</param>
-        public void Initialize(IEnumerable<IServiceConfiguration?> configs, params Type[] serviceTypes)
+        public void Initialize(IEnumerable<IServiceConfiguration?> configs, Action? onInitialized = null, params Type[] serviceTypes)
         {
             if (_initialized)
             {

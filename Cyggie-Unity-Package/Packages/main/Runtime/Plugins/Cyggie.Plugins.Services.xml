@@ -165,11 +165,12 @@
             </summary>
             <param name="serviceTypes"></param>
         </member>
-        <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.Initialize(System.Collections.Generic.IEnumerable{Cyggie.Plugins.Services.Interfaces.IServiceConfiguration},System.Type[])">
+        <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.Initialize(System.Collections.Generic.IEnumerable{Cyggie.Plugins.Services.Interfaces.IServiceConfiguration},System.Action,System.Type[])">
             <summary>
             Initialize the service manager with a specific list of services and service configurations
             </summary>
             <param name="configs">List of configurations to use</param>
+            <param name="onInitialized">Called when the service manager is initialized before calling <see cref="M:Cyggie.Plugins.Services.Models.Service.OnAllServicesInitialized"/></param>
             <param name="serviceTypes">List of services to create</param>
         </member>
         <member name="M:Cyggie.Plugins.Services.Models.ServiceManager.Create(System.Type)">

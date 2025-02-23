@@ -69,21 +69,21 @@ namespace Cyggie.Main.Runtime.ServicesNS
 
         #region Internals
 
-        internal void OnGUIInternal() => OnGUI();
+        internal void OnGUI_Internal() => OnGUI();
 
-        internal void AwakeInternal() => Awake();
+        internal void Awake_Internal() => Awake();
 
-        internal void OnEnableInternal() => OnEnable();
+        internal void OnEnable_Internal() => OnEnable();
 
-        internal void StartInternal() => Start();
+        internal void Start_Internal() => Start();
 
-        internal void OnDisableInternal() => OnDisable();
+        internal void OnDisable_Internal() => OnDisable();
 
-        internal void UpdateInternal() => Update();
+        internal void Update_Internal() => Update();
 
-        internal void FixedUpdateInternal() => FixedUpdate();
+        internal void FixedUpdate_Internal() => FixedUpdate();
 
-        internal void OnDestroyInternal() => OnDestroy();
+        internal void OnDestroy_Internal() => OnDestroy();
 
         #endregion
 

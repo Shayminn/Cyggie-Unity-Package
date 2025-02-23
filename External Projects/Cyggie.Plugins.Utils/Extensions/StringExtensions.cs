@@ -8,7 +8,6 @@ namespace Cyggie.Plugins.Utils.Extensions
     /// </summary>
     public static class StringExtensions
     {
-
         /// <summary>
         /// Insert <paramref name="startString"/> if <paramref name="str"/> doesn't start with it
         /// </summary>

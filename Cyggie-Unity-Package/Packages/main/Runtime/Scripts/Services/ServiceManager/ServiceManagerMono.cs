@@ -96,7 +96,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             {
                 if (x is ServiceMono service)
                 {
-                    service.OnGUIInternal();
+                    service.OnGUI_Internal();
                 }
             });
         }
@@ -126,26 +126,27 @@ namespace Cyggie.Main.Runtime.ServicesNS
                 types.Add(type);
             }
 
-            _serviceManager.Initialize(Settings.ServiceConfigurations, types.ToArray());
-
-            _serviceManager.Services.ForEach(x =>
+            _serviceManager.Initialize(Settings.ServiceConfigurations, onInitialized: () =>
             {
-                switch (x)
+                _serviceManager.Services.ForEach(x =>
                 {
-                    case Service service:
-                        // Assign this mono to all services that requires it
-                        if (typeof(IServiceMono).IsAssignableFrom(service.GetType()))
-                        {
-                            ((IServiceMono) service).OnMonoBehaviourAssigned(this);
-                        }
-                        break;
+                    switch (x)
+                    {
+                        case Service service:
+                            // Assign this mono to all services that requires it
+                            if (typeof(IServiceMono).IsAssignableFrom(service.GetType()))
+                            {
+                                ((IServiceMono) service).OnMonoBehaviourAssigned(this);
+                            }
+                            break;
 
-                    case ServiceMono serviceMono:
-                        // Call awakes on all services
-                        serviceMono.AwakeInternal();
-                        break;
-                }
-            });
+                        case ServiceMono serviceMono:
+                            // Call awakes on all services
+                            serviceMono.Awake_Internal();
+                            break;
+                    }
+                });
+            }, types.ToArray());
         }
 
         private void OnEnable()
@@ -154,7 +155,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             {
                 if (x is ServiceMono service)
                 {
-                    service.OnEnableInternal();
+                    service.OnEnable_Internal();
                 }
             });
         }
@@ -165,7 +166,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             {
                 if (x is ServiceMono service)
                 {
-                    service.StartInternal();
+                    service.Start_Internal();
                 }
             });
         }
@@ -176,7 +177,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             {
                 if (x is ServiceMono service)
                 {
-                    service.OnDisableInternal();
+                    service.OnDisable_Internal();
                 }
             });
         }
@@ -187,7 +188,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             {
                 if (x is ServiceMono service)
                 {
-                    service.UpdateInternal();
+                    service.Update_Internal();
                 }
             });
         }
@@ -198,7 +199,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             {
                 if (x is ServiceMono service)
                 {
-                    service.FixedUpdateInternal();
+                    service.FixedUpdate_Internal();
                 }
             });
         }
@@ -209,7 +210,7 @@ namespace Cyggie.Main.Runtime.ServicesNS
             {
                 if (x is ServiceMono service)
                 {
-                    service.OnDestroyInternal();
+                    service.OnDestroy_Internal();
                 }
             });
 
