@@ -172,6 +172,7 @@ namespace Cyggie.Plugins.Services.Models
             _initialized = true;
             Log.Debug($"Service Manager initialized all services: {Services.Count}.", nameof(ServiceManager));
 
+            onInitialized?.Invoke();
             Services.ForEach(x => x.OnAllServicesInitialized());
         }
 
