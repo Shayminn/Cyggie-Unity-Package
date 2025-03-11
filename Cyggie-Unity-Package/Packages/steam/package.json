@@ -1,6 +1,6 @@
 {
   "name": "cyggie.steam",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "displayName": "Steam",
   "description": "This package derives from the Cyggie package. It contains relevant scripts and settings to setup and manage the Steam API.",
   "unity": "6000.0",
