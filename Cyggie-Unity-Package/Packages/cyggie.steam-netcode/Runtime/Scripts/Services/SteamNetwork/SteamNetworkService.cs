@@ -5,6 +5,7 @@ using Cyggie.Steam.Runtime.Services;
 using Netcode.Transports.Facepunch;
 using Steamworks;
 using Steamworks.Data;
+using System;
 using Unity.Netcode;
 
 namespace Cyggie.SteamNetcode.Runtime.Services
@@ -148,9 +149,9 @@ namespace Cyggie.SteamNetcode.Runtime.Services
 
         #region Network
 
-        private async void OnStartHost(int maxMembers)
+        private async void OnStartHost(object sender, StartHostEventArgs args)
         {
-            Lobby? createdLobby = await SteamMatchmaking.CreateLobbyAsync(maxMembers);
+            Lobby? createdLobby = await SteamMatchmaking.CreateLobbyAsync(args.MaxMembers);
             if (createdLobby == null)
             {
                 Log.Error($"Failed on start host, unable to create lobby from steam matchmaking.", nameof(SteamNetworkService));
@@ -160,11 +161,11 @@ namespace Cyggie.SteamNetcode.Runtime.Services
             _currentLobby = createdLobby.Value;
         }
 
-        private void OnStartClient()
+        private void OnStartClient(object sender, EventArgs args)
         {
         }
 
-        private void OnDisconnect()
+        private void OnDisconnect(object sender, EventArgs args)
         {
 
         }
