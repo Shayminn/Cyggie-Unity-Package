@@ -1,0 +1,25 @@
+{
+  "name": "cyggie.netcode",
+  "version": "1.0.0",
+  "displayName": "Netcode",
+  "description": "This package derives from the Cyggie package. It contains relevant scripts and settings to setup and manage Unity's netcode network system'.",
+  "unity": "6000.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/cyggie.netcode"
+  },
+  "dependencies": {
+    "com.unity.netcode.gameobjects": "2.2.0",
+    "com.unity.transport": "2.4.0",
+    "cyggie.main": "3.1.9"
+  },
+  "keywords": [
+    "cyggie",
+    "sqlite"
+  ],
+  "author": {
+    "name": "Cyggie",
+    "email": "rleung1022@gmail.com",
+    "url": "https://ryanleung.me"
+  }
+}

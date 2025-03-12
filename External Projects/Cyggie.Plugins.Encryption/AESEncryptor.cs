@@ -16,8 +16,8 @@ namespace Cyggie.Plugins.Encryption
         // http://www.unit-conversion.info/texttools/random-string-generator/
         //
 
-        private static readonly string _key = "Wlo0wxabLpXE8ADwmgAA1UF2HhNVsnMu"; // set any string of 32 chars
-        private static readonly string _iv = "bw5c61NbYIX2SPIO"; // set any string of 16 chars
+        private static readonly string _key = "LjL0EGuIPi5RvCioc8MC4PDUD8tKX5dK"; // set any string of 32 chars
+        private static readonly string _iv = "iFRjc5XCGIUdg4vY"; // set any string of 16 chars
         
         /// <summary>
         /// Encrypt an object using <see cref="Newtonsoft.Json.JsonConvert.SerializeObject(object?)"/>

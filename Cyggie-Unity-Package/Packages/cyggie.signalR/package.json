@@ -1,0 +1,23 @@
+{
+  "name": "cyggie.websocket-client",
+  "version": "1.0.2",
+  "displayName": "Websocket Client",
+  "description": "This package derives from the Cyggie package. It contains relevant scripts and settings to manage the client Websocket.",
+  "unity": "6000.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/cyggie.signalR"
+  },
+  "dependencies": {
+    "cyggie.main": "3.1.9"
+  },
+  "keywords": [
+    "cyggie",
+    "sqlite"
+  ],
+  "author": {
+    "name": "Cyggie",
+    "email": "rleung1022@gmail.com",
+    "url": "https://ryanleung.me"
+  }
+}

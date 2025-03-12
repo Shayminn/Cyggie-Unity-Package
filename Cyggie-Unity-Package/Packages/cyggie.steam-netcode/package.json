@@ -1,0 +1,27 @@
+{
+  "name": "cyggie.steam-netcode",
+  "version": "1.0.0",
+  "displayName": "Steam Netcode",
+  "description": "This package derives from the Cyggie package. It contains relevant scripts and settings to setup and manage the Steam API using the Facepunch SDK. It also has the necessary components to support Netcode on top of it.",
+  "unity": "6000.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shayminn/Cyggie-Unity-Package.git?path=/Cyggie-Unity-Package/Packages/cyggie.steam-netcode"
+  },
+  "dependencies": {
+    "com.unity.netcode.gameobjects": "2.2.0",
+    "com.unity.transport": "2.4.0",
+    "cyggie.main": "3.1.9",
+    "cyggie.steam": "1.0.2",
+    "cyggie.netcode": "1.0.0"
+  },
+  "keywords": [
+    "cyggie",
+    "sqlite"
+  ],
+  "author": {
+    "name": "Cyggie",
+    "email": "rleung1022@gmail.com",
+    "url": "https://ryanleung.me"
+  }
+}

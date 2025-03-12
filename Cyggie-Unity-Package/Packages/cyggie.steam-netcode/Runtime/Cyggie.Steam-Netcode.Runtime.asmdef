@@ -1,0 +1,20 @@
+{
+    "name": "Cyggie.Steam-Netcode.Runtime",
+    "rootNamespace": "Cyggie.SteamNetcode.Runtime",
+    "references": [
+        "GUID:26cad73ee07989f449c8b98b2838b82f",
+        "GUID:e7e0e6d22b993d646acac576e6f03b96",
+        "GUID:592b7c2d97ef8c94492b46cdf16234f3",
+        "GUID:1491147abca9d7d4bb7105af628b223e",
+        "GUID:2748f0b4cacb4db4c9e174bb4fd31b2a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -291,7 +291,7 @@
       "url": "https://packages.unity.com"
     },
     "cyggie.file-manager": {
-      "version": "file:file-manager",
+      "version": "file:cyggie.file-manager",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -300,13 +300,23 @@
       }
     },
     "cyggie.main": {
-      "version": "file:main",
+      "version": "file:cyggie.main",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
+    "cyggie.netcode": {
+      "version": "file:cyggie.netcode",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.netcode.gameobjects": "2.2.0",
+        "com.unity.transport": "2.4.0",
+        "cyggie.main": "3.1.9"
+      }
+    },
     "cyggie.scene-changer": {
-      "version": "file:scene-changer",
+      "version": "file:cyggie.scene-changer",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -316,7 +326,7 @@
       }
     },
     "cyggie.sqlite": {
-      "version": "file:sqlite",
+      "version": "file:cyggie.sqlite",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -324,17 +334,27 @@
       }
     },
     "cyggie.steam": {
-      "version": "file:steam",
+      "version": "file:cyggie.steam",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cyggie.main": "3.1.9"
+      }
+    },
+    "cyggie.steam-netcode": {
+      "version": "file:cyggie.steam-netcode",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
         "com.unity.netcode.gameobjects": "2.2.0",
         "com.unity.transport": "2.4.0",
-        "cyggie.main": "3.1.9"
+        "cyggie.main": "3.1.9",
+        "cyggie.steam": "1.0.2",
+        "cyggie.netcode": "1.0.0"
       }
     },
     "cyggie.unity-http": {
-      "version": "file:unity-http",
+      "version": "file:cyggie.unity-http",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -342,7 +362,7 @@
       }
     },
     "cyggie.websocket-client": {
-      "version": "file:signalR",
+      "version": "file:cyggie.signalR",
       "depth": 0,
       "source": "embedded",
       "dependencies": {

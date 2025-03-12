@@ -1,0 +1,17 @@
+{
+    "name": "Cyggie.Steam.Runtime",
+    "rootNamespace": "Cyggie.Steam.Runtime",
+    "references": [
+        "GUID:26cad73ee07989f449c8b98b2838b82f",
+        "GUID:1491147abca9d7d4bb7105af628b223e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
