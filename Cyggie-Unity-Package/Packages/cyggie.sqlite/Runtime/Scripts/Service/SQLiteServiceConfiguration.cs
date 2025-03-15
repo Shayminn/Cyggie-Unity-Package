@@ -6,7 +6,6 @@ namespace Cyggie.SQLite.Runtime.ServicesNS
     /// <summary>
     /// Settings for <see cref="SQLiteService"/>
     /// </summary>
-    [CreateAssetMenu(menuName ="SQLiteService")]
     public class SQLiteServiceConfiguration : PackageServiceConfiguration
     {
         public const string cStreamingAssetsFolderPath = "SQLite/Databases/";
