@@ -51,7 +51,7 @@ namespace Cyggie.Main.Runtime.Components.UI
         {
             if (_transitioning)
             {
-                FloatHelper.CancelSmoothTransition(this);
+                FloatHelper.CancelTransition(this);
             }
 
             onValueChanged += OnSliderValueChanged;
